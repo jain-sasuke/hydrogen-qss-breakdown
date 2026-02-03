@@ -22,7 +22,7 @@ results/      - Simulation results
 
 ## Status
 
-- [x] Radiative transition matrix (1400+ transitions, n_max=15)
+- [x] Radiative transition matrix (1015 transitions, n_max=15)
 - [ ] Collision rates (ionization, excitation, recombination)
 - [ ] Memory kernel implementation
 - [ ] Neural operator training

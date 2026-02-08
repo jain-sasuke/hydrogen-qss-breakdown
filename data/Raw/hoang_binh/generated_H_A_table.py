@@ -1,8 +1,30 @@
 """
+Generate hydrogen radiative transition data using Hoang-Binh ba5 code.
 
-Output file:
-  H_A_E1_LS_n1_15_physical.csv
+This script automates the calculation of Einstein A coefficients, oscillator 
+strengths, and radial matrix elements for electric dipole (E1) transitions 
+in hydrogen (n ≤ 15).
+
+Methodology:
+    1. Runs ba5 Fortran executable for all (nu, nl) pairs with nu ≤ 15
+    2. Parses ba5.out to extract transition data
+    3. Filters for physically valid transitions (0 ≤ ℓ ≤ n-1)
+    4. Outputs clean dataset ready for collisional-radiative modeling
+
+Input:
+    - ba5 executable (Hoang-Binh ADUU v1.0)
+    - Configuration: Z=1.0, M=1836.152673 a.u. (¹H)
+
+Output:
+    - H_A_E1_LS_n1_15_physical.csv
+    - 1015 electric dipole transitions
+    - Columns: nu, lu, nl, ll, A_s-1, f_abs, R2_au2, Z, M_au, source
+
+Reference:
+    D. Hoang-Binh, Computer Physics Communications 166, 191 (2005)
+    DOI: 10.1016/j.cpc.2004.11.005
 """
+
 
 from __future__ import annotations
 

@@ -1,42 +1,326 @@
-# Create .gitignore
-cat > .gitignore << 'EOF'
+# ==============================================================================
+# .gitignore for Non-Markovian Collisional-Radiative Modeling Project
+# ==============================================================================
+
+# ==============================================================================
 # Python
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# C extensions
 *.so
+
+# Distribution / packaging
 .Python
-env/
-venv/
-*.egg-info/
-dist/
 build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb_checkpoints
+# PyInstaller
+*.manifest
+*.spec
 
-# Data (don't commit large files)
-*.hdf5
-*.h5
-data/raw/
-results/*.npy
-results/*.npz
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
 
-# IDEs
-.vscode/
-.idea/
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+cr/
+.conda/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ==============================================================================
+# Fortran
+# ==============================================================================
+
+# Compiled Fortran files
+*.mod
+*.smod
+*.o
+
+# Fortran executables (keep ba5 tracked since it's needed)
+# ba5 is tracked - don't ignore it!
+
+# Fortran temporary files
+fort.*
+
+# ==============================================================================
+# Data Files (Large/Temporary)
+# ==============================================================================
+
+# Temporary ba5 output files (regenerated during runs)
+data/Raw/hoang_binh/ba5.in
+data/Raw/hoang_binh/ba5.out
+
+# Large intermediate data files
+data/Raw/*_raw.csv
+data/Processed/*_intermediate.csv
+data/Processed/*_temp.csv
+
+# Backup files
+*.bak
+*~
 *.swp
 *.swo
 
-# Temporary
+# ==============================================================================
+# OS Specific
+# ==============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# IDEs and Editors
+# ==============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+tags
+[._]*.un~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ==============================================================================
+# Results and Outputs
+# ==============================================================================
+
+# Large result files (keep small examples)
+results/*.hdf5
+results/*.h5
+results/*.nc
+results/*.pkl
+results/*.pickle
+
+# Temporary plots (keep final figures for papers)
+figures/tmp/
+figures/scratch/
+*.tmp.png
+*.tmp.pdf
+
+# Log files
 *.log
-*.tmp
+logs/
+*.out
+*.err
+
+# ==============================================================================
+# Documentation
+# ==============================================================================
+
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.toc
+*.synctex.gz
+*.pdf_tex
+
+# ==============================================================================
+# Project Specific
+# ==============================================================================
+
+# Temporary validation files
+data/Processed/*/validation_temp.txt
+data/Processed/*/_test_*.csv
+
+# Large collision cross section files (>100 MB)
+# Keep compressed versions only
+data/Processed/Collisional/*_full.csv
+
+# Benchmark data (regenerated)
+benchmarks/tmp/
+
+# ==============================================================================
+# Keep These Files (Don't Ignore)
+# ==============================================================================
+
+# Force include important files even if they match ignore patterns
+!data/Raw/hoang_binh/ba5
+!data/Raw/hoang_binh/ba5.f
+!data/Processed/Radiative/H_A_E1_LS_n1_15_physical.csv
+!data/Processed/Radiative/validation.txt
+!README.md
+!LICENSE
+!docs/*.md
+!*.pdf
+
+# ==============================================================================
+# Environment and Secrets
+# ==============================================================================
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Credentials (just in case)
+*.key
+*.pem
+secrets/
+credentials/
+
+# ==============================================================================
+# Misc
+# ==============================================================================
+
+# Compressed archives (temporary)
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Temporary directories
+tmp/
 temp/
+scratch/

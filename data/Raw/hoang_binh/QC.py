@@ -3,8 +3,22 @@ import numpy as np
 from pathlib import Path
 
 # ---------------- File paths ----------------
-CSV_PATH = Path("/Users/nikhiljain/Desktop/non_markovian_cr/data/Processed/Radiative/H_A_E1_LS_n1_15_physical.csv")
-OUT_TXT = Path("/Users/nikhiljain/Desktop/non_markovian_cr/data/Processed/Radiative/validation.txt")
+SCRIPT_DIR = Path(__file__).parent.resolve()
+
+# Try to find project root (has 'data' folder)
+def find_project_root(start_path: Path) -> Path:
+    """Find project root by looking for 'data' directory."""
+    current = start_path
+    for _ in range(5):  # Search up to 5 levels
+        if (current / "data").exists():
+            return current
+        current = current.parent
+    raise FileNotFoundError("Could not find project root (folder with 'data/')")
+
+PROJECT_ROOT = find_project_root(SCRIPT_DIR)
+
+CSV_PATH = PROJECT_ROOT / "data" / "Processed" / "Radiative" / "H_A_E1_LS_n1_15_physical.csv"
+OUT_TXT = PROJECT_ROOT / "data" / "Processed" / "Radiative" / "validation.txt"
 # -------------------------------------------
 
 df = pd.read_csv(CSV_PATH)

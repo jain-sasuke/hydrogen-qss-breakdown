@@ -8,7 +8,7 @@ in hydrogen (n ≤ 15).
 Methodology:
     1. Runs ba5 Fortran executable for all (nu, nl) pairs with nu ≤ 15
     2. Parses ba5.out to extract transition data
-    3. Filters for physically valid transitions (0 ≤ ℓ ≤ n-1)
+    3. Filters for physically valid transitions (0 ≤ l ≤ n-1)
     4. Outputs clean dataset ready for collisional-radiative modeling
 
 Input:
@@ -36,13 +36,26 @@ from typing import Dict, List
 import pandas as pd
 
 # -------------------- User-editable defaults --------------------
-WORKDIR = Path("/Users/nikhiljain/Desktop/non_markovian_cr/data/Raw/hoang_binh")          # folder containing ba5, ba5.in/out, and this script
+# Paths are relative to this script's location
+# Directory structure:
+#   non_markovian_cr/
+#   └── data/
+#       ├── Raw/
+#       │   └── hoang_binh/
+#       │       ├── generated_H_A_table.py  ← This script
+#       │       └── ba5                      ← Executable
+#       └── Processed/
+#           └── Radiative/                   ← Output folder
+SCRIPT_DIR = Path(__file__).parent.resolve()
+WORKDIR = SCRIPT_DIR          # folder containing ba5, ba5.in/out, and this script
 BA5_EXE = Path("ba5")        # ba5 executable filename (in WORKDIR) OR absolute path
 Z = 1.0
 M_AU = 1836.152673           # proton mass in electron-mass units
 N_MAX = 15
 
-FINAL_OUT = "/Users/nikhiljain/Desktop/non_markovian_cr/data/Processed/Radiative/H_A_E1_LS_n1_15_physical.csv"
+# Output path: go up to project root, then to Processed/Radiative/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent  # Up 3 levels from hoang_binh
+FINAL_OUT = PROJECT_ROOT / "data" / "Processed" / "Radiative" / "H_A_E1_LS_n1_15_physical.csv"
 # ---------------------------------------------------------------
 
 # ba5 row format: "lu ll R2 f A" (scientific notation)

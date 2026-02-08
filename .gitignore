@@ -19,7 +19,6 @@ build/
 # Data (don't commit large files)
 *.hdf5
 *.h5
-data/raw/
 results/*.npy
 results/*.npz
 

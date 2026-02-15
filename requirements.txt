@@ -1,0 +1,35 @@
+# Core scientific stack
+numpy
+scipy
+pandas
+matplotlib
+seaborn
+sympy
+numba
+h5py
+tqdm
+scikit-learn
+
+# Jupyter / notebooks
+jupyterlab
+ipykernel
+
+# PyTorch (Apple Silicon uses MPS automatically)
+torch
+
+# Scientific ML / PINNs / Operators
+deepxde
+neuraloperator
+
+# Plasma physics / spectroscopy
+plasmapy
+astropy
+specutils
+pyspeckit
+
+# Large data handling
+polars
+pyarrow
+dask
+xarray
+netcdf4

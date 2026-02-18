@@ -241,8 +241,9 @@ def main() -> int:
 
     lower_states = parse_states_list(args.lower)
     upper_states = parse_states_list(args.upper)
-
-    outdir = Path(args.outdir).expanduser().resolve()
+# CSV file location
+    script_dir = Path(__file__).resolve().parent
+    outdir = script_dir
     outpath = outdir / args.outfile
 
     LOG.info("CCC scrape starting: %s %s", args.element, args.charge)

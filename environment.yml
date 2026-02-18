@@ -1,0 +1,17 @@
+name: cr
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - jupyterlab
+  - scipy
+  - sympy
+  - tqdm
+  - numba
+  - h5py
+  - ipykernel
+  - seaborn

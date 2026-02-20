@@ -1,4 +1,3 @@
-# README_ADAS_AFD11.md
 
 **Understanding ADAS ADF11 Master Files (scd96 / acd96)**  
 Project: Hydrogen Collisional–Radiative (CR) Modeling Thesis

@@ -124,6 +124,9 @@ fort.*
 data/Raw/hoang_binh/ba5.in
 data/Raw/hoang_binh/ba5.out
 
+# Adas raw files
+data/Raw/adas/*.dat
+
 # Large intermediate data files
 data/Raw/*_raw.csv
 data/Processed/*_intermediate.csv

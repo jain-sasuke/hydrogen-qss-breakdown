@@ -1,0 +1,20 @@
+# ADAS ADF11 Data Provenance
+
+Source: ADAS Open Database (https://open.adas.ac.uk/)
+Files:
+  - scd96_h.dat
+  - acd96_h.dat
+
+Dataset version: 96
+Element: Hydrogen (Z=1)
+Downloaded by: Nikhil Jain
+Download date: 2026-02-19
+
+SHA256 hashes:
+c7399c5059f8fcd1130f918572f0856985de1935f0590bce1a67f1e9367f1be8  scd96_h.dat
+316b06c02311b9671da44cf600dc5e23d31c7caeb1709a49131a2ea9594ba08b  acd96_h.dat
+
+Notes:
+- Effective ionization (SCD)
+- Effective recombination (ACD)
+- Maxwellian-averaged CR coefficients

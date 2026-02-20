@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "non_markovian_cr"
+version = "0.1.0"
+description = "Non-Markovian Collisional-Radiative Modeling"
+requires-python = ">=3.10"

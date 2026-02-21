@@ -516,3 +516,10 @@ H_A_E1_LS_n1_15_physical.csv  (1015 transitions)
 
 **Last updated:** 2026-02-08  
 **For:** Non-Markovian Collisional-Radiative Modeling Project
+Radiative transition probabilities (Einstein A coefficients) and oscillator
+strengths computed using the exact hydrogenic code of Hoang-Binh (2005, 2009),
+which calculates dipole radial integrals via recurrence relations applied to
+Gordon's (1929) hypergeometric formula. The code provides exact values for
+principal quantum numbers up to n≈1000. Validation against NIST Atomic
+Spectra Database for n≤5 showed agreement to X significant figures,
+confirming reliability for higher-n Rydberg states.

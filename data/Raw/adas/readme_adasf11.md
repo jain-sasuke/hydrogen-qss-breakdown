@@ -188,20 +188,7 @@ No transpose required.
 
 ---
 
-# 9. Impact on Thesis
-
-Correct interpretation ensures:
-
-- Proper 1–10 eV extraction
-- Correct density interpolation
-- Physically valid CR modeling
-- No silent catastrophic unit errors
-
-This resolved a potentially severe regime misinterpretation.
-
----
-
-# 10. Final Verified Structure
+# 9. Final Verified Structure
 
 ```
 Header: IZ, IDMAXD, ITMAXD, ...

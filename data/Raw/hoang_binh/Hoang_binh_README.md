@@ -15,15 +15,17 @@
 ### Official Source
 
 **Primary source (Mendeley Data):**
+
 - Dataset: `ba5.f` (ADUU_v1_0 and ADUU_v2_0)
-- URL: https://data.mendeley.com/datasets/3drgznwty8/1
+- URL: <https://data.mendeley.com/datasets/3drgznwty8/1>
 - DOI: 10.17632/3drgznwty8.1
 - License: Free for academic use
 
 **Alternative (CPC Program Library):**
+
 - Program ID: ADUU_v1_0
 - Journal: Computer Physics Communications
-- URL: http://cpc.cs.qub.ac.uk/summaries/ADUU_v1_0.html
+- URL: <http://cpc.cs.qub.ac.uk/summaries/ADUU_v1_0.html>
 
 ### Files Included
 
@@ -93,6 +95,7 @@ sudo yum install gcc-gfortran
 ```
 
 **Windows:**
+
 - Install MinGW-w64 (includes gfortran)
 - Or use WSL (Windows Subsystem for Linux)
 

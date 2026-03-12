@@ -329,4 +329,4 @@ credentials/
 # Temporary directories
 tmp/
 temp/
-scratch/
+scratch/./data/raw/ccc/e-H_XSEC_LS/

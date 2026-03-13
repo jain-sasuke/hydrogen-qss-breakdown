@@ -1,0 +1,3 @@
+# CCC Cross Section Benchmarking
+
+The CCC cross sections were benchmarked against Anderson et al. (2000) RMPS effective collision strengths for all n≤5, Δn≠0 transitions. For transitions with n_upper≤4, 82% of comparisons fall within 20% and the mean absolute error is 12.7%. For excited-state transitions (n≥2→n'≤4) the agreement improves to 87% within 20%. The n→5 transitions show systematic disagreement (factor 2–3 for Δl=±1, factor 5 for Δl=0) consistent with known differences between RMPS and CCC treatments of near-threshold coupling between nearly-degenerate shells (ΔE≈0.3 eV). Since the CR model is dominated by n≤4 processes in the ITER divertor Te=1–10 eV regime, the CCC data are judged adequate for the thesis objectives.

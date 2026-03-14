@@ -334,3 +334,4 @@ scratch/./data/raw/ccc/e-H_XSEC_LS/
 ./data/raw/ccc/e-H_XSEC_LS/
 
 data/raw/ccc/e-H_XSEC_LS/
+data/processed/**/*.npy

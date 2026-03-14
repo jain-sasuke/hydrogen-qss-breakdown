@@ -82,7 +82,7 @@ IH   = 13.6058       # hydrogen ionisation energy, eV
 N_GRID = 5000        # interpolation grid points (validated: <2% error)
 
 # ── Te grid (thesis parameter space, fixed for entire project) ─────────────────
-TE_GRID = np.logspace(np.log10(1.0), np.log10(10.0), 12)   # eV
+TE_GRID = np.logspace(np.log10(1.0), np.log10(10.0), 50)   # eV
 
 # ── Helper functions ───────────────────────────────────────────────────────────
 

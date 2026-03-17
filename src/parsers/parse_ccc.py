@@ -12,11 +12,14 @@ FILE CONVENTION (Bray, personal communication 2026):
   Column 3 = asymmetry parameter (not used)
   Column 4 = internal bookkeeping (not used)
 
+n=10 ENCODING:
+  Colon ':' represents n=10 (ASCII 58, sequential after '9'=ASCII 57)
+  Examples: ':S' = 10s, ':P' = 10p, ':K' = 10k
+
 EXCLUSIONS:
   - Same-n transitions (Δn=0): non-relativistic divergence, non-physical
   - n-bundled files (e.g. 1S.2, 3.2): not ℓ-resolved
   - TICS files: ionization, not excitation
-  - Colon files (n=10): handled separately if needed
 
 OUTPUT:
   - ccc_crosssections.h5   (HDF5, primary)
@@ -36,29 +39,45 @@ from pathlib import Path
 
 
 # ── Constants ──────────────────────────────────────────────────────────────────
-L_MAP = {'S': 0, 'P': 1, 'D': 2, 'F': 3, 'G': 4, 'H': 5, 'I': 6, 'J': 7, 'K': 8}
+L_MAP = {'S': 0, 'P': 1, 'D': 2, 'F': 3, 'G': 4, 'H': 5, 'I': 6, 'J': 7, 'K': 8, 'L': 9}
 L_MAP_INV = {v: k for k, v in L_MAP.items()}
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
 def parse_state(token):
     """
-    Parse a state token like '2P' into (n, l).
+    Parse a state token like '2P', ':S' into (n, l).
+    
+    Supports:
+      - Standard: '1S', '2P', '9K'
+      - n=10:     ':S', ':P', ':K'  (colon = ASCII 58, follows '9' = ASCII 57)
+    
     Returns (n:int, l:int) or raises ValueError.
     """
     token = token.strip()
     if len(token) < 2:
         raise ValueError(f"Token too short: '{token}'")
+    
+    # Extract n (support ':' for n=10)
     n_str = token[:-1]
     l_char = token[-1].upper()
-    if not n_str.isdigit():
-        raise ValueError(f"Non-integer n in token: '{token}'")
+    
+    if n_str.isdigit():
+        n = int(n_str)
+    elif n_str == ':':
+        n = 10  # Colon represents n=10 (ASCII sequential after '9')
+    else:
+        raise ValueError(f"Invalid n in token: '{token}' (expected digit or ':')")
+    
+    # Extract l
     if l_char not in L_MAP:
         raise ValueError(f"Unknown ℓ character '{l_char}' in token: '{token}'")
-    n = int(n_str)
     l = L_MAP[l_char]
+    
+    # Validate
     if l >= n:
         raise ValueError(f"Unphysical state: ℓ={l} >= n={n} in token '{token}'")
+    
     return n, l
 
 
@@ -67,22 +86,21 @@ def classify_filename(filename):
     Classify a CCC filename.
 
     Returns one of:
-      'valid_lr'   - ℓ-resolved, Δn≠0  → KEEP
+      'valid_lr'   - ℓ-resolved, Δn≠0  → KEEP (includes n=10!)
       'same_n'     - ℓ-resolved, Δn=0  → EXCLUDE
       'bundled'    - n-bundled          → SKIP
       'tics'       - ionization         → SKIP
-      'colon'      - n=10 files         → SKIP
       'unknown'    - unrecognised       → SKIP
 
     For 'valid_lr' and 'same_n', also returns (n_final, l_final, n_initial, l_initial).
     Otherwise returns None for the state tuple.
+    
+    UPDATED: Now handles ':' as n=10 (was previously excluded as 'colon')
     """
     name = os.path.basename(filename)
 
     if 'TICS' in name:
         return 'tics', None
-    if name.startswith(':'):
-        return 'colon', None
 
     if '.' not in name:
         return 'unknown', None
@@ -93,8 +111,9 @@ def classify_filename(filename):
 
     final_tok, initial_tok = parts[0], parts[1]
 
-    # ℓ-resolved pattern: digit(s) + letter
-    lr_pattern = re.compile(r'^\d+[SPDFGHIJK]$', re.IGNORECASE)
+    # ℓ-resolved pattern: digit(s) OR colon + letter
+    # Examples: '2P', '9K', ':S', ':P'
+    lr_pattern = re.compile(r'^(\d+|:)[SPDFGHIJKL]$', re.IGNORECASE)
 
     if lr_pattern.match(final_tok) and lr_pattern.match(initial_tok):
         try:
@@ -175,7 +194,7 @@ def parse_ccc_database(data_dir, output_dir='.'):
 
     # ── Counters ───────────────────────────────────────────────────────────────
     counts = {'valid_lr': 0, 'same_n': 0, 'bundled': 0,
-              'tics': 0, 'colon': 0, 'unknown': 0, 'read_error': 0}
+              'tics': 0, 'unknown': 0, 'read_error': 0}
 
     records_summary = []   # one row per transition
     records_full    = []   # one row per (transition, energy point) → CSV
@@ -265,14 +284,13 @@ def parse_ccc_database(data_dir, output_dir='.'):
 
     # ── Print report ───────────────────────────────────────────────────────────
     print("\n" + "="*55)
-    print("  CCC PARSE REPORT")
+    print("  CCC PARSE REPORT (n=1-10 supported)")
     print("="*55)
     print(f"  Total files scanned   : {len(all_files)}")
-    print(f"  Valid ℓ-resolved Δn≠0 : {counts['valid_lr']}  ← PARSED")
+    print(f"  Valid ℓ-resolved Δn≠0 : {counts['valid_lr']}  ← PARSED (includes n=10!)")
     print(f"  Same-n excluded (Δn=0): {counts['same_n']}  ← EXCLUDED")
     print(f"  n-bundled skipped     : {counts['bundled']}")
     print(f"  TICS skipped          : {counts['tics']}")
-    print(f"  Colon (n=10) skipped  : {counts['colon']}")
     print(f"  Unknown skipped       : {counts['unknown']}")
     print(f"  Read errors           : {counts['read_error']}")
     print(f"  Total data points     : {len(df_full):,}")

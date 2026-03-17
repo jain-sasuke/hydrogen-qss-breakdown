@@ -48,8 +48,8 @@ All internal computation in SI. Convert to cm^3/s only at final step.
 
 Outputs (relative to repo root)
 -------
-data/processed/collisions/ccc/K_CCC_exc_table.npy    float64 (870, 12) [cm^3/s]
-data/processed/collisions/ccc/K_CCC_deexc_table.npy  float64 (870, 12) [cm^3/s]
+data/processed/collisions/ccc/K_CCC_exc_table.npy    float64 (N_TRANS, 50) [cm^3/s]
+data/processed/collisions/ccc/K_CCC_deexc_table.npy  float64 (N_TRANS, 50) [cm^3/s]
 data/processed/collisions/ccc/K_CCC_metadata.csv     one row per transition pair
 data/processed/collisions/ccc/Te_grid.npy            float64 (12,)     [eV]
 figures/week2/K_CCC_diagnostic.png
@@ -180,10 +180,10 @@ for idx, (n_i, l_i, n_f, l_f) in enumerate(transitions):
         'idx'         : idx,
         'n_i'         : int(n_i),
         'l_i'         : int(l_i),
-        'l_i_char'    : 'SPDFGHIJK'[int(l_i)],
+        'l_i_char'    : 'SPDFGHIJKL'[int(l_i)],
         'n_f'         : int(n_f),
         'l_f'         : int(l_f),
-        'l_f_char'    : 'SPDFGHIJK'[int(l_f)],
+        'l_f_char'    : 'SPDFGHIJKL'[int(l_f)],
         'omega_i'     : stat_weight(l_i),
         'omega_f'     : stat_weight(l_f),
         'dE_eV'       : dE,
@@ -304,7 +304,7 @@ ax.grid(True, alpha=0.3)
 plt.colorbar(sc, ax=ax, label='log₁₀(factor)')
 
 plt.suptitle('K_CCC: Excitation (Maxwell avg) + De-excitation (Detailed Balance)\n'
-             '870 transition pairs, Te = 1–10 eV',
+             f'{N_TRANS} transition pairs (incl. n=10 excitation), Te = 1–10 eV',
              fontsize=12, fontweight='bold')
 plt.tight_layout()
 plt.savefig(FIG_DIR / 'K_CCC_diagnostic.png', dpi=150, bbox_inches='tight')
@@ -323,5 +323,45 @@ for ni, li, nf, lf, label in plot_pairs:
         vals = table[idx_t, te_cols]
         print(f"{label:>10}  {tag:>6}  " + "  ".join(f"{v:.3e}" for v in vals))
     print()
+
+
+# ── Collapse n=10 transitions → bundled excitation rate ───────────────────────
+# K_exc_to_n10_bundled[si, :] = sum_{lf=0..9} K_exc(ni,li → 10,lf, Te)
+# Output shape: (36, 50) — one row per resolved initial state (n=1..8).
+# Used by CR matrix assembler for resolved → bundled n=10 excitation.
+# De-excitation n=10 → lower shells: via detailed balance in CR assembler.
+
+print("\nCollapsing n=10 excitation into bundled rate table...")
+
+_L_CHAR = 'SPDFGHIJKL'
+_state_index = {}
+_idx = 0
+for _n in range(1, 9):
+    for _l in range(_n):
+        _state_index[(_n, _l)] = _idx
+        _idx += 1
+_N_RES = len(_state_index)   # 36
+
+K_exc_to_n10 = np.zeros((_N_RES, len(TE_GRID)))
+_meta_n10 = meta_df[meta_df.n_f == 10]
+
+print(f"  n=10 transitions in table : {len(_meta_n10)}")
+print(f"  lf values present         : {sorted(_meta_n10.l_f.unique())}")
+
+for (_ni, _li), _si in _state_index.items():
+    _rows = _meta_n10[(_meta_n10.n_i == _ni) & (_meta_n10.l_i == _li)]
+    for _, _row in _rows.iterrows():
+        K_exc_to_n10[_si, :] += K_exc_table[int(_row.idx), :]
+
+_nonzero = (K_exc_to_n10.sum(axis=1) > 0).sum()
+print(f"  Initial states with data  : {_nonzero} / {_N_RES}")
+
+_ti5 = np.argmin(np.abs(TE_GRID - 5.0))
+print(f"  Spot checks at Te={TE_GRID[_ti5]:.2f} eV:")
+for (_n, _l), _si in sorted(_state_index.items())[:4]:
+    print(f"    K_exc({_n}{_L_CHAR[_l]}→n10,bund) = {K_exc_to_n10[_si, _ti5]:.4e} cm³/s")
+
+np.save(OUT_DIR / 'K_exc_to_n10_bundled.npy', K_exc_to_n10)
+print(f"  Saved K_exc_to_n10_bundled.npy  shape={K_exc_to_n10.shape}")
 
 print("Done.")

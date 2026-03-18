@@ -1,0 +1,25 @@
+QSS ANALYSIS SUMMARY
+==================================================
+
+PHYSICS:
+  QSS metric: epsilon = max_p |r_actual(t) - r_QSS(Te,ne)| / r_QSS
+  where r_p = n_p/n_1S  (excited-to-ground ratio)
+  Two-stage relaxation after Te step:
+    Stage 1 (t~tau_relax): excited states equilibrate -> eps drops fast
+    Stage 2 (t~tau_QSS):  ground state equilibrates  -> eps -> 0
+
+tau_QSS:   7.51e-08..7.32e-01 s
+tau_relax: 1.65e-09..9.13e-06 s
+M:         44..309326
+
+ITER divertor (Te=3eV, ne=1e14):
+  tau_QSS = 1.530e-05s
+  ELM_crash            (1e-04s): eps~0.000 [valid]
+  fast_detachment      (1e-03s): eps~0.000 [valid]
+  slow_detachment      (1e-02s): eps~0.000 [valid]
+  ELM_interELM         (1e-01s): eps~0.000 [valid]
+
+Scenario A epsilon(t) traces:
+  Te=1eV,ne=1e12: tau_QSS=1.44e-05s  tau_relax=1.34e-07s
+  Te=3eV,ne=1e14 (ITER): tau_QSS=1.53e-05s  tau_relax=2.50e-08s
+  Te=10eV,ne=1e15: tau_QSS=7.51e-08s  tau_relax=1.65e-09s

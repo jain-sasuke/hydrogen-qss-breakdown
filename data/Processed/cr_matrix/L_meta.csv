@@ -1,0 +1,2 @@
+n_Te,n_ne,n_states,Te_min_eV,Te_max_eV,ne_min_cm3,ne_max_cm3,IH_collision_eV,IH_radiative_eV,L_grid_MB
+50,8,43,1.0,10.0,1000000000000.0,1000000000000000.0,13.60569312299,13.598434599702,5.6427001953125

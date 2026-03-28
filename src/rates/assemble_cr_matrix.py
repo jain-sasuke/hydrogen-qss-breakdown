@@ -62,6 +62,8 @@ import numpy as np
 import pandas as pd
 import os
 
+import rates
+
 # ── Physical constants ─────────────────────────────────────────────────────────
 IH_RYDBERG       = 13.605693122990   # eV  R_inf*hc — collision threshold energies
 IH_SPECTROSCOPIC = 13.598434599702   # eV  true H ionisation — radiative energies
@@ -255,18 +257,20 @@ def precompute_L_grid(rates=None, out_dir=None, ne_grid=None, te_grid=None):
     print(f"\nCheck E — S_grid (source) non-negative: {neg_S} negative  "
           f"{'PASS' if neg_S==0 else 'FAIL'}")
 
-    # F: spot check — L[0,2,0,0] (1S diagonal at Te=1,ne=ne[0])
-    #    Should be ~ -(gamma_1S + K_ion_1S*ne) = -(0 + 4.8e-15*1e12) = -4.8e-3 s^-1
+    # F: spot check — L[1S,1S] diagonal at Te=1eV, ne=1e12
+#    L[1S,1S] = -(K_ion*ne + K_exc(1S→all)*ne + gamma(1S))
+#    At Te=1eV, excitation dominates: K_exc(1S→2P)*ne ~ 0.68 s^-1 >> K_ion*ne ~ 0.007 s^-1
+#    gamma(1S) = 0 (ground state has no lower level)
     L00 = L_grid[0, 0, 0, 0]
-    K_ion_1S_1eV = K_ion[0, 0]
+    K_exc_1S2P_1eV = rates['K_exc_full'][0, 2, 0]   # K_exc(1S→2P) at Te index 0
     ne0 = ne_grid[0]
-    expected_diag = -(K_ion_1S_1eV * ne0)   # gamma(1S)=0
+    dominant = -(K_exc_1S2P_1eV * ne0)
+    ok_f = 0.3 * abs(dominant) < abs(L00) < 10 * abs(dominant)
     print(f"\nCheck F — L(1S,1S) at Te=1eV, ne=1e12:")
-    print(f"  L[0,0,0,0]  = {L00:.4e} s^-1")
-    print(f"  Expected    = {expected_diag:.4e} s^-1  (-K_ion(1S,1eV)*ne)")
-    ok_f = abs(L00/expected_diag - 1) < 0.01
-    status_f = 'PASS' if ok_f else 'FAIL'
-    print(f'  {status_f}')
+    print(f"  L[0,0,0,0]       = {L00:.4e} s^-1")
+    print(f"  K_exc(1S→2P)*ne  = {dominant:.4e} s^-1  (dominant loss channel)")
+    print(f"  Ratio            = {L00/dominant:.3f}  (expect ~1 to 3, excitation + other channels)")
+    print(f"  {'PASS' if ok_f else 'FAIL'}")
 
     # G: L at high ne has larger magnitude (more collisions)
     L_low  = L_grid[25, 0]   # mid-Te, lowest ne

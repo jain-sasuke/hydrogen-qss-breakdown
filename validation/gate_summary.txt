@@ -1,5 +1,5 @@
   Gate A: PASS  
   Gate B: PASS  (100% of points)
   Gate C: PASS  (100% of points)
-  Gate D: SKIP  (ADAS files not found)
+  Gate D: FAIL  (0% of points)
   Gate E: PASS  (100% of points)

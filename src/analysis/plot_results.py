@@ -36,9 +36,9 @@ OUT_DIR  = 'figures'
 DATA_DIR = 'validation'
 CR_DIR   = 'data/processed/cr_matrix'   # for L_grid, S_grid
 
-# ── Global grids ───────────────────────────────────────────────────────────────
-Te_grid = np.logspace(np.log10(1.0), np.log10(10.0), 50)
-ne_grid = np.logspace(12, 15, 8)
+# ── Global grids — loaded from disk in load_data(), never hard-coded ───────────
+Te_grid = None
+ne_grid = None
 
 # ── Style ──────────────────────────────────────────────────────────────────────
 plt.rcParams.update({
@@ -71,7 +71,10 @@ C = {
 
 
 # ── Data loading ───────────────────────────────────────────────────────────────
-def load_data(data_dir=DATA_DIR):
+def load_data(data_dir=DATA_DIR, cr_dir=CR_DIR):
+    global Te_grid, ne_grid
+    Te_grid = np.load(f'{cr_dir}/Te_grid_L.npy')   # load from disk — never hard-code
+    ne_grid = np.load(f'{cr_dir}/ne_grid_L.npy')
     return {
         'M':   np.load(f'{data_dir}/M_grid.npy'),
         'tQ':  np.load(f'{data_dir}/tau_QSS_grid.npy'),
@@ -183,13 +186,16 @@ def fig1_epsilon_traces(data, out_dir):
 
 # ── Figure 2 — breakdown map 2×2 ──────────────────────────────────────────────
 def fig2_breakdown_map(data, out_dir):
-    """2×2 eps_eff heatmaps at four ITER transient timescales."""
+    """2×2 eps_bar heatmaps at four ITER transient timescales.
+    eps_bar = eps_res*(tau_QSS/tau_drive)*(1-exp(-tau_drive/tau_QSS))
+    is the time-averaged QSS error during the event — the primary breakdown metric.
+    """
     bd = data['bd']
     timescales = [
-        ('eps_ELM_crash',       r'ELM crash ($\tau=100\,\mu\mathrm{s}$)'),
-        ('eps_fast_detachment', r'Fast detachment ($\tau=1\,\mathrm{ms}$)'),
-        ('eps_slow_detachment', r'Slow detachment ($\tau=10\,\mathrm{ms}$)'),
-        ('eps_ELM_interELM',    r'Inter-ELM ($\tau=100\,\mathrm{ms}$)'),
+        ('eps_bar_ELM_crash',       r'ELM crash ($\tau=100\,\mu\mathrm{s}$)'),
+        ('eps_bar_fast_detachment', r'Fast detachment ($\tau=1\,\mathrm{ms}$)'),
+        ('eps_bar_slow_detachment', r'Slow detachment ($\tau=10\,\mathrm{ms}$)'),
+        ('eps_bar_ELM_interELM',    r'Inter-ELM ($\tau=100\,\mathrm{ms}$)'),
     ]
 
     fig, axes = plt.subplots(2, 2, figsize=(9, 6.5), sharex=True, sharey=True)
@@ -226,10 +232,10 @@ def fig2_breakdown_map(data, out_dir):
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=mcolors.Normalize(vmin=0, vmax=1.5))
     sm.set_array([])
     cb = fig.colorbar(sm, cax=cbar_ax)
-    cb.set_label(r'QSS error $\epsilon_\mathrm{eff}$', fontsize=10)
+    cb.set_label(r'Time-averaged QSS error $\bar{\epsilon}$', fontsize=10)
     cb.ax.axhline(0.5, color=C['break'], linewidth=1.5)
 
-    fig.suptitle('QSS breakdown map: effective error at ITER transient timescales',
+    fig.suptitle(r'QSS breakdown map: time-averaged error $\bar{\epsilon}$ at ITER transient timescales',
                  y=0.98, fontsize=11)
     fig.subplots_adjust(left=0.08, right=0.90, top=0.94, bottom=0.10)
     path = f'{out_dir}/fig2_breakdown_map.png'
@@ -338,10 +344,10 @@ def fig5_populations(out_dir, cr_dir=CR_DIR):
         return 2*n_arr**2 * np.exp(-IH*(1-1/n_arr**2)/Te_v) / 2
 
     ref_points = [
-        (0,  0,  1e14, r'$T_e=1\,\mathrm{eV},\;n_e=10^{12}$',         C['Te1']),
+        (0,  0,  1e12, r'$T_e=1\,\mathrm{eV},\;n_e=10^{12}$',         C['Te1']),
         (np.argmin(np.abs(Te_grid-3)), np.argmin(np.abs(ne_grid-1e14)),
          1e14, r'$T_e=3\,\mathrm{eV},\;n_e=10^{14}$ (ITER)',           C['Te3']),
-        (49, 7, 1e14, r'$T_e=10\,\mathrm{eV},\;n_e=10^{15}$',          C['Te10']),
+        (49, 7, 1e15, r'$T_e=10\,\mathrm{eV},\;n_e=10^{15}$',          C['Te10']),
     ]
 
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
@@ -538,7 +544,7 @@ if __name__ == '__main__':
     print(f"  Output:  {OUT_DIR}/")
     print()
 
-    data = load_data(DATA_DIR)
+    data = load_data(DATA_DIR, CR_DIR)
 
     paths = [
         fig1_epsilon_traces(data, OUT_DIR),

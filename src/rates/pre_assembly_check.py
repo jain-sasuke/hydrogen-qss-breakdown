@@ -262,8 +262,8 @@ if all(k in data for k in ['alpha_RR_res','alpha_RR_bund',
         chk(f"alpha_{name} no NaN", not bool(np.isnan(arr).any()))
 
     rr_1S_1eV = float(RR_r[0, 0])
-    chk("alpha_RR(1S, Te=1eV) ~ Seaton 1959 (~1.3e-14 cm3/s)",
-        8e-15 < rr_1S_1eV < 3e-14, f"{rr_1S_1eV:.4e}")
+    chk("alpha_RR(1S, Te=1eV) ~ Johnson 1972 Eq.7 (1.4595e-13 cm3/s)",
+        1.40e-13 < rr_1S_1eV < 1.52e-13, f"{rr_1S_1eV:.4e}  ref=1.4595e-13")
 
     # 3BR detailed balance vs K_ion
     if 'K_ion_final' in data:

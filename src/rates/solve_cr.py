@@ -512,18 +512,20 @@ class CRSolver:
         """
         # NIST A coefficients [s^-1] for n->2 transitions (dominant contributors)
         # H_alpha (n=3 -> n=2)
-        eps_Ha = (6.465e7 * n_ss[5]    # 3D -> 2P
-                + 2.245e7 * n_ss[4]    # 3P -> 2S
-                + 8.440e6 * n_ss[4])   # 3P -> 2P
+    # H_alpha (n=3 -> n=2) — all three E1 transitions
+        eps_Ha = (6.4688e+07 * n_ss[5]    # 3D -> 2P
+                + 2.2461e+07 * n_ss[4]    # 3P -> 2S
+                + 6.3172e+06 * n_ss[3])   # 3S -> 2P
 
-        # H_beta (n=4 -> n=2)
-        eps_Hb = (2.062e7 * n_ss[8]    # 4D -> 2P
-                + 8.419e6 * n_ss[7]    # 4P -> 2S
-                + 3.436e6 * n_ss[7])   # 4P -> 2P
+        # H_beta (n=4 -> n=2) — all three E1 transitions
+        eps_Hb = (2.0637e+07 * n_ss[8]    # 4D -> 2P
+                + 9.6735e+06 * n_ss[7]    # 4P -> 2S
+                + 2.5796e+06 * n_ss[6])   # 4S -> 2P
 
-        # H_gamma (n=5 -> n=2)
-        eps_Hg = (8.098e6 * n_ss[12]   # 5D -> 2P
-                + 4.153e6 * n_ss[11])  # 5P -> 2S
+        # H_gamma (n=5 -> n=2) — all three E1 transitions
+        eps_Hg = (9.4307e+06 * n_ss[12]   # 5D -> 2P
+                + 4.9511e+06 * n_ss[11]   # 5P -> 2S
+                + 1.2894e+06 * n_ss[10])  # 5S -> 2P
 
         Ha_Hb = eps_Ha / eps_Hb if eps_Hb > 0 else np.nan
         Hg_Hb = eps_Hg / eps_Hb if eps_Hb > 0 else np.nan

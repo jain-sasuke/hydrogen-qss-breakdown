@@ -1,4 +1,6 @@
 """
+To run: python src/parsers/parse_ccc.py data/raw/ccc/e-H_XSEC_LS data/processed/collisions/ccc
+
 parse_ccc.py
 ============
 Parser for CCC (Convergent Close-Coupling) electron-impact cross-section data
@@ -123,7 +125,11 @@ def classify_filename(filename):
             return 'unknown', None
         if n_f == n_i:
             return 'same_n', (n_f, l_f, n_i, l_i)
-        return 'valid_lr', (n_f, l_f, n_i, l_i)
+        # direction is separate from validity
+        # n_f > n_i → excitation (hydrogen only: E_n = -13.6/n² is monotonic in n)
+        # n_f < n_i → deexcitation
+        direction = 'excitation' if n_f > n_i else 'deexcitation'
+        return 'valid_lr', (n_f, l_f, n_i, l_i, direction)
 
     # n-bundled: at least one side is digits-only
     digit_only = re.compile(r'^\d+$')
@@ -218,7 +224,7 @@ def parse_ccc_database(data_dir, output_dir='.'):
             if cat != 'valid_lr':
                 continue
 
-            n_f, l_f, n_i, l_i = states
+            n_f, l_f, n_i, l_i, direction = states
 
             # Read data
             try:
@@ -244,7 +250,8 @@ def parse_ccc_database(data_dir, output_dir='.'):
             grp.attrs['l_initial'] = l_i
             grp.attrs['n_final']   = n_f
             grp.attrs['l_final']   = l_f
-            grp.attrs['direction'] = 'de-excitation (as stored in file)'
+            grp.attrs['direction'] = direction
+            grp.attrs['energy_reference']  = 'incident electron KE relative to initial state'
             grp.attrs['filename']  = fpath.name
             grp.create_dataset('energy_eV', data=energies, compression='gzip')
             grp.create_dataset('sigma_a0sq', data=sigmas,  compression='gzip')

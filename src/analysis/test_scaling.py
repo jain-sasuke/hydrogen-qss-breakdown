@@ -1,504 +1,513 @@
 """
 test_scaling.py
 ===============
-Four rigorous tests of the QSS error scaling law.
+Thesis-safe diagnostics for the temperature-step QSS error metric
 
-  Step 1 — Test universality across ΔTe values (±0.3, ±0.6, ±1.0 eV)
-  Step 2 — Normalize eps_step by ΔTe/Te → check collapse
-  Step 3 — Rigorous density independence (partial derivative ∂ε/∂ne)
-  Step 4 — Robustness under n_max truncation (10, 15, 20 levels)
+    eps_step(Te, ne; dTe) = max_p |r_old(p) - r_new(p)| / r_new(p),
+    r_p = n_p / n_1S
 
-Expected outcome if scaling law is real:
-  Step 1: eps_step ∝ ΔTe × f(Te) — proportional to step size
-  Step 2: eps_norm = eps_step / (ΔTe/Te) collapses all ΔTe onto one curve
-  Step 3: ∂ε/∂ne ≈ 0 uniformly (not just Pearson r ≈ 0)
-  Step 4: Results stable within ±5% across n_max = 10/15/20
+This script does NOT claim a universal first-principles scaling law.
+Instead, it evaluates four defensible diagnostics:
 
-Run from repo root:
-    python src/analysis/test_scaling.py
+  Step 1 — Multi-ΔTe response:
+      Compare eps_step(Te) for dTe = 0.3, 0.6, 1.0 eV.
 
-Outputs saved to validation/scaling_tests/
+  Step 2 — Small-step linear-response check:
+      Test whether eps_step / dTe approximately collapses
+      for small dTe, and quantify where nonlinearity appears.
+
+  Step 3 — Density sensitivity map:
+      Measure weak/strong dependence of eps_step on ne using
+      logarithmic derivatives and rank correlations.
+
+  Step 4 — Dominant-state robustness:
+      Track which state dominates eps_step across Te, ne, dTe.
+      This replaces the invalid "n_max truncation" test.
+
+Outputs:
+    validation/scaling_tests/
 """
 
-import numpy as np
-import pandas as pd
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
-from scipy.stats import pearsonr, spearmanr
-from scipy.interpolate import RegularGridInterpolator
 import os
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
-OUT_DIR = 'validation/scaling_tests'
+from scipy.optimize import curve_fit
+from scipy.interpolate import RegularGridInterpolator
+from scipy.stats import spearmanr
 
-# ── Paths ──────────────────────────────────────────────────────────────────────
+OUT_DIR = "validation/scaling_tests"
+
 PATHS = {
-    'L_grid':  'data/processed/cr_matrix/L_grid.npy',
-    'S_grid':  'data/processed/cr_matrix/S_grid.npy',
-    'Te_grid': 'data/processed/cr_matrix/Te_grid_L.npy',
-    'ne_grid': 'data/processed/cr_matrix/ne_grid_L.npy',
+    "L_grid":  "data/processed/cr_matrix/L_grid.npy",
+    "S_grid":  "data/processed/cr_matrix/S_grid.npy",
+    "Te_grid": "data/processed/cr_matrix/Te_grid_L.npy",
+    "ne_grid": "data/processed/cr_matrix/ne_grid_L.npy",
 }
 
-Te_grid = np.logspace(np.log10(1.0), np.log10(10.0), 50)
-ne_grid = np.logspace(12, 15, 8)
-
 plt.rcParams.update({
-    'font.family': 'serif', 'font.size': 10,
-    'axes.labelsize': 11, 'axes.titlesize': 10,
-    'legend.fontsize': 9, 'savefig.dpi': 300,
-    'savefig.bbox': 'tight', 'xtick.direction': 'in', 'ytick.direction': 'in',
+    "font.family": "serif",
+    "font.size": 10,
+    "axes.labelsize": 11,
+    "axes.titlesize": 10,
+    "legend.fontsize": 9,
+    "savefig.dpi": 300,
+    "savefig.bbox": "tight",
+    "xtick.direction": "in",
+    "ytick.direction": "in",
 })
 
+# 43-state mapping
+STATE_LABELS = [
+    "1S",
+    "2S", "2P",
+    "3S", "3P", "3D",
+    "4S", "4P", "4D", "4F",
+    "5S", "5P", "5D", "5F", "5G",
+    "6S", "6P", "6D", "6F", "6G", "6H",
+    "7S", "7P", "7D", "7F", "7G", "7H", "7I",
+    "8S", "8P", "8D", "8F", "8G", "8H", "8I", "8K",
+    "n9", "n10", "n11", "n12", "n13", "n14", "n15"
+]
 
-# ── Core helpers ───────────────────────────────────────────────────────────────
+N_STATES = 43
+
+
+# -----------------------------------------------------------------------------
+# I/O and interpolation
+# -----------------------------------------------------------------------------
 def load_matrices():
-    L  = np.load(PATHS['L_grid'])    # (50, 8, 43, 43)
-    S  = np.load(PATHS['S_grid'])    # (50, 8, 43)
-    return L, S
+    L = np.load(PATHS["L_grid"])
+    S = np.load(PATHS["S_grid"])
+    Te_grid = np.load(PATHS["Te_grid"])
+    ne_grid = np.load(PATHS["ne_grid"])
+    return L, S, Te_grid, ne_grid
 
 
-def get_ss_grid(L, S, i_Te, i_ne, n_ion=1e14):
-    """Steady-state populations at grid point (i_Te, i_ne)."""
-    Lm = L[i_Te, i_ne]
-    Sv = S[i_Te, i_ne] * n_ion
-    return np.maximum(np.linalg.solve(Lm, -Sv), 0.0)
+def build_interp(L, S, Te_grid, ne_grid):
+    lTe = np.log(Te_grid)
+    lne = np.log(ne_grid)
 
+    L_flat = L.reshape(len(Te_grid), len(ne_grid), N_STATES * N_STATES)
 
-def get_ss_interp(L_i, S_i, Te_v, ne_v, n_ion=1e14):
-    """Steady-state at arbitrary (Te, ne) via interpolation."""
-    pt = np.array([[np.log(Te_v), np.log(ne_v)]])
-    Lm = L_i(pt)[0].reshape(43, 43)
-    Sv = S_i(pt)[0] * n_ion
-    return np.maximum(np.linalg.solve(Lm, -Sv), 0.0)
-
-
-def build_interp(L, S):
-    lTe = np.log(Te_grid); lne = np.log(ne_grid)
-    Lf  = L.reshape(len(Te_grid), len(ne_grid), 43*43)
-    L_i = RegularGridInterpolator((lTe, lne), Lf, method='linear',
-                                   bounds_error=False, fill_value=None)
-    S_i = RegularGridInterpolator((lTe, lne), S, method='linear',
-                                   bounds_error=False, fill_value=None)
+    L_i = RegularGridInterpolator(
+        (lTe, lne),
+        L_flat,
+        method="linear",
+        bounds_error=False,
+        fill_value=None,
+    )
+    S_i = RegularGridInterpolator(
+        (lTe, lne),
+        S,
+        method="linear",
+        bounds_error=False,
+        fill_value=None,
+    )
     return L_i, S_i
 
 
-def eps_step_at(L, S, i_Te, i_ne, dTe, n_ion=1e14):
-    """
-    Compute eps_step = max_p |r_old - r_new| / r_new
-    for a Te step of dTe at grid point (i_Te, i_ne).
-    Uses bidirectional step: if Te+dTe > grid max, step is -dTe.
-    """
-    Te_v = Te_grid[i_Te]
-    Te_new_v = Te_v + dTe
-    # Clamp to grid
-    if Te_new_v > Te_grid[-1] or Te_new_v < Te_grid[0]:
-        dTe = -dTe
-        Te_new_v = Te_v + dTe
-
-    # Interpolate L/S at Te_new (ne is on-grid so use i_ne)
-    n_ss0 = get_ss_grid(L, S, i_Te, i_ne, n_ion)
-
-    # For Te_new, interpolate in Te direction
-    L_i, S_i = _get_interp_cache(L, S)
-    n_ss1 = get_ss_interp(L_i, S_i, Te_new_v, ne_grid[i_ne], n_ion)
-
-    r0 = n_ss0[1:] / max(n_ss0[0], 1e-60)
-    r1 = n_ss1[1:] / max(n_ss1[0], 1e-60)
-    return float((np.abs(r0 - r1) / (r1 + 1e-60)).max()), abs(dTe)
-
-
 _interp_cache = {}
-def _get_interp_cache(L, S):
-    key = id(L)
+
+
+def get_interp_cache(L, S, Te_grid, ne_grid):
+    key = (id(L), id(S), id(Te_grid), id(ne_grid))
     if key not in _interp_cache:
-        _interp_cache[key] = build_interp(L, S)
+        _interp_cache[key] = build_interp(L, S, Te_grid, ne_grid)
     return _interp_cache[key]
+
+
+# -----------------------------------------------------------------------------
+# Steady-state helpers
+# -----------------------------------------------------------------------------
+def solve_ss(Lm, Sv, clip_tol=1e-14):
+    n = np.linalg.solve(Lm, -Sv)
+    if np.min(n) < -clip_tol:
+        print(f"  Warning: SS solve produced negative population min={np.min(n):.3e}; clipping to zero")
+    return np.maximum(n, 0.0)
+
+
+def get_ss_grid(L, S, i_Te, i_ne, n_ion):
+    Lm = L[i_Te, i_ne]
+    Sv = S[i_Te, i_ne] * n_ion
+    return solve_ss(Lm, Sv)
+
+
+def get_ss_interp(L_i, S_i, Te_v, ne_v, n_ion):
+    pt = np.array([[np.log(Te_v), np.log(ne_v)]])
+    Lm = L_i(pt)[0].reshape(N_STATES, N_STATES)
+    Sv = S_i(pt)[0] * n_ion
+    return solve_ss(Lm, Sv)
+
+
+def choose_step(Te_v, dTe, Te_grid):
+    """
+    Bidirectional step:
+      use +dTe if in range,
+      otherwise use -dTe.
+    Returns:
+      Te_new, actual_dTe
+    """
+    Te_new = Te_v + dTe
+    actual_dTe = dTe
+
+    if Te_new > Te_grid[-1] or Te_new < Te_grid[0]:
+        actual_dTe = -dTe
+        Te_new = Te_v + actual_dTe
+
+    return Te_new, actual_dTe
+
+
+def eps_step_at(L, S, Te_grid, ne_grid, i_Te, i_ne, dTe, n_ion=None):
+    """
+    eps_step = max_p |r_old - r_new| / r_new
+    using actual bidirectional step near grid edges.
+    """
+    if n_ion is None:
+        # self-consistent hydrogenic default
+        n_ion = ne_grid[i_ne]
+
+    Te_v = Te_grid[i_Te]
+    ne_v = ne_grid[i_ne]
+    Te_new, actual_dTe = choose_step(Te_v, dTe, Te_grid)
+
+    n0 = get_ss_grid(L, S, i_Te, i_ne, n_ion)
+
+    L_i, S_i = get_interp_cache(L, S, Te_grid, ne_grid)
+    n1 = get_ss_interp(L_i, S_i, Te_new, ne_v, n_ion)
+
+    r0 = n0[1:] / max(n0[0], 1e-60)
+    r1 = n1[1:] / max(n1[0], 1e-60)
+
+    eps_all = np.abs(r0 - r1) / (r1 + 1e-60)
+    eps = float(np.max(eps_all))
+    dom_idx_42 = int(np.argmax(eps_all))
+    dom_idx_43 = dom_idx_42 + 1  # because r excludes 1S
+    dom_label = STATE_LABELS[dom_idx_43]
+
+    return eps, abs(actual_dTe), dom_idx_43, dom_label
 
 
 def exp_model(T, a, b, c):
     return a * np.exp(-b * T) + c
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# STEP 1 — Universality across ΔTe
-# ══════════════════════════════════════════════════════════════════════════════
-def step1_delta_Te_universality(L, S, out_dir):
-    """
-    Compute eps_step(Te, ne, ΔTe) for ΔTe = ±0.3, ±0.6, ±1.0 eV.
-    Check: eps_step ∝ ΔTe × f(Te)
-    """
-    print("\nSTEP 1 — Universality across ΔTe values")
-    print("=" * 55)
+# -----------------------------------------------------------------------------
+# Step 1 — Multi-dTe response
+# -----------------------------------------------------------------------------
+def step1_multi_dTe(L, S, Te_grid, ne_grid, out_dir):
+    print("\nSTEP 1 — Multi-ΔTe response")
+    print("=" * 60)
 
     dTe_values = [0.3, 0.6, 1.0]
-    colors     = ['#2196F3', '#F44336', '#4CAF50']
+    colors = ["#2196F3", "#F44336", "#4CAF50"]
 
-    # Compute eps_step for all (Te, ne, dTe) combinations
-    results = {}
+    eps_results = {}
+    actual_dTe_results = {}
+
     for dTe in dTe_values:
         eps_grid = np.zeros((len(Te_grid), len(ne_grid)))
+        act_grid = np.zeros((len(Te_grid), len(ne_grid)))
+
         for i_Te in range(len(Te_grid)):
             for i_ne in range(len(ne_grid)):
-                eps_val, actual_dTe = eps_step_at(L, S, i_Te, i_ne, dTe)
-                eps_grid[i_Te, i_ne] = eps_val
-        results[dTe] = eps_grid
-        print(f"  ΔTe=±{dTe}eV: eps range {eps_grid.min():.4f}..{eps_grid.max():.4f}")
+                eps, act, _, _ = eps_step_at(L, S, Te_grid, ne_grid, i_Te, i_ne, dTe)
+                eps_grid[i_Te, i_ne] = eps
+                act_grid[i_Te, i_ne] = act
 
-    # Test proportionality: eps_step(dTe=1.0) / eps_step(dTe=0.3) should ≈ 1.0/0.3 = 3.33
-    ratio_10_03 = results[1.0] / (results[0.3] + 1e-10)
-    print(f"\n  Proportionality test: eps(ΔTe=1.0) / eps(ΔTe=0.3):")
-    print(f"    Expected: {1.0/0.3:.2f} (linear)")
-    print(f"    Actual mean:   {ratio_10_03.mean():.3f}")
-    print(f"    Actual std:    {ratio_10_03.std():.3f}")
-    lin_ok = abs(ratio_10_03.mean() - 1.0/0.3) < 0.5
-    print(f"    Linear (within 0.5): {'YES' if lin_ok else 'NO'}")
+        eps_results[dTe] = eps_grid
+        actual_dTe_results[dTe] = act_grid
 
-    # Figure: eps_step vs Te for each ΔTe (at ne=1e14)
+        print(f"  dTe={dTe:.1f} eV: eps range {eps_grid.min():.4f} .. {eps_grid.max():.4f}")
+
     ni14 = np.argmin(np.abs(ne_grid - 1e14))
+
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
     ax = axes[0]
-    for dTe, color in zip(dTe_values, colors):
-        eps_Te = results[dTe][:, ni14]
-        ax.plot(Te_grid, eps_Te, '-o', color=color, ms=4, lw=1.8,
-                label=fr'$\Delta T_e={dTe}$ eV')
-    ax.set_xlabel(r'$T_e$ [eV]')
-    ax.set_ylabel(r'$\epsilon_\mathrm{step}$')
-    ax.set_title(r'$\epsilon_\mathrm{step}$ vs $T_e$ for different $\Delta T_e$ ($n_e=10^{14}$)')
+    for dTe, c in zip(dTe_values, colors):
+        ax.plot(
+            Te_grid,
+            eps_results[dTe][:, ni14],
+            "-o",
+            color=c,
+            lw=1.8,
+            ms=4,
+            label=fr"$\Delta T_e={dTe}$ eV"
+        )
+    ax.set_xlabel(r"$T_e$ [eV]")
+    ax.set_ylabel(r"$\epsilon_{\rm step}$")
+    ax.set_title(r"Raw $\epsilon_{\rm step}$ at $n_e=10^{14}$ cm$^{-3}$")
     ax.legend()
     ax.grid(alpha=0.3)
 
-    # Figure: ratio eps(dTe) / dTe — should collapse
     ax2 = axes[1]
-    for dTe, color in zip(dTe_values, colors):
-        eps_Te = results[dTe][:, ni14] / dTe
-        ax2.plot(Te_grid, eps_Te, '-o', color=color, ms=4, lw=1.8,
-                 label=fr'$\Delta T_e={dTe}$ eV')
-    ax2.set_xlabel(r'$T_e$ [eV]')
-    ax2.set_ylabel(r'$\epsilon_\mathrm{step}\,/\,\Delta T_e$')
-    ax2.set_title(r'Collapse test: $\epsilon_\mathrm{step}/\Delta T_e$ vs $T_e$')
-    ax2.legend()
+    for dTe, c in zip(dTe_values, colors):
+        ax2.plot(
+            Te_grid,
+            eps_results[dTe][:, ni14] / dTe,
+            "-o",
+            color=c,
+            lw=1.8,
+            ms=4,
+            label=fr"$\epsilon_{{\rm step}}/\Delta T_e$, $\Delta T_e={dTe}$ eV"
+        )
+    ax2.set_xlabel(r"$T_e$ [eV]")
+    ax2.set_ylabel(r"$\epsilon_{\rm step}/\Delta T_e$ [eV$^{-1}$]")
+    ax2.set_title(r"Linear-response diagnostic")
+    ax2.legend(fontsize=8)
     ax2.grid(alpha=0.3)
 
-    note = "Collapse = lines overlap → ε ∝ ΔTe (linear)"
-    ax2.text(0.02, 0.05, note, transform=ax2.transAxes, fontsize=8.5,
-             color='gray', style='italic')
-
     plt.tight_layout()
-    path = f'{out_dir}/step1_delta_Te_universality.png'
-    fig.savefig(path); plt.close(fig)
-    print(f"\n  Saved: {path}")
+    path = f"{out_dir}/step1_multi_dTe.png"
+    fig.savefig(path)
+    plt.close(fig)
+    print(f"  Saved: {path}")
 
-    return results
+    return eps_results, actual_dTe_results
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# STEP 2 — Normalized collapse
-# ══════════════════════════════════════════════════════════════════════════════
-def step2_normalized_collapse(step1_results, out_dir):
-    """
-    Plot eps_norm = eps_step / (ΔTe/Te) vs Te.
-    If collapse improves → publishable scaling law.
-    Expected: eps_norm ≈ Te × d(eps)/d(Te) = constant × f_Boltzmann(Te)
-    """
-    print("\nSTEP 2 — Normalized collapse: eps_norm = eps_step / (ΔTe/Te)")
-    print("=" * 55)
+# -----------------------------------------------------------------------------
+# Step 2 — Small-step linear-response collapse
+# -----------------------------------------------------------------------------
+def step2_small_step_check(eps_results, Te_grid, ne_grid, out_dir):
+    print("\nSTEP 2 — Small-step linear-response check")
+    print("=" * 60)
 
-    dTe_values = [0.3, 0.6, 1.0]
-    colors     = ['#2196F3', '#F44336', '#4CAF50']
     ni14 = np.argmin(np.abs(ne_grid - 1e14))
+
+    dTe_small = [0.3, 0.6]
+    arr = np.array([eps_results[d][:, ni14] / d for d in dTe_small])  # (2, nTe)
+
+    cv = arr.std(axis=0) / (arr.mean(axis=0) + 1e-60)
+
+    # Conservative “small-step” regime criterion: dTe / Te <= 0.2 for dTe=0.6
+    mask_small = (0.6 / Te_grid) <= 0.2
+    cv_small = float(np.mean(cv[mask_small])) if np.any(mask_small) else np.nan
+    cv_all = float(np.mean(cv))
+
+    print(f"  Mean CV of eps/dTe over all Te:   {cv_all:.3f}")
+    print(f"  Mean CV of eps/dTe for dTe/Te<=0.2: {cv_small:.3f}")
+    print("  Interpretation:")
+    print("    - low CV at high Te supports approximate linear response")
+    print("    - poor collapse at low Te indicates nonlinearity / finite-step effects")
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
-    # Left: raw eps_step
     ax = axes[0]
-    for dTe, color in zip(dTe_values, colors):
-        eps = step1_results[dTe][:, ni14]
-        ax.semilogy(Te_grid, eps, '-o', color=color, ms=4, lw=1.8,
-                    label=fr'$\Delta T_e={dTe}$ eV')
-    ax.set_xlabel(r'$T_e$ [eV]'); ax.set_ylabel(r'$\epsilon_\mathrm{step}$')
-    ax.set_title(r'Raw $\epsilon_\mathrm{step}$'); ax.legend(); ax.grid(alpha=0.3)
+    for dTe, color in zip([0.3, 0.6, 1.0], ["#2196F3", "#F44336", "#4CAF50"]):
+        y = eps_results[dTe][:, ni14] / dTe
+        ax.semilogy(Te_grid, y, "-o", color=color, lw=1.8, ms=4, label=fr"$\Delta T_e={dTe}$ eV")
+    ax.axvline(3.0, color="gray", lw=0.8, ls=":")
+    ax.set_xlabel(r"$T_e$ [eV]")
+    ax.set_ylabel(r"$\epsilon_{\rm step}/\Delta T_e$ [eV$^{-1}$]")
+    ax.set_title("Small-step collapse diagnostic")
+    ax.legend()
+    ax.grid(alpha=0.3)
 
-    # Right: eps_norm = eps / (dTe/Te)
     ax2 = axes[1]
-    spreads = []
-    for dTe, color in zip(dTe_values, colors):
-        eps      = step1_results[dTe][:, ni14]
-        eps_norm = eps / (dTe / Te_grid)
-        ax2.semilogy(Te_grid, eps_norm, '-o', color=color, ms=4, lw=1.8,
-                     label=fr'$\Delta T_e={dTe}$ eV')
-        spreads.append(eps_norm)
-
-    ax2.set_xlabel(r'$T_e$ [eV]')
-    ax2.set_ylabel(r'$\epsilon_\mathrm{norm} = \epsilon_\mathrm{step}\,/\,(\Delta T_e / T_e)$')
-    ax2.set_title(r'Normalized collapse test')
-    ax2.legend(); ax2.grid(alpha=0.3)
-
-    # Compute collapse quality: std across dTe at each Te, normalised by mean
-    spreads = np.array(spreads)  # (3, 50)
-    cv = spreads.std(axis=0) / (spreads.mean(axis=0) + 1e-30)  # coefficient of variation
-    cv_mean = cv.mean()
-    print(f"  Collapse quality (coeff. of variation, lower=better):")
-    print(f"    Before normalisation: {np.array([step1_results[d][:,ni14] for d in dTe_values]).std(axis=0).mean() / np.array([step1_results[d][:,ni14] for d in dTe_values]).mean(axis=0).mean():.3f}")
-    print(f"    After normalisation:  {cv_mean:.3f}")
-    print(f"    Improvement: {'YES — publishable collapse' if cv_mean < 0.15 else 'PARTIAL — non-linear correction needed'}")
-
-    # Fit the normalised curve (should be universal function of Te only)
-    eps_norm_ref = spreads[1]  # ΔTe=0.6 as reference
-    try:
-        popt, _ = curve_fit(exp_model, Te_grid, eps_norm_ref, p0=[10, 0.4, 0.1])
-        Te_line = np.linspace(1, 10, 200)
-        ax2.semilogy(Te_line, exp_model(Te_line, *popt), 'k--', lw=2,
-                     label=fr'fit: ${popt[0]:.2f}\,e^{{-{popt[1]:.2f}T_e}}+{popt[2]:.2f}$', zorder=5)
-        ax2.legend()
-        R2 = 1 - np.var(eps_norm_ref - exp_model(Te_grid, *popt)) / np.var(eps_norm_ref)
-        print(f"\n  Universal fit (normalised): R² = {R2:.4f}")
-        print(f"  eps_norm ≈ {popt[0]:.2f}·exp(−{popt[1]:.2f}·Te) + {popt[2]:.2f}")
-        print(f"  → eps_step ≈ (ΔTe/Te) × [{popt[0]:.2f}·exp(−{popt[1]:.2f}·Te) + {popt[2]:.2f}]")
-    except Exception as e:
-        print(f"  Fit failed: {e}")
+    ax2.plot(Te_grid, cv, "-o", color="#9C27B0", lw=1.8, ms=4)
+    ax2.axhline(0.10, color="gray", lw=0.8, ls=":", label="CV = 0.10")
+    ax2.axhline(0.15, color="gray", lw=0.8, ls="--", label="CV = 0.15")
+    ax2.set_xlabel(r"$T_e$ [eV]")
+    ax2.set_ylabel("Coefficient of variation")
+    ax2.set_title(r"Collapse quality of $\epsilon_{\rm step}/\Delta T_e$")
+    ax2.legend(fontsize=8)
+    ax2.grid(alpha=0.3)
 
     plt.tight_layout()
-    path = f'{out_dir}/step2_normalized_collapse.png'
-    fig.savefig(path); plt.close(fig)
-    print(f"\n  Saved: {path}")
+    path = f"{out_dir}/step2_small_step_check.png"
+    fig.savefig(path)
+    plt.close(fig)
+    print(f"  Saved: {path}")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# STEP 3 — Rigorous density independence
-# ══════════════════════════════════════════════════════════════════════════════
-def step3_density_independence(step1_results, out_dir):
-    """
-    Compute ∂ε/∂ne numerically at each (Te, ne) point.
-    If |∂ε/∂ne| ≈ 0 uniformly → strong ne-independence claim.
-    """
-    print("\nSTEP 3 — Rigorous density independence: ∂ε/∂ne")
-    print("=" * 55)
+# -----------------------------------------------------------------------------
+# Step 3 — Density sensitivity
+# -----------------------------------------------------------------------------
+def step3_density_sensitivity(eps_results, Te_grid, ne_grid, out_dir):
+    print("\nSTEP 3 — Density sensitivity")
+    print("=" * 60)
 
-    eps_grid = step1_results[0.6]   # (50, 8) using ΔTe=0.6
+    eps_grid = eps_results[0.6]  # shape (nTe, nne)
 
-    # Numerical derivative ∂ε/∂ne using central differences
-    # Shape: (50, 6) — interior ne points only
-    dne = np.diff(ne_grid)  # (7,)
-    deps_dne = np.zeros((len(Te_grid), len(ne_grid)-2))
-    for j in range(1, len(ne_grid)-1):
-        dne_fwd = ne_grid[j+1] - ne_grid[j]
-        dne_bwd = ne_grid[j]   - ne_grid[j-1]
-        deps_dne[:, j-1] = (eps_grid[:, j+1] - eps_grid[:, j-1]) / (dne_fwd + dne_bwd)
+    # log-derivative d ln eps / d ln ne
+    log_deriv = np.zeros((len(Te_grid), len(ne_grid) - 2))
+    for j in range(1, len(ne_grid) - 1):
+        dln_ne = np.log(ne_grid[j + 1]) - np.log(ne_grid[j - 1])
+        log_deriv[:, j - 1] = (
+            np.log(eps_grid[:, j + 1] + 1e-60) - np.log(eps_grid[:, j - 1] + 1e-60)
+        ) / dln_ne
 
-    # Normalise: (∂ε/∂ne) × ne / ε = logarithmic derivative ∂lnε/∂lnne
-    eps_mid = eps_grid[:, 1:-1] + 1e-60
-    ne_mid  = ne_grid[1:-1]
-    log_deriv = deps_dne * ne_mid[np.newaxis, :] / eps_mid  # (50, 6)
+    abs_mean = float(np.mean(np.abs(log_deriv)))
+    abs_max = float(np.max(np.abs(log_deriv)))
 
-    print(f"  Logarithmic derivative ∂ln(ε)/∂ln(ne):")
-    print(f"    Mean:   {log_deriv.mean():.5f}  (0 = perfectly ne-independent)")
-    print(f"    Std:    {log_deriv.std():.5f}")
-    print(f"    Max |∂ln(ε)/∂ln(ne)|: {np.abs(log_deriv).max():.5f}")
-    print(f"    Fraction |derivative| < 0.05: "
-          f"{(np.abs(log_deriv) < 0.05).mean()*100:.1f}%")
-    print(f"    Claim: {'STRONG — ne-independence confirmed' if np.abs(log_deriv).mean() < 0.05 else 'WEAK — some ne dependence'}")
-
-    # Spearman rank correlation at each Te (more robust than Pearson)
     spearman_rs = []
     for i_Te in range(len(Te_grid)):
-        r, _ = spearmanr(ne_grid, eps_grid[i_Te, :])
+        r, _ = spearmanr(np.log10(ne_grid), eps_grid[i_Te, :])
         spearman_rs.append(r)
     spearman_rs = np.array(spearman_rs)
-    print(f"\n  Spearman rank correlation eps vs ne, per Te:")
-    print(f"    Mean |r|: {np.abs(spearman_rs).mean():.4f}")
-    print(f"    Max |r|:  {np.abs(spearman_rs).max():.4f}")
-    print(f"    All |r| < 0.3: {(np.abs(spearman_rs) < 0.3).all()}")
 
-    # Figure
+    print(f"  Mean |d ln eps / d ln ne|: {abs_mean:.4f}")
+    print(f"  Max  |d ln eps / d ln ne|: {abs_max:.4f}")
+    print(f"  Mean |Spearman r| over Te: {np.mean(np.abs(spearman_rs)):.4f}")
+    print("  Interpretation: this is a sensitivity map, not a claim of exact ne-independence.")
+
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
     ax = axes[0]
-    im = ax.pcolormesh(np.log10(ne_grid[1:-1]), Te_grid,
-                       log_deriv, cmap='RdBu_r',
-                       vmin=-0.1, vmax=0.1, shading='auto')
-    fig.colorbar(im, ax=ax).set_label(r'$\partial\ln\epsilon/\partial\ln n_e$')
-    ax.set_xlabel(r'$\log_{10}(n_e)$'); ax.set_ylabel(r'$T_e$ [eV]')
-    ax.set_title(r'Logarithmic derivative $\partial\ln\epsilon/\partial\ln n_e$')
+    im = ax.pcolormesh(
+        np.log10(ne_grid[1:-1]),
+        Te_grid,
+        log_deriv,
+        cmap="RdBu_r",
+        vmin=-0.2,
+        vmax=0.2,
+        shading="auto",
+    )
+    fig.colorbar(im, ax=ax).set_label(r"$\partial \ln \epsilon / \partial \ln n_e$")
+    ax.set_xlabel(r"$\log_{10}(n_e)$")
+    ax.set_ylabel(r"$T_e$ [eV]")
+    ax.set_title(r"Density sensitivity of $\epsilon_{\rm step}$")
 
     ax2 = axes[1]
-    ax2.plot(Te_grid, spearman_rs, 'o-', color='#E91E63', ms=4, lw=1.8)
-    ax2.axhline(0, color='black', lw=0.8, ls='--')
-    ax2.axhline( 0.3, color='gray', lw=0.8, ls=':', alpha=0.7)
-    ax2.axhline(-0.3, color='gray', lw=0.8, ls=':', alpha=0.7)
-    ax2.fill_between(Te_grid, -0.3, 0.3, alpha=0.08, color='green',
-                     label='|r| < 0.3 (weak correlation)')
-    ax2.set_xlabel(r'$T_e$ [eV]')
-    ax2.set_ylabel(r'Spearman $r(\epsilon, n_e)$')
-    ax2.set_title(r'Rank correlation $\epsilon$ vs $n_e$ (per $T_e$)')
-    ax2.set_ylim(-0.6, 0.6)
-    ax2.legend(fontsize=8.5)
+    ax2.plot(Te_grid, spearman_rs, "-o", color="#E91E63", lw=1.8, ms=4)
+    ax2.axhline(0.0, color="black", lw=0.8, ls="--")
+    ax2.axhline(0.3, color="gray", lw=0.8, ls=":")
+    ax2.axhline(-0.3, color="gray", lw=0.8, ls=":")
+    ax2.set_xlabel(r"$T_e$ [eV]")
+    ax2.set_ylabel(r"Spearman $r(\epsilon, n_e)$")
+    ax2.set_title(r"Rank correlation of $\epsilon_{\rm step}$ with $n_e$")
     ax2.grid(alpha=0.3)
 
     plt.tight_layout()
-    path = f'{out_dir}/step3_density_independence.png'
-    fig.savefig(path); plt.close(fig)
-    print(f"\n  Saved: {path}")
+    path = f"{out_dir}/step3_density_sensitivity.png"
+    fig.savefig(path)
+    plt.close(fig)
+    print(f"  Saved: {path}")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# STEP 4 — Robustness under n_max truncation
-# ══════════════════════════════════════════════════════════════════════════════
-def step4_nmax_truncation(L, S, out_dir):
-    """
-    Compare eps_step(Te, ne) computed using only the first N states,
-    where N corresponds to n_max = 10, 15, 20.
+# -----------------------------------------------------------------------------
+# Step 4 — Dominant-state robustness
+# -----------------------------------------------------------------------------
+def step4_dominant_state(L, S, Te_grid, ne_grid, out_dir):
+    print("\nSTEP 4 — Dominant-state robustness")
+    print("=" * 60)
 
-    State count:
-      n_max=10: states n=1..8 (l-resolved) + n9 + n10 = 37 states  → index 0..36
-      n_max=15: states n=1..8 + n9..n15                = 43 states  → index 0..42 (full)
-      n_max=20: not in our matrix (we only have n=1..15)
-               → test n_max=10 vs n_max=15 (bundled) as sensitivity
+    dTe_values = [0.3, 0.6, 1.0]
+    dominant_maps = {}
 
-    For the truncation test, we zero out the rows/cols for states beyond n_max
-    and re-solve. This isolates the contribution of high-n states.
-    """
-    print("\nSTEP 4 — Robustness under n_max truncation")
-    print("=" * 55)
+    for dTe in dTe_values:
+        dom_idx = np.zeros((len(Te_grid), len(ne_grid)), dtype=int)
 
-    # State count per n_max:
-    # n=1: 1, n=2: 2, n=3: 3, n=4: 4, n=5: 5, n=6: 6, n=7: 7, n=8: 8 → 36 resolved
-    # n9=idx36, n10=37, n11=38, n12=39, n13=40, n14=41, n15=42
-    trunc_sets = {
-        'n_max=10 (37 states)':  37,   # up through n10
-        'n_max=12 (39 states)':  39,   # up through n12
-        'n_max=15 (43 states, full)': 43,  # full model
-    }
-    colors = ['#FF9800', '#9C27B0', '#000000']
+        for i_Te in range(len(Te_grid)):
+            for i_ne in range(len(ne_grid)):
+                _, _, idx43, _ = eps_step_at(L, S, Te_grid, ne_grid, i_Te, i_ne, dTe)
+                dom_idx[i_Te, i_ne] = idx43
 
-    ni14 = np.argmin(np.abs(ne_grid - 1e14))
-    dTe  = 0.6
+        dominant_maps[dTe] = dom_idx
 
-    L_i, S_i = build_interp(L, S)
-    results_trunc = {}
+        unique, counts = np.unique(dom_idx, return_counts=True)
+        order = np.argsort(counts)[::-1]
+        print(f"  dTe={dTe:.1f} eV dominant states:")
+        for k in order[:5]:
+            idx = unique[k]
+            cnt = counts[k]
+            frac = 100.0 * cnt / dom_idx.size
+            print(f"    {STATE_LABELS[idx]:>4s}: {frac:5.1f}%")
 
-    for (label, N), color in zip(trunc_sets.items(), colors):
-        eps_arr = []
-        for i_Te, Te_v in enumerate(Te_grid):
-            Te_new_v = Te_v + dTe
-            if Te_new_v > Te_grid[-1]: Te_new_v = Te_v - dTe
+    # Compare dominant-state stability between dTe=0.3 and dTe=0.6
+    same_03_06 = np.mean(dominant_maps[0.3] == dominant_maps[0.6])
+    same_06_10 = np.mean(dominant_maps[0.6] == dominant_maps[1.0])
 
-            # Get full steady-state, then truncate to N states
-            n_ss0 = get_ss_grid(L, S, i_Te, ni14)[:N]
-            n_ss1 = get_ss_interp(L_i, S_i, Te_new_v, ne_grid[ni14])[:N]
+    print(f"\n  Dominant-state agreement:")
+    print(f"    0.3 vs 0.6 eV: {100*same_03_06:.1f}%")
+    print(f"    0.6 vs 1.0 eV: {100*same_06_10:.1f}%")
 
-            r0 = n_ss0[1:] / max(n_ss0[0], 1e-60)
-            r1 = n_ss1[1:] / max(n_ss1[0], 1e-60)
-            eps = float((np.abs(r0 - r1) / (r1 + 1e-60)).max())
-            eps_arr.append(eps)
+    # Plot only dTe=0.6 map
+    fig, ax = plt.subplots(figsize=(5.3, 4.2))
 
-        results_trunc[label] = np.array(eps_arr)
-        print(f"  {label}: eps range {min(eps_arr):.4f}..{max(eps_arr):.4f}")
-
-    # Relative difference between truncated and full
-    eps_full = results_trunc['n_max=15 (43 states, full)']
-    for label in list(trunc_sets.keys())[:-1]:
-        eps_trunc = results_trunc[label]
-        rel_diff  = np.abs(eps_trunc - eps_full) / (eps_full + 1e-60)
-        print(f"\n  {label} vs full:")
-        print(f"    Mean rel diff: {rel_diff.mean()*100:.2f}%")
-        print(f"    Max rel diff:  {rel_diff.max()*100:.2f}%")
-        print(f"    Robust (< 5%): {'YES' if rel_diff.mean() < 0.05 else 'NO'}")
-
-    # Figure
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-
-    ax = axes[0]
-    for (label, N), color in zip(trunc_sets.items(), colors):
-        lw = 2.5 if 'full' in label else 1.5
-        ls = '-' if 'full' in label else '--'
-        ax.plot(Te_grid, results_trunc[label], ls, color=color,
-                lw=lw, label=label)
-    ax.set_xlabel(r'$T_e$ [eV]'); ax.set_ylabel(r'$\epsilon_\mathrm{step}$')
-    ax.set_title(r'$\epsilon_\mathrm{step}$ vs $n_\mathrm{max}$ truncation ($n_e=10^{14}$)')
-    ax.legend(fontsize=8.5); ax.grid(alpha=0.3)
-
-    ax2 = axes[1]
-    for (label, N), color in zip(list(trunc_sets.items())[:-1], colors[:-1]):
-        rel = np.abs(results_trunc[label] - eps_full) / (eps_full + 1e-60) * 100
-        ax2.plot(Te_grid, rel, '--', color=color, lw=1.8, label=label)
-    ax2.axhline(5, color='red', lw=1.0, ls=':', label='5% threshold')
-    ax2.set_xlabel(r'$T_e$ [eV]')
-    ax2.set_ylabel(r'Relative difference from full model [%]')
-    ax2.set_title(r'Sensitivity to $n_\mathrm{max}$ truncation')
-    ax2.legend(fontsize=8.5); ax2.grid(alpha=0.3)
-    ax2.set_ylim(0, None)
+    im = ax.pcolormesh(
+        np.log10(ne_grid),
+        Te_grid,
+        dominant_maps[0.6],
+        shading="auto",
+        cmap="tab20"
+    )
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_label("Dominant state index")
+    ax.set_xlabel(r"$\log_{10}(n_e)$")
+    ax.set_ylabel(r"$T_e$ [eV]")
+    ax.set_title(r"Dominant state controlling $\epsilon_{\rm step}$ ($\Delta T_e=0.6$ eV)")
 
     plt.tight_layout()
-    path = f'{out_dir}/step4_nmax_truncation.png'
-    fig.savefig(path); plt.close(fig)
-    print(f"\n  Saved: {path}")
+    path = f"{out_dir}/step4_dominant_state.png"
+    fig.savefig(path)
+    plt.close(fig)
+    print(f"  Saved: {path}")
 
-    return results_trunc
 
+# -----------------------------------------------------------------------------
+# Summary
+# -----------------------------------------------------------------------------
+def print_summary(eps_results, Te_grid, ne_grid):
+    print("\n" + "=" * 60)
+    print("SUMMARY — THESIS-SAFE INTERPRETATION")
+    print("=" * 60)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# SUMMARY
-# ══════════════════════════════════════════════════════════════════════════════
-def print_summary(step1_results, out_dir):
-    """Print final verdict on scaling law robustness."""
-    dTe_values = [0.3, 0.6, 1.0]
     ni14 = np.argmin(np.abs(ne_grid - 1e14))
 
-    print("\n" + "="*55)
-    print("SUMMARY — SCALING LAW ROBUSTNESS")
-    print("="*55)
+    print("\n1. Multi-ΔTe response")
+    try:
+        for dTe in [0.3, 0.6, 1.0]:
+            eps = eps_results[dTe][:, ni14]
+            popt, _ = curve_fit(exp_model, Te_grid, eps, p0=[0.5, 0.4, 0.05], maxfev=10000)
+            r2 = 1.0 - np.var(eps - exp_model(Te_grid, *popt)) / np.var(eps)
+            print(f"   dTe={dTe:.1f} eV: empirical fit a*exp(-bTe)+c with b={popt[1]:.3f}, R^2={r2:.4f}")
+    except Exception:
+        print("   Empirical fits not robust enough to summarize globally.")
 
-    # Fit each ΔTe curve
-    print("\nFits eps_step ~ a*exp(-b*Te)+c for each ΔTe:")
-    fits = {}
-    for dTe in dTe_values:
-        eps = step1_results[dTe][:, ni14]
-        try:
-            popt, _ = curve_fit(exp_model, Te_grid, eps, p0=[0.9, 0.4, 0.05])
-            R2 = 1 - np.var(eps - exp_model(Te_grid, *popt)) / np.var(eps)
-            fits[dTe] = popt
-            print(f"  ΔTe={dTe}: a={popt[0]:.3f} b={popt[1]:.3f} c={popt[2]:.3f}  R²={R2:.4f}")
-        except:
-            print(f"  ΔTe={dTe}: fit failed")
+    print("\n2. Defensible claims")
+    print("   - eps_step decreases strongly with Te.")
+    print("   - eps_step depends only weakly on ne over much of the tested range, but not identically zero.")
+    print("   - Approximate linear-response collapse is better at higher Te (small dTe/Te),")
+    print("     and degrades at low Te where finite-step effects are strong.")
+    print("   - The dominant state controlling eps_step can change with Te, ne, and dTe,")
+    print("     so a single universal activation-energy interpretation is not justified.")
 
-    # Check if b (decay constant) is ΔTe-independent
-    if len(fits) == 3:
-        bs = [fits[d][1] for d in dTe_values]
-        print(f"\n  Decay constant b across ΔTe: {[f'{v:.3f}' for v in bs]}")
-        print(f"  std(b)/mean(b) = {np.std(bs)/np.mean(bs):.4f}")
-        print(f"  Universal b: {'YES (< 5% variation)' if np.std(bs)/np.mean(bs) < 0.05 else 'NO'}")
-
-    print("\n  THESIS SCALING LAW:")
-    if len(fits) >= 1:
-        b_mean = np.mean([fits[d][1] for d in fits])
-        print(f"  eps_step(Te, ΔTe) ≈ (ΔTe / Te) × f(Te)")
-        print(f"  where f(Te) = A × exp(−{b_mean:.2f} × Te) + C")
-        print(f"  — purely Te-dependent, ne-independent")
-        print(f"  — ΔTe-linear for small perturbations")
+    print("\n3. Thesis-safe conclusion")
+    print("   eps_step is a useful empirical QSS-jump metric, but the data support")
+    print("   only an approximate small-step scaling at sufficiently high Te.")
+    print("   The results do not justify a universal first-principles scaling law")
+    print("   valid across all Te, ne, and dTe in the tested range.")
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
-if __name__ == '__main__':
+# -----------------------------------------------------------------------------
+# Main
+# -----------------------------------------------------------------------------
+if __name__ == "__main__":
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    print("="*55)
-    print("SCALING LAW ROBUSTNESS TESTS")
-    print("="*55)
-    print(f"  Output: {OUT_DIR}/")
+    print("=" * 60)
+    print("QSS ERROR SCALING DIAGNOSTICS")
+    print("=" * 60)
+    print(f"  Output directory: {OUT_DIR}/")
 
-    print("\nLoading L_grid and S_grid...")
-    L, S = load_matrices()
-    print(f"  L_grid: {L.shape}")
+    print("\nLoading matrices and grids...")
+    L, S, Te_grid, ne_grid = load_matrices()
+    print(f"  L_grid shape:  {L.shape}")
+    print(f"  S_grid shape:  {S.shape}")
+    print(f"  Te_grid shape: {Te_grid.shape}")
+    print(f"  ne_grid shape: {ne_grid.shape}")
 
-    step1_res  = step1_delta_Te_universality(L, S, OUT_DIR)
-    step2_normalized_collapse(step1_res, OUT_DIR)
-    step3_density_independence(step1_res, OUT_DIR)
-    step4_nmax_truncation(L, S, OUT_DIR)
-    print_summary(step1_res, OUT_DIR)
+    eps_results, _ = step1_multi_dTe(L, S, Te_grid, ne_grid, OUT_DIR)
+    step2_small_step_check(eps_results, Te_grid, ne_grid, OUT_DIR)
+    step3_density_sensitivity(eps_results, Te_grid, ne_grid, OUT_DIR)
+    step4_dominant_state(L, S, Te_grid, ne_grid, OUT_DIR)
+    print_summary(eps_results, Te_grid, ne_grid)
 
-    print("\n" + "="*55)
-    print("ALL TESTS COMPLETE")
-    print(f"  Figures saved to {OUT_DIR}/")
-    print("="*55)
+    print("\n" + "=" * 60)
+    print("DONE")
+    print("=" * 60)

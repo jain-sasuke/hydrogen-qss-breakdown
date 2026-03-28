@@ -36,7 +36,7 @@ import os
 N_RESOLVED_MAX = 8      # n=1..8 are ℓ-resolved
 N_BUNDLED_MIN  = 9      # n=9..15 are ℓ-bundled
 N_BUNDLED_MAX  = 15
-L_CHAR = ['S','P','D','F','G','H','I','K']
+L_CHAR = ['S','P','D','F','G','H','I','J']
 
 # ── State indexing ────────────────────────────────────────────────────────────
 def build_state_index():
@@ -333,7 +333,7 @@ if __name__ == '__main__':
     print("\nResolved states — total radiative decay rate:")
     print(f"  {'State':6s}  {'Γ_rad [s⁻¹]':>14s}  {'τ_rad [ns]':>12s}")
     print("  " + "-"*38)
-    L_CHAR_LOCAL = ['S','P','D','F','G','H','I','K']
+    L_CHAR_LOCAL = ['S','P','D','F','G','H','I','J']
     for (n,l), idx in sorted(state_index.items()):
         g = gamma_res[idx]
         if g == 0:
@@ -369,7 +369,7 @@ if __name__ == '__main__':
     print(f"\nSaved .npy arrays to {out_dir}/")
 
     # 2. Human-readable CSV: all non-zero A values (long format)
-    L_CHAR_LOCAL = ['S','P','D','F','G','H','I','K']
+    L_CHAR_LOCAL = ['S','P','D','F','G','H','I','J']
     rows = []
 
     # Resolved → resolved

@@ -25,8 +25,8 @@ GATES OVERVIEW
             Effective SCD (ionization) and ACD (recombination) from our
             CR model vs ADAS SCD96/ACD96.
             Requires ADAS files at:
-              data/processed/ADAS/SCD96_interpolated.csv
-              data/processed/ADAS/ACD96_interpolated.csv
+              data/processed/adas/scd96_h_long.csv
+              data/processed/adas/acd96_h_long.csv
             If not found: Gate D is skipped with a warning.
 
 USAGE
@@ -67,8 +67,8 @@ PATHS = {
     'K_exc':     'data/processed/collisions/K_exc_full/K_exc_full.npy',
     'K_deexc':   'data/processed/collisions/K_exc_full/K_deexc_full.npy',
     'K_exc_meta':'data/processed/collisions/K_exc_full/K_exc_meta.csv',
-    'SCD96':     'data/processed/ADAS/SCD96_interpolated.csv',
-    'ACD96':     'data/processed/ADAS/ACD96_interpolated.csv',
+    'SCD96':     'data/processed/adas/SCD96_interpolated.csv',
+    'ACD96':     'data/processed/adas/ACD96_interpolated.csv',
 }
 OUT_DIR = 'validation'
 
@@ -281,8 +281,8 @@ def gate_D(arrs, n_ion=1e14):
     ACD_eff = sum_p [alpha_RR(p)*ne + alpha_3BR(p)*ne^2]*n_p^ss / (ne^2 * n_ion)
 
     Requires:
-      data/processed/ADAS/SCD96_interpolated.csv
-      data/processed/ADAS/ACD96_interpolated.csv
+      data/processed/ADAS/SCD96_long.csv
+      data/processed/ADAS/ACD96_long.csv
     """
     print("\n" + "="*60)
     print("GATE D — ADAS Effective Coefficient Comparison")
@@ -306,28 +306,38 @@ def gate_D(arrs, n_ion=1e14):
 
     for i_Te in range(len(Te)):
         for i_ne in range(len(ne)):
+            # FIX 1: use quasi-neutral n_ion = ne at each grid point.
+            # Using fixed n_ion=1e14 with ne=1e12 puts the model in a deep
+            # recombining phase (n_ion/ne=100), inflating Rydberg populations
+            # and making SCD_model ~100x too large. ADAS SCD assumes quasi-
+            # neutrality (n_ion ≈ ne), so this fix makes the comparison valid.
+            n_ion_local = ne[i_ne]
+
             Lmat = L[i_Te, i_ne]
-            Svec = S[i_Te, i_ne] * n_ion
+            Svec = S[i_Te, i_ne] * n_ion_local
             n_ss = steady_state(Lmat, Svec)
             n_neutral = n_ss.sum()
             if n_neutral <= 0: continue
 
             # SCD_eff from our model
-            ioniz_rate  = np.sum(K_ion[:, i_Te] * n_ss)   # [cm^-3 s^-1 per unit ne]
-            SCD_model   = ioniz_rate / n_neutral
+            # SCD = sum_p K_ion(p)*n_ss(p) / n_neutral  [cm^3/s]
+            # ne cancels: K_ion*ne*n_ss / (ne*n_neutral) = K_ion*n_ss/n_neutral
+            ioniz_rate = np.sum(K_ion[:, i_Te] * n_ss)
+            SCD_model  = ioniz_rate / n_neutral
 
-            # Interpolate ADAS SCD at this (Te, ne)
-            # scd_adas columns: Te_eV, ne_cm3, SCD_cm3_s
+            # FIX 2: 2D interpolation — select ADAS rows near ne[i_ne],
+            # then interpolate in Te. Avoids averaging over wrong ne values.
+            # The original code averaged SCD over ALL ne (5e7 to 2e15),
+            # diluting the mean toward the low-ne coronal limit.
             try:
-                from scipy.interpolate import RegularGridInterpolator
-                # Assume columns: Te_eV, ne_cm3, SCD_cm3_s
-                scd_at = np.interp(Te[i_Te],
-                                   scd_adas['Te_eV'].values,
-                                   scd_adas[scd_adas['ne_cm3'].between(
-                                       ne[i_ne]*0.5, ne[i_ne]*2)]['SCD_cm3_s'].mean()
-                                   if False else
-                                   scd_adas.groupby('Te_eV')['SCD_cm3_s'].mean().values,
-                                   )
+                mask = (scd_adas['ne_cm3'] / ne[i_ne]).between(0.5, 2.0)
+                sub  = scd_adas[mask].sort_values('Te_eV')
+                if len(sub) >= 2:
+                    scd_at = float(np.interp(Te[i_Te],
+                                             sub['Te_eV'].values,
+                                             sub['SCD_cm3_s'].values))
+                else:
+                    scd_at = np.nan
             except Exception:
                 scd_at = np.nan
 

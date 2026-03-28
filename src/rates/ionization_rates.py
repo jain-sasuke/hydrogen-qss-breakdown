@@ -14,7 +14,7 @@ Output table:
   K_ion[state_idx, Te_idx]  in cm³/s
   state_idx = 0..35  resolved states (n=1..8, order from state_index)
             = 36..42 bundled states  (n=9..15)
-  Te_idx    = 0..11  same 12-point log grid as K_CCC and radiative rates
+Te_idx    = 0..49  same 50-point log grid as K_CCC and radiative rates
 
 CR matrix usage:
   ionization term = ne * K_ion[state_idx, Te_idx] * N[state_idx]

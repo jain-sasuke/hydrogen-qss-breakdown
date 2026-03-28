@@ -108,47 +108,52 @@ def b_p(p):
     return (1.4*np.log(p)/p - 0.7/p - 0.51/p**2
             + 1.16/p**3 - 0.55/p**4)
 
-def vs_params(p, n, f_pn):
-    """
-    V&S parameters A, B, Delta, Gamma for excitation p -> n.
-    Source: Hartgers (2001) Eqs.(36)-(41).
-    """
-    s       = n - p
-    E_pn    = IH_eV * (1.0/p**2 - 1.0/n**2)
-    E_p_ion = IH_eV / p**2
 
-    A  = (2.0 * R_eV / E_pn) * f_pn
-    bp = b_p(p)
-    B  = (4.0 * R_eV**2 / n**3) * (
-           1.0 / E_pn**2
-         + 4.0 * E_p_ion / (3.0 * E_pn**3)
-         + bp  * E_p_ion**2 / E_pn**4
-    )
-    Delta = np.exp(-B / A) - 0.4 * E_pn / R_eV   # Eq.(39): MINUS sign
-    num_f = 8.0 + 23.0 * (s / p)**2
-    den_f = (8.0 + 1.1*n*s + 0.8/s**2
-             + 0.4 * n**1.5 / np.sqrt(s) * abs(s - 1))
-    Gamma = R_eV * num_f / den_f
-
-    return A, B, Delta, Gamma
 
 def K_exc_VS(p, n, f_pn, Te_arr, g_p=None, g_n=None):
     """
-    V&S excitation rate coefficient [cm^3/s].
-    K = 0 when log argument <= 0 (thermally suppressed).
+    V&S (1980) Eq.(17) — true original formula.
+    K_pn = 1.6e-7*(kTe)^0.5 / (kTe+Gamma) * exp(-E_pn/kTe)
+           * [A*ln(0.3*kTe/R + Delta) + B]
+    Delta: Eq.(18) — PLUS sign, 0.06*s^2/(n*p^2)
+    Gamma: Eq.(19) — Te-dependent via ln(1 + p^3*kTe/R)
+    No g_p/g_n in excitation (that belongs only in deexcitation Eq.24).
     """
-    A, B, Delta, Gamma = vs_params(p, n, f_pn)
-    if g_p is None: g_p = 2 * p**2
-    if g_n is None: g_n = 2 * n**2
+    # g_p/g_n NOT used in excitation per V&S Eq.(17)
+    s       = n - p
+    E_pn    = IH_eV * (1.0/p**2 - 1.0/n**2)
+    E_p_ion = IH_eV / p**2
+    bp      = b_p(p)
 
-    log_arg = 0.3 * Te_arr / R_eV + Delta
-    with np.errstate(invalid='ignore', divide='ignore'):
-        log_val = np.where(log_arg > 0.0, np.log(log_arg), 0.0)
+    A = (2.0 * R_eV / E_pn) * f_pn
+    B = (4.0 * R_eV**2 / n**3) * (
+            1.0 / E_pn**2
+          + 4.0 * E_p_ion / (3.0 * E_pn**3)
+          + bp  * E_p_ion**2 / E_pn**4)
 
-    K = (1.6e-7 * np.sqrt(Te_arr) * (g_p / g_n)
-         / (Te_arr + Gamma)
-         * (A * log_val + B))
-    return np.maximum(K, 0.0)
+    # Eq.(18): PLUS sign, 0.06*s^2/(n*p^2)
+    Delta = np.exp(-B / A) + 0.06 * s**2 / (n * p**2)
+
+    K = np.zeros_like(Te_arr, dtype=float)
+    for i, Te in enumerate(Te_arr):
+        # Eq.(19): Te-dependent Gamma
+        Gamma = (R_eV * np.log(1.0 + p**3 * Te / R_eV)
+                 * (3.0 + 11.0 * (s/p)**2)
+                 / (6.0 + 1.6*n*s + 0.3/s**2
+                    + 0.8 * n**1.5 / s**0.5 * abs(s - 0.6)))
+        if Gamma <= 0:
+            continue
+        log_arg = 0.3 * Te / R_eV + Delta
+        if log_arg <= 0:
+            K[i] = 0.0
+            continue
+        # Eq.(17): exp(-E_pn/Te) is the Boltzmann factor
+        K[i] = max(
+            1.6e-7 * np.sqrt(Te) / (Te + Gamma)
+            * np.exp(-E_pn / Te)
+            * (A * np.log(log_arg) + B),
+            0.0)
+    return K
 
 def K_deexc_DB(K_exc_arr, g_p, g_n, E_pn_eV, Te_arr):
     """De-excitation via detailed balance. Exact to machine precision."""

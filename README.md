@@ -140,7 +140,7 @@ python src/analysis/plot_results.py          # → figures/
 python src/analysis/physics_tests.py         # → Balmer α test
 ```
 
-**Runtime** (Apple M2 Pro): ~30 seconds end-to-end from assembled
+**Runtime** (Apple Mac Mini M4): ~30 seconds end-to-end from assembled
 L_grid.npy to all figures.
 
 ---

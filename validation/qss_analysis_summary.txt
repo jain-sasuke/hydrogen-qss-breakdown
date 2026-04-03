@@ -13,26 +13,26 @@ PHYSICS:
   SECONDARY metric: eps_end = eps_res*exp(-tau_drive/tau_QSS)
   Threshold: eps_bar > 10%
 
-tau_QSS:   7.47e-08..8.49e-01 s
-tau_relax: 1.64e-09..9.09e-06 s
-M:         30..388735
+tau_QSS:   8.89e-09..9.26e-01 s
+tau_relax: 8.69e-10..3.55e-08 s
+M:         1..101054918
 
 ITER divertor reference (Te~2.95eV, ne=1.4e+14):
-  tau_QSS = 1.517e-05s
-  eps_step = 0.4721
-  eps_res  = 0.5219
-  ELM_crash            (1e-04s): eps_bar=0.0791  eps_end=0.0007  [marginal]
-  fast_detachment      (1e-03s): eps_bar=0.0079  eps_end=0.0000  [valid]
-  slow_detachment      (1e-02s): eps_bar=0.0008  eps_end=0.0000  [valid]
+  tau_QSS = 2.271e-05s
+  eps_step = 0.5172
+  eps_res  = 0.6304
+  ELM_crash            (1e-04s): eps_bar=0.1414  eps_end=0.0077  [BREAKDOWN]
+  fast_detachment      (1e-03s): eps_bar=0.0143  eps_end=0.0000  [valid]
+  slow_detachment      (1e-02s): eps_bar=0.0014  eps_end=0.0000  [valid]
   ELM_interELM         (1e-01s): eps_bar=0.0001  eps_end=0.0000  [valid]
 
 Scenario A epsilon(t) traces:
   Te=1eV,ne=1e12:
-    tau_QSS=1.44e-05s  tau_relax=1.33e-07s
-    eps_step=0.9862  eps_res=0.9858
+    tau_QSS=3.90e-08s  tau_relax=2.67e-08s
+    eps_step=0.9929  eps_res=0.9887
   Te=3eV,ne=1e14 (ITER):
-    tau_QSS=1.52e-05s  tau_relax=2.49e-08s
-    eps_step=0.4616  eps_res=0.5292
+    tau_QSS=2.27e-05s  tau_relax=2.28e-09s
+    eps_step=0.5072  eps_res=0.6220
   Te=10eV,ne=1e15:
-    tau_QSS=7.47e-08s  tau_relax=1.64e-09s
-    eps_step=0.0711  eps_res=0.0198
+    tau_QSS=7.54e-08s  tau_relax=8.69e-10s
+    eps_step=0.0749  eps_res=0.0569

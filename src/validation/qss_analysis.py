@@ -134,7 +134,7 @@ def compute_timescale_map(arrs):
     for i in range(n_Te):
         for j in range(n_ne):
             eigs = np.sort(np.linalg.eigvals(L[i, j]).real)[::-1]
-            neg  = eigs[eigs < -1.0]
+            neg  = eigs[eigs < 0.0]
             if len(neg) >= 2:
                 tau_QSS[i, j]   = 1.0 / abs(neg[0])
                 tau_relax[i, j] = 1.0 / abs(neg[1])

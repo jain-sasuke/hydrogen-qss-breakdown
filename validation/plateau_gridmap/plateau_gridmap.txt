@@ -1,0 +1,97 @@
+==============================================================================
+PLATEAU GRID MAP -- analytic partial equilibrium, no integration
+generated 2026-08-23 00:16  by verify_plateau_gridmap.py
+repo root      /Users/phi/Desktop/non_markovian_cr
+L_grid sha256  2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256  7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state idx sha  23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+n=3 [3, 4, 5] ['3S', '3P', '3D']   n=4 [6, 7, 8, 9] ['4S', '4P', '4D', '4F']
+grid           50 Te x 8 ne = 400 points
+Te grid ratio  1.048113 per index  (a 5% step is 1.038 indices)
+requested step +/- 5.0% fractional; achieved fraction reported per point
+==============================================================================
+
+evaluated 784 (point, direction) pairs
+skipped 2 Te rows where the step did not move an index
+points with NO timescale-separated plateau window: 104 (flagged in the csv, not dropped)
+max superposition error over the whole grid: 3.075e-14   OK
+achieved fractional step: -0.0459 .. +0.0481  (requested +/-0.0500)
+
+------------------------------------------------------------------------------
+HEAT   392 points
+  eps_step         min 3.46706e-05  median 0.00707691  max 0.0305426
+  eps_plateau      min 0.0062172  median 0.0642531  max 0.386903
+  amplification    min 1.74817  median 12.0327  max 1271.36
+  abs_sens_old     min 0.0522388  median 0.256368  max 0.486579
+  f3_old           min 0.0627074  median 0.596784  max 0.967807
+  f4_old           min 0.0103471  median 0.199412  max 0.880023
+  max amplification 1271.3602 at Te=5.9636 eV, ne=2.6827e+12 cm^-3 (grid [38,1])
+    at that point: f3=0.745894 f4=0.487277 sens=+2.586170e-01 eps_step=0.000035 eps_plateau=0.044079
+    sits on a grid EDGE: False   -> interior maximum
+  corr( log|f3-f4| , log amplification ) = +0.6069  (n=392)
+  corr( log eps_step , log amplification ) = -0.7431
+
+------------------------------------------------------------------------------
+COOL   392 points
+  eps_step         min 3.46718e-05  median 0.00702718  max 0.0296374
+  eps_plateau      min 0.00547363  median 0.0572899  max 0.285849
+  amplification    min 1.44099  median 9.9305  max 1259.08
+  abs_sens_old     min 0.040186  median 0.244067  max 0.485374
+  f3_old           min 0.0478068  median 0.486825  max 0.892654
+  f4_old           min 0.00753247  median 0.123564  max 0.663248
+  max amplification 1259.0789 at Te=6.2506 eV, ne=2.6827e+12 cm^-3 (grid [39,1])
+    at that point: f3=0.682835 f4=0.407992 sens=+2.748436e-01 eps_step=0.000035 eps_plateau=0.043654
+    sits on a grid EDGE: False   -> interior maximum
+  corr( log|f3-f4| , log amplification ) = +0.6585  (n=392)
+  corr( log eps_step , log amplification ) = -0.7575
+
+sensitivity |f3-f4| vs Te at ne = 5.179e+13 (heating):
+   Te= 1.000  f3=0.7728  f4=0.2862  |f3-f4|=4.8658e-01  amp=13.661
+   Te= 1.048  f3=0.7585  f4=0.2721  |f3-f4|=4.8640e-01  amp=13.559
+   Te= 1.099  f3=0.7441  f4=0.2589  |f3-f4|=4.8524e-01  amp=13.451
+   Te= 1.151  f3=0.7298  f4=0.2466  |f3-f4|=4.8319e-01  amp=13.341
+   Te= 1.207  f3=0.7156  f4=0.2352  |f3-f4|=4.8036e-01  amp=13.230
+   Te= 1.265  f3=0.7015  f4=0.2246  |f3-f4|=4.7685e-01  amp=13.119
+   Te= 1.326  f3=0.6875  f4=0.2148  |f3-f4|=4.7275e-01  amp=13.012
+   Te= 1.389  f3=0.6738  f4=0.2056  |f3-f4|=4.6814e-01  amp=12.908
+   Te= 1.456  f3=0.6603  f4=0.1972  |f3-f4|=4.6311e-01  amp=12.811
+   Te= 1.526  f3=0.6470  f4=0.1893  |f3-f4|=4.5772e-01  amp=12.721
+   Te= 1.600  f3=0.6340  f4=0.1820  |f3-f4|=4.5205e-01  amp=12.640
+   Te= 1.677  f3=0.6213  f4=0.1752  |f3-f4|=4.4615e-01  amp=12.570
+   Te= 1.758  f3=0.6090  f4=0.1689  |f3-f4|=4.4009e-01  amp=12.512
+   Te= 1.842  f3=0.5970  f4=0.1631  |f3-f4|=4.3390e-01  amp=12.466
+   Te= 1.931  f3=0.5853  f4=0.1577  |f3-f4|=4.2765e-01  amp=12.436
+   Te= 2.024  f3=0.5740  f4=0.1526  |f3-f4|=4.2136e-01  amp=12.423
+   Te= 2.121  f3=0.5631  f4=0.1480  |f3-f4|=4.1507e-01  amp=12.429
+   Te= 2.223  f3=0.5525  f4=0.1437  |f3-f4|=4.0882e-01  amp=12.455
+   Te= 2.330  f3=0.5423  f4=0.1397  |f3-f4|=4.0262e-01  amp=12.505
+   Te= 2.442  f3=0.5325  f4=0.1360  |f3-f4|=3.9652e-01  amp=12.580
+   Te= 2.560  f3=0.5231  f4=0.1326  |f3-f4|=3.9052e-01  amp=12.685
+   Te= 2.683  f3=0.5141  f4=0.1295  |f3-f4|=3.8464e-01  amp=12.824
+   Te= 2.812  f3=0.5055  f4=0.1266  |f3-f4|=3.7890e-01  amp=13.000
+   Te= 2.947  f3=0.4972  f4=0.1239  |f3-f4|=3.7332e-01  amp=13.220
+   Te= 3.089  f3=0.4894  f4=0.1215  |f3-f4|=3.6790e-01  amp=13.491
+   Te= 3.237  f3=0.4819  f4=0.1193  |f3-f4|=3.6265e-01  amp=13.820
+   Te= 3.393  f3=0.4748  f4=0.1172  |f3-f4|=3.5759e-01  amp=14.219
+   Te= 3.556  f3=0.4681  f4=0.1153  |f3-f4|=3.5271e-01  amp=14.702
+   Te= 3.728  f3=0.4617  f4=0.1137  |f3-f4|=3.4802e-01  amp=15.287
+   Te= 3.907  f3=0.4557  f4=0.1121  |f3-f4|=3.4354e-01  amp=15.998
+   Te= 4.095  f3=0.4500  f4=0.1108  |f3-f4|=3.3925e-01  amp=16.868
+   Te= 4.292  f3=0.4447  f4=0.1096  |f3-f4|=3.3516e-01  amp=17.942
+   Te= 4.498  f3=0.4398  f4=0.1085  |f3-f4|=3.3127e-01  amp=19.285
+   Te= 4.715  f3=0.4352  f4=0.1076  |f3-f4|=3.2758e-01  amp=20.996
+   Te= 4.942  f3=0.4309  f4=0.1068  |f3-f4|=3.2410e-01  amp=23.226
+   Te= 5.179  f3=0.4269  f4=0.1061  |f3-f4|=3.2081e-01  amp=26.228
+   Te= 5.429  f3=0.4233  f4=0.1056  |f3-f4|=3.1772e-01  amp=30.448
+   Te= 5.690  f3=0.4200  f4=0.1052  |f3-f4|=3.1482e-01  amp=36.765
+   Te= 5.964  f3=0.4170  f4=0.1049  |f3-f4|=3.1212e-01  amp=47.170
+   Te= 6.251  f3=0.4143  f4=0.1047  |f3-f4|=3.0960e-01  amp=67.364
+   Te= 6.551  f3=0.4119  f4=0.1046  |f3-f4|=3.0727e-01  amp=122.878
+   Te= 6.866  f3=0.4097  f4=0.1046  |f3-f4|=3.0512e-01  amp=920.413
+   Te= 7.197  f3=0.4079  f4=0.1048  |f3-f4|=3.0315e-01  amp=158.665
+   Te= 7.543  f3=0.4064  f4=0.1050  |f3-f4|=3.0135e-01  amp=71.330
+   Te= 7.906  f3=0.4051  f4=0.1054  |f3-f4|=2.9971e-01  amp=45.346
+   Te= 8.286  f3=0.4041  f4=0.1058  |f3-f4|=2.9824e-01  amp=32.906
+   Te= 8.685  f3=0.4033  f4=0.1064  |f3-f4|=2.9693e-01  amp=25.631
+   Te= 9.103  f3=0.4028  f4=0.1070  |f3-f4|=2.9576e-01  amp=20.871
+   Te= 9.541  f3=0.4025  f4=0.1078  |f3-f4|=2.9475e-01  amp=17.523

@@ -540,3 +540,46 @@ reflects how load-bearing each is for the thesis.
 5. **Verify**: sensitivity-test the definitions, look for the result that would
    *refute* the claim, and write down the caveats explicitly.
 6. **Only then** promote to ✅ and write it into the thesis.
+
+---
+
+### Verification note — `cr_context.py` state-ordering gate (2026-08-22)
+
+Ran ad hoc verification (no repo files modified; scratch script only):
+`CRContext.load()` from `src/validation/cr_context.py`, plus direct
+`stat`/`shasum`/`cmp`/`diff` on both files named in
+`REL_STATE_INDEX_CANDIDATES`.
+
+- Both candidate files exist:
+  `data/processed/collisions/K_exc_full/state_index.csv` (1288 B, SHA-256
+  `23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65`,
+  mtime 2026-03-23 14:54) and
+  `data/processed/Radiative/state_index.csv` (1388 B, SHA-256
+  `02a19cfc9b9326a05b01758946ea290fe4efdbcad3e8d364f29ad4fd5960afe1`,
+  mtime 2026-03-22 01:31).
+- They are **not identical**: `cmp` differs at char 5; parsed headers differ
+  (`idx,label,n,l,bundled,g,I_eV` vs `idx,n,l,label,type,gamma_rad_s-1`) — a
+  genuine schema/content difference (different auxiliary physical columns),
+  not a line-ending artifact. However the `idx,n,l,label` values themselves
+  are identical row-for-row across both files (same 43 states, same ordering).
+- The loader (`CRContext.load`, picks first existing candidate in
+  `REL_STATE_INDEX_CANDIDATES`) resolves to `K_exc_full/state_index.csv`
+  today, since it is listed first and exists. Confirmed via
+  `ctx.state_index_path`.
+- Resulting ordering: 43 states total; N3 = indices [3,4,5] (count 3); N4 =
+  indices [6,7,8,9] (count 4). Matches the expected mapping exactly. Ground
+  index = 0 (`1S`).
+- `L_grid.npy` SHA-256 confirmed matching the recorded reference
+  (`2d92b58e...059224e`).
+
+**Graduation:** ▶️ (executed, current behavior verified against both
+candidate files and the actual loader resolution). Not ✅: this check
+confirms the *current* state of two files and the loader's *current*
+tie-break behavior (first-existing-candidate wins); it does not by itself
+guarantee no other script in the repo reads `Radiative/state_index.csv`
+directly under its own (different) column assumptions, nor that the
+candidate-list order in `cr_context.py` won't matter if `K_exc_full`'s file
+is ever absent or regenerated with a different row order. Caveat: the two
+files carry genuinely different auxiliary columns (weights/ionization energy
+vs. radiative rates) under nominally the same idx/n/l/label ordering — worth
+tracing to source before treating either as fully redundant with the other.

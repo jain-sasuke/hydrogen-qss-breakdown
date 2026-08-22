@@ -400,7 +400,7 @@ def gate_E(arrs):
     for i_Te in range(len(Te)):
         for i_ne in range(len(ne)):
             eigs = np.sort(np.linalg.eigvals(L[i_Te, i_ne]).real)[::-1]
-            eigs_neg = eigs[eigs < -1.0]
+            eigs_neg = eigs[eigs < 0.0]
             if len(eigs_neg) >= 2:
                 M_grid[i_Te, i_ne]       = abs(eigs_neg[1]) / abs(eigs_neg[0])
                 tau_QSS_grid[i_Te, i_ne]   = 1.0 / abs(eigs_neg[0])

@@ -13,9 +13,9 @@ PHYSICS:
   SECONDARY metric: eps_end = eps_res*exp(-tau_drive/tau_QSS)
   Threshold: eps_bar > 10%
 
-tau_QSS:   7.54e-08..6.72e+01 s
-tau_relax: 8.69e-10..3.89e-08 s
-M:         87..1729277213
+tau_QSS:   8.88e-09..9.25e-01 s
+tau_relax: 8.69e-10..3.54e-08 s
+M:         1..101197289
 
 ITER divertor reference (Te~2.95eV, ne=1.4e+14):
   tau_QSS = 2.273e-05s
@@ -28,7 +28,7 @@ ITER divertor reference (Te~2.95eV, ne=1.4e+14):
 
 Scenario A epsilon(t) traces:
   Te=1eV,ne=1e12:
-    tau_QSS=6.72e+01s  tau_relax=3.89e-08s
+    tau_QSS=3.89e-08s  tau_relax=2.65e-08s
     eps_step=0.9929  eps_res=0.9886
   Te=3eV,ne=1e14 (ITER):
     tau_QSS=2.27e-05s  tau_relax=2.28e-09s

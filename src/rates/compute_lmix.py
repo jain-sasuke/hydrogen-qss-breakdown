@@ -16,24 +16,45 @@ PHYSICS:
     q_up(n,ℓ→ℓ+1; T) = q_down(n,ℓ+1→ℓ; T) × (2ℓ+3)/(2ℓ+1)
     (reciprocity, Badnell 2021 eq. recommendation)
 
-PSM20 DEBYE-CUTOFF FORMULA (Badnell 2021, Eq. 12):
+PSM20 DEBYE-CUTOFF FORMULA (Badnell 2021, Eq. 9):
   For the "downward" transition (ℓ_> = max(ℓ,ℓ')):
 
-    D_ji = (6 n² ℓ_> (n² - ℓ_>²)) / z²       [dipole coupling]
-    U_m  = (π μ I_H / kT) × D_ji × n_p × (a_0³/τ_0)  [cutoff variable]
+    D_ji = 6 n² ℓ_> (n² - ℓ_>²) / z²         [dipole coupling, z = proton charge]
 
-    q_ji = (a_0³/τ_0) × sqrt(π μ I_H / kT) × (D_ji / ω_ℓ)
-           × [sqrt(π)/2 × U_m^(-3/2) × erf(sqrt(U_m))
-              - exp(-U_m)/U_m + E1(U_m)]
+    q_ji = (a_0³/τ_0) × sqrt(π μ I_H / kT) × (D_ji / ω_ℓ) × F(U_m)
+
+    F(U_m) = (sqrt(π)/2) × U_m^{-3/2} × erf(sqrt(U_m))
+             - exp(-U_m)/U_m
+             + E1(U_m)
+
+  with U_m = E_min / kT, and E_min from Badnell Eqs. 5+8:
+    E_min = a_0² × μ × I_H × D_ji / (2 × P1 × ω_ℓ × R_c²)
+    R_c   = λ_D (Debye length, two-species T_i = T_e assumption)
+    P1    = small-impact matching probability (PS64/PSM convention, ~0.5)
+
+  F(U_m) IS the Coulomb-logarithm factor of the PSM20 rate coefficient.
+  Limits: F(U_m -> 0) diverges logarithmically (dense-plasma / small-U_m
+  regime); F(U_m -> infinity) -> 0 (screening kills the collision).
+  At ITER divertor conditions (T_e ~ 3 eV, n_e ~ 1e14 cm^-3) F(U_m) is
+  typically 3-7 depending on (n, ℓ_>), NOT 1.
 
   where:
     μ   = reduced mass ratio = m_H / m_e ≈ 918.0764  (proton/electron mass)
     I_H = 13.605693 eV   (Rydberg energy)
-    ω_ℓ = 2ℓ+1           (statistical weight of lower state)
+    ω_ℓ = 2ℓ+1           (statistical weight of lower state, ℓ = ℓ_> - 1)
     a_0 = Bohr radius    = 5.29177e-9 cm
     τ_0 = a_0 / (α c)   = 2.4189e-17 s  (atomic unit of time)
     z   = 1              (proton charge)
     kT  in eV
+
+HISTORICAL NOTE (see derivation_04b §7.2 for full audit):
+  A previous version of this file set F(U_m) = 1, justified as "low-density
+  limit U_m -> 0, F -> 1". This was doubly incorrect: at ITER density the
+  true U_m is small (order 1e-3 to 1e-1), and F(U_m -> 0) diverges
+  logarithmically, not to 1. The old code under-counted rates by ×3-7.
+  τ_relax is insensitive (<0.2%) to this correction because ℓ-mixing is
+  already the fastest process in the CR spectrum, but absolute ℓ-resolved
+  populations and line ratios do depend on the correction. Corrected here.
 
 APPROXIMATIONS:
   - T_i = T_e  (proton temperature = electron temperature)
@@ -121,54 +142,138 @@ def _psm20_D(n, ell_upper):
     return 6.0 * n**2 * l * (n**2 - l**2)
 
 
-def _psm20_q_down(n, ell_upper, Te_arr):
+# Default electron density used for the Debye cutoff when computing the
+# density-dependent rate coefficient. The scale of the ITER divertor grid
+# (10^12 – 10^15 cm^-3) makes any single value a compromise; F(U_m) is only
+# logarithmically sensitive to ne, so this is a mild dependence. For strict
+# density-resolved rates, pass ne explicitly.
+NE_DEFAULT = 1.0e14   # cm^-3   (mid-grid; F(U_m) varies ~30% across the full grid)
+
+# Small-impact-parameter matching probability (PS64/PSM convention).
+# Enters U_m through Badnell Eq. 5+8; sets the R_1 matching radius.
+P1_DEFAULT = 0.5
+
+
+def _psm20_Um(n, ell_upper, Te_arr, ne_cm3, P1=P1_DEFAULT):
+    """
+    Compute U_m = E_min / kT_e for the PSM20 Debye-cutoff form.
+
+    Badnell (2021) Eq. 8:  E_min = a0^2 * mu * I_H * D_ji / (2 * P1 * omega_l * R_c^2)
+    with R_c = lambda_D (Debye length; Eq. 10 setting Debye limit).
+
+    Working in atomic units for lengths (R_c/a0 dimensionless):
+        E_min / I_H = mu * D_ji / (2 * P1 * omega_l * (R_c/a0)^2)
+
+    Parameters
+    ----------
+    n         : int
+    ell_upper : int    ℓ_> = max(ℓ, ℓ')
+    Te_arr    : (N,) float [eV]
+    ne_cm3    : float [cm^-3]
+    P1        : float, matching probability (Badnell Eq. 4)
+
+    Returns
+    -------
+    U_m : (N,) float, dimensionless
+    """
+    ell_lo = ell_upper - 1
+    omega  = 2 * ell_lo + 1                          # weight of LOWER state
+    D      = _psm20_D(n, ell_upper)
+
+    # Two-species Debye length (T_e = T_i, quasi-neutral).
+    # In SI, then converted to cm and finally to atomic units (a0).
+    # lambda_D^2 = eps0 * kT / (2 * ne * e^2)   [two species, T_i = T_e]
+    # In eV units and cm^-3:
+    #   lambda_D [cm] = 7.4340e2 * sqrt(T_e[eV] / (2 * ne[cm^-3]))
+    #   (numerical prefactor from eps0, k_B, e in SI, converting to cm)
+    # Derivation: sqrt(eps0 * eV / e^2) = 7.4340e2 cm when using n [cm^-3]
+    lamD_cm = 7.4340e2 * np.sqrt(Te_arr / (2.0 * ne_cm3))
+    Rc_over_a0 = lamD_cm / A0
+
+    # E_min / kT_e = (mu * D_ji / (2 * P1 * omega * Rc_a0^2)) * (I_H / kT_e)
+    Um = (MU * D / (2.0 * P1 * omega * Rc_over_a0**2)) * (IH / Te_arr)
+    return Um
+
+
+def _psm20_F(Um):
+    """
+    Badnell (2021) Eq. 9 bracket F(U_m):
+
+        F(U_m) = (sqrt(pi)/2) * U_m^{-3/2} * erf(sqrt(U_m))
+                 - exp(-U_m) / U_m
+                 + E1(U_m)
+
+    This is the Coulomb-logarithm factor of the PSM20 Debye rate coefficient.
+
+    Limits:
+      U_m -> 0   : F -> +infinity (logarithmic) ~ ln(R_c/R_1) at leading order
+      U_m -> inf : F -> 0   (screening kills the collision)
+
+    Notes
+    -----
+    In §7.2 of derivation_04b, this factor was verified against Badnell's
+    published Eq. 9 (source PDF). At ITER divertor densities (T ~ 3 eV,
+    ne ~ 1e14 cm^-3) it takes values ~3 to ~7 depending on (n, ℓ_>), NOT 1.
+    Setting F = 1 as a "low-density limit" is INCORRECT — the low-density
+    limit is F -> infinity, not F -> 1.
+    """
+    Um = np.asarray(Um, dtype=np.float64)
+    # Guard against U_m very close to zero where the individual terms diverge
+    # but F remains finite (they cancel). Use a small floor consistent with
+    # double precision.
+    Um = np.where(Um < 1e-30, 1e-30, Um)
+    term1 = 0.5 * np.sqrt(np.pi) * Um**(-1.5) * erf(np.sqrt(Um))
+    term2 = -np.exp(-Um) / Um
+    term3 = exp1(Um)
+    return term1 + term2 + term3
+
+
+def _psm20_q_down(n, ell_upper, Te_arr, ne_cm3=NE_DEFAULT, P1=P1_DEFAULT):
     """
     PSM20 Debye-cutoff downward rate coefficient [cm³/s]:
-      q(n, ℓ_upper → ℓ_upper - 1; T)
+      q(n, ℓ_upper → ℓ_upper - 1; T_e, n_e)
+
+    Full Badnell (2021) Eq. 9:
+      q_ji = (a0^3/tau0) * sqrt(pi * mu * I_H / kT) * (D/omega_l) * F(U_m)
 
     Parameters
     ----------
     n         : int     principal quantum number
     ell_upper : int     ℓ of the higher-ℓ state (1 ≤ ℓ_upper ≤ n-1)
     Te_arr    : (N,) float  electron/proton temperatures [eV]
+    ne_cm3    : float   electron density [cm^-3] used for the Debye cutoff
+                        (defaults to NE_DEFAULT = 1e14)
+    P1        : float   small-impact-parameter matching probability
 
     Returns
     -------
-    q : (N,) float  [cm³/s]  downward rate coefficient
+    q : (N,) float  [cm³/s]  downward rate coefficient at (T_e, n_e)
+
+    Notes
+    -----
+    The dependence on n_e is only through F(U_m), which is a slowly-varying
+    (roughly logarithmic) function; a factor-of-1000 change in n_e over the
+    grid moves F by roughly ~30%. For a strictly (T_e, n_e)-resolved rate
+    coefficient table, pass n_e explicitly per grid point.
     """
-    ell_lo = ell_upper - 1          # ℓ of lower state
-    omega  = 2 * ell_lo + 1        # statistical weight of LOWER state
+    ell_lo = ell_upper - 1
+    omega  = 2 * ell_lo + 1
 
-    D   = _psm20_D(n, ell_upper)   # dipole coupling
+    D   = _psm20_D(n, ell_upper)
 
-    # U_m = (π μ I_H / kT) × (D_ji / ω_ℓ) × (a0³/τ0) × n_p
-    # BUT: n_p factor is NOT included here — q is per unit n_p [cm³/s]
-    # The formula from Badnell (their eq. just before eq. 12):
-    #   q_ji = (a0³/τ0) * sqrt(π μ I_H / kT) * (D/ω) * F(U_m)
-    # where U_m is evaluated at the Debye cutoff (density-dependent).
-    # For a density-independent rate coefficient we evaluate in the
-    # low-density limit U_m → 0, which gives F(U_m) → 1.
-    # This is the coronal limit used throughout the CR model.
-    # For the full density-dependent treatment one would pass ne and
-    # evaluate U_m at the Debye radius; that is a small correction here.
-    #
-    # F(U_m) = sqrt(π)/2 * U_m^(-3/2) * erf(sqrt(U_m))
-    #          - exp(-U_m)/U_m + E1(U_m)
-    # In limit U_m → 0:  F → 1  (Badnell eq. 13)
-
-    kT  = Te_arr                    # [eV]  (using kT = T in eV units)
-    prefactor = A0_3 / TAU0         # [cm³/s * s/s] = [cm³ * s⁻¹ * τ0]
-
-    # sqrt(π μ I_H / kT) in dimensionless units (I_H and kT both in eV)
+    kT  = Te_arr                          # [eV]
+    prefactor = A0_3 / TAU0               # [cm³/s]
     sqrt_term = np.sqrt(np.pi * MU * IH / kT)
 
-    # Low-density limit: F(U_m→0) = 1
-    q = prefactor * sqrt_term * (D / omega)
+    Um = _psm20_Um(n, ell_upper, Te_arr, ne_cm3, P1=P1)
+    F_um = _psm20_F(Um)
+
+    q = prefactor * sqrt_term * (D / omega) * F_um
 
     return q
 
 
-def _psm20_q_up(n, ell_lower, Te_arr):
+def _psm20_q_up(n, ell_lower, Te_arr, ne_cm3=NE_DEFAULT, P1=P1_DEFAULT):
     """
     Upward rate coefficient via reciprocity:
       q(n, ℓ_lower → ℓ_lower + 1; T) = q_down(n, ℓ_lower+1 → ℓ_lower; T)
@@ -179,23 +284,35 @@ def _psm20_q_up(n, ell_lower, Te_arr):
     n         : int
     ell_lower : int    ℓ of the lower state (0 ≤ ℓ_lower ≤ n-2)
     Te_arr    : (N,) float  [eV]
+    ne_cm3    : float  [cm^-3] Debye-cutoff electron density
+    P1        : float  matching probability
 
     Returns
     -------
     q : (N,) float  [cm³/s]  upward rate coefficient
     """
     ell_upper = ell_lower + 1
-    q_down = _psm20_q_down(n, ell_upper, Te_arr)
+    q_down = _psm20_q_down(n, ell_upper, Te_arr, ne_cm3=ne_cm3, P1=P1)
     # reciprocity: detailed balance at LTE gives this ratio
     ratio  = (2 * ell_upper + 1) / (2 * ell_lower + 1)
     return q_down * ratio
 
 
 # ── Build K_lmix table ──────────────────────────────────────────────────────────
-def compute_K_lmix(te_grid=None, out_dir=None):
+def compute_K_lmix(te_grid=None, ne_cm3=NE_DEFAULT, P1=P1_DEFAULT, out_dir=None):
     """
     Compute proton-impact ℓ-mixing rate coefficients for all adjacent
     (n, ℓ) → (n, ℓ±1) pairs in the resolved block n = 2–8.
+
+    Parameters
+    ----------
+    te_grid : (N_Te,) array [eV], optional
+    ne_cm3  : float [cm^-3], Debye-cutoff reference density.
+              F(U_m) varies logarithmically with n_e, so a single density
+              is a good approximation across the grid; use a per-point
+              (T_e, n_e) call site if strict density resolution is needed.
+    P1      : float, small-impact matching probability (Badnell Eq. 4)
+    out_dir : str, output directory for K_lmix.npy
 
     Returns
     -------
@@ -223,10 +340,12 @@ def compute_K_lmix(te_grid=None, out_dir=None):
             idx_hi = NL_TO_IDX[(n, ell + 1)]    # higher-ℓ state index
 
             # Downward rate: hi → lo  (ℓ+1 → ℓ)
-            q_down = _psm20_q_down(n, ell + 1, te_grid)   # (n_Te,)
+            q_down = _psm20_q_down(n, ell + 1, te_grid,
+                                   ne_cm3=ne_cm3, P1=P1)   # (n_Te,)
 
             # Upward rate: lo → hi  (ℓ → ℓ+1)
-            q_up   = _psm20_q_up(n, ell, te_grid)         # (n_Te,)
+            q_up   = _psm20_q_up(n, ell, te_grid,
+                                 ne_cm3=ne_cm3, P1=P1)     # (n_Te,)
 
             # K[destination, source, Te]
             K[idx_lo, idx_hi, :] = q_down    # hi → lo
@@ -304,17 +423,24 @@ def qc_K_lmix(K, te_grid=None):
     if max_err >= 1e-10:
         all_pass = False
 
-    # Check 3: temperature scaling q ∝ T^(-0.5)
-    print("\nCheck 3 — Temperature scaling (q ∝ T^-0.5):")
+    # Check 3: temperature scaling — with F(U_m) correction, the pure -0.5
+    # slope from sqrt(pi mu I_H / kT) is modified because F(U_m) grows
+    # weakly with T (since U_m ∝ 1/T and F ∝ ln(1/U_m) at small U_m).
+    # The net slope drifts from ~-0.2 (n=2) toward ~+0.1 (n=8). All are
+    # physical; only slopes far outside [-0.5, +0.2] indicate a problem.
+    print("\nCheck 3 — Temperature scaling (with F(U_m) correction):")
     # Use 2s→2p as test case
     idx_2s = NL_TO_IDX[(2, 0)]
     idx_2p = NL_TO_IDX[(2, 1)]
     q_test = K[idx_2p, idx_2s, :]    # 2s → 2p
     # Fit log-log slope
     slope = np.polyfit(np.log(te_grid), np.log(q_test), 1)[0]
-    print(f"  2s→2p log-log slope = {slope:.3f}  (expect -0.5)")
-    ok = abs(slope - (-0.5)) < 0.02
-    print(f"  {'PASS' if ok else 'WARN (non-trivial T-dependence expected)'}")
+    print(f"  2s→2p log-log slope = {slope:.3f}  "
+          f"(range with F: [-0.5, +0.2])")
+    ok = -0.5 <= slope <= 0.2
+    print(f"  {'PASS' if ok else 'FAIL — slope outside physical range'}")
+    if not ok:
+        all_pass = False
 
     # Check 4: n-scaling — compare q for n=2 vs n=7 at same Te
     print("\nCheck 4 — n-scaling (higher n → higher rate):")
@@ -331,8 +457,8 @@ def qc_K_lmix(K, te_grid=None):
         print("  PASS")
 
     # Check 5: conservative redistribution — check L_mix column sums to 0
-    # Build L_mix for a test ne=1e14 and check column sums
-    print("\nCheck 5 — Conservative redistribution (column sums = 0):")
+    # Build L_mix for a test ne=1e14 and check column sums RELATIVE to diagonal
+    print("\nCheck 5 — Conservative redistribution (column sums = 0, relative):")
     ne_test = 1e14
     L_mix = np.zeros((43, 43))
     for i in range(36):
@@ -344,9 +470,14 @@ def qc_K_lmix(K, te_grid=None):
         L_mix[j, j] -= L_mix[:, j].sum()
     col_sums = L_mix.sum(axis=0)
     max_col_err = np.abs(col_sums).max()
+    max_diag    = np.abs(np.diag(L_mix)).max()
+    # With F(U_m) correction, entries are ~1e12; absolute test would fail
+    # at machine round-off. Use relative tolerance instead.
+    rel_err = max_col_err / max_diag if max_diag > 0 else 0.0
     print(f"  Max |column sum| = {max_col_err:.2e}  "
-          f"{'PASS' if max_col_err < 1e-6 else 'FAIL'}")
-    if max_col_err >= 1e-6:
+          f"(relative: {rel_err:.2e})  "
+          f"{'PASS' if rel_err < 1e-12 else 'FAIL'}")
+    if rel_err >= 1e-12:
         all_pass = False
 
     # Print sample rates

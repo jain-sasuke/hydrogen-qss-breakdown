@@ -55,7 +55,7 @@ GRIDS:
 
 OUTPUTS:
     L_grid.npy       (50, 8, 43, 43)  pre-computed grid [s^-1]
-    S_grid.npy       (50, 8, 43)      source per unit n_ion [cm^3 s^-1]
+    S_grid.npy       (50, 8, 43)      source per unit n_ion [s^-1]; S = ne(alpha_RR + ne*alpha_3BR)
     Te_grid_L.npy    (50,)            [eV]
     ne_grid_L.npy    (8,)             [cm^-3]
     L_meta.csv                        assembly record
@@ -196,7 +196,7 @@ def build_source(Te_idx, ne, rates, n_ion=1.0):
 
     Returns
     -------
-    S : (43,) ndarray  [cm^-3 s^-1] if n_ion given, or [cm^3 s^-1] if n_ion=1
+    S : (43,) ndarray  [cm^-3 s^-1] if n_ion given, or [s^-1] if n_ion=1
     """
     ne2 = ne**2
     S = np.zeros(43)
@@ -214,7 +214,7 @@ def precompute_L_grid(rates=None, out_dir=None, ne_grid=None, te_grid=None):
     Outputs
     -------
     L_grid : (n_Te, n_ne, 43, 43)  rate matrices [s^-1]
-    S_grid : (n_Te, n_ne, 43)      source per unit n_ion [cm^3 s^-1]
+    S_grid : (n_Te, n_ne, 43)      source per unit n_ion [s^-1]; S = ne(alpha_RR + ne*alpha_3BR)
     """
     if rates is None:
         rates = load_rates()
@@ -345,7 +345,7 @@ def precompute_L_grid(rates=None, out_dir=None, ne_grid=None, te_grid=None):
     print(f"  L_grid.npy    {L_grid.shape}  "
           f"[s^-1]  {L_grid.nbytes/1024**2:.1f} MB")
     print(f"  S_grid.npy    {S_grid.shape}   "
-          f"[cm^3/s]  {S_grid.nbytes/1024:.0f} KB")
+          f"[s^-1]    {S_grid.nbytes/1024:.0f} KB")
     print(f"  Te_grid_L.npy {te_grid.shape}")
     print(f"  ne_grid_L.npy {ne_grid.shape}")
     print(f"  L_meta.csv")

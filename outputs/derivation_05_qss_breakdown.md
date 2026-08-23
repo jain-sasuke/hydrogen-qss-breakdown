@@ -18,7 +18,7 @@ $\tau_{\rm QSS}$ reconciliation, non-normality applied, code review).
 
 ## 1. The question
 
-$M = \tau_{\rm QSS}/\tau_{\rm relax} = 9982$ at the ITER reference. The excited
+$M = \tau_{\rm QSS}/\tau_{\rm relax} = 9982$ at the benchmark point. The excited
 manifold relaxes ten thousand times faster than the ionisation balance moves. By
 the textbook argument — the same Bodenstein reasoning used in reaction kinetics
 — QSS should be flawless.
@@ -155,7 +155,7 @@ $n_e$ change in broadly similar ways, so much of their absolute change is
 sensitive, unless a step specifically alters the relative $n{=}3$/$n{=}4$
 excitation balance more than it alters the overall population vector.
 
-**Confirmed numerically** (ITER reference, $T_e$ step $2.947\to3.556$ eV;
+**Confirmed numerically** (benchmark point, $T_e$ step $2.947\to3.556$ eV;
 preliminary run with a stand-in source vector):
 
 | Quantity | Value |

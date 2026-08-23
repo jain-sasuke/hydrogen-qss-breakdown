@@ -80,7 +80,7 @@ stand-in produces plausible-looking output that means nothing.
 
 ## Verified reference values
 
-ITER reference point: **Te = 2.947 eV** (index 23), **ne = 1.389×10¹⁴ cm⁻³**
+benchmark point: **Te = 2.947 eV** (index 23), **ne = 1.389×10¹⁴ cm⁻³**
 (index 5), from `L_grid.npy` regenerated 14 Jul 2026 after the ℓ-mixing
 F(U_m) correction:
 

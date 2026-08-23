@@ -8,7 +8,7 @@ rate matrix $L$.
 Analytic 2-state derivation verified (hand derivation, worked example, sign / units / limit
 checks). §6A boundary-level physics corrected (arithmetic error + two overclaims). The
 **~25 ns vs ~2 ns dispute is resolved**: live computation on the regenerated
-`L_grid.npy` at ITER reference ($T_e{=}2.947$ eV, $n_e{=}1.389\times10^{14}$ cm$^{-3}$) gives
+`L_grid.npy` at benchmark point ($T_e{=}2.947$ eV, $n_e{=}1.389\times10^{14}$ cm$^{-3}$) gives
 $\tau_{\text{relax}}=2.277$ ns, $\tau_{\text{QSS}}=22.73\,\mu$s, $M=9982$ — reproduced
 independently on the student's own machine. The 25 ns value was an artifact of a stale
 pre-March-2026 matrix carrying a spurious intermediate eigenmode (same root cause as the
@@ -249,7 +249,7 @@ closed-form estimates exist for the critical $n_{cr}$ where $R_G\sim10$:
 
 $$n_{cr} \approx 141\,N_e^{-2/17} \ \text{(Griem 1963, eq. 7.77)}, \qquad n_{cr} \approx 99\,N_e^{-2/17} \ \text{(van der Mullen 1990)}$$
 
-**Corrected arithmetic** (an earlier draft had an error here): at ITER reference $N_e=10^{14}$
+**Corrected arithmetic** (an earlier draft had an error here): at benchmark point $N_e=10^{14}$
 cm$^{-3}$,
 
 $$(10^{14})^{-2/17} = 10^{-1.647} \approx 0.0225 \quad\Rightarrow\quad n_{cr} \approx 99\times0.0225 \approx 2.2 \ \text{(van der Mullen)}, \ \approx 3.2\ \text{(Griem)}$$
@@ -309,7 +309,7 @@ slow eigenmode itself — not from the $R_G$ classification alone.**
 ### RESOLVED: ~2.28 ns is the real $\tau_{\text{relax}}$; ~25 ns was a stale-matrix artifact
 
 A documented prior run (`CHAPTER5_CORRECTIONS_REPORT.md`, Session 10 May 2026) computed
-$\mathrm{eigvals}(L\_{\text{grid}}[23,5])$ at ITER reference directly:
+$\mathrm{eigvals}(L\_{\text{grid}}[23,5])$ at benchmark point directly:
 
 $$\lambda_1 = 4.387\times10^8\ \text{s}^{-1} \;\Rightarrow\; \tau_{\text{relax}} = 2.28\ \text{ns}$$
 
@@ -373,7 +373,7 @@ evidence the slow mode is associated with the Griem/Fujimoto boundary.
 ## 9. CONFIRMED — real numbers from a documented prior code run
 
 **Source:** `CHAPTER5_CORRECTIONS_REPORT.md` (Session 10, May 2026), reporting
-`np.linalg.eigvals(L_grid[23, 5])` at ITER reference ($T_e=2.947$ eV, $n_e=1.389\times10^{14}$
+`np.linalg.eigvals(L_grid[23, 5])` at benchmark point ($T_e=2.947$ eV, $n_e=1.389\times10^{14}$
 cm$^{-3}$, matrix indices from the 50×8 $(T_e,n_e)$ grid defined in `assemble_cr_matrix.py`).
 **This is a reported result, not independently re-run in this session** — the underlying
 `L_grid.npy` and its upstream dependencies (`K_exc_full.npy`, `A_resolved.npy`, etc.) are not
@@ -448,7 +448,7 @@ to catch; it should be checked, not assumed fixed.
 
 ## 9.3 Session A — eigenvector identification and framing reconciliation
 
-**Computed live from the post-ℓ-mixing-fix `L_grid.npy` at ITER reference
+**Computed live from the post-ℓ-mixing-fix `L_grid.npy` at benchmark point
 ($T_e=2.947$ eV, $n_e=1.389\times10^{14}$ cm⁻³).**
 
 ### The three slowest modes and where they live
@@ -532,7 +532,7 @@ Earlier drafts of this note described **three timescale groups** — picosecond
 ℓ-mixing, nanosecond relaxation, microsecond ionisation. **That framing is not
 supported by the spectrum and is retracted.**
 
-Full spectrum at ITER reference, consecutive timescale ratios
+Full spectrum at benchmark point, consecutive timescale ratios
 (`verify_timescales.py` Test 2):
 
 | Between | Ratio |

@@ -1,6 +1,6 @@
 ==============================================================================
 DIVERTOR DRIVE MAP -- time-averaged shell-ratio error, two bounds
-generated 2026-08-23 11:20  by verify_divertor_map.py
+generated 2026-08-23 13:36  by verify_divertor_map.py
 repo root      /Users/phi/Desktop/non_markovian_cr
 L_grid sha256  2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
 S_grid sha256  7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
@@ -45,7 +45,8 @@ This model at grid [49,0] (Te=10.0000 eV, ne=1.000e+12 cm^-3):
   comparison; exact agreement would be suspicious.
 
 ==============================================================================
-ITER REFERENCE, all drives
+BENCHMARK POINT, all drives
+  grid [23,5] = nearest to Te=3 eV, ne=1e14 cm^-3 (representative attached divertor; not a published operating point)
   Te=2.9471 eV  ne=1.3895e+14 cm^-3  step +0.0481
   tau_QSS=1.8494e-05 s  tau_relax=2.2437e-09 s  M=8243
   f3=0.3102  f4=0.0607  |f3-f4|=0.2495

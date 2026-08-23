@@ -1,7 +1,7 @@
 """
 check_modal_weights.py
 ======================
-Compute modal weights c_k for K(t) at ITER reference.
+Compute modal weights c_k for K(t) at benchmark point.
 Verifies the claim: top 2 slow modes carry >X% of total |c_k|.
 
 K(t) = L_SF exp(L_FF t) L_FS = sum_k c_k exp(lambda_k t)
@@ -27,7 +27,7 @@ ti = int(np.argmin(np.abs(TE_GRID - 3.0)))
 ni = int(np.argmin(np.abs(NE_GRID - 1.39e14)))
 L  = L_grid[ti, ni]
 
-print(f"ITER reference: Te={TE_GRID[ti]:.3f} eV, ne={NE_GRID[ni]:.2e}")
+print(f"benchmark point: Te={TE_GRID[ti]:.3f} eV, ne={NE_GRID[ni]:.2e}")
 print()
 
 L_FF = L[np.ix_(IDX_FAST, IDX_FAST)]   # 42x42

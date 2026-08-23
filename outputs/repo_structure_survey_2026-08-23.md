@@ -534,7 +534,7 @@ Extraction is direct array indexing, no redistribution:
 430	                    pred_exp[ti, ni] = abs(np.exp(exponent) - 1.0)
 ```
 
-Printed at the ITER reference point:
+Printed at the benchmark point:
 
 ```python
 580	    for delta_nominal, res in step_results.items():
@@ -898,9 +898,9 @@ The other 59 do not.
 
 | path | line | verbatim | hardcoded |
 |---|---|---|---|
-| `rates/diagnostic.py` | 4 | `ti, ni = 23, 5   # ITER reference` | ITER indices, no shape/label check |
+| `rates/diagnostic.py` | 4 | `ti, ni = 23, 5   # benchmark point` | ITER indices, no shape/label check |
 | `rates/regenerate_figures.py` | 65 | `ti, ni = 23, 5   # ITER ref: Te~3eV, ne~1.39e14` | ITER indices (this script also loads L_grid directly) |
-| `rates/Balmer_timescale_audit.py` | 251 | `benchmark = regime.iloc[((regime["Te_old_grid_eV"] - 2.947052).abs() + np.abs(np.log10(regime["ne_grid_cm-3"] / 1.389495e14))).argmin()]` | ITER reference values |
+| `rates/Balmer_timescale_audit.py` | 251 | `benchmark = regime.iloc[((regime["Te_old_grid_eV"] - 2.947052).abs() + np.abs(np.log10(regime["ne_grid_cm-3"] / 1.389495e14))).argmin()]` | benchmark point values |
 | `rates/check.py` | 7–8 | `ti = np.argmin(np.abs(np.logspace(0,1,50) - 3.0))` / `ni = np.argmin(np.abs(np.logspace(12,15,8) - 1e14))` | full grid formula re-derived; also `"Thesis M = 611"` at line 14 |
 | `rates/qsscheck.py` | 6–7 | `ti = np.argmin(np.abs(np.logspace(0,1,50)-3.0))` / `ni = np.argmin(np.abs(np.logspace(12,15,8)-1e14))` | same |
 | `rates/assemble_cr_matrix.py` | 80–81 | `TE_GRID = np.logspace(np.log10(1.0), np.log10(10.0), 50)` / `NE_GRID = np.logspace(12, 15, 8)` | canonical root definition — not drift by itself |

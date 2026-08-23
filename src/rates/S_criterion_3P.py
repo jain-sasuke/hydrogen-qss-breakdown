@@ -79,7 +79,7 @@ IDX_1S = 0
 IDX_3P = 4              # verified: n=3, l=1 in the 43-state ordering
 MIN_POP = 1e-300
 
-# ITER reference (grid-snapped values from context)
+# benchmark point (grid-snapped values from context)
 TE_REF_NOMINAL = 2.95
 NE_REF_NOMINAL = 1.39e14
 
@@ -201,7 +201,7 @@ def print_ref_table(a_grid, eps_dict, delta_te_list):
     ti, ni = ref_indices()
     a = a_grid[ti, ni]
     print("=" * 74)
-    print("3P-RESTRICTED S CRITERION — ITER reference")
+    print("3P-RESTRICTED S CRITERION — benchmark point")
     print("=" * 74)
     print(f"  Te_ref = {TE_GRID[ti]:.4f} eV   ne_ref = {NE_GRID[ni]:.3e} cm^-3")
     print(f"  a_3P (signed slope d/dTe ln r_3P) = {a:+.4f} eV^-1")

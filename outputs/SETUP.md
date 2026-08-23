@@ -110,7 +110,7 @@ Open Claude Code in the repo root:
 > Don't run anything yet.
 
 **Check:** it should name *report don't repair*, *no hardcoding*, *no black
-boxes*, and know the ITER reference values. **If it offers to fix anything, the
+boxes*, and know the benchmark point values. **If it offers to fix anything, the
 CLAUDE.md hasn't landed** — adjust before letting it touch the repo.
 
 ### Step 6 — Start the new Claude chat
@@ -424,7 +424,7 @@ Both need independent re-checking before anything is written into the thesis.
 **Finding 1 — the $L^2$ error measure over all 43 states is dominated by the
 ground state, and therefore does not measure QSS.**
 
-At the ITER reference: ground population $8.80\times10^{-4}$ versus total
+At the benchmark point: ground population $8.80\times10^{-4}$ versus total
 excited $1.21\times10^{-5}$ — the ground state is **73×** the entire excited
 manifold. An $L^2$ norm over all states is effectively an error measure on
 $n_{1s}$.
@@ -496,7 +496,7 @@ simply is not what breaks QSS; and the ℓ-mixing bug found and bounded (A4).
 Do these **before** accepting anything in §8.1–8.2. The findings above are
 claims, not established results.
 
-1. **Reproduce the ground/excited population ratio** at the ITER reference.
+1. **Reproduce the ground/excited population ratio** at the benchmark point.
    Expect ground $\approx73\times$ the summed excited population. If not, the
    whole diagnosis is wrong.
 

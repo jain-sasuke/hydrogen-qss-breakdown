@@ -19,7 +19,7 @@ HYPOTHESIS UNDER TEST (restated)
 --------------------------------
 After the fast modes have died, is the residual n=3/n=4 shell-ratio error
 carried by the slow eigenmode lambda_0, and does the observable's projection
-onto lambda_0 explain why the ITER reference decays over the window while the
+onto lambda_0 explain why the benchmark point decays over the window while the
 cold corner does not?
 
 Sub-claims, each tested separately below:

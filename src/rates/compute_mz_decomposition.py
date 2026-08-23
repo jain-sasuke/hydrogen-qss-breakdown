@@ -2,7 +2,7 @@
 compute_mz_decomposition.py  (v2 — corrected steady-state solve)
 =================================================================
 Compute the MZ term decomposition of the H-alpha transient at the
-ITER reference point.
+benchmark point.
 
 PHYSICS
 -------
@@ -47,7 +47,7 @@ sys.path.insert(0, str(_HERE))
 from assemble_cr_matrix import load_rates, TE_GRID, NE_GRID
 
 # ── Parameters ─────────────────────────────────────────────────────────────────
-TE_OLD   = 3.0    # eV before step (ITER reference — ionising)
+TE_OLD   = 3.0    # eV before step (benchmark point — ionising)
 TE_NEW   = 6.0    # eV after step  (hotter — shows clear excitation increase)
 NE_REF   = 1e14   # cm^-3
 N_ION    = 1e14   # cm^-3 (ion reservoir)

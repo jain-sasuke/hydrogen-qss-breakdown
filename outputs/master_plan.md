@@ -273,7 +273,7 @@ writing, and writing has no slack.
 | $M$ convention | $M=\tau_{\rm QSS}/\tau_{\rm relax}$, large = QSS necessary condition holds |
 | $\tau_{\rm relax}$ definition | Framing A ($\lambda_1$ of the full matrix); agreement with Framing B (<0.35%) reported as robustness |
 | $\tau_{\rm QSS}$ definition | **OPEN** — eigenvalue vs target-motion. Q5 Session D |
-| ITER reference point | Illustrative anchor only. Prove with the grid, illustrate with the point. Grid values $T_e=2.947$ eV, $n_e=1.389\times10^{14}$ cm⁻³ |
+| benchmark point | Illustrative anchor only. Prove with the grid, illustrate with the point. Grid values $T_e=2.947$ eV, $n_e=1.389\times10^{14}$ cm⁻³ |
 | Q5 error measure | Both: $L^2$ norm (mathematical) and Balmer ratio (diagnostic) |
 | Boundary descent | Report as a discrete staircase. **No fitted exponent** ($R^2\approx0.91$; slope shifts 20% when saturated points are dropped) |
 | Spectrum framing | One gap, then a quasi-continuum. **Not** "three groups" |

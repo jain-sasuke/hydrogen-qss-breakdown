@@ -128,7 +128,7 @@ class CRSolver:
     # ── Loading ───────────────────────────────────────────────────────────────
     def _load(self, paths):
         self.L_grid  = np.load(paths['L_grid'])    # (50, 8, 43, 43) s^-1
-        self.S_grid  = np.load(paths['S_grid'])    # (50, 8, 43)     cm^3/s
+        self.S_grid  = np.load(paths['S_grid'])    # (50, 8, 43)     s^-1 (= alpha*ne)
         self.Te_grid = np.load(paths['Te_grid'])   # (50,)           eV
         self.ne_grid = np.load(paths['ne_grid'])   # (8,)            cm^-3
         self.K_ion   = np.load(paths['K_ion'])     # (43, 50)        cm^3/s

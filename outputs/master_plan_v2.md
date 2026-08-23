@@ -119,7 +119,7 @@ tolerance adjustments. Missing data → stop.
 | **V0** | Commit `compute_lmix.py` (modified) + four untracked `verify_*.py`. Report hash. Also `git check-ignore -v` and `shasum -a 256` on `L_grid.npy` — `data/` is probably gitignored, so put the matrix hash in the commit message | known state |
 | **V1** | Two files named `S_grid.npy` (`cr_matrix/` = recombination source; `sensitivity/` = S-criterion grid). Report shape, dtype, range, writing script. Don't rename yet | collision resolved |
 | **V2** | Audit `verify_ramp_vs_step.py` line by line. Then grep repo-wide for `solve_ivp`, `odeint`, `LSODA`, `expm`. **Find the script that produced A7's numbers, or establish that none does** | A7 provenance settled |
-| **V3** | Slow eigenvector v₀ at the ITER reference: ground component, all 42 excited components at full precision, ‖v₀,exc‖/\|v₀,gnd\|, and ‖v₀,exc‖/‖n^ss_exc‖ after scaling v₀ to n^ss_ground. **n_ion is undefined in the pipeline — set n_ion = 1 and say so; every requested quantity is a ratio and is invariant under rescaling b.** Report Im(λ₀) and the sign convention | the τ question, half of it |
+| **V3** | Slow eigenvector v₀ at the benchmark point: ground component, all 42 excited components at full precision, ‖v₀,exc‖/\|v₀,gnd\|, and ‖v₀,exc‖/‖n^ss_exc‖ after scaling v₀ to n^ss_ground. **n_ion is undefined in the pipeline — set n_ion = 1 and say so; every requested quantity is a ratio and is invariant under rescaling b.** Report Im(λ₀) and the sign convention | the τ question, half of it |
 | **V4** | The `eigs < -1.0` filter: line, expression, affected points with coordinates, filtered vs unconditional values, affected outputs | Part 2 prediction tested |
 | **V5** | Cross-file consistency: `timescale_verification.csv` vs `M_grid.npy` + summary, point by point. Locate max M = 1.01197289e8 | anomaly resolved |
 | **V6** | Figure staleness table: figure, generating script, figure mtime, data mtime, stale y/n. Flag everything older than 2026-07-21 20:44 | regeneration list |
@@ -162,7 +162,7 @@ and wait.**
    the error actually track?
 2. **Hand derivation.** From δ̇ = −δ/τ_r + J/τ_d, derive the suppression law and
    check both limits (τ_d → 0 and τ_d → ∞).
-3. **Worked example.** Both candidate τ at the ITER reference, carried to a number.
+3. **Worked example.** Both candidate τ at the benchmark point, carried to a number.
 4. **Brutal test.** Units. Signs. Does ε̄ → ε_res as τ_d → 0? Does it → 0 as
    τ_d → ∞? Does the answer survive using the L² norm instead of max_p?
 5. **Code.** `qss_analysis.py`, against the derivation.
@@ -177,7 +177,7 @@ norm*, decaying on τ_QSS. **What would you conclude from each answer?**
 
 **Empirical cross-check, independent of the derivation:** load
 `epsilon_traces.npz` (regenerated, post-repair) and find where ε(t) falls to 1/e
-of ε_step at the ITER reference. Near 2 ns → τ_relax governs. Near 20 µs → τ_QSS
+of ε_step at the benchmark point. Near 2 ns → τ_relax governs. Near 20 µs → τ_QSS
 governs. Predict which first.
 
 ### Then, in order of value
@@ -303,7 +303,7 @@ day 22 except typos.
 says QSS holds."* Rehearse until it is a 60-second answer with a number in it.
 
 **Pass 2 — methodology.** Why M = τ_QSS/τ_relax and not the inverse. Why max_p on
-ratios and not an L² norm. Why 43 states. Why the ITER reference point is
+ratios and not an L² norm. Why 43 states. Why the benchmark point is
 illustrative and every general claim is carried by the grid.
 
 **Pass 3 — the bugs.** You will be asked. The answer is a strength: *"I found an
@@ -357,7 +357,7 @@ the QSS rate — but making that argument properly is a paper, not ten days.
 | τ_relax definition | Framing A (λ₁ of the full matrix); agreement with Framing B (<0.35% grid-wide, 0.0098% at the reference) reported as robustness |
 | τ_QSS definition | Least-negative eigenvalue, **unconditionally** — no magnitude filter |
 | τ in De | **OPEN — Q8. Blocks the title** |
-| ITER reference point | Illustrative anchor only. Prove with the grid, illustrate with the point. Te = 2.947 eV (idx 23), ne = 1.389×10¹⁴ cm⁻³ (idx 5) |
+| benchmark point | Illustrative anchor only. Prove with the grid, illustrate with the point. Te = 2.947 eV (idx 23), ne = 1.389×10¹⁴ cm⁻³ (idx 5) |
 | Error measure | max_p on ratios r_p = n_p/n_1S. **Not** an L² norm over all 43 states — that is ground-dominated (73×) and measures the wrong thing |
 | Spectrum framing | One gap of ~10⁴, then a 42-mode quasi-continuum. **Not** "three groups" |
 | Boundary descent | Discrete staircase. **No fitted exponent** |

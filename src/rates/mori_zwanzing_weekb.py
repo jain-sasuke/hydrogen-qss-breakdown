@@ -380,7 +380,7 @@ def print_summary(results, te_grid, ne_grid):
     print(f"\ntau_K (bath relaxation timescale):")
     print(f"  Min: {np.nanmin(tau_K)*1e9:.3f} ns")
     print(f"  Max: {np.nanmax(tau_K)*1e9:.3f} ns")
-    print(f"  At ITER reference (Te~3eV, ne~1e14): "
+    print(f"  At benchmark point (Te~3eV, ne~1e14): "
           f"{tau_K[np.argmin(np.abs(te_grid-3.0)), np.argmin(np.abs(ne_grid-1e14))]*1e9:.3f} ns")
 
     print(f"\nM_MZ = tau_QSS / tau_K:")

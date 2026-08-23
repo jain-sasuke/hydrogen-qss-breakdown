@@ -296,7 +296,7 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
     1. L_FF eigenspectrum at every (Te, ne) point
     2. tau_relax from L_FF (validate against thesis Gate E values)
     3. Spectral gap map
-    4. K(t) and tau_K at ITER reference point
+    4. K(t) and tau_K at benchmark point
     5. Omega_QSS validation
 
     Saves all arrays to data/processed/mori_zwanzig/.
@@ -328,7 +328,7 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
           f"{'Spectral gap':<14} {'K(0)':<14} {'Ω_QSS':<14} {'ratio'}")
     print("-" * 90)
 
-    # ITER reference indices for detailed output
+    # benchmark point indices for detailed output
     te_ref_idx = np.argmin(np.abs(te_grid - 3.0))
     ne_ref_idx = np.argmin(np.abs(ne_grid - 1e14))
 
@@ -358,7 +358,7 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
             # Omega_QSS is the effective QSS ionisation rate (positive).
             # L_SS = L[0,0] is the total ground-state loss rate (negative).
             # Ratio = Omega / |L_SS| should be < 1 (fraction of loss via QSS path).
-            # Full K~(0)/Omega_QSS validation done at ITER reference only
+            # Full K~(0)/Omega_QSS validation done at benchmark point only
             # (computing K(t) per grid point is expensive — done in Week B).
             L_SS_val = float(L[0, 0])
             ratio = -Omega / abs(L_SS_val) if abs(L_SS_val) > 0 else np.nan
@@ -369,9 +369,9 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
                 print(f"  {Te:<8.3f}  {ne:<12.2e}  {tau_r*1e9:<14.3f}  "
                       f"{s_gap:<12.4e}  {K0:<12.4e}  {Omega:<12.4e}  {ratio:.4f}")
 
-    # ── Detailed output at ITER reference ──────────────────────────────────────
+    # ── Detailed output at benchmark point ──────────────────────────────────────
     print(f"\n{'='*70}")
-    print(f"ITER REFERENCE POINT DETAIL")
+    print(f"BENCHMARK POINT POINT DETAIL")
     print(f"Te = {te_grid[te_ref_idx]:.3f} eV,  ne = {ne_grid[ne_ref_idx]:.2e} cm⁻³")
     print(f"{'='*70}")
 
@@ -391,8 +391,8 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
         print(f"  λ_{k+1} = {lam.real:.4e} + {lam.imag:.2e}i s⁻¹  "
               f"→  τ = {tau*1e9:.3f} ns")
 
-    # K(t) at ITER reference
-    print(f"\nComputing K(t) at ITER reference (500 time points)...")
+    # K(t) at benchmark point
+    print(f"\nComputing K(t) at benchmark point (500 time points)...")
     t_grid_ref, K_t_ref = compute_K_t_array(L_SF_r, L_FF_r, L_FS_r, n_points=500)
     tau_K_ref = compute_tau_K(t_grid_ref, K_t_ref)
 
@@ -440,7 +440,7 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
     np.save(f'{OUT_DIR}/validation_ratio.npy',validation_ratio)
     np.save(f'{OUT_DIR}/te_grid_MZ.npy',      te_grid)
     np.save(f'{OUT_DIR}/ne_grid_MZ.npy',      ne_grid)
-    # Save ITER reference K(t) for plotting
+    # Save benchmark point K(t) for plotting
     np.save(f'{OUT_DIR}/K_t_ITER_ref.npy',    K_t_ref)
     np.save(f'{OUT_DIR}/t_grid_ITER_ref.npy', t_grid_ref)
 
@@ -468,7 +468,7 @@ def run_week_A(rates=None, te_grid=None, ne_grid=None):
 
 def quick_check(rates, te_idx=25, ne_val=1e14):
     """
-    Run sanity checks at ITER reference before full grid computation.
+    Run sanity checks at benchmark point before full grid computation.
 
     Checks:
     A. Partition reconstructs full L exactly
@@ -480,7 +480,7 @@ def quick_check(rates, te_idx=25, ne_val=1e14):
     D. K~(0) ≈ Omega_QSS (Mori-Zwanzig self-consistency)
     """
     print("="*60)
-    print("QUICK CHECKS at ITER reference (Te≈3eV, ne=1e14)")
+    print("QUICK CHECKS at benchmark point (Te≈3eV, ne=1e14)")
     print("="*60)
 
     L = build_L(te_idx, ne_val, rates)
@@ -511,7 +511,7 @@ def quick_check(rates, te_idx=25, ne_val=1e14):
     # The thesis tau_relax = 25 ns is a COUPLED mode of full L —
     # it does NOT appear in L_FF and is NOT the correct comparison here.
     evals_sorted, tau_K, sgap = analyse_eigenspectrum(L_FF)
-    tau_QSS_ref = 15.3e-6   # thesis tau_QSS at ITER reference [s]
+    tau_QSS_ref = 15.3e-6   # thesis tau_QSS at benchmark point [s]
     ratio_KC    = tau_K / tau_QSS_ref
     sep_ok      = ratio_KC < 0.01   # tau_K must be < 1% of tau_QSS
 
@@ -575,7 +575,7 @@ if __name__ == '__main__':
     tau_K_ref  = results['tau_K_ref']
     tau_K_bath = results['tau_relax_MZ'][ti, ni]
     tau_QSS    = 15.3e-6
-    print(f"\nKey results at ITER reference (Te~3eV, ne~1e14):")
+    print(f"\nKey results at benchmark point (Te~3eV, ne~1e14):")
     print(f"  tau_K (bath)         = {tau_K_ref*1e9:.3f} ns")
     print(f"  tau_K (L_FF lambda1) = {tau_K_bath*1e9:.3f} ns")
     print(f"  tau_QSS (thesis)     = {tau_QSS*1e6:.1f} us")

@@ -103,7 +103,7 @@ $$b_{\max} \approx \lambda_D$$
 This regulates the integral and is the origin of the **Coulomb logarithm** $\ln(b_{\max}/b_{\min})
 = \ln(\lambda_D/b_{\min})$ in the rate formula.
 
-**Numbers at ITER reference (independently verified this session):** for $T_e=3$ eV,
+**Numbers at benchmark point (independently verified this session):** for $T_e=3$ eV,
 $n_e=1.4\times10^{14}$ cm⁻³, the electron-only Debye length is $\lambda_{De}\approx1.09$ µm and
 the two-species ($T_e=T_i$) value is $\lambda_D\approx0.77$ µm. With $b_{\min}\sim n^2 a_0
 \approx1.3$ nm for $n=5$, the Coulomb log is $\ln(\lambda_D/b_{\min})\approx6$ — order-unity-times-
@@ -138,8 +138,8 @@ $\ln(\lambda_D/b_{\min})$ Coulomb-log form, and estimate an actual number for $n
 reference. Then check it beats $A(n{=}5)$ and lands in the picosecond range. Only then read
 `compute_lmix.py`.
 
-> **Note on the ITER reference point (framing decision — applies across the whole thesis).**
-> The "ITER reference point" used for worked numbers is $T_e\approx3$ eV, $n_e\approx1.4\times10^{14}$
+> **Note on the benchmark point (framing decision — applies across the whole thesis).**
+> The "benchmark point" used for worked numbers is $T_e\approx3$ eV, $n_e\approx1.4\times10^{14}$
 > cm⁻³. The nearest actual grid values are $T_e=2.947$ eV, $n_e=1.389\times10^{14}$ cm⁻³ (grid
 > indices Te=23, ne=5) — quote these once so an examiner checking the indices finds no mismatch.
 > Literature support: $T_e\approx3$ eV is the detachment-onset temperature (JET-ILW), and
@@ -233,7 +233,7 @@ additional plasma assumption, to be stated in §1.5 scope alongside the Maxwelli
 ### 6.4 The number (no placeholder constants)
 
 Assembling with $v_0=e^2/4\pi\epsilon_0\hbar$ (Bohr velocity), $\sigma\approx 8\pi(v_0/v)^2(n^2a_0)^2\ln\Lambda$,
-at ITER reference ($T=3$ eV, $n_e=1.4\times10^{14}$ cm⁻³, $n=5$):
+at benchmark point ($T=3$ eV, $n_e=1.4\times10^{14}$ cm⁻³, $n=5$):
 
 | Quantity | Value |
 |---|---|
@@ -286,10 +286,10 @@ as $\approx\ln(R_c/R_1)$, the very $\ln(\lambda_D/b_{\min})$ of §6.2.
 
 The code (line 166) sets $F=1$, with a docstring claiming this is the "low-density limit
 $U_m\to0$, $F\to1$." **That justification is wrong twice:**
-1. At ITER reference the *true* $U_m$ (computed from Badnell Eq. 5/8 with the real Debye
+1. At benchmark point the *true* $U_m$ (computed from Badnell Eq. 5/8 with the real Debye
    radius) is $10^{-3}$–$10^{-1}$ — small, yes — **but $F(U_m\to0)\to\infty$ logarithmically,
    not $\to1$.** The limit was inverted.
-2. Computed values at ITER reference: $F=6.65$ (2p–2s), 5.73 (3d–3p), 4.29 (5g–5f), 2.92
+2. Computed values at benchmark point: $F=6.65$ (2p–2s), 5.73 (3d–3p), 4.29 (5g–5f), 2.92
    (8k–8i). The code therefore **under-counts ℓ-mixing rates by ×3–7** (more for low $n$).
 
 *(Note: the docstring's own definition of $U_m$ — multiplying by $n_p\,a_0^3/\tau_0$ — is also

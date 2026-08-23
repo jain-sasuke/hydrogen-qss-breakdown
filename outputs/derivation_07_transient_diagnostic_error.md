@@ -23,12 +23,12 @@ Ch. 4 (corrections). Answers pending item 1 of `derivation_04c` §7.
 $$\varepsilon = \max_p \frac{|r_p^{\rm act} - r_p^{\rm QSS}|}{r_p^{\rm QSS}}, \qquad r_p = n_p/n_{1S}$$
 
 The denominator $n_{1S}$ lags the step. Every excited state inherits the same
-error. At the ITER reference the metric reads 0.521; the ratio $n_3/n_4$, which
+error. At the benchmark point the metric reads 0.521; the ratio $n_3/n_4$, which
 cancels $n_{1S}$, reads **0.032**.
 
 **(b) Timescale separation bounds neither the transient nor the plateau.**
 
-At the ITER reference ($M = 9982$), after a $+0.6$ eV step the Balmer ratio error
+At the benchmark point ($M = 9982$), after a $+0.6$ eV step the Balmer ratio error
 rises to $10.2\times$ its step value and **stays there for three decades in
 time**:
 
@@ -61,7 +61,7 @@ and every $r_p$ carries the **same** common ground-state factor.
 
 A truncation artifact would be localised at high $n$. A state-specific physical
 effect would vary with $n$. A common denominator error gives the *same* value
-everywhere. Measured, ITER reference:
+everywhere. Measured, benchmark point:
 
 | $\varepsilon$ over | value |
 |---|---|
@@ -174,7 +174,7 @@ two statements.
 **Cold corner: plateau/step = 0.987.** The stale-reservoir state and the new QSS
 target nearly coincide. The transient is a genuine excursion that heals.
 
-**ITER reference: plateau/step = 10.1.** They do not coincide, and the error sits
+**benchmark point: plateau/step = 10.1.** They do not coincide, and the error sits
 $10\times$ above the step value until $\tau_{\rm QSS}$.
 
 **Why the reference is the worse case — counterintuitive, and worth stating.**
@@ -251,7 +251,7 @@ $\max \operatorname{Re}\lambda = -1.487\times10^{-2} < 0$ over all 400 points.
   and only because it is sampled at $t = 100\,\tau_{\rm relax}$ and
   $\tau_{\rm relax}$ moved. The steady states did not change.
 - Breakdown counts $+19$ at every drive: ELM crash 243 → 262 (60.75% → 65.50%).
-- **ITER reference bit-identical** on every quantity.
+- **benchmark point bit-identical** on every quantity.
 - Regenerated grids **bit-for-bit identical** to an independent unconditional
   recomputation (`timescales_unfiltered_CHECK.npz`) at all 400 points.
 
@@ -269,7 +269,7 @@ Filtered outputs preserved as `*_FILTERED_20260721` — evidence for Ch. 4.
 4. Cancellation arithmetic $(1-\varepsilon_{n_3})/(1-\varepsilon_{n_4}) = 1.032$
    vs measured 0.032. ✓
 5. Filter fix: two independent code paths agree bit-for-bit. ✓
-6. Filter fix leaves the ITER reference bit-identical — the correction is local. ✓
+6. Filter fix leaves the benchmark point bit-identical — the correction is local. ✓
 7. Dimensions: all $\varepsilon$ dimensionless. ✓
 8. $n_{\rm ion}$ invariance: $\mathbf b \propto n_{\rm ion}$ exactly and every
    $\varepsilon$ is built from ratios, so all results are invariant under it. ✓
@@ -329,7 +329,7 @@ Filtered outputs preserved as `*_FILTERED_20260721` — evidence for Ch. 4.
 - *What does your error metric measure?* As originally defined, mostly
   ground-state lag — the ratio $n_p/n_{1S}$ has a denominator that moves on
   $\tau_{\rm QSS}$ while the numerator moves on $\tau_{\rm relax}$. We measured
-  the contamination at 94% at the ITER reference and report the Balmer ratio
+  the contamination at 94% at the benchmark point and report the Balmer ratio
   instead, which cancels it.
 - *How can $M = 9982$ and the diagnostic still be wrong by 32%?* Because $M$ is a
   ratio of rates and the error is a distance that *grows*. After the step the

@@ -8,7 +8,7 @@ WHAT THIS ANSWERS
 Everything so far measured the QSS error in the n=3/n=4 shell ratio for an
 INSTANTANEOUS step: eps_step at t=0, eps_plateau for tau_relax << t << tau_QSS.
 But a divertor event has a finite duration. An ELM crash lasts ~100 us against
-tau_QSS ~ 22.7 us at the ITER reference, so the ground state partly catches up
+tau_QSS ~ 22.7 us at the benchmark point, so the ground state partly catches up
 DURING the event. The question the thesis actually has to answer is:
 
     over a divertor event of duration tau_drive, how wrong is a QSS-based
@@ -16,7 +16,7 @@ DURING the event. The question the thesis actually has to answer is:
 
 TWO BOUNDS, NOT ONE ESTIMATE
 ----------------------------
-verify_plateau_slowmode.py established that at the ITER reference the residual
+verify_plateau_slowmode.py established that at the benchmark point the residual
 decays as a single exponential at lambda_0 (R^2 = 0.9999999, tau_fit = 1.079 x
 tau_QSS) -- but at the cold corner it does NOT (tau_fit = 207 x tau_QSS; the
 observable is pinned at its asymptote because both shells are ~100% ground-fed
@@ -254,12 +254,18 @@ def main():
     say("  comparison; exact agreement would be suspicious.")
 
     say("\n" + "=" * 78)
-    say("ITER REFERENCE, all drives")
-    ir = [r for r in rows if r["direction"] == "heat"
-          and abs(r["Te"] - 2.947052) < 1e-4 and abs(r["ne"] - 1.389495e14)
-          / 1.389495e14 < 1e-3]
+    say("BENCHMARK POINT, all drives")
+    i_bm, j_bm = ctx.nearest_point(3.0, 1e14)
+    ir = [r for r in rows
+          if r["direction"] == "heat" and r["i"] == i_bm and r["j"] == j_bm]
+    if not ir:
+        raise RuntimeError(
+            f"benchmark point [{i_bm},{j_bm}] not present in rows -- the step "
+            f"may not have moved a grid index there")
     if ir:
         r = ir[0]
+        say(f"  grid [{i_bm},{j_bm}] = nearest to Te=3 eV, ne=1e14 cm^-3 "
+            f"(representative attached divertor; not a published operating point)")
         say(f"  Te={r['Te']:.4f} eV  ne={r['ne']:.4e} cm^-3  "
             f"step {r['frac_achieved']:+.4f}")
         say(f"  tau_QSS={r['tau_QSS']:.4e} s  tau_relax={r['tau_relax']:.4e} s "

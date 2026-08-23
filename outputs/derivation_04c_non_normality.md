@@ -31,7 +31,7 @@ because $L$ is strongly asymmetric — a physical fact, not a modelling artifact
 
 $$\mu(L) \;=\; \lambda_{\max}\!\left(\frac{L + L^T}{2}\right)$$
 
-**Measured at ITER reference ($T_e = 2.947$ eV, $n_e = 1.389\times10^{14}$ cm⁻³):**
+**Measured at benchmark point ($T_e = 2.947$ eV, $n_e = 1.389\times10^{14}$ cm⁻³):**
 
 $$\mu(L) = +1.28\times10^{11}\ \mathrm{s^{-1}} \qquad\text{vs}\qquad \max_k \mathrm{Re}\,\lambda_k = -4.40\times10^{4}\ \mathrm{s^{-1}}$$
 
@@ -46,7 +46,7 @@ non-normality, not a marginal effect.
 
 A matrix has orthogonal eigenvectors if and only if it is normal; for real
 matrices the familiar sufficient case is symmetry, $L[i,j] = L[j,i]$. The CR
-operator badly violates this. Two entries at the ITER reference make the point:
+operator badly violates this. Two entries at the benchmark point make the point:
 
 | Entry | Transition | Process | Value |
 |---|---|---|---|
@@ -174,7 +174,7 @@ Hence:
 
 ### 4.3 Measured values
 
-At the ITER reference point:
+At the benchmark point:
 
 | Quantity | Symbol | Value |
 |---|---|---|

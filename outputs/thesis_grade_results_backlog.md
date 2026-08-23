@@ -73,7 +73,7 @@ of the definition.
 ionisation mode and everything else — followed by a quasi-continuum, not three
 separated groups.
 
-**Evidence** (`verify_timescales.py` Test 2, ITER reference):
+**Evidence** (`verify_timescales.py` Test 2, benchmark point):
 
 | Between | Ratio |
 |---|---|
@@ -189,7 +189,7 @@ the fix still had to be made before any line-ratio work (Q5, Q6).
 ### A3. Non-normality of the CR operator 📐 Derived → needs grid run
 
 Full derivation in `derivation_04c_non_normality.md`. Numerical abscissa at the
-ITER reference: $\mu(L) = +1.28\times10^{11}$ s⁻¹ vs spectral abscissa
+benchmark point: $\mu(L) = +1.28\times10^{11}$ s⁻¹ vs spectral abscissa
 $-4.40\times10^{4}$ s⁻¹ — a fifteen-order gap. $\mu(L)>0$ *guarantees* transient
 growth for some perturbation.
 
@@ -225,7 +225,7 @@ bounding one's own bug is evidence of rigour).
 **This changes the central claim of the thesis. Treat as provisional until
 re-verified in a fresh session.**
 
-**The measurement problem.** At the ITER reference, ground population is
+**The measurement problem.** At the benchmark point, ground population is
 $8.80\times10^{-4}$ against a summed excited population of $1.21\times10^{-5}$ —
 the ground state is **73× the entire excited manifold**. An $L^2$ norm over all
 43 states is therefore effectively an error measure on $n_{1s}$.
@@ -413,7 +413,7 @@ and propagate it into $\varepsilon^{\rm ratio}_{\rm step}$.
 
 ### C9. Map $\varepsilon^{\rm ratio}_{\rm step}$ against $\varepsilon^{L^2}_{\rm step}$ — where does common-mode cancellation fail?
 
-**The finding that motivates this.** At the ITER reference with a $+0.6$ eV step
+**The finding that motivates this.** At the benchmark point with a $+0.6$ eV step
 (preliminary run, stand-in source vector):
 
 | Quantity | Value |
@@ -454,7 +454,7 @@ similarly to a $T_e$ step, not on how they are fed.
 
 ---
 
-### C10. Is the excited manifold excitation-fed or recombination-fed at the ITER reference? Which shell is more $T_e$-sensitive?
+### C10. Is the excited manifold excitation-fed or recombination-fed at the benchmark point? Which shell is more $T_e$-sensitive?
 
 **Why this is a real physics question, not bookkeeping.** It decides how the sign
 of $\varepsilon^{\rm ratio}_{\rm step}$ is *explained* in the thesis, and the
@@ -465,7 +465,7 @@ than $n=3$, so its population should be more $T_e$-sensitive. Heating should
 raise $n_4$ fractionally more than $n_3$, lowering $R=n_3/n_4$, giving
 $\varepsilon^{\rm ratio}_{\rm step}>0$ for a heating step.
 
-**What the preliminary run actually shows** (ITER reference, stand-in source
+**What the preliminary run actually shows** (benchmark point, stand-in source
 vector — magnitudes provisional):
 
 | Step | $\Delta n_3/n_3$ | $\Delta n_4/n_4$ | More sensitive | $\varepsilon^{\rm ratio}_{\rm step}$ |

@@ -177,7 +177,7 @@ def plot_S_map(S_val, p_max):
     ax.set_ylabel(r'$T_e$ [eV]')
     ax.set_title(r'(a) QSS manifold sensitivity $\mathcal{S} = \max_p |\partial_{T_e} \ln r_p^{\rm QSS}|$')
 
-    # Star at ITER reference
+    # Star at benchmark point
     ti_r = int(np.argmin(np.abs(TE_GRID - 3.0)))
     ni_r = int(np.argmin(np.abs(NE_GRID - 1.39e14)))
     ax.plot(NE_GRID[ni_r], TE_GRID[ti_r], 'c*', ms=14, label='ITER ref')
@@ -264,9 +264,9 @@ if __name__ == '__main__':
     print(f"Computing eps_step for DeltaTe = {DeltaTe_list} eV...")
     eps_dict = compute_eps_step_grid(DeltaTe_list)
 
-    # Report S*|DeltaTe| vs eps_step at ITER reference for each step
+    # Report S*|DeltaTe| vs eps_step at benchmark point for each step
     print()
-    print("S*|DeltaTe| vs eps_step at ITER reference (Te=3eV, ne=1.39e14):")
+    print("S*|DeltaTe| vs eps_step at benchmark point (Te=3eV, ne=1.39e14):")
     print(f"  S = {S_val[ti_r, ni_r]:.4f} eV^-1")
     print(f"  {'DeltaTe':>10}  {'S*|DTe|':>12}  {'eps_step':>12}  {'ratio':>8}")
     for DeltaTe in DeltaTe_list:

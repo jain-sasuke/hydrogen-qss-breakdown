@@ -193,7 +193,7 @@ def report(K_shell, Te_grid, ne_grid, outfile=None):
     lines.append(f"Grid: Te = {Te_grid[0]:.2f}..{Te_grid[-1]:.2f} eV ({len(Te_grid)} pts)")
     lines.append(f"      ne = {ne_grid[0]:.2e}..{ne_grid[-1]:.2e} cm^-3 ({len(ne_grid)} pts)")
     lines.append("")
-    lines.append("Per-shell summary at Te = 3 eV (closest to ITER reference):")
+    lines.append("Per-shell summary at Te = 3 eV (closest to benchmark point):")
     lines.append("-" * 76)
     lines.append(f"{'n':>3}  {'A(np_tot)':>11}  {'K_lmix(lo ne)':>15}  "
                  f"{'K_lmix(hi ne)':>15}  {'ratio lo-ne':>13}  status")

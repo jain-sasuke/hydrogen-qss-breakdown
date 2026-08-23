@@ -3,7 +3,7 @@ regenerate_figures.py
 =====================
 Regenerate mz_fig1 and mz_fig3 with correct values.
 
-mz_fig1: Memory kernel + L_FF eigenspectrum at ITER reference
+mz_fig1: Memory kernel + L_FF eigenspectrum at benchmark point
   - Remove tau_relax = 25 ns line (that mode doesn't exist)
   - Fix tau_QSS annotation to 22.7 us
 
@@ -53,7 +53,7 @@ def load_mz():
             tau_QSS_grid[ti, ni] = 1.0 / re_abs_sorted[0]
     M_MZ = tau_QSS_grid / tau_K
     
-    # Load eigenvalues of L_FF at ITER reference for Fig 1
+    # Load eigenvalues of L_FF at benchmark point for Fig 1
     evals_FF = np.load(str(_MZ / 'eigenvalues_FF.npy'))     # (50,8,42)
     K_t = np.load(str(_MZ / 'K_t_ITER_ref.npy'))            # (500,)
     t_arr = np.load(str(_MZ / 't_grid_ITER_ref.npy'))        # (500,)
@@ -84,7 +84,7 @@ def fig1_kernel(tau_K, tau_QSS_grid, evals_FF, K_t, t_arr):
                 ha='right')
     ax.set_xlabel(r'Time $t$ [ns]')
     ax.set_ylabel(r'$K(t)/K(0)$')
-    ax.set_title(rf'(a) Memory kernel — ITER reference'
+    ax.set_title(rf'(a) Memory kernel — benchmark point'
                  '\n'
                  rf'$T_e = 3$ eV, $n_e = 10^{{14}}$ cm$^{{-3}}$')
     ax.legend(fontsize=9)
@@ -136,7 +136,7 @@ def fig3_M_MZ_single(tau_K, tau_QSS_grid, M_MZ):
                     linestyles='--', linewidths=1.5)
     ax.clabel(CS, fmt=r'$M_{\rm MZ}=100$', fontsize=8)
 
-    # ITER reference star
+    # benchmark point star
     ti_ref, ni_ref = 23, 5
     ax.plot(NE[ni_ref], TE[ti_ref], 'w*', ms=14,
             label=rf'ITER ref ($M_{{\\rm MZ}}={M_MZ[ti_ref,ni_ref]:.0f}$)')

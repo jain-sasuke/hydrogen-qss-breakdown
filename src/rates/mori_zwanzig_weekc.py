@@ -11,7 +11,7 @@ Week B: tau_K_grid.npy, M_MZ_grid.npy, Omega_ratio_grid.npy
 
 FIGURES PRODUCED
 ----------------
-Fig 1 -- K(t) at ITER reference + mode timescales
+Fig 1 -- K(t) at benchmark point + mode timescales
 Fig 2 -- tau_K heatmap over (Te, ne) grid
 Fig 3 -- M_thesis vs M_MZ side-by-side heatmaps
 Fig 4 -- K~(0)/Omega_QSS validation heatmap
@@ -73,7 +73,7 @@ plt.rcParams.update({
     'lines.linewidth':1.8,
 })
 
-# ── ITER reference indices ─────────────────────────────────────────────────────
+# ── benchmark point indices ─────────────────────────────────────────────────────
 TE_REF  = 3.0
 NE_REF  = 1e14
 TI_REF  = int(np.argmin(np.abs(TE_GRID - TE_REF)))
@@ -160,7 +160,7 @@ def _heatmap(ax, X, Y, Z, cmap, vmin, vmax, label):
 # ═══════════════════════════════════════════════════════════════════════════════
 
 def fig1_kernel(d):
-    print("\nFig 1: K(t) at ITER reference...")
+    print("\nFig 1: K(t) at benchmark point...")
     K_t    = d['K_t_ref']
     t_ns   = d['t_grid_ref'] * 1e9
     evals  = d['eigenvalues_FF'][TI_REF, NI_REF]
@@ -188,7 +188,7 @@ def fig1_kernel(d):
                 ha='right')
     ax.set_xlabel(r'Time $t$ [ns]')
     ax.set_ylabel(r'$K(t)/K(0)$')
-    ax.set_title(r'(a) Memory kernel — ITER reference'
+    ax.set_title(r'(a) Memory kernel — benchmark point'
                  '\n' r'$T_e=3$\,eV, $n_e=10^{14}$\,cm$^{-3}$')
     ax.legend(fontsize=8.5, loc='upper right')
     ax.set_xlim(t_ns[0], t_ns[-1])
@@ -413,7 +413,7 @@ def write_summary(d):
         f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
         "=" * 65,
         "",
-        "KEY NUMBERS AT ITER REFERENCE (Te=3eV, ne=1e14 cm^-3):",
+        "KEY NUMBERS AT BENCHMARK POINT (Te=3eV, ne=1e14 cm^-3):",
         f"  tau_K (MZ bath)      = {tau_K[TI_REF,NI_REF]*1e9:.3f} ns",
         f"  tau_relax (coupled)  = {TAU_RELAX_REF*1e9:.1f} ns  [thesis]",
         f"  tau_QSS              = {TAU_QSS_REF*1e6:.1f} us  [thesis]",

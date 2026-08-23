@@ -47,7 +47,7 @@ def run():
     L = L_grid[ti_ref, ni_ref]
     S = S_grid[ti_ref, ni_ref]
 
-    print(f"ITER reference: Te={TE_GRID[ti_ref]:.3f} eV, ne={NE_GRID[ni_ref]:.2e}")
+    print(f"benchmark point: Te={TE_GRID[ti_ref]:.3f} eV, ne={NE_GRID[ni_ref]:.2e}")
     print()
 
     # Block extraction

@@ -7,7 +7,7 @@ physics at two points with full time integration.
 
 NO TIME INTEGRATION IS NEEDED. verify_plateau_slowmode.py established that the
 plateau state is exactly the partial-equilibrium solve, to 6 digits at the cold
-corner and to 0.005% at the ITER reference once window sampling is accounted
+corner and to 0.005% at the benchmark point once window sampling is accounted
 for. So each grid point costs three linear solves, not a stiff ODE.
 
 THE ONE-PARAMETER FAMILY

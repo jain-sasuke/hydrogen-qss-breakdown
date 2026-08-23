@@ -3,7 +3,7 @@ M = np.load('validation/M_grid.npy')
 tau_QSS = np.load('validation/tau_QSS_grid.npy')
 tau_relax = np.load('validation/tau_relax_grid.npy')
 
-# ITER reference indices
+# benchmark point indices
 ti = np.argmin(np.abs(np.logspace(0,1,50) - 3.0))
 ni = np.argmin(np.abs(np.logspace(12,15,8) - 1e14))
 

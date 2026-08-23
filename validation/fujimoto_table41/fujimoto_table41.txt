@@ -1,0 +1,106 @@
+==============================================================================
+FUJIMOTO TABLE 4.1(b) -- external consistency benchmark of r_0, r_1
+generated 2026-08-23 15:49  by verify_fujimoto_table41.py
+repo root      /Users/phi/Desktop/non_markovian_cr
+L_grid sha256  2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256  7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+K_lmix sha256  d92a969dcd6017beef676f831316cac37b79c8d510450826cf80a9a7abcab399
+state idx sha  23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+
+NOT a validation of the atomic data and NOT a reproduction of
+Fujimoto's model: different excitation and ionization datasets,
+different state resolution, different level cutoff. Exact agreement
+would be suspicious.
+
+Table 4.1(b): Te = 1.28e+05 K = 11.03 eV
+model evaluated at Te = 10.000000 eV (grid index 49), -9.3% offset
+==============================================================================
+
+UNIT CHECK on Table 4.1(b) lg n_e
+  coronal asymptote r_1(2) -> 1.930e-22 * n_e
+  at lg n_e = 12: predicts 1.930e-10, table reads 1.930e-10  (-0.00%)
+  (the lg n_e = 18 row is +7.8% off the asymptote -- 1e18 m^-3 is no longer coronal, which is why
+   the units must be settled at lg n_e = 12, not 18)
+  => lg n_e = log10( n_e / m^-3 );  1e18 m^-3 = 1e12 cm^-3
+
+==============================================================================
+lg n_e = 18  ->  1.000e+12 cm^-3   grid j=0 at 1.000000e+12 cm^-3   (offset 0.0000%)
+  l-mixing block: reconstruction 0.000e+00  column conservation 3.815e-06  (matrix scale 1.003e+11)
+
+  --- NO-PROTON-LMIX ---
+      channel residuals  r0 4.654e-15   r1 1.771e-16   cond(L_EE) 7.218e+03
+        p   r0 model  r0 Fuji   ratio      r1 model    r1 Fuji   ratio
+        2   104.5246    0.730 143.1843    1.9587e-03  1.790e-04 10.9425
+          *** r_0 = 104.5246 > 1: unphysical, a level cannot exceed Saha equilibrium ***
+        3     1.9969    0.835  2.3915    2.3097e-05  5.720e-05  0.4038
+          *** r_0 = 1.9969 > 1: unphysical, a level cannot exceed Saha equilibrium ***
+        4     1.1790    0.947  1.2450    5.4948e-06  1.660e-05  0.3310
+          *** r_0 = 1.1790 > 1: unphysical, a level cannot exceed Saha equilibrium ***
+        5     1.0211    0.983  1.0387    2.0107e-06  5.080e-06  0.3958
+        7     0.9937    0.997  0.9967    4.4184e-07  7.550e-07  0.5852
+       10     0.9986    1.000  0.9986    1.0623e-07  9.610e-08  1.1054
+       15     0.9990    1.000  0.9990    5.2909e-08  9.340e-09  5.6648
+
+  --- PRODUCTION ---
+      channel residuals  r0 1.028e-14   r1 1.734e-15   cond(L_EE) 8.551e+03
+        p   r0 model  r0 Fuji   ratio      r1 model    r1 Fuji   ratio
+        2     0.7392    0.730  1.0126    1.6592e-05  1.790e-04  0.0927
+        3     0.7337    0.835  0.8787    6.8968e-06  5.720e-05  0.1206
+        4     0.8185    0.947  0.8643    3.7779e-06  1.660e-05  0.2276
+        5     0.9125    0.983  0.9283    1.6242e-06  5.080e-06  0.3197
+        7     0.9783    0.997  0.9812    3.5771e-07  7.550e-07  0.4738
+       10     0.9937    1.000  0.9937    9.2256e-08  9.610e-08  0.9600
+       15     0.9966    1.000  0.9966    4.5633e-08  9.340e-09  4.8858
+
+==============================================================================
+lg n_e = 21  ->  1.000e+15 cm^-3   grid j=7 at 1.000000e+15 cm^-3   (offset 0.0000%)
+  l-mixing block: reconstruction 0.000e+00  column conservation 3.906e-03  (matrix scale 1.003e+14)
+
+  --- NO-PROTON-LMIX ---
+      channel residuals  r0 5.357e-15   r1 1.408e-15   cond(L_EE) 6.887e+03
+        p   r0 model  r0 Fuji   ratio      r1 model    r1 Fuji   ratio
+        2     0.9569    0.981  0.9754    5.8006e-03  7.700e-03  0.7533
+        3     0.9905    0.998  0.9925    4.5690e-04  8.020e-04  0.5697
+        4     0.9981    1.000  0.9981    7.3737e-05  1.400e-04  0.5267
+        5     0.9995    1.000  0.9995    1.8841e-05  3.630e-05  0.5190
+        7     0.9999    1.000  0.9999    3.0031e-06  4.800e-06  0.6256
+       10     1.0000    1.000  1.0000    7.0393e-07  5.800e-07  1.2137
+       15     1.0000    1.000  1.0000    3.4294e-07  5.500e-08  6.2352
+
+  --- PRODUCTION ---
+      channel residuals  r0 6.344e-15   r1 3.879e-14   cond(L_EE) 1.603e+05
+        p   r0 model  r0 Fuji   ratio      r1 model    r1 Fuji   ratio
+        2     0.8730    0.981  0.8899    5.6306e-03  7.700e-03  0.7313
+        3     0.9871    0.998  0.9891    4.4629e-04  8.020e-04  0.5565
+        4     0.9978    1.000  0.9978    7.2070e-05  1.400e-04  0.5148
+        5     0.9994    1.000  0.9994    1.8476e-05  3.630e-05  0.5090
+        7     0.9999    1.000  0.9999    2.9639e-06  4.800e-06  0.6175
+       10     1.0000    1.000  1.0000    6.9628e-07  5.800e-07  1.2005
+       15     1.0000    1.000  1.0000    3.3911e-07  5.500e-08  6.1656
+
+==============================================================================
+l-MIXING EFFECT -- production / no-proton-lmix
+Student's prediction: SMALL. Note the l-mixing block scales as n_e,
+so its absolute weight FALLS with density; a large low-density
+difference needs its own mechanism and is currently UNEXPLAINED.
+   lg ne   p   r0 prod/nolmix   r1 prod/nolmix
+      18   2         0.007072         0.008471
+      18   3         0.367412         0.298605
+      18   4         0.694212         0.687552
+      18   5         0.893662         0.807799
+      18   7         0.984517         0.809586
+      18  10         0.995091         0.868457
+      18  15         0.997668         0.862486
+      21   2         0.912310         0.970695
+      21   3         0.996571         0.976787
+      21   4         0.999616         0.977390
+      21   5         0.999918         0.980630
+      21   7         0.999987         0.986952
+      21  10         0.999995         0.989125
+      21  15         0.999998         0.988834
+
+NOTE p=10 and p=15 are BUNDLED shells in this model, with
+statistical l-equilibrium assumed -- the same closure Fujimoto uses.
+The state-space mismatch vanishes there, so those rows are the
+cleanest comparison. r_1 is the discriminating quantity, since the
+tabulated r_0 = 1.00 is rounded.

@@ -1,0 +1,63 @@
+==============================================================================
+PLATEAU SLOW-MODE CHECK
+generated 2026-08-23 11:15  by verify_plateau_slowmode.py
+repo root         /Users/phi/Desktop/non_markovian_cr
+L_grid            /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/L_grid.npy
+  sha256          2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid            /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/S_grid.npy
+  sha256          7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state index       /Users/phi/Desktop/non_markovian_cr/data/processed/collisions/K_exc_full/state_index.csv
+  sha256          23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+n=3 states [3, 4, 5] ['3S', '3P', '3D']
+n=4 states [6, 7, 8, 9] ['4S', '4P', '4D', '4F']
+ground index      0 (1S)
+step dTe          +0.6 eV (absolute)
+window            100*tau_relax .. tau_QSS/100
+H2 requires       R^2 > 0.9999, one sign, |tau_fit/tau_QSS - 1| < 0.2
+H4 suppressed if  linearisation error > 10%
+NOTE: the ion density is a fixed reservoir in S and is never evolved.
+      'partial equilibrium' freezes n(1) only.
+OBSERVABLE: n=3 / n=4 shell population ratio (NOT yet the Balmer
+      line ratio -- that additionally needs the C8 l-distribution check)
+==============================================================================
+
+------------------------------------------------------------------------------
+ITER ref   requested Te=2.95 eV ne=1.4e+14 cm^-3
+  resolved to grid [23,5]: Te=2.947052 -> 3.556480 eV, ne=1.389495e+14 cm^-3
+  lambda_0 = -9.544383582e+04 +0.000e+00j -> tau_QSS   = 1.047737e-05 s
+  lambda_1 = -4.635006505e+08 +0.000e+00j -> tau_relax = 2.157494e-09 s
+  max|Im|/max|Re| over spectrum = 0.000e+00
+  M = tau_QSS/tau_relax = 4856.27
+  SKIP: no timescale-separated plateau window (needs M > 10000, have 4856)
+
+------------------------------------------------------------------------------
+cold corner   requested Te=1 eV ne=1e+12 cm^-3
+  resolved to grid [0,0]: Te=1.000000 -> 1.599859 eV, ne=1.000000e+12 cm^-3
+  lambda_0 = -2.533919609e+00 +0.000e+00j -> tau_QSS   = 3.946455e-01 s
+  lambda_1 = -2.880551867e+07 +0.000e+00j -> tau_relax = 3.471557e-08 s
+  max|Im|/max|Re| over spectrum = 0.000e+00
+  M = tau_QSS/tau_relax = 1.1368e+07
+  n(1)_old/n(1)_new = 289.940760   (x_new = 3.448980e-03)
+  superposition check |n0 + x_new*n1 - n_new_E|_inf / |n_new_E|_inf = 1.370e-15
+  eps_step   (old QSS vs new QSS)  0.24394018  (signed +0.24394018)
+  eps_plateau ANALYTIC (H1)        0.24075077  (signed +0.24075077)
+  ground-fed fraction at x_old : f3=0.999594  f4=0.998662  dlnR/dlnx = +9.310789e-04
+  ground-fed fraction at x_new : f3=0.894532  f4=0.720289  dlnR/dlnx = +1.742433e-01
+  linearised estimate of eps_plateau = |s_old * ln(x_new)| = 0.00527892   vs actual 0.24075077
+  linearised dR from all modes = 5.229197e+01   (direct dR = 2.500564e-01)   linearisation error 2.081e+02
+  H4 SUPPRESSED: linearisation error 2.081e+02 exceeds 10%; modal decomposition is not valid here
+  tolerance convergence rtol 1e-9 vs 1e-12: max rel diff 6.204e-09
+  window 3.4716e-06 .. 3.9465e-03 s  (1622 log-spaced samples)
+    window upper edge / tau_QSS = 0.010000  (identical at every grid point by construction)
+  residual keeps one sign across the window: True
+  H2 fit ln|d| vs t : tau_fit = 8.222865e+01 s = 208.3608 x tau_QSS
+     R^2 = 0.99999846   max relative residual = 7.092e-08
+  H3 window/analytic OBSERVED  0.99999298
+     window/analytic PREDICTED 0.99858612  (mean of exp(-t_i/tau_QSS) over the SAME samples)
+     difference +1.407e-03
+     (both are means over LOG-SPACED samples, not time averages)
+  slow-manifold intercept extrapolated to t=0: 0.24075072  ratio to analytic 1.000000
+     NB this is the slow-manifold amplitude continued back to the step, NOT n(0+) -- n(0+) = n_old exactly.
+     H3 HAS NO DISCRIMINATING POWER here: predicted deficit is only 1.41e-03; any result would 'agree'
+     -> H2 fails on tau only: tau_fit = 208.4 x tau_QSS. Clean fit, but NOT lambda_0 -- a pinned observable, not a decaying one.
+  VERDICT  H1 plateau==PE: PASS   H2 single exponential at lambda_0: FAIL   H3 sampling explains deficit: NO POWER

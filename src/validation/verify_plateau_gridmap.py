@@ -93,6 +93,13 @@ def parse_args():
                    help="fractional Te step (default 0.05)")
     p.add_argument("--win-lo", type=float, default=30.0)
     p.add_argument("--win-hi", type=float, default=30.0)
+    p.add_argument("--require-window", action="store_true", default=True,
+                   help="report statistics ONLY over points that have a "
+                        "timescale-separated plateau window (default on)")
+    p.add_argument("--include-all", dest="require_window",
+                   action="store_false",
+                   help="include points with no plateau window in the "
+                        "statistics (they are always written to the csv)")
     p.add_argument("--out", type=Path, default=None)
     return p.parse_args()
 
@@ -202,6 +209,8 @@ def main():
                 d_pe = R_pe / Rq - 1.0
                 amp = abs(d_pe) / abs(d_step) if d_step != 0 else np.nan
 
+                lin_pred = abs(so * np.log(x_new))
+
                 rows.append(dict(
                     direction=dlab, i=i, j=j, Te=Te[i], Te_new=Te[k],
                     ne=ne[j], frac_achieved=achieved,
@@ -213,6 +222,7 @@ def main():
                     f3_old=f3o, f4_old=f4o, sens_old=so,
                     f3_new=f3n, f4_new=f4n, sens_new=sn,
                     abs_sens_old=abs(so),
+                    lin_pred=lin_pred, abs_ln_x=abs(np.log(x_new)),
                 ))
 
     if not rows:
@@ -223,60 +233,129 @@ def main():
 
     say(f"\nevaluated {len(rows)} (point, direction) pairs")
     say(f"skipped {n_skip_move} Te rows where the step did not move an index")
-    say(f"points with NO timescale-separated plateau window: {n_skip_window} "
-        f"(flagged in the csv, not dropped)")
+    say(f"points with NO timescale-separated plateau window: {n_skip_window}")
     say(f"max superposition error over the whole grid: {max_sup:.3e}   "
         f"{'OK' if max_sup < 1e-8 else '*** TWO-CHANNEL SPLIT FAILS ***'}")
     say(f"achieved fractional step: {A['frac_achieved'].min():+.4f} .. "
-        f"{A['frac_achieved'].max():+.4f}  "
-        f"(requested +/-{a.frac:.4f})")
+        f"{A['frac_achieved'].max():+.4f}  (requested +/-{a.frac:.4f})")
+    if a.require_window:
+        say("STATISTICS BELOW ARE OVER window_ok POINTS ONLY. All points, "
+            "flagged, are in the csv.")
+    else:
+        say("*** statistics include points with NO plateau window (--include-all) ***")
+
+    say("")
+    say("WHY eps_plateau AND NOT amplification IS THE PRIMARY QUANTITY")
+    say("  amplification = eps_plateau/eps_step is unstable wherever eps_step")
+    say("  passes through zero. In the first run the grid maximum was 1271x at")
+    say("  a point whose eps_step (3.5e-5) was the grid MINIMUM while its")
+    say("  eps_plateau (0.044) was BELOW the median. That ratio measures a")
+    say("  vanishing denominator, not a large error. Amplification is still")
+    say("  reported, but as a distribution, never as a headline maximum.")
+    say("  Note also log(amp) = log(eps_plateau) - log(eps_step) identically,")
+    say("  so corr(log eps_step, log amp) is partly tautological.")
 
     for dlab in ("heat", "cool"):
-        m = A["direction"] == dlab
-        if not m.any():
+        sel = A["direction"] == dlab
+        if a.require_window:
+            sel = sel & A["window_ok"].astype(bool)
+        if not sel.any():
             continue
         say("\n" + "-" * 78)
-        say(f"{dlab.upper()}   {m.sum()} points")
+        say(f"{dlab.upper()}   {sel.sum()} points"
+            f"{' (window_ok only)' if a.require_window else ''}")
         for name in ("eps_step", "eps_plateau", "amplification",
-                     "abs_sens_old", "f3_old", "f4_old"):
-            v = A[name][m]
+                     "abs_sens_old", "abs_ln_x", "f3_old", "f4_old"):
+            v = A[name][sel]
             v = v[np.isfinite(v)]
             say(f"  {name:16s} min {v.min():.6g}  median {np.median(v):.6g}  "
                 f"max {v.max():.6g}")
-        amp = A["amplification"][m]
-        q = int(np.nanargmax(amp))
-        idx = np.where(m)[0][q]
-        say(f"  max amplification {amp[q]:.4f} at "
-            f"Te={A['Te'][idx]:.4f} eV, ne={A['ne'][idx]:.4e} cm^-3 "
-            f"(grid [{int(A['i'][idx])},{int(A['j'][idx])}])")
-        say(f"    at that point: f3={A['f3_old'][idx]:.6f} "
-            f"f4={A['f4_old'][idx]:.6f} sens={A['sens_old'][idx]:+.6e} "
-            f"eps_step={A['eps_step'][idx]:.6f} "
-            f"eps_plateau={A['eps_plateau'][idx]:.6f}")
-        edge = (A['i'][idx] in (0, len(Te) - 1)) or \
-               (A['j'][idx] in (0, len(ne) - 1))
+
+        ep, es = A["eps_plateau"][sel], A["eps_step"][sel]
+        say(f"  eps_plateau > eps_step at {int((ep > es).sum())}/{int(sel.sum())} "
+            f"points ({(ep > es).mean():.1%})")
+
+        q = int(np.nanargmax(ep))
+        idx = np.where(sel)[0][q]
+        say(f"  max eps_plateau {ep[q]:.6f} at Te={A['Te'][idx]:.4f} eV, "
+            f"ne={A['ne'][idx]:.4e} cm^-3 (grid [{int(A['i'][idx])},"
+            f"{int(A['j'][idx])}])")
+        say(f"    f3={A['f3_old'][idx]:.6f} f4={A['f4_old'][idx]:.6f} "
+            f"|f3-f4|={A['abs_sens_old'][idx]:.6f} "
+            f"|ln x_new|={A['abs_ln_x'][idx]:.4f} "
+            f"eps_step={A['eps_step'][idx]:.6f}")
+        edge = (A["i"][idx] in (0, len(Te) - 1)) or \
+               (A["j"][idx] in (0, len(ne) - 1))
         say(f"    sits on a grid EDGE: {bool(edge)}   "
             f"{'-> range may be truncated, not a true ridge' if edge else '-> interior maximum'}")
 
-        good = np.isfinite(amp) & (A["abs_sens_old"][m] > 0) & (amp > 0)
+        # --- MECHANISM TEST: the linearised prediction from the algebra -----
+        lp = A["lin_pred"][sel]
+        good = np.isfinite(lp) & np.isfinite(ep) & (lp > 0) & (ep > 0)
         if good.sum() > 10:
-            r = np.corrcoef(np.log10(A["abs_sens_old"][m][good]),
-                            np.log10(amp[good]))[0, 1]
-            say(f"  corr( log|f3-f4| , log amplification ) = {r:+.4f}  "
-                f"(n={good.sum()})")
-            r2 = np.corrcoef(np.log10(A["eps_step"][m][good]),
-                             np.log10(amp[good]))[0, 1]
-            say(f"  corr( log eps_step , log amplification ) = {r2:+.4f}")
+            r = np.corrcoef(np.log10(lp[good]), np.log10(ep[good]))[0, 1]
+            ratio = ep[good] / lp[good]
+            say(f"  MECHANISM corr( log |f3-f4|*|ln x_new| , log eps_plateau ) "
+                f"= {r:+.4f}  (n={int(good.sum())})")
+            say(f"    eps_plateau / linearised prediction: "
+                f"min {ratio.min():.4f}  median {np.median(ratio):.4f}  "
+                f"max {ratio.max():.4f}")
+            say("    (a ratio near 1 means the linearised two-channel formula "
+                "predicts the plateau error; large excursions |ln x_new| >> 1 "
+                "are expected to break it)")
+        sens_arr = A["abs_sens_old"][sel]
+        g2 = np.isfinite(sens_arr) & (sens_arr > 0) & (ep > 0)
+        if g2.sum() > 10:
+            r2 = np.corrcoef(np.log10(sens_arr[g2]), np.log10(ep[g2]))[0, 1]
+            say(f"  corr( log |f3-f4| alone , log eps_plateau ) = {r2:+.4f}")
+
+    # --- heating vs cooling, matched for step size -------------------------
+    say("\n" + "-" * 78)
+    say("HEAT vs COOL -- the achieved steps differ (+4.81% vs -4.59% on a log")
+    say("grid), so raw medians are not directly comparable. Per-point ratio,")
+    say("matched at the same (i,j), normalised by the achieved step:")
+    mh = (A["direction"] == "heat")
+    mc = (A["direction"] == "cool")
+    if a.require_window:
+        mh = mh & A["window_ok"].astype(bool)
+        mc = mc & A["window_ok"].astype(bool)
+    hk = {(int(A["i"][t]), int(A["j"][t])): t for t in np.where(mh)[0]}
+    ck = {(int(A["i"][t]), int(A["j"][t])): t for t in np.where(mc)[0]}
+    both = sorted(set(hk) & set(ck))
+    if both:
+        rr = np.array([
+            (A["eps_plateau"][hk[key]] / abs(A["frac_achieved"][hk[key]])) /
+            (A["eps_plateau"][ck[key]] / abs(A["frac_achieved"][ck[key]]))
+            for key in both])
+        say(f"  matched pairs: {len(both)}")
+        say(f"  step-normalised eps_plateau(heat)/eps_plateau(cool): "
+            f"min {rr.min():.4f}  median {np.median(rr):.4f}  "
+            f"max {rr.max():.4f}")
+        say("  (a median near 1 means the heat/cool difference in the raw "
+            "medians was a step-size effect, not an asymmetry)")
 
     say("\nsensitivity |f3-f4| vs Te at ne = "
-        f"{ne[len(ne)//2]:.3e} (heating):")
-    m = (A["direction"] == "heat") & (A["j"] == len(ne) // 2)
+        f"{ne[len(ne)//2]:.3e} (heating, window_ok only):")
+    m = ((A["direction"] == "heat") & (A["j"] == len(ne) // 2)
+         & A["window_ok"].astype(bool))
     o = np.argsort(A["Te"][m])
-    for t_, s_, f3_, f4_, amp_ in zip(A["Te"][m][o], A["abs_sens_old"][m][o],
-                                      A["f3_old"][m][o], A["f4_old"][m][o],
-                                      A["amplification"][m][o]):
+    for t_, s_, f3_, f4_, ep_, es_ in zip(
+            A["Te"][m][o], A["abs_sens_old"][m][o], A["f3_old"][m][o],
+            A["f4_old"][m][o], A["eps_plateau"][m][o], A["eps_step"][m][o]):
         say(f"   Te={t_:6.3f}  f3={f3_:.4f}  f4={f4_:.4f}  "
-            f"|f3-f4|={s_:.4e}  amp={amp_:.3f}")
+            f"|f3-f4|={s_:.4e}  eps_plateau={ep_:.6f}  eps_step={es_:.6f}")
+
+    say("\nsensitivity |f3-f4| vs ne at Te = "
+        f"{Te[len(Te)//2]:.3f} eV (heating, window_ok only) -- the direction")
+    say("in which the recombining limit should be approached:")
+    m = ((A["direction"] == "heat") & (A["i"] == len(Te) // 2)
+         & A["window_ok"].astype(bool))
+    o = np.argsort(A["ne"][m])
+    for n_, s_, f3_, f4_, ep_ in zip(A["ne"][m][o], A["abs_sens_old"][m][o],
+                                     A["f3_old"][m][o], A["f4_old"][m][o],
+                                     A["eps_plateau"][m][o]):
+        say(f"   ne={n_:.4e}  f3={f3_:.4f}  f4={f4_:.4f}  "
+            f"|f3-f4|={s_:.4e}  eps_plateau={ep_:.6f}")
 
     txt, csv = out / "plateau_gridmap.txt", out / "plateau_gridmap.csv"
     txt.write_text("\n".join(lines) + "\n")

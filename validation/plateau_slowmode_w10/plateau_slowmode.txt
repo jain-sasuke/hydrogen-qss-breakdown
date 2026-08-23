@@ -1,0 +1,82 @@
+==============================================================================
+PLATEAU SLOW-MODE CHECK
+generated 2026-08-23 11:15  by verify_plateau_slowmode.py
+repo root         /Users/phi/Desktop/non_markovian_cr
+L_grid            /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/L_grid.npy
+  sha256          2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid            /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/S_grid.npy
+  sha256          7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state index       /Users/phi/Desktop/non_markovian_cr/data/processed/collisions/K_exc_full/state_index.csv
+  sha256          23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+n=3 states [3, 4, 5] ['3S', '3P', '3D']
+n=4 states [6, 7, 8, 9] ['4S', '4P', '4D', '4F']
+ground index      0 (1S)
+step dTe          +0.6 eV (absolute)
+window            10*tau_relax .. tau_QSS/10
+H2 requires       R^2 > 0.9999, one sign, |tau_fit/tau_QSS - 1| < 0.2
+H4 suppressed if  linearisation error > 10%
+NOTE: the ion density is a fixed reservoir in S and is never evolved.
+      'partial equilibrium' freezes n(1) only.
+OBSERVABLE: n=3 / n=4 shell population ratio (NOT yet the Balmer
+      line ratio -- that additionally needs the C8 l-distribution check)
+==============================================================================
+
+------------------------------------------------------------------------------
+ITER ref   requested Te=2.95 eV ne=1.4e+14 cm^-3
+  resolved to grid [23,5]: Te=2.947052 -> 3.556480 eV, ne=1.389495e+14 cm^-3
+  lambda_0 = -9.544383582e+04 +0.000e+00j -> tau_QSS   = 1.047737e-05 s
+  lambda_1 = -4.635006505e+08 +0.000e+00j -> tau_relax = 2.157494e-09 s
+  max|Im|/max|Re| over spectrum = 0.000e+00
+  M = tau_QSS/tau_relax = 4856.27
+  n(1)_old/n(1)_new = 2.779889   (x_new = 3.597266e-01)
+  superposition check |n0 + x_new*n1 - n_new_E|_inf / |n_new_E|_inf = 1.466e-15
+  eps_step   (old QSS vs new QSS)  0.03210413  (signed +0.03210413)
+  eps_plateau ANALYTIC (H1)        0.32902966  (signed +0.32902966)
+  ground-fed fraction at x_old : f3=0.474301  f4=0.116471  dlnR/dlnx = +3.578302e-01
+  ground-fed fraction at x_new : f3=0.245030  f4=0.045274  dlnR/dlnx = +1.997561e-01
+  linearised estimate of eps_plateau = |s_old * ln(x_new)| = 0.36584952   vs actual 0.32902966
+  linearised dR from all modes = 2.679287e-01   (direct dR = 2.479484e-01)   linearisation error 8.058e-02
+  H4 slow-mode (lambda_0) share of residual = 1.000249
+  tolerance convergence rtol 1e-9 vs 1e-12: max rel diff 1.203e-08
+  window 2.1575e-08 .. 1.0477e-06 s  (1620 log-spaced samples)
+    window upper edge / tau_QSS = 0.100000  (identical at every grid point by construction)
+  residual keeps one sign across the window: True
+  H2 fit ln|d| vs t : tau_fit = 1.128818e-05 s = 1.0774 x tau_QSS
+     R^2 = 0.99999914   max relative residual = 8.571e-05
+  H3 window/analytic OBSERVED  0.97718094
+     window/analytic PREDICTED 0.97539326  (mean of exp(-t_i/tau_QSS) over the SAME samples)
+     difference +1.788e-03
+     (both are means over LOG-SPACED samples, not time averages)
+  slow-manifold intercept extrapolated to t=0: 0.32905033  ratio to analytic 1.000063
+     NB this is the slow-manifold amplitude continued back to the step, NOT n(0+) -- n(0+) = n_old exactly.
+  VERDICT  H1 plateau==PE: PASS   H2 single exponential at lambda_0: PASS   H3 sampling explains deficit: PASS
+
+------------------------------------------------------------------------------
+cold corner   requested Te=1 eV ne=1e+12 cm^-3
+  resolved to grid [0,0]: Te=1.000000 -> 1.599859 eV, ne=1.000000e+12 cm^-3
+  lambda_0 = -2.533919609e+00 +0.000e+00j -> tau_QSS   = 3.946455e-01 s
+  lambda_1 = -2.880551867e+07 +0.000e+00j -> tau_relax = 3.471557e-08 s
+  max|Im|/max|Re| over spectrum = 0.000e+00
+  M = tau_QSS/tau_relax = 1.1368e+07
+  n(1)_old/n(1)_new = 289.940760   (x_new = 3.448980e-03)
+  superposition check |n0 + x_new*n1 - n_new_E|_inf / |n_new_E|_inf = 1.370e-15
+  eps_step   (old QSS vs new QSS)  0.24394018  (signed +0.24394018)
+  eps_plateau ANALYTIC (H1)        0.24075077  (signed +0.24075077)
+  ground-fed fraction at x_old : f3=0.999594  f4=0.998662  dlnR/dlnx = +9.310789e-04
+  ground-fed fraction at x_new : f3=0.894532  f4=0.720289  dlnR/dlnx = +1.742433e-01
+  linearised estimate of eps_plateau = |s_old * ln(x_new)| = 0.00527892   vs actual 0.24075077
+  linearised dR from all modes = 5.229197e+01   (direct dR = 2.500564e-01)   linearisation error 2.081e+02
+  H4 SUPPRESSED: linearisation error 2.081e+02 exceeds 10%; modal decomposition is not valid here
+  tolerance convergence rtol 1e-9 vs 1e-12: max rel diff 6.204e-09
+  window 3.4716e-07 .. 3.9465e-02 s  (2684 log-spaced samples)
+    window upper edge / tau_QSS = 0.100000  (identical at every grid point by construction)
+  residual keeps one sign across the window: True
+  H2 fit ln|d| vs t : tau_fit = 7.936503e+01 s = 201.1046 x tau_QSS
+     R^2 = 0.99501508   max relative residual = 1.003e-04
+  H3 window/analytic OBSERVED  0.99995853
+     window/analytic PREDICTED 0.99163173  (mean of exp(-t_i/tau_QSS) over the SAME samples)
+     difference +8.327e-03
+     (both are means over LOG-SPACED samples, not time averages)
+  slow-manifold intercept extrapolated to t=0: 0.24075106  ratio to analytic 1.000001
+     NB this is the slow-manifold amplitude continued back to the step, NOT n(0+) -- n(0+) = n_old exactly.
+  VERDICT  H1 plateau==PE: PASS   H2 single exponential at lambda_0: FAIL   H3 sampling explains deficit: FAIL

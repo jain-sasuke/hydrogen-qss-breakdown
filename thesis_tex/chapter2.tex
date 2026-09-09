@@ -707,7 +707,7 @@ absorption lengths a photon must cross to escape, and carried by the
 \emph{population escape factor} $\Theta_P$, defined so that the effective
 coefficient is $\Theta_P A$. For the resonance line the model is most exposed
 to, Lyman-$\alpha$ ($2p \to 1s$), \texttt{src/analysis/escape\_factor.py}
-evaluates the escape factor of Holstein~\cite{Holstein1947} in the ADAS214 slab
+evaluates the escape factor of Holstein~\cite{Holstein1947} in the ADAS214
 formulation of Behringer~\cite{Behringer1998}, by direct quadrature and with no
 fitting formula:
 \begin{equation}
@@ -724,11 +724,47 @@ fitting formula:
 $\ngs$ the ground-state density (\si{\per\cubic\centi\metre}), $\sigma_0$ the
 line-centre absorption cross section (\si{\square\centi\metre}) from the
 Ladenburg relation with oscillator strength $f_{12} = 0.4162$ and
-$\lambda_0 = \SI{121.567}{\nano\metre}$, and $D$ the slab thickness
+$\lambda_0 = \SI{121.567}{\nano\metre}$, and $D$ twice the escape path length
 (\si{\centi\metre}). Both sides of the first expression are dimensionless.
 It says: weight the escape probability by the fraction of photons emitted at
 each frequency, and note that photons in the line wings get out when photons at
 the line centre cannot.
+
+\paragraph{The geometry is mislabelled, and the label matters.} The module
+documents Eq.~\eqref{eq:escape} as applying to ``a homogeneous slab of
+half-thickness $b$''. Read directly from the ADAS214 manual, equation 3.14.14 is
+the \emph{isotropic} case --- the escape probability at the centre of a sphere,
+ADAS geometry g1 --- and not the slab case, g2. The distinction is not cosmetic
+in the thick regime: a true slab requires the further angular average
+$\Theta_{\rm slab}(\tau) = \int_0^1 \Theta_{\rm iso}(\tau/\mu)\,\mathrm{d}\mu$,
+which is smaller by a factor approaching two, measured as $0.529$ at
+$\tau_c = 1$ and $0.477$--$0.484$ at $\tau_c = 100$--$1000$. Everything else in
+the module was checked against the primary source and is correct: the convention
+$\tau_c = \kappa_0 b$ with $b$ the edge-to-centre distance is exactly ADAS's own,
+the Ladenburg constant $\pi e^{2}/m_ec = \SI{2.65400885e-2}{\square\centi\metre\hertz}$
+is right, the Doppler profile normalisation and thermal speed reproduce ADAS's
+own tabulated widths, and the leading Holstein constant is 1 rather than the
+1.6 sometimes quoted. \textbf{This is reported, not repaired.} Where the plasma
+is thin --- which Section~\ref{sec:atoms_scope} and Chapter~\ref{ch:theory} show
+is the whole region carrying this thesis's quantitative results, $\Theta_P \to 1$
+--- the two geometries agree and nothing depends on the choice. Where the plasma
+is thick, at the cold edge, the escape factor computed here is roughly twice too
+large if a slab is the right picture, and Chapter~\ref{ch:limits} carries that
+caveat rather than resolving it.
+
+\paragraph{Two constants in this module are wrong, and both are immaterial.}
+An external audit of the same file found the elementary charge entered as
+$e = \SI{4.80326e-10}{esu}$ against the CODATA value
+$\num{4.803204713e-10}$~\cite{CODATA2018}, high by \SI{0.00115}{\percent} and
+entering $\sigma_0$ as $e^{2}$, so \SI{0.0023}{\percent}; and the Doppler width
+computed with $m = \SI{1.67262e-24}{\gram}$, which is the \emph{proton} mass
+where the physically correct object is the neutral hydrogen \emph{atom},
+\SI{1.6735328407e-24}{\gram}. A neutral atom Doppler-broadens with its own mass,
+so the line is \SI{0.027}{\percent} too wide. Neither shifts any conclusion in
+this thesis by a detectable amount, and neither has been edited: the repository
+is under verification rather than development, and a constant corrected quietly
+is a constant nobody can find again. They are recorded here so that a reader who
+recomputes $\sigma_0$ and gets a slightly different number knows why.
 
 \textbf{Every rate matrix in this thesis is built with bare $A$ coefficients,
 $\Theta_P \equiv 1$.} Equation~\eqref{eq:escape} is a diagnostic applied

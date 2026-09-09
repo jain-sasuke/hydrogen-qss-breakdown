@@ -583,3 +583,135 @@ is ever absent or regenerated with a different row order. Caveat: the two
 files carry genuinely different auxiliary columns (weights/ionization energy
 vs. radiative rates) under nominally the same idx/n/l/label ordering — worth
 tracing to source before treating either as fully redundant with the other.
+
+---
+
+### Verification note — thesis_ready.md PART A results check (2026-09-09)
+
+Independent re-run of the named producers against the canonical matrix. No repo
+file was edited; no tolerance, filter or data file was touched. Scripts that
+write into `validation/` were run either with `--out` to a scratch directory or
+from an isolated sandbox cwd, so the committed evidence files were preserved.
+Interpreter: `/opt/anaconda3/envs/cr/bin/python` (the one named in
+`run_pipeline.sh`), numpy 2.3.5 / scipy 1.16.3.
+
+**Integrity — all three canonical hashes match thesis_ready.md exactly:**
+`L_grid.npy` `2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e`
+(mtime 21 Jul 20:44), `S_grid.npy`
+`7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a`,
+`data/processed/collisions/K_exc_full/state_index.csv`
+`23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65`.
+
+**A1 (thesis_ready) / backlog A2 — reproduced, with one documented failure.**
+`verify_timescales.py` (no args) at grid `[23,5]` (Te = 2.9471 eV,
+ne = 1.3895e14): τ_QSS = 2.272799e-05 s, τ_relax = 2.276913e-09 s,
+M = 9981.93, largest spectral gap 9981.9× at k=0 (exactly one gap > 10×),
+Framing A vs B 0.0098%. Matches the recorded values to all quoted digits.
+`qss_analysis.py`, run in a sandbox cwd, wrote `M_grid`, `tau_QSS_grid`,
+`tau_relax_grid` **bit-identical** to the committed `validation/*.npy`, and
+`breakdown_map.csv` bit-identical column-for-column including the LSODA-derived
+`eps_res`. `timescales_unfiltered_CHECK.npz` is bit-identical to both. The
+"three independent implementations agree bit-for-bit" claim holds today.
+Grid-wide over all 400 points: M ∈ [86.7678, 1.729277e9] ✓,
+τ_relax ∈ [8.687198e-10, 3.887945e-08] s ✓ (0.87–38.9 ns, a 44.8× spread),
+τ_QSS max 6.723334e+01 s ✓. **τ_QSS min does NOT reproduce**: measured
+7.537688e-08 s at `[49,7]`, not 1.18 µs — a factor 15.6, and 46 of 400 points
+lie below the stated floor. `verify_ch3_claims.py` reports this as its only
+FAIL (rel 9.36e-01) and traces it: 1.177240e-06 s is the τ_QSS minimum over the
+**M > 900 window_ok subset (346 of 400)**. Eq. (3.14) as written in
+thesis_ready.md line 27–28 mixes scopes — M and τ_relax over all 400 points,
+τ_QSS over the analysed subset — and needs an explicit clause. Everything else
+in that script passed: grid endpoints, benchmark indices, isolation 3566.96×
+(chapter 3567), grid-min isolation 24.33 (chapter 24), M⁺ = 8242.74.
+
+**Sensitivity (numerical conditioning of A1).** Eigenvalue condition numbers
+1/|yᴴx| at [23,5]: λ₀ 1.71, λ₁ 1.98; at the cold corner [0,0]: 3.26 / 2.59; at
+[49,7]: 1.16 / 1.27. All O(1) — the eigenvalues are well conditioned despite
+‖L‖₁ reaching 2.0e14 and λ₀ falling to −1.49e−02 s⁻¹. `scipy.linalg.eig` agrees
+with `numpy.linalg.eigvals` to 0 ulp at all three points. Under 20 random
+relative perturbations of every entry at 1e−13, τ_QSS moves by 3.3e−08 relative
+at the benchmark and 4.6e−04 relative at the cold corner; τ_relax by ≤1.4e−10
+everywhere. So "67.2 s" is numerically sound to ~4 digits — the existing caveat
+against quoting three figures rests on the physics sensitivity
+(d ln τ_QSS/d ln Te = −13.3), not on roundoff. **Note the A1 numbers involve no
+stiff integration**; the convergence-table requirement bites on A4/A5, not here.
+
+**A8 / A9 — reproduced bit-for-bit.** `verify_plateau_gridmap.py --out <scratch>`
+reproduced the committed `plateau_gridmap.csv`/`.txt` byte-for-byte apart from
+the generation-timestamp line. ε_plateau > ε_step at 338/338 heat + 342/342 cool
+= **680/680** ✓; amplification min 1.44738 (cool) ✓, median 12.70 heat /
+10.77 cool ✓; sharpest case Te = 6.866 eV, ne = 5.1795e13, ε_step = 0.000049,
+ε_plateau = 0.044974 ✓; step-normalised heat/cool median 1.0360 ✓; amplification
+max 1271.36 ✓ (correctly flagged do-not-quote). A9: prediction ratio median
+1.0310 heat / 0.9851 cool, range 0.7659–1.3891 ✓; corr +0.9893/+0.9920 ✓;
+|f₃−f₄| alone +0.6587/+0.6938 ✓; |ln x_new| 0.124039–0.68228 ✓. The committed
+file was already git-dirty on the timestamp line only — i.e. it had also
+reproduced exactly on 24 Aug.
+
+**A10 — all 16 ridge numbers reproduce**, at grid rows i = 0, 10, 23, 35 and
+columns j = 0, 3, 5, 7, from `plateau_gridmap.csv`: 0.08300 0.37093 0.30333
+0.13138 / 0.07095 0.23220 0.14538 0.05019 / 0.04873 0.12166 0.06361 0.01831 /
+0.03195 0.07084 0.03555 0.00949. Independently confirmed by
+`verify_eps_gridmap.py`, a separate implementation with no window guard, which
+returns 12.166% at [23,3] and 18.073% as the Te ≥ 2 eV restricted maximum.
+**Two caveats the table does not carry.** (i) It is the **heating** direction
+only; the cooling table is materially different (0.28585 vs 0.37093 at [0,3],
+0.18044 vs 0.30333 at [0,5]) and the ridge maximum moves from [0,4] to [1,3].
+The direction must be stated. (ii) The bottom-right entry 0.009 (Te = 5.179,
+ne = 1e15) has `window_ok = False` in both directions — it is excluded from
+every statistic in the same file it is quoted from.
+
+**A11 — reproduced bit-for-bit.** `verify_divertor_map.py --out <scratch>`
+reproduced the committed `divertor_map.csv` byte-for-byte and the `.txt` apart
+from the timestamp. Lower bound above 10% at τ_d = 1e-4 s: **202/680** ✓
+(upper bound 225/680); 105 heating points, Te 1.000–2.947 eV,
+ne 2.683e12–1.000e15 ✓; worst Te = 1.0000, ne = 5.1795e13, lower = 0.3868,
+ε_plateau = 0.3869, τ_QSS = 2.332e-01 s ✓ (233 ms, and the two bounds do
+coincide); benchmark point ELM lower bound 0.011712 = 1.2% ✓. Note the
+benchmark row of that file carries τ_QSS = 1.8494e-05 s and M = 8243, i.e. the
+**post-step** operator L[24,5], not the 2.2728e-05 s / 9982 of A1 — the two
+numbers are different operators and the thesis must say which it quotes.
+
+**A12 — reproduced exactly, from the preserved `*_FILTERED_20260721` evidence.**
+Comparing `tau_QSS_grid.npy`/`tau_relax_grid.npy`/`M_grid.npy` against their
+`_FILTERED_20260721` counterparts: **19 of 400** points differ ✓, at Te indices
+0–7 (1.0000–1.3895 eV) and ne indices 0–3 (1.0000e12–1.9307e13) ✓; at **19/19**
+of them τ_relax^new == τ_QSS^old **exactly** (`np.array_equal`), the ladder
+shift confirmed ✓; M range 1.34092–1.011973e8 → 86.7678–1.729277e9 ✓;
+`eps_step` bit-identical at all 400 points in `breakdown_map.csv` while
+`eps_res` and every `eps_bar`/`eps_end` column changed ✓; benchmark [23,5]
+bit-identical ✓; 0 points had τ_QSS > 1 s under the filter versus 19 after ✓.
+**"Still live and unfixed" is correct today**: `src/rates/solve_cr.py:269`
+(`eigs_neg = eigs[eigs < -1.0]   # exclude near-zero numerical noise`) and
+`src/rates/check_mz.py:10` (`neg = eigs[eigs < -1.0]`), verified by grep at
+those exact line numbers. Not touched.
+
+**Two things found that are not in thesis_ready.md.**
+1. `CLAUDE.md`'s known-issue table is **stale**: `qss_analysis.py` no longer
+   contains `eigs[eigs < -1.0]`. Line 137 now reads `neg = eigs[eigs < 0.0]`,
+   and `validate_gates.py:403` likewise. The table should point at
+   `solve_cr.py:269` and `check_mz.py:10` instead.
+2. Commit `ffe1768` has a **false commit message**: it states "eigs<-1.0
+   removed from solve_cr.py:269 and check_mz.py:10", but its diff for
+   `solve_cr.py` changes only a units comment (`cm^3/s` → `s^-1`), and
+   `check_mz.py` is not in the commit at all. The filter survives in both.
+3. `qss_analysis.py` does **not** use `cr_context.py`; it hardcodes
+   cwd-relative `PATHS` and `OUT_DIR = 'validation'` (lines 71–77). It happens
+   to resolve correctly when run from the repo root, but it is outside the
+   provenance gate CLAUDE.md rule 1 mandates, and it is one of the two writers
+   in B7. `audit_writers.py` confirms B7 is still unresolved: all three of
+   `M_grid.npy`, `tau_QSS_grid.npy`, `tau_relax_grid.npy` have 2 writers,
+   "D.4 NOT IMPLEMENTED", with 6 downstream readers.
+
+**Graduation: ▶️ Run.** Not ✅. A1 cannot be promoted while its stated τ_QSS
+lower bound is a subset minimum presented as a grid-wide range; A10 cannot be
+promoted while the table omits its direction and includes one `window_ok=False`
+point. A8, A11 and A12 reproduced without exception and carry written caveats
+already; they are the closest to ✅ but inherit the A1 scope wording.
+
+**What would have refuted these claims, and did not appear:** a hash mismatch on
+any of the three canonical files; a τ_QSS/τ_relax/M grid differing from the
+committed one at any of 400 points; ε_plateau ≤ ε_step at any of 680 pairs; a
+non-negative eigenvalue anywhere (max Re λ = −1.487e−02); complex eigenvalues
+(max |Im|/|λ| = 0); a filtered/unfiltered ε_step difference; an eigenvalue
+condition number large enough to put λ₀ at the roundoff floor.

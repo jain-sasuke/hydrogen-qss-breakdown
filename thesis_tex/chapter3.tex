@@ -873,9 +873,16 @@ The ratio used throughout this thesis is
 
 \noindent the population ratio of the $n=3$ and $n=4$ shells. Up to Einstein
 coefficients it is the Balmer $H_\alpha/H_\beta$ ratio, since $H_\alpha$ is the
-$3\to2$ transition and $H_\beta$ the $4\to2$;
-Section~\ref{sec:balmer_equivalence} shows the two agree to
-\SI{0.06}{\percent}. It is convenient to normalise to the ground state as well,
+$3\to2$ transition and $H_\beta$ the $4\to2$. The substitution is not free, and
+Section~\ref{sec:balmer_equivalence} measures what it costs. The transient error
+of Chapter~\ref{ch:results}, computed from the $A$-weighted line ratio and from
+the shell ratio, agrees to \SI{0.014}{\percent} at the benchmark point; across
+the whole grid the line-ratio value runs between $0.978$ and $0.9999$ times the
+shell-ratio value, a worst case of \SI{2.2}{\percent} at the low-density edge
+$\nel = \SI{e12}{\per\cubic\centi\metre}$. The residue is the $4f$ level, which
+the shell sum in Eq.~\eqref{eq:observable_def} contains and $H_\beta$ cannot
+see, and it is largest at the lowest density because that is where proton
+$\ell$-mixing is weakest. It is convenient to normalise to the ground state as well,
 writing $\rp = n_p/\ngs$, since that is the form in which the QSS solution is
 usually tabulated.
 
@@ -1345,8 +1352,16 @@ statements about the \emph{fractional} response of the observable, which is what
 a diagnostic error is.
 
 The classification into ionising and recombining plasmas is due to
-Fujimoto~\cite{Fujimoto2004}, and the crossover between the two is what a
-divertor passes through as it detaches.
+Fujimoto~\cite{Fujimoto2004}, and the crossover between the two is exactly the
+region Eq.~\eqref{eq:log_sensitivity} singles out. A plasma is ionising when
+excitation out of the ground state supplies most of the excited population and
+recombining when capture from the continuum does; between those limits both
+supply channels of Eq.~\eqref{eq:two_supplies} contribute, the two shells draw
+on them in different proportion, and the sensitivity is largest. That crossover
+is a statement about the switching points $c_m/a_m$ of the network, and where it
+falls in $(\Te,\nel)$ is measured rather than assumed; identifying it with any
+named divertor operating regime is a separate claim, requiring densities this
+section does not supply, and is not made here.
 Chapter~\ref{ch:results} maps $\ffrac{3} - \ffrac{4}$ over the operating range
 and shows the diagnostic error tracking it.
 
@@ -1374,14 +1389,29 @@ normalisation gives the correspondence
 in different coordinates; what is done here is to ask what the ratio of two such
 populations depends on, which Eq.~\eqref{eq:log_sensitivity} answers.
 
-Section~\ref{sec:fujimoto} tests the decomposition against published data.
-The test is necessarily a contracted one: $r_0$ and $r_1$ are published as
-curves rather than tables, so the comparison is made instead by summing
-$\bm{a}$ and $\bm{c}$ against the ionisation rates to form the effective
-stage-to-stage coefficients, which \emph{are} tabulated, and comparing with
-ADAS SCD96 and ACD96~\cite{Summers2006}. This is weaker than a level-by-level
-comparison --- forty-two coefficients are collapsed into one, and many incorrect
-$\bm{a}$ would contract correctly --- but it is not merely a rate check either:
+Section~\ref{sec:fujimoto} tests the decomposition against Fujimoto's published
+population coefficients. A second test of the same decomposition is attempted
+against the ADAS effective coefficients~\cite{Summers2006}, and it fails.
+Because $r_0$ and $r_1$ are published as curves rather than tables, that test
+cannot be made level by level: $\bm{a}$ and $\bm{c}$ are instead summed against
+the ionisation rates to form the effective stage-to-stage coefficients, which
+\emph{are} tabulated, and compared with SCD96 and ACD96. The comparison ---
+Gate~D of Chapter~\ref{ch:validation} --- disagrees at every grid point, by a
+systematic factor between $9$ and $65$ that peaks near
+$\Te \approx \SI{2}{\electronvolt}$, and only its ionisation half is
+implemented, the recombination table being read and never used.
+Chapter~\ref{ch:validation} reports that failure and its diagnosis rather than
+repairing it. Two readings are open. ADAS tabulates SCD as the \emph{ionising}
+coefficient, whereas the sum formed here runs over the full steady state, so
+ionisation out of recombination-fed Rydberg levels enters the model's
+coefficient and belongs under ACD; and this model holds the ion as a fixed
+reservoir with no forty-fourth state (Section~\ref{sec:two_references}), so the
+two quantities are not defined on the same system. Neither reading has been
+demonstrated, and no agreement with ADAS is claimed anywhere in this thesis.
+
+The contraction is severe in any case --- forty-two coefficients are collapsed
+into one, and many incorrect $\bm{a}$ would contract correctly --- but it is not
+merely a rate check either:
 $a_p$ and $c_p$ enter the two coefficients with different weights, so an
 error in the \emph{split} between the two supplies displaces the ionisation and
 recombination coefficients in opposite directions, which no single-channel

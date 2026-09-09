@@ -1,0 +1,428 @@
+%=============================================================================
+%  thesis_main.tex
+%
+%  The Cost of Assuming Ionisation Balance
+%  Transient Error in Balmer-Ratio Diagnostics of Divertor Hydrogen Plasmas
+%
+%  Nikhil Jain -- M.Tech Chemical Engineering -- IIT Kanpur
+%  Supervisor: Prof. R. G. S. Pala
+%
+%  STRUCTURE OF THIS FILE
+%    Part 1  preamble and packages
+%    Part 2  notation macros -- DEFINE EVERY SYMBOL HERE, NOWHERE ELSE
+%    Part 3  front matter
+%    Part 4  chapters, as section skeletons with story beats
+%
+%  RULE: if a symbol appears in the text, it has a macro here. That is what
+%  stops one chapter saying 22.7 us while another says 15.3 us.
+%
+%  RULE: every \section carries a % QUESTION: comment. If you cannot write
+%  the question in one sentence, the section has no reason to exist.
+%=============================================================================
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+%--- Part 1: packages --------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\graphicspath{{figures/}}
+\sisetup{per-mode=symbol, range-units=single}
+
+% drafting aid -- remove before submission
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\newcommand{\needcite}{\textcolor{red}{[CITE]}}
+
+%--- Part 2: notation macros -------------------------------------------------
+% Vectors and matrices
+\newcommand{\nvec}{\bm{n}}                       % population vector [cm^-3]
+\newcommand{\Lmat}{\bm{L}}                       % CR rate matrix [s^-1]
+\newcommand{\Svec}{\bm{S}}                       % source per unit n_ion [s^-1]
+\newcommand{\Omqss}{\bm{\Omega}_{\mathrm{QSS}}}  % Schur complement [s^-1]
+
+% Subspaces: S = slow = {1s};  F = fast = 42 excited levels
+\newcommand{\slow}{\mathcal{S}}
+\newcommand{\fast}{\mathcal{F}}
+\newcommand{\nS}{\nvec_{S}}
+\newcommand{\nF}{\nvec_{F}}
+
+% Densities and conditions
+\newcommand{\nel}{n_e}
+\newcommand{\nion}{n_{\mathrm{ion}}}
+\newcommand{\ngs}{n_{1s}}
+\newcommand{\Te}{T_e}
+\newcommand{\dTe}{\Delta T_e}
+
+% Saha-Boltzmann and the departure coefficient
+\newcommand{\Zsb}[1]{Z_{#1}}                     % Saha-Boltzmann coeff [cm^3]
+\newcommand{\bdep}{b_1}                          % ground departure coefficient
+
+% Populations and ratios
+\newcommand{\rp}{r_p}                            % n_p / n_1s
+\newcommand{\Robs}{R}                            % THE observable: Halpha/Hbeta
+\newcommand{\Rqss}{\Robs^{\mathrm{QSS}}}
+\newcommand{\Rcre}{\Robs^{\mathrm{CRE}}}
+\newcommand{\Rpe}{\Robs^{\mathrm{PE}}}           % partial equilibrium
+
+% Two supply channels
+\newcommand{\nzero}{\nvec^{(0)}}                 % recombination-fed
+\newcommand{\none}{\nvec^{(1)}}                  % ground-fed
+\newcommand{\ffrac}[1]{f_{#1}}                   % ground-fed fraction of shell
+\newcommand{\xscale}{x}                          % ground-density scale factor
+
+% Timescales
+\newcommand{\taurel}{\tau_{\mathrm{relax}}}
+\newcommand{\tauqss}{\tau_{\mathrm{QSS}}}
+\newcommand{\taudrive}{\tau_{\mathrm{drive}}}
+\newcommand{\Msep}{M}                            % tau_QSS / tau_relax
+
+% Error measures -- the six-way name collision dies here
+\newcommand{\epsQSS}{\varepsilon^{\mathrm{QSS}}}
+\newcommand{\epsCRE}{\varepsilon^{\mathrm{CRE}}}
+\newcommand{\epsstep}{\varepsilon_{\mathrm{step}}}
+\newcommand{\epsplat}{\varepsilon_{\mathrm{plateau}}}
+
+% Benchmark point -- one definition, used everywhere
+\newcommand{\benchTe}{\SI{2.947}{\electronvolt}}
+\newcommand{\benchne}{\SI{1.389e14}{\per\cubic\centi\metre}}
+
+\begin{document}
+
+%--- Part 3: front matter ----------------------------------------------------
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\LARGE\bfseries The Cost of Assuming Ionisation Balance\par}
+\vspace{0.6cm}
+{\large Transient Error in Balmer-Ratio Diagnostics of\\
+Divertor Hydrogen Plasmas\par}
+\vfill
+{\large Nikhil Jain\par}
+\vspace{0.4cm}
+{\normalsize Department of Chemical Engineering\\
+Indian Institute of Technology Kanpur\par}
+\vspace{1cm}
+{\normalsize Supervisor: Prof.\ R.\ G.\ S.\ Pala\par}
+\vfill
+{\normalsize September 2026\par}
+\end{titlepage}
+
+\chapter*{Abstract}
+% WRITE LAST. Structure, one sentence each:
+%   1. Divertor spectroscopy inverts a line ratio for Te and ne using tables.
+%   2. Those tables assume equilibrium ionisation balance. The divertor is
+%      never in equilibrium.
+%   3. We built a 43-state l-resolved time-dependent CR model to test the
+%      approximation everyone worries about -- that excited states keep up.
+%   4. REVERSAL: they do, to 1e-8. That is not the problem.
+%   5. The ground state does not, and the tables assume it has: median 7%,
+%      at least 39% at 1 eV, persisting for tau_QSS -- longer than an ELM.
+%   6. Mechanism: two supply channels; error = |f3 - f4| |dln n_1s|.
+%   7. Largest at the ionizing-recombining crossover, i.e. detachment.
+\todo{write last}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%=============================================================================
+\chapter{Reading the Light from a Divertor}
+\label{ch:intro}
+% BEAT: set up the problem and promise the reversal.
+%=============================================================================
+
+\section{Why the divertor is hard}
+\label{sec:divertor}
+% QUESTION: what is a divertor for, and why is measuring it difficult?
+% Power exhaust; detachment as the operating requirement; no probe survives,
+% so the measurement must be optical. \needcite for ITER parameters.
+
+\section{What a spectrometer records}
+\label{sec:spectrometer}
+% QUESTION: what does the instrument actually give you?
+% Line-integrated brightness. Absolute intensity needs neutral density and
+% path length -- neither known. A ratio needs neither. Hence Halpha/Hbeta.
+
+\section{From a ratio to a temperature}
+\label{sec:inversion}
+% QUESTION: how is a number turned into plasma conditions?
+% The inversion chain: measured ratio -> lookup table -> (Te, ne).
+% Where the table comes from: a CR model solved to steady state.
+
+\section{The assumption inside the table}
+\label{sec:the_assumption}
+% QUESTION: what does the table assume, and is it true here?
+% THE HINGE OF THE THESIS. The table is indexed on (Te, ne) alone, which is
+% possible only if ionisation balance has equilibrated. ELMs arrive every few
+% ms; detachment fronts move. The plasma never finishes.
+
+\section{The question, and what this thesis found}
+\label{sec:question}
+% QUESTION: what is being asked, and what is the answer?
+% State the question plainly. Promise the reversal without spoiling the
+% derivation: the approximation everyone worries about turns out to be exact,
+% and the problem is one layer down.
+
+\section{Outline}
+\label{sec:outline}
+
+%=============================================================================
+\chapter{The Atoms}
+\label{ch:atoms}
+% BEAT: establish that the inputs are trustworthy -- and be honest where not.
+%=============================================================================
+
+\section{What happens to a hydrogen atom in a plasma}
+\label{sec:atom_processes}
+% QUESTION: what can happen to an atom, and on what timescale?
+% Excitation, de-excitation, ionisation, recombination, radiative decay,
+% l-mixing. Order-of-magnitude rates before any formalism.
+
+\section{The state space}
+\label{sec:state_space}
+% QUESTION: which levels are tracked, and why l-resolve some but not others?
+% 43 states: n=1-8 l-resolved (36), n=9-15 bundled (7). The 2s/2p asymmetry
+% is the reason. Measured: 4f fraction 0.4361-0.4375 vs statistical 0.4375.
+
+\section{From cross section to rate coefficient}
+\label{sec:maxwellian}
+% QUESTION: how does sigma(E) become a rate a model can use?
+% Maxwellian averaging, in full. Detailed balance as the consistency check.
+
+\section{Electron-impact excitation}
+\label{sec:excitation}
+% QUESTION: where do the excitation rates come from and how good are they?
+% CCC (Bray). Filename convention FINAL.INITIAL. Delta n = 0 EXCLUDED on the
+% data provider's instruction -- non-relativistic degeneracy. This exclusion
+% has a consequence in sec:lmixing.
+
+\section{Ionisation and recombination}
+\label{sec:ion_recomb}
+% QUESTION: what feeds the manifold from outside?
+% TICS/Lotz ionisation; radiative and three-body recombination.
+% S = ne(alpha_RR + ne alpha_3BR) -- quadratic in density. UNITS: s^-1.
+
+\section{Radiative decay}
+\label{sec:radiative}
+% QUESTION: how do atoms lose energy without collisions?
+% Hoang Binh A coefficients. Selection rules. 2s->1s is E1-forbidden --
+% remember this for the next section.
+
+\section{Proton-impact \texorpdfstring{$\ell$}{l}-mixing, and why it is not optional}
+\label{sec:lmixing}
+% QUESTION: why include a process the standard treatments omit?
+% THE STRUCTURAL ARGUMENT. 2s->1s E1-forbidden AND Delta n = 0 electron impact
+% excluded => proton l-mixing carries 99.92% of the 2S loss rate
+% (6.17e5 -> 7.79e8 s^-1). Without it the n=2 manifold is unphysical:
+% removing it inflates the n=2 population coefficient by 141x.
+
+\section{How well do we know these rates?}
+\label{sec:atomic_uncertainty}
+% QUESTION: where would the atomic data let us down?
+% Anderson RMPS benchmark. Delta l = 1 agrees at median -5.0% over 120
+% comparisons -- the dominant pathways are sound. n=5 forbidden channels
+% differ by -16% to -38%; CCC shows no truncation signature (smooth n^-3.62
+% from n=3 to 9, stable across 20-100 eV), so this is attributed to RMPS
+% pseudostate truncation at the top of Anderson's table.
+
+\section{Summary}
+\label{sec:atoms_summary}
+
+%=============================================================================
+%  Chapter 3 -- Two Clocks   (lives in chapter3.tex)
+%  Sections 3.1-3.3 written; 3.4-3.8 outlined in thesis_architecture.md
+%=============================================================================
+\input{chapter3}
+
+%=============================================================================
+\chapter{Does the Model Work?}
+\label{ch:validation}
+% BEAT: credibility -- including the three errors found by our own audit.
+%=============================================================================
+
+\section{What a validation gate can and cannot show}
+\label{sec:gate_philosophy}
+% QUESTION: what would a wrong model fail?
+% Severity, not just consistency: a check a wrong result would also pass
+% tells you nothing.
+
+\section{Internal consistency: detailed balance, coronal and Saha limits}
+\label{sec:gates_abc}
+% QUESTION: does the model obey the physics it was built from?
+
+\section{Timescale hierarchy}
+\label{sec:gate_e}
+% QUESTION: is the two-clock structure present everywhere?
+% M from 86.8 to 1.73e9 over 400 points, three independent implementations
+% agreeing bit-for-bit.
+
+\section{External benchmark: Fujimoto's population coefficients}
+\label{sec:fujimoto}
+% QUESTION: does an independent calculation agree?
+% THE STRONGEST GATE. r_0 to 0.1-1% for n>=4 at high density; r_0(2) = 0.7392
+% vs 0.730 at low density -- the discriminating case. Appendix 4B timescales
+% within a factor of three at a grid point his example lands on exactly.
+% r_1(15) high by 4.9-6.2x: terminal-shell artifact, see ch:limits.
+
+\section{The Balmer ratio and the shell ratio}
+\label{sec:balmer_equivalence}
+% QUESTION: is the computational shortcut safe?
+% 0.386683 vs 0.386903 (0.06%). l-populations move as a rigid body.
+
+\section{Errors found and corrected}
+\label{sec:errors_found}
+% QUESTION: what did we get wrong, and how did we find it?
+% NOT AN APOLOGY -- EVIDENCE OF METHOD.
+%   1. l-mixing F(U_m) error (Badnell 2021 Eq. 9): rates wrong by 3-7x,
+%      tau_relax moved <0.85% anywhere -- and the insensitivity is itself a
+%      result about timescale separation.
+%   2. Eigenvalue filter eigs < -1.0: corrupted 19 of 400 grid points by
+%      promoting the eigenvalue ladder one step. Found by recomputing the
+%      spectrum unconditionally and comparing bit-for-bit.
+%   3. The metric misnaming: what was called a QSS error was a CRE error.
+%      Found by integrating the full system and measuring both along the same
+%      trajectory: 1e-8 vs 1e-1.
+
+\section{Summary}
+\label{sec:validation_summary}
+
+%=============================================================================
+\chapter{What the Model Says}
+\label{ch:results}
+% BEAT: the reversal, delivered.
+%=============================================================================
+
+\section{What happens after a temperature step}
+\label{sec:step_response}
+% QUESTION: what does the system actually do?
+% Three stages: relax (ns) -> plateau -> ionisation balance (us to s).
+% Show it in time before mapping it.
+
+\section{The quasi-steady-state approximation is exact}
+\label{sec:qss_is_exact}
+% QUESTION: does the textbook worry materialise?
+% *** SAY THIS FIRST -- IT FRAMES EVERYTHING ***
+% eps^QSS = 8.66e-6 at the benchmark point, 6.73e-9 at the worst point on the
+% grid. Eight significant figures. The excited states keep up.
+
+\section{The table does not}
+\label{sec:cre_error}
+% QUESTION: so what is wrong?
+% eps^CRE: median 7.0%, at least 38.7% at the low-Te edge. The system sits in
+% partial equilibrium with a stale reservoir, and the table assumes otherwise.
+
+\section{Why: the two supplies}
+\label{sec:mechanism}
+% QUESTION: what sets the size of the error?
+% eps_plateau = |f3-f4| |dln n_1s| to within a factor 1.35 over 680 points.
+% Derived in sec:two_channels, verified here.
+
+\section{Where: the ridge}
+\label{sec:ridge}
+% QUESTION: where in the operating space does this matter?
+% Interior maximum in density at ne ~ 2e13, at every temperature. Vanishes in
+% both Fujimoto limits. The crossover is detachment -- the transition the
+% diagnostic is used to characterise.
+
+\section{Not averaged away}
+\label{sec:elm_persistence}
+% QUESTION: does it survive a real transient event?
+% The error persists for tau_QSS. Report the measured time-average with its
+% deviation from the exponential estimate -- it is an estimate, not a bound,
+% and overstates at 330 of 680 cooling pairs.
+
+\section{Timescale separation does not predict it}
+\label{sec:M_does_not_predict}
+% QUESTION: can the standard validity criterion see this coming?
+% No. And the apparent correlation is a temperature proxy: +0.76 raw, +0.33
+% controlling for (Te,ne), -0.16 under quadratic control, while a bare
+% exp(13.6/Te) with no dynamics in it correlates at +0.71.
+
+\section{Summary}
+\label{sec:results_summary}
+
+%=============================================================================
+\chapter{What This Model Cannot Say}
+\label{ch:limits}
+% BEAT: bound the claim before an examiner does.
+%=============================================================================
+
+\section{Optical thickness}
+\label{sec:opacity}
+% At the worst point n(1s) ~ 1.5e15 cm^-3 -- 15x denser than the thickest
+% case tested. A uniform Ly-series probe moves eps by -13% to -77%.
+% Not boundable from the present data. State it.
+
+\section{No molecular channels}
+\label{sec:molecules}
+% 96.6% neutral at 1 eV, where MAR feeds n=3 directly. This is why the grid
+% stops at 1 eV -- a physics limit, not a data limit.
+
+\section{The upper truncation}
+\label{sec:nmax}
+% n_max = 15. MEASURED, not assumed: r_1(15) high by 4.9-6.2x against
+% published values while n=10 agrees to 4-20%. Results resting on the top
+% shell are upper bounds.
+
+\section{The open system}
+\label{sec:open_system}
+% The ion is a fixed reservoir; there is no 44th state. Consequence:
+% tau_QSS is boundary-dependent by 41x, lambda_0 is the CR ionisation rate of
+% ground-state hydrogen rather than an equilibration time, and effective
+% coefficients cannot be compared directly with ADAS.
+
+\section{Remaining assumptions}
+\label{sec:other_assumptions}
+% Maxwellian electrons; T_i = T_e in l-mixing; uniform plasma, no transport;
+% instantaneous step rather than a ramp.
+
+%=============================================================================
+\chapter{Conclusions}
+\label{ch:conclusions}
+% BEAT: hand over something usable.
+%=============================================================================
+
+\section{What was found}
+\label{sec:what_found}
+
+\section{A criterion others can apply}
+\label{sec:criterion}
+% QUESTION: what should a modeller do differently tomorrow?
+% The criterion in a form applicable to any CR matrix, with its stated
+% validity range.
+
+\section{What it means for divertor spectroscopy}
+\label{sec:implications}
+% Where in the operating space to distrust a (Te,ne) inversion, and what a
+% time-dependent inversion would require.
+
+\section{Further work}
+\label{sec:further_work}
+% Non-normality and pseudospectra; the Mori-Zwanzig memory kernel; opacity;
+% molecular channels; the low-p r_1 deficit against Fujimoto, still open.
+
+%=============================================================================
+\appendix
+\chapter{State Ordering}
+\label{app:states}
+\chapter{Atomic Data Sources}
+\label{app:data}
+\chapter{Numerical Methods and Convergence}
+\label{app:numerics}
+
+% \bibliographystyle{unsrtnat}  % uncomment once thesis.bib exists
+% \bibliography{thesis}
+
+\end{document}

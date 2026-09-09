@@ -1,0 +1,1610 @@
+%=============================================================================
+%  chapter3.tex -- Two Clocks
+%  Sections 3.1-3.3.  Uses macros from thesis_main.tex Part 2.
+%=============================================================================
+
+\chapter{Two Clocks}
+\label{ch:theory}
+
+Chapter~\ref{ch:atoms} established what can happen to a single hydrogen atom in
+a plasma and how fast each process runs. This chapter asks the next question: if
+we know what happens to one atom, how do we follow $10^{12}$ or more of them per
+cubic centimetre, distributed over 43 energy levels, and what makes the answer
+hard?
+
+The answer to the second half is that the system has two clocks running at
+once, separated by four orders of magnitude. Everything in this thesis follows
+from that separation --- including, as Chapter~\ref{ch:results} shows, a result
+that the separation itself does not predict.
+
+\medskip
+\noindent\textbf{What this chapter takes as given.} Three things are established
+elsewhere and used here without re-derivation. From Chapter~\ref{ch:intro}: that
+divertor conditions are inferred spectroscopically, that the Balmer
+$H_\alpha/H_\beta$ ratio is the working diagnostic, and the operating range
+$\Te = 1$--\SI{10}{\electronvolt}, $\nel = 10^{12}$--\SI{e15}{\per\cubic\centi\metre}
+over which everything is computed. From Chapter~\ref{ch:atoms}: the 43-level
+state space and the reason $\ell$ is resolved for $n \le 8$ and bundled above it;
+the origin and accuracy of every rate coefficient; and the Maxwellian averaging
+that turns a cross section into a rate. This chapter assumes those rates exist
+and are correct, and asks only what the resulting equations do.
+
+%-----------------------------------------------------------------------------
+\section{The rate equation}
+\label{sec:rate_equation}
+
+\subsection{A balance on every level}
+
+Consider one energy level of the hydrogen atom --- say $2p$ --- and count atoms.
+Atoms arrive in $2p$ when an electron collision excites a ground-state atom into
+it, when an atom in a higher level decays into it radiatively, when a collision
+knocks an atom down from above, and when a proton captures an electron directly
+into it. Atoms leave $2p$ when they are excited upward, knocked downward,
+ionised, or radiate to $1s$.
+
+The rate of change of the $2p$ population is the sum of everything arriving
+minus the sum of everything leaving. That is all a rate equation is.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=0.86\textwidth]{fig3_4_partition}
+  \caption[The collisional--radiative network and its slow/fast partition]{%
+  The collisional--radiative network of atomic hydrogen and the partition used
+  in Section~\ref{sec:qss}. Levels with $n \leq 8$ are resolved in orbital
+  angular momentum; $n = 9$--$15$ are bundled with a statistical
+  $\ell$-distribution. Proton-impact $\ell$-mixing (orange) couples sublevels
+  within every resolved shell and is the dominant loss channel for the
+  metastable $2s$ level, which has no electric-dipole route to the ground
+  state; arrows are drawn for $n = 2$ and $n = 3$ only, the $n = 4$ sublevels
+  being too closely spaced on this schematic for a legible arrow. The broad
+  arrows are not elementary transitions: $\mathbf{a} =
+  -\Lmat_{FF}^{-1}\Lmat_{FS}$ and $\mathbf{c} = -\Lmat_{FF}^{-1}\Svec_F$ are
+  \emph{network responses}, each summing every cascade route from its
+  reservoir into a given level (Section~\ref{sec:R_depends_on_b}). Vertical
+  spacing is schematic and not drawn to energy scale.}
+  \label{fig:network}
+\end{figure}
+
+A chemical engineer has written this equation many times. It is a species
+balance on a well-mixed vessel, with one species per energy level and one
+reaction per atomic process. Figure~\ref{fig:network} shows the network and the
+partition that Section~\ref{sec:qss} will exploit. The only unusual feature is
+the number of species --- 43 --- and the fact that some of the ``reactions'' are radiative and
+therefore proceed without a collision partner.
+
+Write it out for a general level $p$:
+\begin{equation}
+  \frac{\mathrm{d}n_p}{\mathrm{d}t}
+  = \underbrace{\sum_{q \neq p} C_{qp}\,\nel\,n_q}_{\text{collisions in}}
+  - \underbrace{\sum_{q \neq p} C_{pq}\,\nel\,n_p}_{\text{collisions out}}
+  + \underbrace{\sum_{q > p} A_{qp}\,n_q}_{\text{radiation in}}
+  - \underbrace{\gamma_p\,n_p}_{\text{radiation out}}
+  - \underbrace{Q_p\,\nel\,n_p}_{\text{ionisation}}
+  + \underbrace{S_p\,\nion}_{\text{recombination}}
+  \label{eq:level_balance}
+\end{equation}
+
+\noindent where $n_p$ is the population of level $p$ in \si{\per\cubic\centi\metre};
+$C_{qp}$ is the rate coefficient for the collisional transition $q \to p$ in
+\si{\cubic\centi\metre\per\second}; $A_{qp}$ is the Einstein coefficient for
+spontaneous emission $q \to p$ in \si{\per\second}; $\gamma_p = \sum_{q<p}A_{pq}$
+is the total radiative loss rate from $p$; $Q_p$ is the ionisation rate
+coefficient out of $p$ in \si{\cubic\centi\metre\per\second}; and $S_p$ is the
+recombination source per unit ion density in \si{\per\second}, given in
+Eq.~\eqref{eq:source} below.
+
+Collisional terms carry a density factor because a collision requires a
+partner; radiative terms do not, because an excited atom decays whether or not
+anything else is nearby. Which partner matters: electron-impact terms scale with
+$\nel$, proton-impact terms with $\nion$. For the pure hydrogen plasma
+considered here quasi-neutrality gives $\nion = \nel$, so both scale together and
+the distinction is one of physics rather than of parametric dependence. This is the first hint of the
+two clocks: radiative rates are fixed by atomic structure, collisional rates
+scale with density, and the competition between them is what makes the answer
+depend on where in the plasma you look.
+
+\subsection{Matrix form}
+
+Equation~\eqref{eq:level_balance} holds for each of the 43 levels. Stacking
+them and collecting the terms that are linear in the tracked populations gives
+\begin{equation}
+  \boxed{\ \frac{\mathrm{d}\nvec}{\mathrm{d}t} = \Lmat\,\nvec + \Svec\,\nion\ }
+  \label{eq:master}
+\end{equation}
+
+\noindent with $\nvec$ the 43-component population vector
+(\si{\per\cubic\centi\metre}), $\Lmat$ the collisional--radiative rate matrix
+(\si{\per\second}), and $\Svec\nion$ the recombination feed
+(\si{\per\cubic\centi\metre\per\second}). The matrix elements are
+\begin{align}
+  L_{pq} &= C^{(e)}_{qp}\,\nel + C^{(i)}_{qp}\,\nion + A_{qp}
+            \qquad (p \neq q),
+  \label{eq:L_offdiag}\\
+  L_{pp} &= -\left(\sum_{q\neq p}
+            \left[C^{(e)}_{pq}\,\nel + C^{(i)}_{pq}\,\nion\right]
+            + \gamma_p + Q_p\,\nel\right).
+  \label{eq:L_diag}
+\end{align}
+
+The superscripts distinguish the two collision partners. $C^{(e)}$ denotes
+electron-impact transitions and is the dominant term for changes of principal
+quantum number. $C^{(i)}$ denotes proton-impact transitions, which in this model
+are non-zero only for $\ell$-changing collisions within a shell
+($\Delta n = 0$, $\Delta\ell = \pm1$, $n \le 8$). That term is easy to overlook
+and it is not optional. Chapter~\ref{ch:atoms} shows it carries
+\SI{99.92}{\percent} of the total loss rate from the metastable $2s$ level.
+The reason is that $2s$ has no other fast exit: the transition $2s \to 1s$ is
+forbidden to electric-dipole radiation, and no two-photon rate is included in
+the present radiative dataset, so the only route out other than proton
+$\ell$-mixing is electron-impact de-excitation, some three orders of magnitude
+slower. Removing proton $\ell$-mixing therefore does not merely perturb the
+$n=2$ manifold; it changes which process controls it. Quasi-neutrality gives
+$\nion = \nel$ for the pure hydrogen plasma considered here, so both collisional
+terms scale with the same density.
+
+\noindent Note the index order: $L_{pq}$ with $p \neq q$ is the rate of the
+transition $q \to p$, a \emph{gain} into $p$. Off-diagonal elements are
+therefore non-negative and diagonal elements are negative. This convention is
+the opposite of the one some texts use, and getting it backwards transposes the
+physics; it is stated here once and used throughout.
+
+\subsection{Why recombination is a feed stream, not a matrix element}
+
+There is one term in Eq.~\eqref{eq:level_balance} that refuses to become a
+matrix element, and understanding why is worth a paragraph.
+
+$\Lmat$ multiplies $\nvec$. Every entry of $\Lmat\nvec$ must therefore be
+proportional to the population of some \emph{tracked} level. Excitation,
+de-excitation, radiative decay and ionisation all satisfy this: they take an
+atom that is in the manifold and move it, or remove it. Recombination does
+not. It is proportional to $\nel\nion$ --- the density of a species outside the
+neutral manifold entirely --- and so it enters as a constant feed, independent of
+$\nvec$.
+
+The chemical-engineering analogy is exact and worth holding onto for the rest of
+the thesis. $\Lmat$ is the reaction-rate matrix of a network of 43 species in a
+well-mixed vessel. $\Svec\nion$ is the inlet stream. And the ion population is
+the reservoir feeding that inlet --- a quantity this model does not evolve, which
+becomes important in Section~\ref{sec:two_references} and again in
+Chapter~\ref{ch:limits}.
+
+\subsection{Units, and a source that is quadratic in density}
+
+The source deserves care because its units are easy to state wrongly. Writing
+it out,
+\begin{equation}
+  \Svec = \nel\left(\bm{\alpha}_{\mathrm{RR}}
+        + \nel\,\bm{\alpha}_{\mathrm{3BR}}\right)
+  \label{eq:source}
+\end{equation}
+
+\noindent where $\bm{\alpha}_{\mathrm{RR}}$ is the radiative recombination
+coefficient (\si{\cubic\centi\metre\per\second}) and
+$\bm{\alpha}_{\mathrm{3BR}}$ the three-body coefficient
+(\si{\centi\metre\tothe{6}\per\second}). Three-body recombination requires a
+second electron to carry away the excess energy, so it carries an extra factor
+of $\nel$; the source as a whole is therefore \emph{quadratic} in electron
+density, and $\Svec$ has units of \si{\per\second}, not
+\si{\cubic\centi\metre\per\second}.
+
+This matters physically, not just dimensionally. At $\nel = \SI{e12}{\per\cubic\centi\metre}$
+the three-body channel supplies under 10\% of the feed into any level; at
+$\nel = \SI{e15}{\per\cubic\centi\metre}$ it supplies more than 99\% into the
+high-$n$ shells. The same equation therefore describes two physically different
+regimes at the two ends of the density grid, a fact used in
+Chapter~\ref{ch:validation} to test the two recombination datasets separately.
+
+Dimensional check on Eq.~\eqref{eq:master}: $[\Lmat\nvec] =
+\si{\per\second}\cdot\si{\per\cubic\centi\metre} =
+\si{\per\cubic\centi\metre\per\second}$, and
+$[\Svec\nion] = \si{\per\second}\cdot\si{\per\cubic\centi\metre}$, matching
+$[\mathrm{d}\nvec/\mathrm{d}t]$. Every term is a number of atoms per unit volume
+per unit time, as a balance equation must be.
+
+%-----------------------------------------------------------------------------
+\section{Conservation, and how we know the matrix is right}
+\label{sec:conservation}
+
+A $43\times43$ matrix assembled from six separate atomic datasets offers a great
+many opportunities to make a mistake that produces plausible numbers. Before
+using $\Lmat$ for anything, we need a test that a wrong matrix would fail.
+
+The test comes from counting atoms. Sum Eq.~\eqref{eq:master} over all levels
+with the feed switched off. Every collisional and radiative transition moves an
+atom \emph{within} the manifold: it is a loss from one level and a gain to
+another, so the two contributions cancel in the sum. Only ionisation genuinely
+removes an atom from the bound states. Therefore
+\begin{equation}
+  \boxed{\ \sum_{p} L_{pq} = -Q_q\,\nel \qquad \text{for every column } q.\ }
+  \label{eq:conservation}
+\end{equation}
+
+\noindent Each column of $\Lmat$ must sum to the ionisation leak from the level
+that column represents --- no more, no less. An error in a single off-diagonal
+element, a transposed index, or a missing back-reaction all break this
+immediately.
+
+\subsection{A worked example}
+
+The rule is easiest to see in a two-level system. Take $1s$ and $2p$ only, at
+$\Te = \SI{3}{\electronvolt}$ and $\nel = \SI{e14}{\per\cubic\centi\metre}$, with
+representative coefficients $C_{12} = \SI{1e-11}{\cubic\centi\metre\per\second}$,
+$C_{21} = \SI{1e-10}{\cubic\centi\metre\per\second}$,
+$A_{21} = \SI{6.27e8}{\per\second}$,
+$Q_1 = \SI{1e-13}{\cubic\centi\metre\per\second}$ and
+$Q_2 = \SI{1e-10}{\cubic\centi\metre\per\second}$. Then
+\begin{equation}
+  \Lmat =
+  \begin{pmatrix}
+    -1010 & 6.2701\times10^{8}\\[2pt]
+    1000  & -6.2702\times10^{8}
+  \end{pmatrix}\si{\per\second},
+  \qquad
+  \sum_p L_{pq} = \begin{pmatrix}-10 \\ -10^{4}\end{pmatrix}\si{\per\second}
+  \label{eq:toy_matrix}
+\end{equation}
+
+\noindent and $Q_1\nel = \SI{10}{\per\second}$, $Q_2\nel = \SI{e4}{\per\second}$.
+The rule holds.
+
+Two features of this small matrix survive into the full one and are worth
+noticing now.
+
+First, the second column is a difference of two numbers that agree to four
+significant figures: $6.2701\times10^{8}$ against $6.2702\times10^{8}$, leaving
+$10^{4}$. Almost all of the $2p$ loss rate is radiative decay to the ground
+state, and the physically interesting part --- the ionisation leak --- is four
+orders of magnitude smaller. Conservation is therefore always quoted as a
+\emph{relative} residual; an absolute one would be meaningless.
+
+Second, that same near-cancellation is the seed of the two clocks. The $2p$
+level empties in nanoseconds by radiating, but the atom that arrives back in
+$1s$ is still in the manifold. Only the small ionisation term actually removes
+it. Section~\ref{sec:two_clocks} makes this quantitative.
+
+\subsection{The measured residual}
+
+For the full matrix, evaluated at all 400 grid points, the largest relative
+column-sum residual is
+\begin{equation}
+  \max_{q,\,\Te,\,\nel}
+  \left|\frac{\sum_p L_{pq} + Q_q\nel}{Q_q\nel}\right|
+  = 3.61\times10^{-11},
+  \label{eq:conservation_measured}
+\end{equation}
+
+\noindent which is round-off for a matrix whose entries span eight orders of
+magnitude. The assembly is arithmetically sound.
+
+It is worth being precise about what this does and does not establish. It
+establishes that every transition entered as a loss also entered as a gain
+somewhere. It says nothing whatever about whether the \emph{magnitude} of any
+rate is correct: $\ell$-mixing, for instance, cancels exactly in the column sum
+and so is invisible to this test. Checking magnitudes requires comparison
+against independent sources, which is the subject of
+Chapter~\ref{ch:validation}. A test that a wrong result would also have passed
+is not a test.
+
+%-----------------------------------------------------------------------------
+\section{Two clocks}
+\label{sec:two_clocks}
+
+\subsection{Why the system has natural timescales at all}
+
+Equation~\eqref{eq:master} is linear, so with $\Lmat$ and the feed held fixed its
+solution is a steady state plus a sum of decaying exponentials:
+\begin{equation}
+  \nvec(t) = \nvec^{\mathrm{ss}}
+           + \sum_{k} c_k\,\mathrm{e}^{\lambda_k t}\,\bm{v}_k,
+  \qquad
+  \Lmat\bm{v}_k = \lambda_k\bm{v}_k,
+  \qquad
+  \nvec^{\mathrm{ss}} = -\Lmat^{-1}\Svec\nion.
+  \label{eq:eigen_solution}
+\end{equation}
+
+\noindent Each eigenvalue $\lambda_k$ has a negative real part --- the system is
+stable, as a system of decaying populations must be --- and each contributes a
+mode decaying with time constant $\tau_k = 1/|\lambda_k|$. The set of $\tau_k$
+is the set of clocks the system runs on.
+
+It is worth pausing on what Eq.~\eqref{eq:eigen_solution} has achieved, because
+the whole chapter turns on it. In the populations $n_p$ the 43 balance equations
+are hopelessly coupled: nothing happens to $3d$ without also happening to $2p$,
+$4f$, and everything else. Diagonalising $\Lmat$ is a change of coordinates.
+Instead of asking how many atoms are in each \emph{level}, ask how much of each
+\emph{eigenvector} the state contains --- and in those coordinates the coupling
+disappears entirely. The $k$th coordinate obeys $\dot{c}_k = \lambda_k c_k$,
+which is the first-order decay $c_k(t) = c_k(0)\mathrm{e}^{-t/\tau_k}$ familiar
+from single-step kinetics. Forty-three coupled equations become forty-three
+independent ones, each with its own clock.
+
+The eigenvectors are therefore not abstract: each is a \emph{pattern of
+populations} that decays without changing shape, and any state of the system is
+a superposition of those patterns fading at their own rates. Asking which
+physical process a mode corresponds to is then a matter of reading which levels
+carry its weight, which is what Section~\ref{sec:two_clocks} does next. One
+caveat, developed in Section~\ref{sec:transient_growth}: this decomposition is
+exact, but the patterns are not orthogonal, so a small state can be the sum of
+two large and nearly cancelling ones.
+
+For hydrogen at divertor conditions there are 43 of them. The striking fact,
+and the one this thesis is built on, is that they are not spread out evenly.
+
+\subsection{The spectrum}
+
+Figure~\ref{fig:spectrum} shows all 43 relaxation times, and
+Table~\ref{tab:spectrum} lists the five slowest at the benchmark point
+$\Te = \benchTe$, $\nel = \benchne$.
+
+\begin{table}[htbp]
+  \centering
+  \caption{The five slowest relaxation modes at the benchmark point. The gap
+  between the first and second is $9982$; the largest of the remaining 41 gaps
+  is the $2.80$ in this table, at $k=2$, so the slow mode is isolated from the
+  fast band by a factor of $3567$.}
+  \label{tab:spectrum}
+  \begin{tabular}{clll}
+    \toprule
+    $k$ & $\lambda_k$ (\si{\per\second}) & $\tau_k$ (\si{\second})
+        & $\tau_k/\tau_{k+1}$ \\
+    \midrule
+    0 & $-4.3999\times10^{4}$  & $2.2728\times10^{-5}$ & $9982$ \\
+    1 & $-4.3919\times10^{8}$  & $2.2769\times10^{-9}$ & $1.23$ \\
+    2 & $-5.3994\times10^{8}$  & $1.8521\times10^{-9}$ & $2.80$ \\
+    3 & $-1.5110\times10^{9}$  & $6.6181\times10^{-10}$& $2.71$ \\
+    4 & $-4.0922\times10^{9}$  & $2.4436\times10^{-10}$& --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+There is one gap and then a continuum.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{fig3_1_spectrum}
+  \caption[Relaxation timescales of the 43 collisional--radiative modes]{%
+  Relaxation timescales at the benchmark point. (a) All 43 modes. The slowest,
+  $\tauqss$, is the relaxation of the ground-state population; the next,
+  $\taurel$, is the slowest-decaying mode of the excited manifold --- the
+  bottleneck of the fast set --- and
+  their ratio is the separation $\Msep$. (b) The ratio of consecutive
+  timescales, which shows that the first gap is exceptional: the largest of the
+  other 41 is $2.80$, so the first exceeds every competitor by a factor of
+  $3567$ and the 42 fast modes form a dense band rather than a hierarchy.}
+  \label{fig:spectrum}
+\end{figure}
+ The slowest mode is separated from the
+next by a factor of ten thousand; after that the modes crowd together, each
+within a factor of about two or three of its neighbour. It is not a hierarchy of
+three or four well-separated groups, as one might expect from the $n$-shell
+structure --- it is one very slow mode sitting far above a dense quasi-continuum
+of fast ones.
+
+\subsection{What the two modes are}
+
+The eigenvectors identify them.
+
+The slow mode $\bm{v}_0$ is almost entirely ground state: its $1s$ component is
+$1.0000$ and every excited component is below $10^{-3}$. Its participation ratio,
+\begin{equation}
+  \mathrm{PR}(\bm{v}) = \frac{\left(\sum_i |v_i|^2\right)^2}{\sum_i |v_i|^4},
+  \label{eq:participation_ratio}
+\end{equation}
+which counts the effective number of states a mode involves --- unity for a mode
+confined to a single level, $43$ for one spread evenly over all of them --- is
+$1.00$. This mode is the relaxation of the
+ground-state population against the prescribed ion reservoir. It is often
+called the ionisation balance, and that is the right physical picture, but the
+term should be used with care here: this model holds $\nion$ fixed
+(Section~\ref{sec:rate_equation}), so what relaxes is $\ngs$ alone and not a
+self-consistent neutral--ion partition. Chapter~\ref{ch:limits} assesses what
+that costs.
+
+Its eigenvalue is closely related to, but not equal to, the direct ionisation
+rate of the ground state. Writing
+\begin{equation}
+  |\lambda_0| = \eta\,Q_{1s}\,\nel ,
+  \label{eq:stepwise_enhancement}
+\end{equation}
+
+\noindent the factor $\eta$ ranges from $1.16$ to $29.5$ across the grid, and
+equals $3.12$ at the benchmark point. It is nowhere below unity on the grid, and
+it is the \emph{stepwise-ionisation enhancement}: ground-state atoms are not only
+ionised directly but also excited into the manifold and ionised from there.
+Equation~\eqref{eq:reduced} shows exactly this --- $\eta$ is the ratio of the
+effective ionisation rate to the direct one,
+\begin{equation}
+  \eta = \frac{|\Omqss|}{Q_{1s}\,\nel},
+  \label{eq:eta_def}
+\end{equation}
+
+\noindent the numerator being the full Schur complement and the denominator the
+direct ground-state ionisation rate alone. The denominator is emphatically
+\emph{not} $|\Lmat_{SS}|$: by Eq.~\eqref{eq:level_balance} the ground state has
+no radiative loss and no $\ell$-mixing partner, so
+$|\Lmat_{SS}| = (\sum_q C_{1s \to q} + Q_{1s})\nel$, which exceeds $Q_{1s}\nel$
+by the whole of the excitation flux. Since the Schur complement returns part of
+that flux to the ground state, $|\Omqss| < |\Lmat_{SS}|$ always, and the ratio
+$\Omqss/\Lmat_{SS}$ is bounded above by unity --- whereas $\eta$ is bounded
+below by it. Note also that $\eta$ is defined through $|\lambda_0|$ while
+Eq.~\eqref{eq:eta_def} is written with $|\Omqss|$; the two agree only to
+$O(\Msep^{-1})$, which at the benchmark is one part in $10^{4}$ and at the
+weakest grid point one part in $87$. Consistently,
+$\eta$ grows with density, where collisional climbing of the ladder is easier,
+and falls with temperature, where direct ionisation is already fast: at
+$\Te = \SI{10}{\electronvolt}$, $\nel = \SI{e12}{\per\cubic\centi\metre}$ it is
+$1.16$, and at $\Te = \SI{1}{\electronvolt}$,
+$\nel = \SI{e15}{\per\cubic\centi\metre}$ it is $29.5$ --- almost all ionisation
+there proceeds stepwise. We write
+\begin{equation}
+  \tauqss \equiv \frac{1}{|\lambda_0|} = \SI{22.73}{\micro\second}.
+\end{equation}
+
+The next mode $\bm{v}_1$ has almost no ground-state weight and is distributed
+across the excited manifold. It is the excited states rearranging among
+themselves:
+\begin{equation}
+  \taurel \equiv \frac{1}{|\lambda_1|} = \SI{2.277}{\nano\second}.
+\end{equation}
+
+Their ratio is the \emph{separation}
+\begin{equation}
+  \boxed{\ \Msep \equiv \frac{\tauqss}{\taurel} = 9982
+  \quad\text{at the benchmark point.}\ }
+  \label{eq:M_benchmark}
+\end{equation}
+
+The excited manifold settles ten thousand times faster than the ionisation
+balance moves. Put in units a reader can hold: if the ionisation balance took a
+year to equilibrate, the excited states would be done in under an hour.
+
+\subsubsection*{Which operator $\Msep$ belongs to}
+
+One point of notation has to be fixed here, because it is the source of an
+apparent contradiction between this chapter and Chapter~\ref{ch:results}.
+
+$\Msep$ is a property of an \emph{operator}, not of an experiment. Nothing in
+$|\lambda_1|/|\lambda_0|$ refers to a disturbance, an initial condition, or a
+history. Written with its argument exposed,
+\begin{equation}
+  \Msep[\Lmat] \equiv \frac{\tauqss[\Lmat]}{\taurel[\Lmat]}
+  = \frac{|\lambda_1[\Lmat]|}{|\lambda_0[\Lmat]|},
+  \qquad
+  \Msep(\Te,\nel) \equiv \Msep[\Lmat(\Te,\nel)],
+  \label{eq:M_functional}
+\end{equation}
+
+\noindent and Eq.~\eqref{eq:M_benchmark} is $\Msep(\benchTe,\benchne)$ while
+Eq.~\eqref{eq:M_range} is the range of $\Msep(\Te,\nel)$ over the 400 grid
+operators. Both are statements about matrices, and no notion of a step enters
+either.
+
+A temperature step brings a second operator into scope. Writing $\Lmat^- =
+\Lmat(\Te^-,\nel)$ and $\Lmat^+ = \Lmat(\Te^-+\Delta\Te,\nel)$, the initial
+populations are those of the CR equilibrium of $\Lmat^-$, but every relaxation
+for $t>0$ is governed by $\Lmat^+$. The two separations
+\begin{equation}
+  \Msep^- \equiv \Msep[\Lmat^-], \qquad \Msep^+ \equiv \Msep[\Lmat^+]
+  \label{eq:M_pre_post}
+\end{equation}
+
+\noindent are therefore both meaningful, and it is $\Msep^+$ that bounds the
+post-step relaxation. At the benchmark point a step of one grid interval in
+$\Te$ gives $\Msep^- = 9982$ and $\Msep^+ = 8243$. The difference is not a
+disagreement between chapters: $\Msep$ falls steeply with temperature, with a
+measured local slope $\mathrm{d}\ln\Msep/\mathrm{d}\ln\Te \approx -4$, so a
+$4.8\,\%$ step moves it by $17\,\%$.
+
+The alternative convention --- defining $\Msep$ to mean the post-step operator
+always --- was considered and rejected, for a reason worth recording. The
+$\Te$ grid is logarithmic with a ratio of $10^{1/49} = 1.0481$, so a step of one
+grid interval from the benchmark lands exactly on the neighbouring grid point.
+The post-step operator \emph{is} $\Lmat(\Te[24],\nel[5])$, one of the 400
+operators whose separation Eq.~\eqref{eq:M_range} already reports. This is not
+special to that step. Because $\Lmat$ is tabulated only on the grid, every step
+used in this thesis is an integer number of grid intervals: the larger step
+reported elsewhere as \enquote{$+\SI{0.6}{\electronvolt}$} is four intervals,
+$\Te[23] \to \Te[27]$, an increment of \SI{0.6094}{\electronvolt} and a factor
+$1.0481^4 = 1.2068$, for which $\Msep^+ = 4856$. \emph{Every} post-step operator
+in this work is therefore also a static grid operator. Under that
+convention the same matrix would carry one name in this chapter and another in
+Chapter~\ref{ch:results}. Being pre-step or post-step is a role a matrix plays
+in an experiment, not a property it has; the notation should not pretend
+otherwise.
+
+\subsection{The separation across the operating range}
+
+Table~\ref{tab:spectrum} is one grid point. Across all 400,
+\begin{equation}
+  \SI{0.87}{\nano\second} \le \taurel \le \SI{38.9}{\nano\second},
+  \qquad
+  \SI{75.4}{\nano\second} \le \tauqss \le \SI{67.2}{\second},
+  \qquad
+  86.8 \le \Msep \le 1.73\times10^{9}.
+  \label{eq:M_range}
+\end{equation}
+
+\noindent $\taurel$ varies by a factor of 45; $\tauqss$ by seven orders of
+magnitude. The separation is never small: even at its weakest --- the hottest,
+densest corner of the grid --- the excited states are almost ninety times faster
+than the ionisation balance.
+
+The scope of that lower figure needs stating, because it is easy to quote in a
+way it does not support. $\Msep = 86.8$ is the minimum over all 400 grid points,
+and the point carrying it is excluded from the transient analysis of
+Chapter~\ref{ch:results} by the plateau-window criterion, which requires
+$\Msep > 900$ for a window to exist at all. The floor over the \emph{analysed}
+set is therefore $\Msep \ge 902$, and that floor is imposed by the criterion
+rather than measured. The same distinction applies to $\tauqss$, and an earlier
+draft of Eq.~\eqref{eq:M_range} did not observe it: the floor
+$\tauqss \ge \SI{1.18}{\micro\second}$ is the minimum over the 346 points that
+satisfy $\Msep > 900$, not over the 400. Over all 400 it is
+\SI{75.4}{\nano\second}, at the same $[49,7]$ corner, and that is the value
+Eq.~\eqref{eq:M_range} now reports --- so that all three ranges in it share one
+scope. Neither number licenses a statement of the form
+\emph{\enquote{the separation is at least $X$ wherever the model is used}}: the
+first is a minimum over a set that includes points the analysis discards, and
+the second is a restatement of the cut. Both are reported here as descriptions
+of the spectrum, and the argument of Section~\ref{sec:qss} does not rest on
+either.
+
+The one-gap structure of Table~\ref{tab:spectrum} also survives across the grid,
+though with far less margin than the benchmark suggests. Define the
+\emph{isolation} of the slow mode as the first gap divided by the largest of the
+other 41. At the benchmark it is $3567$. Its minimum over all 400 points is
+$24.3$, at $\Te = \SI{10}{\electronvolt}$, $\nel =
+\SI{e15}{\per\cubic\centi\metre}$, where the first gap is $86.8$ and its nearest
+competitor $3.57$. A factor of 24 is still an unambiguous separation --- one slow
+mode, then a band --- but it is $147$ times less margin than
+Figure~\ref{fig:spectrum} displays, and the benchmark value must not be quoted as
+though it described the grid.
+
+That corner is worth naming, because it is where every part of this argument is
+weakest at once: the minimum $\taurel$, the minimum $\tauqss$, the minimum
+$\Msep$ and the minimum isolation all occur at the same grid point, $[49,7]$.
+It is the single stress point of the two-clock picture. It is also, by the
+plateau-window criterion, outside the set analysed in
+Chapter~\ref{ch:results} --- which is a limitation to state rather than a
+convenience, since it means the weakest separation on the grid is never tested
+against a transient. The figure script evaluates the isolation at all 400 points
+and halts if it falls below ten.
+
+$\taurel$ falls with density with a fitted logarithmic slope
+$\mathrm{d}\ln\taurel/\mathrm{d}\ln\nel$ between $-0.46$ and $-0.53$ across the
+temperature range, rather than the $-1$ that a purely collisional relaxation
+would give. The difference is radiative decay,
+which is density-independent and increasingly dominates the excited-state loss
+budget as the density falls.
+
+\subsection{Is the definition robust?}
+
+Two definitions of $\taurel$ are available and it is worth checking they agree.
+The first, used above, takes the second eigenvalue of the full $43\times43$
+matrix. The second computes the slowest eigenvalue of the excited block
+$\Lmat_{FF}$ alone --- that is, the relaxation of the excited manifold with the
+ground state held fixed. These are different calculations and there is no
+guarantee they coincide.
+
+They agree to \SI{0.0098}{\percent} at the benchmark point and to better than
+\SI{0.346}{\percent} everywhere on the grid. The excited manifold relaxes at
+essentially the same rate whether or not the ground state is allowed to
+participate.
+
+It would be a mistake to read that agreement as independent evidence that the
+subsystems separate, and the arithmetic says why. Block decoupling is a
+perturbation in the coupling between the two blocks, and its leading correction
+is of relative size $\Msep^{-1}$. At the benchmark $\Msep^{-1} =
+\SI{0.0100}{\percent}$ against the measured \SI{0.0098}{\percent} --- the two
+agree to \SI{2}{\percent}. The disagreement between the two definitions of
+$\taurel$ \emph{is} the first-order coupling correction; it is a measurement of
+the spectral gap, not a second, independent demonstration of it. Quoting it as
+corroboration would be the error Section~\ref{sec:conservation} warns against:
+a test that a wrong result would also have passed.
+
+Read correctly it is still worth having, and is a sharper statement than the
+one it replaces. Across the grid the product $\Msep \times$ (relative
+disagreement) runs from $0.074$ to $7.94$ with median $0.494$ --- order unity,
+as first-order perturbation theory requires, with a coefficient that varies by
+two orders across the operating range. The two definitions differ by exactly
+the amount the block structure predicts, which confirms the perturbative
+picture rather than assuming it. The formal argument for separability is made
+in Section~\ref{sec:qss} and rests on the Schur complement, not on this
+comparison.
+
+\subsection{What the separation does and does not license}
+
+A separation of $10^{4}$ invites an obvious simplification: treat the excited
+states as instantaneously equilibrated, and solve only for the slow subsystem.
+That is the quasi-steady-state approximation, and Section~\ref{sec:qss} derives
+it properly.
+
+Two warnings, both of which matter later.
+
+First, $\Msep$ compares two \emph{rates}. Chapter~\ref{ch:results} measures a
+\emph{distance} --- how far a diagnostic reading sits from the truth. Knowing how
+quickly a system recovers from a displacement tells you nothing about how far it
+was displaced, and these are independent quantities.
+
+Second, eigenvalues describe the long-time behaviour of each mode in isolation.
+The matrix $\Lmat$ is strongly asymmetric --- radiative decay downward runs at
+$\sim\SI{6.3e8}{\per\second}$ against collisional excitation upward at
+$\sim\SI{e4}{\per\second}$ at the benchmark density, some five orders of
+magnitude --- and asymmetry of that size makes non-normality plausible. It does
+not by itself prove it: a non-symmetric matrix may still be normal and have
+orthogonal eigenvectors. The decisive test is the numerical one of
+Section~\ref{sec:transient_growth}, where the numerical abscissa is found to be
+positive at every grid point while every eigenvalue is negative. For a
+non-normal matrix the modal
+amplitudes can be large and opposing, and a perturbation can grow before it
+decays even though every eigenvalue is negative. The spectrum bounds the
+asymptotic decay; it does not bound the finite-time error.
+
+Both warnings point the same way: the two clocks tell us the system \emph{can}
+be simplified, and they say nothing about what the simplification costs. Working
+that out is the business of the rest of this chapter.
+
+%-----------------------------------------------------------------------------
+\section{The quasi-steady-state approximation}
+\label{sec:qss}
+
+\subsection{The shortcut}
+
+A separation of $10^{4}$ invites an obvious move. If the excited states settle
+in nanoseconds while the ionisation balance takes microseconds, then on any
+timescale relevant to the second, the first has already finished. So do not
+solve for the excited states at all: assume they have reached whatever
+configuration the current conditions demand, and solve only for the slow
+subsystem.
+
+This is the quasi-steady-state approximation, and every practical
+collisional--radiative model uses some form of it. Without it, a plasma
+simulation that resolves \si{\nano\second} timesteps in order to follow the
+excited states cannot afford to run for the \si{\milli\second} an experiment
+lasts.
+
+The chemical-engineering version of this argument is the Bodenstein
+steady-state approximation. For a reaction $A \to I \to P$ with a short-lived
+intermediate, one sets $\mathrm{d}[I]/\mathrm{d}t = 0$ and solves algebraically
+for $[I] = (\text{production})/(\text{loss})$. The intermediate stops being a
+differential unknown and becomes slaved to whatever $[A]$ currently is. What
+follows is the same move applied to 42 intermediates at once, coupled to each
+other.
+
+\subsection{Partition and elimination}
+
+Split the 43 levels into a \emph{slow} subspace $\slow = \{1s\}$ and a
+\emph{fast} subspace $\fast$ containing the 42 excited levels, and partition
+Eq.~\eqref{eq:master} conformably:
+\begin{equation}
+  \frac{\mathrm{d}}{\mathrm{d}t}
+  \begin{pmatrix}\nS\\[2pt]\nF\end{pmatrix}
+  =
+  \begin{pmatrix}
+    \Lmat_{SS} & \Lmat_{SF}\\[2pt]
+    \Lmat_{FS} & \Lmat_{FF}
+  \end{pmatrix}
+  \begin{pmatrix}\nS\\[2pt]\nF\end{pmatrix}
+  +
+  \begin{pmatrix}\Svec_S\\[2pt]\Svec_F\end{pmatrix}\nion .
+  \label{eq:partitioned}
+\end{equation}
+
+Section~\ref{sec:two_clocks} justifies this particular partition rather than
+some other: the slow eigenvector is $1.0000$ ground state with every excited
+component below $10^{-3}$, so the slow mode and the ground state are the same
+object to the precision that matters.
+
+Setting $\mathrm{d}\nF/\mathrm{d}t = 0$ in the lower block gives an algebraic
+system for the excited populations,
+\begin{equation}
+  \boxed{\ \nF^{\mathrm{QSS}}
+  = -\Lmat_{FF}^{-1}\left(\Lmat_{FS}\,\nS + \Svec_F\,\nion\right).\ }
+  \label{eq:qss_solution}
+\end{equation}
+
+Read the right-hand side as a sentence. The bracket is everything arriving in
+the excited manifold from outside it: $\Lmat_{FS}\nS$ is excitation up from the
+ground state, $\Svec_F\nion$ is recombination down from the ions. The factor
+$-\Lmat_{FF}^{-1}$ divides by the loss network. It is a matrix rather than a
+number only because a level's losses feed other levels, which have their own
+losses, and so on --- the division is over the whole network at once. For a
+single Bodenstein intermediate it would collapse to $1/k_{\mathrm{loss}}$.
+
+Two things make Eq.~\eqref{eq:qss_solution} usable. $\Lmat_{FF}$ is invertible
+because it is a strictly column-diagonally-dominant matrix with negative
+diagonal: every excited level loses population to the ground state or to the
+continuum, so each column sum is strictly negative rather than zero, and the
+Levy--Desplanques theorem applies. Physically, there are no perfectly trapped
+states within the excited manifold. Its condition number lies between
+$1.48\times10^{3}$ and $1.74\times10^{5}$ across the grid, so the inversion is
+numerically well behaved despite the eight orders of magnitude spanned by the
+entries.
+
+\subsection{The reduced dynamics}
+
+Substituting Eq.~\eqref{eq:qss_solution} back into the slow block eliminates
+$\nF$ entirely:
+\begin{equation}
+  \frac{\mathrm{d}\nS}{\mathrm{d}t}
+  = \underbrace{\left(\Lmat_{SS} - \Lmat_{SF}\Lmat_{FF}^{-1}\Lmat_{FS}\right)}_{\Omqss}\nS
+  + \left(\Svec_S - \Lmat_{SF}\Lmat_{FF}^{-1}\Svec_F\right)\nion .
+  \label{eq:reduced}
+\end{equation}
+
+A 43-dimensional differential system has become a one-dimensional one. The
+matrix $\Omqss$ is the \emph{Schur complement} of $\Lmat_{FF}$ in $\Lmat$, and
+it has a direct physical reading: $\Lmat_{SS}$ is the direct loss from the
+ground state, and $-\Lmat_{SF}\Lmat_{FF}^{-1}\Lmat_{FS}$ is the correction for
+atoms that leave the ground state, wander through the excited manifold, and
+either come back or are ionised on the way. It is stepwise ionisation, summed
+over every possible path.
+
+\textbf{This is the object the rest of the thesis is about.} $\Omqss$ is
+precisely the effective ionisation rate that a plasma modeller using QSS would
+construct, and it is the algebraic form of the effective coefficients tabulated
+in frameworks such as ADAS~\cite{Summers2006}. When
+Chapter~\ref{ch:results} asks what the approximation costs, it is asking what
+this quantity costs.
+
+\subsection{When is it valid?}
+
+The elimination assumed the excited states are always at their instantaneous
+steady value. The error in that assumption can be estimated directly. Write the
+deviation from the instantaneous target as
+$\bm{\delta}(t) = \nF(t) - \nF^{\mathrm{QSS}}(t)$ and subtract
+Eq.~\eqref{eq:qss_solution} from the lower block of Eq.~\eqref{eq:partitioned}:
+\begin{equation}
+  \frac{\mathrm{d}\bm{\delta}}{\mathrm{d}t}
+  = \Lmat_{FF}\bm{\delta}
+  - \frac{\mathrm{d}\nF^{\mathrm{QSS}}}{\mathrm{d}t}.
+  \label{eq:deviation}
+\end{equation}
+
+The deviation relaxes at the rate set by $\Lmat_{FF}$, whose slowest mode is
+$\taurel$, and is forced by the motion of the target itself. If the driving
+conditions change on a timescale $\taudrive$, then
+$|\mathrm{d}\nF^{\mathrm{QSS}}/\mathrm{d}t| \sim
+\|\nF^{\mathrm{QSS}}\|/\taudrive$, and balancing the two terms in
+Eq.~\eqref{eq:deviation} at quasi-static equilibrium gives
+$\|\bm{\delta}\| \sim \taurel\|\nF^{\mathrm{QSS}}\|/\taudrive$, that is
+\begin{equation}
+  \frac{\|\nF - \nF^{\mathrm{QSS}}\|}{\|\nF^{\mathrm{QSS}}\|}
+  \sim \frac{\taurel}{\taudrive},
+  \label{eq:qss_validity}
+\end{equation}
+
+\noindent so the approximation is accurate whenever $\taudrive \gg \taurel$. For
+the self-consistent problem, where the only thing driving the excited states is
+the slow subsystem itself, $\taudrive \to \tauqss$ and the condition becomes
+\begin{equation}
+  \Msep = \frac{\tauqss}{\taurel} \gg 1 .
+  \label{eq:qss_condition}
+\end{equation}
+
+Section~\ref{sec:two_clocks} measured $\Msep = 9982$ at the benchmark and
+$\Msep \ge 86.8$ at every one of the 400 grid points. \textbf{The condition is
+satisfied everywhere on the grid, comfortably.} The floor carries the
+qualification of Section~\ref{sec:two_clocks}: the point holding it is excluded
+from the transient analysis of Chapter~\ref{ch:results}, and the floor over the
+analysed set is imposed by the window criterion rather than measured.
+
+Two qualifications must travel with that statement.
+
+\textbf{Equation~\eqref{eq:qss_validity} is a spectral estimate, and a bound is
+available.} The step from Eq.~\eqref{eq:deviation} to
+Eq.~\eqref{eq:qss_validity} identified the relaxation rate of $\bm{\delta}$ with
+the slowest eigenvalue of $\Lmat_{FF}$. That identification is exact only for a
+normal operator. The quasi-static balance itself gives more:
+$\bm{\delta} \simeq \Lmat_{FF}^{-1}\dot{\nvec}_F^{\rm QSS}$, hence
+\begin{equation}
+  \|\bm{\delta}\| \le \|\Lmat_{FF}^{-1}\|_2\,\|\dot{\nvec}_F^{\rm QSS}\|,
+  \qquad
+  \|\Lmat_{FF}^{-1}\|_2 = \frac{1}{\sigma_{\min}(\Lmat_{FF})},
+  \label{eq:qss_bound}
+\end{equation}
+
+\noindent and since $\sigma_{\min} \le \min_k|\lambda_k|$ for every matrix, the
+operative timescale $\|\Lmat_{FF}^{-1}\|_2$ is never shorter than the spectral
+one. Measured across the grid, the ratio
+$\|\Lmat_{FF}^{-1}\|_2\,|\lambda_{\min}(\Lmat_{FF})|$ lies between $1.118$ and
+$1.526$, with median $1.151$: the spectral estimate understates the rigorous
+timescale by at most \SI{53}{\percent}. Defining the corresponding bounded
+separation $\Msep^{\rm eff} = \tauqss/\|\Lmat_{FF}^{-1}\|_2$,
+\begin{equation}
+  \Msep^{\rm eff} = 8659 \ \text{at the benchmark},
+  \qquad
+  \Msep^{\rm eff} \ge 77.6 \ \text{at all 400 grid points},
+  \label{eq:M_eff}
+\end{equation}
+
+\noindent so Eq.~\eqref{eq:qss_condition} survives non-normality with a margin
+reduced by \SI{13}{\percent} and not by orders of magnitude. It is worth asking
+why the penalty is so small when $\kappa(\Lmat_{FF})$ reaches $1.74\times10^5$:
+the answer is that the ill-conditioning lives in the fast subspace, among modes
+separated by many decades in rate, and barely touches the slowest mode of
+$\Lmat_{FF}$, which is the one that sets QSS validity. The operator is strongly
+non-normal in a way that is almost irrelevant to this particular question.
+
+That said, Eq.~\eqref{eq:qss_bound} is still a statement about the settled
+deviation. Section~\ref{sec:two_clocks} warned that for a strongly non-normal
+operator the spectrum does not control finite-time behaviour, and that warning
+applies to the approach as opposed to the endpoint:
+the balance in Eq.~\eqref{eq:deviation} is a \emph{quasi-static} argument, valid
+once the fast transients have decayed and the deviation has settled onto the
+slow manifold. It says nothing about what $\bm{\delta}$ does in the first few
+$\taurel$ after a disturbance, when the non-orthogonality of the eigenvectors
+can allow transient growth. Whether that matters for the quantity actually
+measured is not decidable from the spectrum, and Chapter~\ref{ch:results}
+settles it by integrating the full system rather than by argument.
+
+\textbf{The condition is not sharp.} At the benchmark point
+Eq.~\eqref{eq:qss_validity} gives $(\Msep^{+})^{-1} = 1.21\times10^{-4}$ ---
+the post-step operator being the one that governs the relaxation being
+compared --- whereas direct
+integration returns a residual of order $10^{-8}$: the approximation is four
+orders of magnitude better than the scaling argument requires. The unwritten
+prefactor --- set by how strongly the observable projects onto the moving part of
+the target --- is evidently small. Equation~\eqref{eq:qss_validity} predicts the
+trend correctly and the magnitude not at all, and it should be quoted only for
+the former.
+
+That would appear to end the matter. It does not, and the reason is the subject
+of the next section.
+
+%-----------------------------------------------------------------------------
+\section{Two reference states}
+\label{sec:two_references}
+
+% GAP-CH1: the diagnostic chain -- why a line ratio is the measured quantity
+\subsection{Why ratios}
+
+A spectrometer viewing a divertor records a line-integrated brightness. Turning
+that into an absolute population requires the neutral density along the
+sightline and the path length, neither of which is known to better than a factor
+of a few. Practitioners therefore work with \emph{ratios}, in which both cancel.
+
+The ratio used throughout this thesis is
+\begin{equation}
+  \Robs \equiv \frac{n_3}{n_4}
+  = \frac{n_{3s}+n_{3p}+n_{3d}}{n_{4s}+n_{4p}+n_{4d}+n_{4f}},
+  \label{eq:observable_def}
+\end{equation}
+
+\noindent the population ratio of the $n=3$ and $n=4$ shells. Up to Einstein
+coefficients it is the Balmer $H_\alpha/H_\beta$ ratio, since $H_\alpha$ is the
+$3\to2$ transition and $H_\beta$ the $4\to2$;
+Section~\ref{sec:balmer_equivalence} shows the two agree to
+\SI{0.06}{\percent}. It is convenient to normalise to the ground state as well,
+writing $\rp = n_p/\ngs$, since that is the form in which the QSS solution is
+usually tabulated.
+
+\subsection{The hidden variable}
+
+Dividing Eq.~\eqref{eq:qss_solution} through by the ground-state population
+gives the QSS ratios
+\begin{equation}
+  \rp^{\mathrm{QSS}}
+  = \frac{\left[-\Lmat_{FF}^{-1}\left(\Lmat_{FS}\nS + \Svec_F\nion\right)\right]_p}
+         {\ngs}.
+  \label{eq:qss_ratio}
+\end{equation}
+
+It is tempting --- and, in the literature, common --- to treat
+Eq.~\eqref{eq:qss_ratio} as a function of $\Te$ and $\nel$ alone, tabulate it,
+and invert a measured ratio against the table. That step deserves more scrutiny
+than it usually receives.
+
+Look at what the numerator contains. The term $\Lmat_{FS}\nS$ is proportional to
+the ground-state density; the term $\Svec_F\nion$ is proportional to the ion
+density. What fixes $\rp^{\mathrm{QSS}}$ is not either supply on its own but the
+\emph{ratio} of the two.
+
+It is convenient to measure that ratio against its equilibrium value. Define the
+ground-state \emph{departure coefficient}
+\begin{equation}
+  \boxed{\ \bdep \equiv \frac{\ngs}{\Zsb{1}\,\nel\,\nion}\ }
+  \label{eq:departure}
+\end{equation}
+
+\noindent where $\Zsb{1}$ is the Saha--Boltzmann coefficient of the ground
+state,
+\begin{equation}
+  \Zsb{p}\,[\si{\cubic\centi\metre}]
+  = 10^{6}\,\frac{g_p}{2g_i}
+  \left(\frac{h^2}{2\pi m_e\,e\,\Te}\right)^{3/2}
+  \exp\!\left(\frac{\chi_p}{\Te}\right),
+  \qquad \chi_p = \frac{13.606}{p^2},
+  \label{eq:saha_boltzmann}
+\end{equation}
+
+\noindent where $\Te$ and $\chi_p$ are both in \si{\electronvolt}, $e$ is the
+elementary charge in \si{\coulomb} (converting \si{\electronvolt} to
+\si{\joule}), the bracket evaluates in \si{\cubic\metre}, and the factor
+$10^{6}$ converts to \si{\cubic\centi\metre}. Here $g_p = 2p^2$ is the
+statistical weight of level $p$, $g_i = 1$ that of the bare proton, and the
+factor $2$ in the denominator is the spin degeneracy of the free electron.
+Temperatures are quoted in electron-volts throughout this thesis; no Boltzmann
+constant appears, and $\Te$ should everywhere be read as the electron thermal
+energy.
+
+$\Zsb{p}$ is the factor for which $n_p = \Zsb{p}\nel\nion$ holds in complete
+thermodynamic equilibrium, so $\bdep$ is dimensionless and equals unity there.
+Departures above or below unity measure over- and under-population relative to
+that thermodynamic reference; no more should be read into the sign than that.
+
+It is worth attaching a number to $\bdep$ immediately, because the name
+``departure coefficient'' suggests a small correction and it is nothing of the
+kind. Evaluated on the collisional--radiative steady state, $\bdep$ runs from
+$76.6$ at $[0,7]$, the coldest and densest corner of the grid, to
+$2.683\times10^{5}$ at $[49,0]$, the hottest and thinnest, and equals $956$ at
+the benchmark point. The ground state is over-populated relative to
+Saha--Boltzmann by two to five orders of magnitude throughout, which is the
+statement that a plasma at these densities is far from thermodynamic
+equilibrium: radiative decay returns atoms to the ground state faster than
+collisions can lift them out, and where the resonance lines escape the photons
+are not replaced. A quantity that varies over three decades across the
+operating range is not a small correction, and treating it as fixed is the
+assumption this thesis examines.
+
+The location of those extremes is worth pausing on, because the obvious guess is
+wrong and the correction matters later. One expects the largest departure where
+the gas is coldest and most neutral. It is the opposite: $\bdep$ is largest in
+the \emph{hottest, thinnest} corner and smallest in the coldest, densest one.
+The reason is that $\bdep$ measures distance from Saha--Boltzmann, and
+Saha--Boltzmann at \SI{10}{\electronvolt} predicts a nearly fully ionised gas,
+so any surviving neutral population is an enormous departure from it. At
+\SI{1}{\electronvolt} Saha already predicts a mostly neutral gas, so a
+predominantly neutral plasma is only a modest departure. The neutral
+\emph{fraction} therefore runs the other way: solving $\Lmat\nvec + \Svec = 0$
+directly and restoring $\nion = \nel$, the ratio $\ngs/\nion$ falls from $40.4$
+at $[0,0]$ and $20.5$ at $[0,7]$ --- gases that are \SIrange{95}{98}{\percent}
+neutral --- to $5.3\times10^{-6}$ at $[49,7]$. \textbf{A large departure
+coefficient does not mean many neutrals}, and the two quantities peak at
+opposite corners of the grid.
+
+\subsubsection*{Where the optically thin assumption holds}
+
+That last observation forces a declaration that the preceding sections left
+implicit. The Einstein coefficients in Eqs.~\eqref{eq:level_balance},
+\eqref{eq:L_offdiag} and \eqref{eq:L_diag} enter bare: every emitted photon is
+assumed to leave the plasma. Where the ground-state density is high that is
+false --- a Lyman-$\alpha$ photon is reabsorbed, the atom returns to $2p$, and
+the effective $A_{2p \to 1s}$ is reduced by the population escape factor
+$\Theta_P$ of Holstein~\cite{Holstein1947}.
+
+Whether this matters is a question about $\ngs$, and the numbers above make it
+answerable. Taking a homogeneous slab of thickness $D$ and a Doppler-broadened
+Lyman-$\alpha$ line at $T_{\rm at} = \Te$:
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+  \toprule
+  point & $\Te$ (eV) & $\nel$ (\si{\per\cubic\centi\metre}) &
+  $\ngs$ (\si{\per\cubic\centi\metre}) & $\tau_c$ & $\Theta_P$ \\
+  \midrule
+  $[49,0]$ & 10 & $10^{12}$ & $1.1\times10^{7}$ & $9\times10^{-7}$ & $1.000$ \\
+  $[49,7]$ & 10 & $10^{15}$ & $5.3\times10^{9}$ & $5\times10^{-4}$ & $1.000$ \\
+  $[23,5]$ & 2.95 & $1.4\times10^{14}$ & $1.2\times10^{11}$ & $0.020$ & $0.986$ \\
+  $[0,0]$  & 1 & $10^{12}$ & $4.0\times10^{13}$ & $11.1$ & $0.032$ \\
+  $[0,7]$  & 1 & $10^{15}$ & $2.0\times10^{16}$ & $5.6\times10^{3}$ & $3\times10^{-5}$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent with $\tau_c$ and $\Theta_P$ quoted at $D = \SI{10}{\centi\metre}$;
+$\Theta_P$ at $[0,0]$ is $0.48$, $0.032$ and $0.0023$ for $D = 1$, $10$ and
+\SI{100}{\centi\metre} respectively, so the qualitative conclusion does not
+depend on the choice, but no single figure should be quoted without it. The
+model itself contains no geometry, and $D$ is an input.
+
+The reading is clean. Over the hot half of the grid the plasma is optically
+thin to Lyman-$\alpha$ to better than one part in $10^{3}$, and at the benchmark
+point $\Theta_P = 0.986$: the bare-$A$ treatment is justified where the
+quantitative results of this thesis are established. Along the
+$\Te = \SI{1}{\electronvolt}$ edge it is not. There $\Theta_P$ falls to
+$3\times10^{-5}$, the effective $A_{2p\to1s}$ collapses, and with it $\bdep^{\rm
+CRE}$, the switching points $c_m/a_m$, and the ground-fed fractions of
+Section~\ref{sec:ground_fed_fraction}.
+
+\textbf{The results of this chapter are therefore stated for
+$\Te \gtrsim \SI{2}{\electronvolt}$, and the cold edge of the grid is retained
+for the asymptotic behaviour it exposes rather than as a prediction.} It is also
+the corner where the atomic-only model is weakest for an independent reason: at
+\SIrange{95}{98}{\percent} neutral and \SI{1}{\electronvolt} the gas is
+molecular, and neither $\mathrm{H}_2$ nor molecular-assisted recombination
+appears in $\Lmat$. Chapter~\ref{ch:limits} takes both limitations up
+quantitatively. Neither affects the structural results of this chapter, which
+are statements about whatever $\Lmat$ is supplied: the quasi-steady-state
+closure, the three-argument form of $\Rqss$ and the identity
+$\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep = \ffrac{3}-\ffrac{4}$ hold for a
+trapped-line rate matrix exactly as they do for an optically thin one. What
+changes is the numerical value of $\bdep^{\rm CRE}$ that such a matrix
+produces.
+
+\textbf{$\bdep$ is a dynamical variable}, and it is worth being precise about
+how it evolves. Differentiating Eq.~\eqref{eq:departure} at fixed $\nion$,
+\begin{equation}
+  \dot{\bdep}
+  = \frac{\dot{\ngs}}{\Zsb{1}\nel\nion}
+  - \bdep\left(\frac{\dot{\Zsb{1}}}{\Zsb{1}}
+                + \frac{\dot{\nel}}{\nel}\right).
+  \label{eq:b1_dynamics}
+\end{equation}
+
+\noindent Only the first term comes from Eq.~\eqref{eq:reduced}, which governs
+$\ngs$; the second comes from the normalisation moving. This distinction matters
+for the temperature-step experiment of Chapter~\ref{ch:results}. At the instant
+of a step, $\ngs$ is continuous but $\Te$ is not, so $\Zsb{1}(\Te)$ jumps and
+$\bdep$ changes discontinuously purely because its reference has changed. Once
+$\Te$ and $\nel$ are again held fixed, $\bdep \propto \ngs$ and its subsequent
+relaxation is that of the ground-state population, on $\tauqss$.
+
+Either way, $\bdep(t)$ is not determined by the instantaneous $(\Te, \nel)$ ---
+it carries the plasma's history. Nothing in the QSS derivation fixes it.
+
+\subsection{Does the observable actually depend on it?}
+\label{sec:R_depends_on_b}
+
+The previous subsection shows that each \emph{individual} normalised population
+depends on $\bdep$. That is not yet an argument about $\Robs$. A sceptical
+reader is entitled to object: perhaps every level depends on $\bdep$ and the
+dependence cancels in the ratio, leaving $H_\alpha/H_\beta$ a clean function of
+$(\Te,\nel)$ after all. Ratios are chosen precisely because things cancel in
+them. The objection must be answered, not assumed away.
+
+It can be answered exactly, because Eq.~\eqref{eq:qss_solution} is linear in the
+two supplies. Define
+\begin{equation}
+  \bm{a} \equiv -\Lmat_{FF}^{-1}\Lmat_{FS},
+  \qquad
+  \bm{c} \equiv -\Lmat_{FF}^{-1}\Svec_F ,
+  \label{eq:ac_def}
+\end{equation}
+
+\noindent so that Eq.~\eqref{eq:qss_solution} reads
+\begin{equation}
+  \nF^{\mathrm{QSS}} = \bm{a}\,\ngs + \bm{c}\,\nion .
+  \label{eq:two_supplies}
+\end{equation}
+
+Both vectors are dimensionless and both have a plain reading. $a_p$ is the
+number of atoms that end up sitting in level $p$ per ground-state atom present:
+not only those excited into $p$ directly, but those excited anywhere and
+arriving at $p$ afterwards by cascade or by a further collision. The matrix
+inverse is what performs that sum over every possible route. Likewise $c_p$ is
+the population of $p$ per ion, from electrons captured into any level and
+settling into $p$ on the way down. Neither depends on how many ground-state
+atoms or ions are actually present --- both are properties of $\Lmat_{FF}$,
+$\Lmat_{FS}$ and $\Svec_F$ alone, and therefore functions of $(\Te,\nel)$ only.
+
+So Eq.~\eqref{eq:two_supplies} says something simple: every excited level is
+fed from two directions, and its population is the sum of two terms, one
+proportional to the size of the reservoir below it and one to the reservoir
+above. What distinguishes one level from another is the \emph{proportion} in
+which it draws on the two.
+
+Writing $a_m$ and $c_m$ for the sums over the $\ell$-resolved states of shell
+$m$, and using $\ngs = \bdep\Zsb{1}\nel\nion$ from Eq.~\eqref{eq:departure},
+\begin{equation}
+  n_m^{\mathrm{QSS}}
+  = \nion\left[a_m\,\bdep\,\Zsb{1}\,\nel + c_m\right]
+  = a_m\,\ngs + c_m\,\nion .
+  \label{eq:shell_population}
+\end{equation}
+
+\noindent The prefactor $\nion$ is common to both shells and cancels in the
+ratio, as does the emitting path length. The neutral density does \emph{not}
+cancel, and it is important not to read the previous sentence that way: what an
+intensity ratio removes is the need to \emph{know} the absolute neutral density
+and the path length in order to form it, not the dependence of the ratio on how
+much neutral hydrogen is present relative to the ions. That dependence is the
+subject of this chapter and it survives, inside the bracket, as $\bdep$:
+\begin{equation}
+  \boxed{\
+  \Rqss(\bdep) = \frac{a_3\,\bdep\,\Zsb{1}\,\nel + c_3}
+                      {a_4\,\bdep\,\Zsb{1}\,\nel + c_4}\ }
+  \label{eq:R_of_b}
+\end{equation}
+
+Differentiating,
+\begin{equation}
+  \boxed{\
+  \frac{\partial \Rqss}{\partial \bdep}
+  = \frac{\Zsb{1}\,\nel\,\left(a_3c_4 - a_4c_3\right)}
+         {\left(a_4\,\bdep\,\Zsb{1}\,\nel + c_4\right)^2}\ }
+  \label{eq:dR_db}
+\end{equation}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{fig3_2_R_of_b1}
+  \caption[The observable as a function of the hidden variable]{%
+  The shell ratio $\Rqss$ as a function of the ground-state departure
+  coefficient, at the benchmark point, from Eq.~\eqref{eq:R_of_b}. The curve is
+  a one-parameter family: it asks what $\Robs$ would be if $\bdep$ took other
+  values at fixed $(\Te,\nel)$. Between the two supply limits the observable
+  changes by a factor of several; a table indexed on $(\Te,\nel)$ alone must
+  select one point on this curve. Both axes are logarithmic, so the visible
+  slope is $\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep$ directly --- the quantity
+  plotted in Figure~\ref{fig:ground_fed}. The marker shows the value the
+  CR-equilibrium closure selects, and the shaded strip the range of
+  $\bdep^{\mathrm{CRE}}$ over the whole grid.}
+  \label{fig:R_of_b1}
+\end{figure}
+
+The observable is independent of $\bdep$ if and only if
+\begin{equation}
+  a_3c_4 = a_4c_3
+  \qquad\Longleftrightarrow\qquad
+  \frac{a_3}{c_3} = \frac{a_4}{c_4},
+  \label{eq:cancellation_condition}
+\end{equation}
+
+\noindent that is, if and only if the $n=3$ and $n=4$ shells draw on the two
+supplies in \emph{identical proportion}. There is no reason for them to. The
+$n=4$ shell lies closer to the continuum and is more readily fed by
+recombination; the $n=3$ shell is more readily reached by excitation from the
+ground state. Chapter~\ref{ch:results} measures the difference and finds it
+substantial across most of the operating range.
+
+\subsection{The ground-fed fraction, and where the sensitivity vanishes}
+\label{sec:ground_fed_fraction}
+
+Equation~\eqref{eq:dR_db} settles whether the dependence exists. It is not,
+however, the right measure of how \emph{strong} it is, because $\Robs$ itself
+varies over orders of magnitude across the operating range and an absolute
+derivative is not comparable between grid points. The dimensionless measure is
+the logarithmic sensitivity, and it takes a form with a direct physical reading.
+
+Define the \emph{ground-fed fraction} of shell $m$,
+\begin{equation}
+  \boxed{\ \ffrac{m} \equiv
+  \frac{a_m\,\bdep\,\Zsb{1}\,\nel}
+        {a_m\,\bdep\,\Zsb{1}\,\nel + c_m}\ }
+  \label{eq:ground_fed_fraction}
+\end{equation}
+
+\noindent the share of shell $m$'s population that arrived from below, by
+excitation out of the ground state, as opposed to from above by recombination.
+That $\ffrac{m}$ lies in $[0,1]$ is not automatic: it requires $a_m \ge 0$ and
+$c_m \ge 0$, and both are components of $-\Lmat_{FF}^{-1}$ acting on non-negative
+vectors. The claim therefore needs $-\Lmat_{FF}^{-1}$ to be non-negative
+\emph{elementwise}, which holds for the same reason $\Lmat_{FF}$ is invertible
+(Section~\ref{sec:qss}): $-\Lmat_{FF}$ has non-positive off-diagonal entries and
+strictly positive column sums, making it a non-singular M-matrix, and the
+inverse of a non-singular M-matrix is elementwise non-negative. Physically the
+statement is unsurprising --- adding atoms to one level cannot reduce the steady
+population of another --- but it is worth recording, because the two limits below
+depend on it. Direct evaluation confirms it: at none of the 400 grid points does
+$-\Lmat_{FF}^{-1}$ contain a negative entry.
+
+Differentiating
+Eq.~\eqref{eq:R_of_b} logarithmically then gives
+\begin{equation}
+  \boxed{\ \frac{\mathrm{d}\ln\Robs}{\mathrm{d}\ln\bdep}
+  = \ffrac{3} - \ffrac{4}\ }
+  \label{eq:log_sensitivity}
+\end{equation}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=0.66\textwidth]{fig3_3_ground_fed}
+  \caption[Ground-fed fractions and the sensitivity of the observable]{%
+  The ground-fed fractions of the two shells and their difference, at the
+  benchmark point; the dotted vertical line marks $\bdep^{\mathrm{CRE}}$ there.
+  Both fractions rise from zero to unity as the ground-state
+  reservoir grows, but they do so at different rates, and their difference ---
+  which by Eq.~\eqref{eq:log_sensitivity} is exactly
+  $\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep$ --- vanishes in both limits and
+  peaks where the two supplies compete. Note that $\ffrac{3}-\ffrac{4}$ is a
+  difference of fractions, not itself a fraction.}
+  \label{fig:ground_fed}
+\end{figure}
+
+\textbf{The Balmer ratio's sensitivity to the ground-state reservoir is exactly
+the difference in ground-fed fraction between the two shells.} This is the
+mathematical core of the thesis, and Eq.~\eqref{eq:log_sensitivity} is where the
+physics becomes visible.
+
+It vanishes in two limits, and only there. When $\bdep\Zsb{1}\nel \gg
+c_m/a_m$ for both shells, both are fed almost entirely from the ground state,
+$\ffrac{3} = \ffrac{4} = 1$, and the ratio is blind to the reservoir. When
+$\bdep\Zsb{1}\nel \ll c_m/a_m$, both are fed almost entirely by recombination,
+$\ffrac{3} = \ffrac{4} = 0$, and the ratio is blind again. \emph{In between --- where the two supplies compete --- the shells
+are fed in different proportion and the sensitivity is largest.}
+
+\subsubsection*{How large, and where}
+
+Equation~\eqref{eq:log_sensitivity} says the sensitivity peaks somewhere between
+the two limits. It does not yet say how high, or at what reservoir. Both follow
+in closed form, and the answer is more restrictive than one might expect.
+
+Work in the logarithmic reservoir variable $x = \ln(\bdep\Zsb{1}\nel)$. In that
+variable Eq.~\eqref{eq:ground_fed_fraction} is exactly a logistic,
+\begin{equation}
+  \ffrac{m}(x) = \frac{1}{1 + e^{-(x - x_m)}},
+  \qquad x_m \equiv \ln\!\left(\frac{c_m}{a_m}\right),
+  \label{eq:f_logistic}
+\end{equation}
+
+\noindent so the two curves in Figure~\ref{fig:ground_fed} are not merely
+similar in shape: they are the \emph{same} curve, of the same width, displaced
+along the axis. Every property of the 42-state network enters only through where
+each sits. Their separation is
+\begin{equation}
+  \Delta \equiv x_4 - x_3
+  = \ln\!\left(\frac{a_3/a_4}{c_3/c_4}\right)
+  = \ln\!\left(\frac{\Robs^{\rm grd}}{\Robs^{\rm rec}}\right),
+  \label{eq:logistic_separation}
+\end{equation}
+
+\noindent the logarithm of the span between the two asymptotes of
+Figure~\ref{fig:R_of_b1}. Equation~\eqref{eq:f_logistic} also makes explicit a
+distinction that is easy to lose. \textbf{The switching point of shell $m$ is
+$\bdep = c_m/(a_m\Zsb{1}\nel)$, which is a property of the network, not of the
+Saha balance.} A plasma may lie far above the Saha--Boltzmann ground-state
+population, $\bdep \gg 1$, and still have both shells fed predominantly from
+above. The
+benchmark point is exactly such a case: $\bdep^{\mathrm{CRE}} = 956$, while the
+two shells do not become half ground-fed until $\bdep = 2.73\times10^{3}$ and
+$1.91\times10^{4}$ respectively, so $\ffrac{3} = 0.260$ and $\ffrac{4} = 0.048$
+--- three-quarters of $n=3$ and 95\,\% of $n=4$ arrive by recombination.
+A large departure coefficient and a predominantly ground-fed manifold are
+different statements, and only the second controls
+Eq.~\eqref{eq:log_sensitivity}. Neither should be conflated with calling the
+plasma \emph{ionising}, which is properly a statement about the direction of the
+net population flux and is not fixed by the magnitude of $\bdep$ alone. Writing $s = x - \tfrac12(x_3+x_4)$ and using
+$\ffrac{}(-y) = 1 - \ffrac{}(y)$, the difference $\ffrac{3}-\ffrac{4}$ is
+\emph{even} in $s$. Its maximum therefore sits at the midpoint, and takes the
+value
+\begin{equation}
+  \boxed{\ \max\big|\ffrac{3}-\ffrac{4}\big|
+  = \tanh\!\left(\frac{|\Delta|}{4}\right)
+  = \tanh\!\left[\frac{1}{4}\left|\ln\!\left(\frac{\Robs^{\rm grd}}{\Robs^{\rm rec}}\right)\right|\right]\ }
+  \label{eq:peak_sensitivity}
+\end{equation}
+
+\noindent where the modulus matters only for the generalisation below: for the
+$n_3/n_4$ ratio considered here $\Robs^{\rm grd} > \Robs^{\rm rec}$ and
+$\Delta > 0$, but for a pair of shells drawn in the opposite order $\Delta$
+changes sign while the left-hand side cannot. The maximum is attained at
+$\bdep\Zsb{1}\nel = \sqrt{(c_3/a_3)(c_4/a_4)}$, the
+geometric mean of the two switching points. The area is fixed by the same
+quantity: integrating Eq.~\eqref{eq:log_sensitivity} over the reservoir gives
+$\int(\ffrac{3}-\ffrac{4})\,\mathrm{d}\ln\bdep = \ln\Robs^{\rm grd} -
+\ln\Robs^{\rm rec} = \Delta$. That second relation is only the fundamental
+theorem of calculus, and it is quoted here for what it is --- a consistency check
+tying the two figures together, not an independent result. The figure script
+evaluates both and halts if either disagrees with the sampled curve.
+
+Three things follow, and the third is the useful one.
+
+First, the peak sensitivity is set \emph{entirely} by how far apart the two
+supply limits lie. Two plasmas with the same span between $\Robs^{\rm rec}$ and
+$\Robs^{\rm grd}$ have the same worst-case sensitivity, whatever the details of
+their cascade networks.
+
+Second, $\tanh$ is bounded by unity, so
+$|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ everywhere and for every pair of
+shells. \textbf{A line ratio can never respond to the ground-state reservoir
+faster, in relative terms, than the reservoir itself moves.} Integrating a
+logarithmic sensitivity whose magnitude is everywhere below unity gives the
+finite-excursion statement $|\Delta\ln\Robs| \le |\Delta\ln\bdep|$, so a stale
+reservoir cannot be amplified in logarithmic space, only attenuated.
+
+It is worth being precise about what this does and does not bound. It bounds the
+error in the \emph{observable}. A diagnostician does not suffer an error in
+$\Robs$ directly: they measure $\Robs$ and invert it for $(\Te,\nel)$, and the
+error in the inferred temperature is
+\begin{equation}
+  \Delta\ln\Te = \frac{\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep}
+                      {\mathrm{d}\ln\Robs/\mathrm{d}\ln\Te}\,\Delta\ln\bdep .
+  \label{eq:inversion_jacobian}
+\end{equation}
+
+\noindent The bound constrains the numerator only. Where the ratio is itself
+weakly sensitive to temperature --- which is where Balmer diagnostics are known
+to be least useful --- a bounded error in $\Robs$ can still become a large error
+in the inferred $\Te$. The inversion Jacobian in the denominator is supplied in
+Chapter~\ref{ch:results}; without it, no statement about diagnostic error
+follows from this section.
+
+These closed forms also locate the benchmark point on the curve rather than
+leaving it as an anchor of unstated significance. Its sensitivity is
+$\ffrac{3}-\ffrac{4} = 0.212$, some $47\,\%$ of the maximum $0.4514$, which is
+attained nearly one decade higher at $\bdep = 7.2\times10^{3}$. The benchmark is
+therefore on the rising flank and not at the worst case, which is the honest
+reading of every error reported against it in
+Chapter~\ref{ch:results}. Two identities follow from
+Eq.~\eqref{eq:ground_fed_fraction} and fix the marker in
+Figure~\ref{fig:R_of_b1} in terms of the fractions of
+Figure~\ref{fig:ground_fed},
+\begin{equation}
+  \Robs = \Robs^{\rm grd}\,\frac{\ffrac{4}}{\ffrac{3}}
+        = \Robs^{\rm rec}\,\frac{1-\ffrac{4}}{1-\ffrac{3}},
+  \label{eq:R_from_fractions}
+\end{equation}
+
+\noindent both giving $\Robs = 0.7778$ at the benchmark. They are algebraic
+rearrangements rather than new physics, but they are the cheapest available
+cross-check between the two figures and the figure script enforces them.
+
+Third, the attenuation is severe unless the span is large. For $\Delta \ll 1$
+the peak is $\Delta/4$: a diagnostic whose two supply limits differ by only
+$10\,\%$ has a worst-case log-sensitivity of $0.024$. Sensitivity to the hidden
+variable is bought with span, and $\Robs = n_3/n_4$ has span because $n=3$ and
+$n=4$ draw on the two supplies in genuinely different proportion. That is why
+this ratio is diagnostically useful and also why it is exposed.
+
+Note that this is the logarithmic sensitivity, not the absolute derivative
+$\partial\Robs/\partial\bdep$ of Eq.~\eqref{eq:dR_db}. The latter does
+\emph{not} vanish as $\bdep \to 0$; it tends to
+$\Zsb{1}\nel(a_3c_4-a_4c_3)/c_4^2$, which is finite. The two limits are
+statements about the \emph{fractional} response of the observable, which is what
+a diagnostic error is.
+
+The classification into ionising and recombining plasmas is due to
+Fujimoto~\cite{Fujimoto2004}, and the crossover between the two is what a
+divertor passes through as it detaches.
+Chapter~\ref{ch:results} maps $\ffrac{3} - \ffrac{4}$ over the operating range
+and shows the diagnostic error tracking it.
+
+It is worth recording what Eq.~\eqref{eq:R_of_b} is not. It is not a fit, an
+expansion, or an approximation: it is an exact rewriting of
+Eq.~\eqref{eq:qss_solution}, valid wherever $\Lmat_{FF}$ is invertible.
+Nor is it new. It is the standard population-coefficient decomposition of
+collisional--radiative theory, introduced by Bates, Kingston and
+McWhirter~\cite{Bates1962} % [KEY REQUIRED: Proc. Roy. Soc. A 267, 297 (1962)]
+and written by Fujimoto and
+McWhirter~\cite{FujimotoMcWhirter1990} % [KEY REQUIRED: Phys. Rev. A 42, 6588 (1990)]
+in the Saha-normalised form
+$b(p) = r_0(p) + r_1(p)\,b(1)$, with $r_0$ the recombining and $r_1$ the
+ionising population coefficient. Substituting
+$b(p) = n_p/[\Zsb{p}\nel\nion]$ into that expression and clearing the
+normalisation gives the correspondence
+\begin{equation}
+  a_p = r_1(p)\,\frac{\Zsb{p}}{\Zsb{1}},
+  \qquad
+  c_p = r_0(p)\,\Zsb{p}\,\nel ,
+  \label{eq:fujimoto_correspondence}
+\end{equation}
+
+\noindent both sides dimensionless. The two forms are the same linear solution
+in different coordinates; what is done here is to ask what the ratio of two such
+populations depends on, which Eq.~\eqref{eq:log_sensitivity} answers.
+
+Section~\ref{sec:fujimoto} tests the decomposition against published data.
+The test is necessarily a contracted one: $r_0$ and $r_1$ are published as
+curves rather than tables, so the comparison is made instead by summing
+$\bm{a}$ and $\bm{c}$ against the ionisation rates to form the effective
+stage-to-stage coefficients, which \emph{are} tabulated, and comparing with
+ADAS SCD96 and ACD96~\cite{Summers2006}. This is weaker than a level-by-level
+comparison --- forty-two coefficients are collapsed into one, and many incorrect
+$\bm{a}$ would contract correctly --- but it is not merely a rate check either:
+$a_p$ and $c_p$ enter the two coefficients with different weights, so an
+error in the \emph{split} between the two supplies displaces the ionisation and
+recombination coefficients in opposite directions, which no single-channel
+comparison detects. Chapter~\ref{ch:results} verifies the superposition
+$\nF = \bm{a}\ngs + \bm{c}\nion$ to a relative error of
+$3\times10^{-14}$.
+
+\subsection{Two reference states, and they are not the same}
+
+Equation~\eqref{eq:R_of_b} shows that the QSS ratio is a function of three
+arguments, not two. This gives two distinct things a measurement can be compared
+against.
+
+\paragraph{The QSS reference.} $\Rqss(\Te, \nel;\,\bdep(t))$, evaluated at the
+\emph{instantaneous} departure coefficient. This is what adiabatic elimination
+claims: the excited manifold is in steady state with whatever reservoir is
+present at that moment. Its accuracy is governed by
+Section~\ref{sec:qss}'s validity condition.
+
+\paragraph{The CR-equilibrium reference.}
+\begin{equation}
+  \Rcre(\Te, \nel)
+  \equiv \Rqss\!\left(\Te, \nel;\,\bdep^{\mathrm{CRE}}(\Te,\nel)\right),
+  \label{eq:cre_ratio}
+\end{equation}
+
+\noindent where $\bdep^{\mathrm{CRE}}$ is obtained by additionally setting
+$\mathrm{d}\nS/\mathrm{d}t = 0$ in Eq.~\eqref{eq:reduced} and solving for the
+steady ground-state population. This \emph{is} a function of $(\Te,\nel)$ alone
+and can therefore be tabulated.
+
+The distinction is easy to miss because both are called ``the QSS solution'' in
+common usage, and in a steady plasma they are the same number. They separate
+whenever the ground-state population has not finished settling --- which, in a
+divertor disturbed by an edge-localised mode every few milliseconds, is most of
+the time.
+
+Two remarks on terminology, both of which matter for what follows. First,
+$\bdep = 1$ denotes complete thermodynamic equilibrium, whereas
+$\bdep^{\mathrm{CRE}}$ denotes the steady state of the collisional--radiative
+system, which is a different and much weaker condition; in an optically thin
+ionising plasma $\bdep^{\mathrm{CRE}}$ is very much larger than unity. Second,
+this model holds the ion density fixed (Section~\ref{sec:rate_equation}), so
+the quantity relaxing on $\tauqss$ is the ground-state population against a
+prescribed reservoir, not a self-consistent ionisation balance. What that
+restriction costs is assessed in Chapter~\ref{ch:limits}.
+
+\subsection{Two error measures}
+
+Each reference defines an error:
+\begin{align}
+  \epsQSS(t) &= \left|\frac{\Robs(t)}
+                     {\Rqss\!\left(\Te,\nel;\,\bdep(t)\right)} - 1\right|,
+  \label{eq:eps_qss}\\[4pt]
+  \epsCRE(t) &= \left|\frac{\Robs(t)}
+                     {\Rcre\!\left(\Te,\nel\right)} - 1\right|.
+  \label{eq:eps_cre}
+\end{align}
+
+$\epsQSS$ asks whether the excited states have kept up with the reservoir they
+actually see. $\epsCRE$ asks whether the tabulated answer is right. The first is
+the question the literature worries about; the second is the one a
+diagnostician suffers.
+
+\textbf{They are not the same question, and Chapter~\ref{ch:results} shows they
+have very different answers.} Naming them apart is the single most important
+definitional step in this thesis: conflating them makes it possible to measure
+the second and report it as the first.
+
+\subsection{What a two-parameter table must assume}
+
+It remains to say precisely what is being assumed when a measured ratio is
+inverted against a table indexed on $(\Te,\nel)$.
+
+Equation~\eqref{eq:R_of_b} establishes that $\Robs = \Robs(\Te,\nel,\bdep)$.
+A two-parameter table must therefore do one of three things: adopt a closure
+$\bdep = \bdep(\Te,\nel)$; operate in a regime where one supply dominates both
+shells, so that Eq.~\eqref{eq:dR_db} is negligible and the third argument does
+not matter; or hold some other quantity fixed that determines $\bdep$
+implicitly. Equilibrium ionisation balance is a closure, not a mathematical
+necessity, and it is important not to overstate the point.
+
+It is important to be precise about which practice is being criticised, because
+the modern effective-coefficient databases are not themselves at fault.
+ADAS~\cite{Summers2006}, for instance, tabulates photon emissivity coefficients
+separately for the excitation-driven and recombination-driven components. Used
+as intended, those two components are weighted by $\ngs$ and $\nion$
+respectively, which is exactly the information $\bdep$ carries --- the database
+does not impose a closure at all. Indeed the excitation/recombination split of
+Eq.~\eqref{eq:two_supplies} is conceptually the same decomposition.
+
+The assumption enters at the \emph{inversion} step, when a measured ratio is
+mapped to $(\Te,\nel)$ through a two-parameter lookup. Such a lookup returns a
+single ratio per $(\Te,\nel)$ pair and therefore requires the two components to
+have been combined in a fixed proportion --- that is, it requires a closure for
+$\bdep$. The usual choice is $\bdep = \bdep^{\mathrm{CRE}}$, obtained by solving
+the collisional--radiative system to complete steady state. A ratio inverted this
+way carries the assumption that the plasma's ground-state population has settled
+at its steady value for the local conditions: not an assumption about how quickly
+excited states equilibrate, but an assumption that the plasma has \emph{finished
+changing}.
+
+The second possibility is not merely hypothetical, and it is the reason
+Eq.~\eqref{eq:dR_db} is worth having. Where one supply dominates both shells,
+the table is safe regardless of what the ground state is doing.
+Chapter~\ref{ch:results} maps where in the divertor operating range that is the
+case, and where it is not.
+
+The remainder of this thesis quantifies what the assumption costs.
+
+%-----------------------------------------------------------------------------
+%-----------------------------------------------------------------------------
+\section{A caveat: the modes are not orthogonal}
+\label{sec:transient_growth}
+
+Section~\ref{sec:two_clocks} presented the eigen-decomposition as a change of
+coordinates in which the 43 coupled equations become 43 independent decays. That
+is exact. But a change of coordinates is only as convenient as the coordinates
+are well behaved, and these are not.
+
+The reason is a physical asymmetry running through the whole matrix. Radiative
+decay carries atoms downward at up to $\SI{6.3e8}{\per\second}$; electron-impact
+excitation carries them upward at $C\nel \sim \SI{e4}{\per\second}$ at the
+benchmark density. Downward and upward coupling therefore differ by some nine
+orders of magnitude, and $\Lmat$ is very far from symmetric. Its eigenvectors,
+consequently, are very far from orthogonal.
+
+The consequence is worth stating carefully, because it is easy to overstate.
+Every eigenvalue has negative real part, so every mode decays and any
+perturbation eventually vanishes; that much the spectrum does guarantee.
+What it does not guarantee is that the perturbation decays \emph{monotonically}.
+When eigenvectors are nearly parallel, a state of modest size can be the sum of
+two much larger, nearly cancelling modal contributions. If those two modes decay
+at different rates the cancellation is progressively spoiled, and the state can
+grow --- sometimes by orders of magnitude --- before the decay of the individual
+modes finally wins. The standard diagnostic for whether this is possible at all
+is the numerical abscissa
+\begin{equation}
+  \mu(\Lmat) = \lambda_{\max}\!\left(\tfrac{1}{2}\left[\Lmat + \Lmat^{\mathsf T}\right]\right),
+  \label{eq:numerical_abscissa}
+\end{equation}
+
+\noindent the largest eigenvalue of the symmetric part of $\Lmat$, which gives
+the initial slope of $\|\nvec(t)\|$ for the worst-case perturbation. For this
+matrix $\mu(\Lmat) > 0$ at every grid point, so transient growth is not merely
+possible but guaranteed for \emph{some} disturbance.
+
+Whether it occurs for the disturbance and the observable that matter here is a
+different question, and one the spectrum cannot answer. $\mu(\Lmat) > 0$ is a
+statement about the worst case over all perturbation directions in the Euclidean
+norm --- other norms carry their own logarithmic norms; the Balmer
+ratio is one particular scalar function of the state, and a temperature step is
+one particular disturbance. A quantity may be entirely well behaved even when
+the operator that governs it admits growth in principle. This is why
+Section~\ref{sec:qss} was careful to label Eq.~\eqref{eq:qss_validity} an
+estimate rather than a bound: the eigenvalue argument describes the system after
+the transients have settled, and the transients themselves are outside its
+reach.
+
+Chapter~\ref{ch:results} therefore settles the question the only way it can be
+settled --- by integrating the full 43-state system through a temperature step
+and measuring what the Balmer ratio does, rather than by inferring it from the
+spectrum.
+
+%-----------------------------------------------------------------------------
+\section{Summary}
+\label{sec:theory_summary}
+
+Starting from a population balance on each of 43 levels, this chapter assembled
+the collisional--radiative rate equation $\dot{\nvec} = \Lmat\nvec + \Svec\nion$
+and checked the assembly against particle conservation, which holds to
+$3.6\times10^{-11}$ across the operating range.
+
+Diagonalising $\Lmat$ revealed a spectrum with one gap and then a continuum: a
+single slow mode at $\tauqss = \SI{22.7}{\micro\second}$, the relaxation of the
+ground-state population, sitting four orders of magnitude above a dense band of
+fast modes whose slowest member is $\taurel = \SI{2.28}{\nano\second}$, the
+rearrangement of the excited manifold. The separation
+$\Msep = \tauqss/\taurel$ is 9982 at the benchmark point and does not fall below
+$86.8$ at any of the 400 grid points --- though, as
+Section~\ref{sec:two_clocks} records, that floor sits at a point the transient
+analysis excludes, and the four-orders figure quoted above is the benchmark
+value rather than a property of the grid, over which $\Msep$ spans two to nine
+orders.
+
+That separation licenses the quasi-steady-state approximation: eliminate the
+excited populations algebraically and solve only for the slow subsystem. The
+elimination is the Bodenstein steady-state approximation applied to 42 coupled
+intermediates at once, and it produces the Schur complement $\Omqss$ --- the
+effective ionisation rate that a plasma modeller using QSS constructs, and the
+algebraic form of the effective coefficients that spectroscopic inversions rest
+on. Its validity condition, $\Msep \gg 1$, is satisfied everywhere on the grid
+and comfortably --- subject to the two qualifications of
+Section~\ref{sec:qss}: $\Msep$ compares rates where
+Chapter~\ref{ch:results} measures a distance, and the spectrum of a non-normal
+operator bounds asymptotic decay rather than finite-time error.
+
+The chapter's central result is that this is not the end of the argument. The
+QSS ratio
+\begin{equation*}
+  \Rqss(\bdep) = \frac{a_3\,\bdep\,\Zsb{1}\,\nel + c_3}
+                      {a_4\,\bdep\,\Zsb{1}\,\nel + c_4}
+\end{equation*}
+
+\noindent is a function of \emph{three} arguments, not two. The third is the
+ground-state departure coefficient $\bdep$, which is dynamical: it carries the
+plasma's history and takes a time $\tauqss$ to settle. Its logarithmic
+sensitivity is exactly
+\begin{equation*}
+  \frac{\mathrm{d}\ln\Robs}{\mathrm{d}\ln\bdep} = \ffrac{3} - \ffrac{4},
+\end{equation*}
+
+\noindent the difference in ground-fed fraction between the two shells, which
+vanishes when either supply dominates both shells and is largest where the two
+compete. A table indexed on $(\Te,\nel)$ alone must therefore adopt a closure for
+$\bdep$, and the closure adopted in practice is complete collisional--radiative
+equilibrium.
+
+Two error measures follow and must not be conflated. $\epsQSS$ asks whether the
+excited states have kept up with the reservoir they actually see; $\epsCRE$ asks
+whether the tabulated answer is right. The first is the question the literature
+worries about. The second is the one a diagnostician suffers.
+
+Everything in this chapter has been an argument about equations. Whether the
+equations describe hydrogen is a separate question, and Chapter~\ref{ch:validation}
+addresses it: what would a wrong model fail, and does this one fail it?

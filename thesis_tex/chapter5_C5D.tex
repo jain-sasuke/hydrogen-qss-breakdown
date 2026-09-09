@@ -1,0 +1,327 @@
+% ============================================================
+% Chapter 5, Section: the mechanism.  C5-D, draft 2.
+%
+% Written under the thesis-writing skill, 24 August 2026.
+% Source: CH5_EVIDENCE.md. L_grid SHA 2d92b58e..., S_grid SHA 7822f536...
+% Draft 1 retained as chapter5_C5D_draft1_20260824.tex (failed six gates).
+%
+% MACROS beyond those chapter3.tex exercises:  \epsstep  \epsplat
+%   (recorded in notation_and_definitions.md Sec. 7, never yet compiled --
+%    CONFIRM they exist in thesis_main.tex before building.)
+% ============================================================
+
+%-----------------------------------------------------------------------------
+\section{Why the error is largest where it is}
+\label{sec:mechanism}
+%-----------------------------------------------------------------------------
+
+The maps of Section~\ref{sec:error_maps} show where the diagnostic error is
+large. They do not say why, and a map without a mechanism is a lookup table
+that cannot be extrapolated past the grid that produced it. This section asks
+which physical quantity puts the ridge where it is.
+
+The answer has two halves and they disagree. The structure along the density
+axis and the structure along the temperature axis have different causes, and
+reading them as one effect --- which the appearance of a single ridged surface
+invites --- gets both wrong.
+
+\subsection{Two error measures}
+\label{sec:eps_definitions}
+
+Section~\ref{sec:two_references} fixed the two reference states against which an
+observable can be judged. Two further quantities are needed here, and both are
+properties of a temperature \emph{step} rather than of a single operator, which
+is why neither appears in Chapter~\ref{ch:theory}.
+
+Let the plasma sit at the collisional--radiative equilibrium of
+$\Lmat(\Te,\nel)$, and let the electron temperature step to $\Te+\Delta\Te$ at
+$t=0$ with $\nel$ held fixed. Write $\Lmat^-$ and $\Lmat^+$ for the operators
+before and after, in the notation of Section~\ref{sec:two_clocks}. The
+\emph{step error}
+\begin{equation}
+  \epsstep = \left|\frac{\Rcre(\Te,\nel)}
+                        {\Rcre(\Te+\Delta\Te,\nel)} - 1\right|
+  \label{eq:eps_step_def}
+\end{equation}
+
+\noindent is the dimensionless distance between the two tabulated answers: what
+the reading would change by if the plasma re-equilibrated instantly. The
+\emph{plateau error}
+\begin{equation}
+  \epsplat = \left|\frac{\Robs^{\rm PE}}
+                        {\Rcre(\Te+\Delta\Te,\nel)} - 1\right|,
+  \qquad
+  \Robs^{\rm PE} \equiv \Rqss\!\left(\Te+\Delta\Te,\nel;\,\bdep^-\right),
+  \label{eq:eps_plateau_def}
+\end{equation}
+
+\noindent is the distance between the tabulated answer and the state the plasma
+occupies once the excited manifold has settled but before the ground state has
+moved. The superscript PE denotes \emph{partial equilibrium}: the post-step
+excited response of Eq.~\eqref{eq:qss_ratio}, evaluated on the \emph{pre-step}
+reservoir.
+
+The consequence of keeping these separate is that they are not close. Across the
+operating grid $\epsplat$ exceeds $\epsstep$ at every point tested, typically by
+an order of magnitude (Section~\ref{sec:error_maps}). A diagnostician who
+pictures the reading moving smoothly between the two tabulated values has not
+merely misjudged the size of the excursion but has the wrong shape of transient.
+$\epsplat$ is the quantity this chapter reports, and Section~\ref{sec:bridge}
+establishes that the time-dependent system does pass through the state it
+measures.
+
+\subsection{An exact decomposition of the finite step}
+\label{sec:exact_decomposition}
+
+Chapter~\ref{ch:theory} worked in the ground-state departure coefficient
+$\bdep = \ngs/(\Zsb\nel\nion)$, because that is the variable in which the
+observable's response has the closed form of Eq.~\eqref{eq:R_of_b}. Here it is
+better to use the reservoir itself,
+\begin{equation}
+  u \;\equiv\; \frac{\ngs}{\nion} \;=\; \bdep\,\Zsb(\Te)\,\nel ,
+  \label{eq:u_def}
+\end{equation}
+
+\noindent a dimensionless ground-state population per unit ion density. At
+fixed $(\Te,\nel)$ the two are proportional, so $\mathrm{d}\ln u =
+\mathrm{d}\ln\bdep$ and the sensitivity of
+Section~\ref{sec:ground_fed_fraction} carries over unchanged. The reason for
+the change of variable is that a temperature step moves $\Zsb$: comparing a
+pre-step $\bdep$ with a post-step one would mix a change in the reservoir with
+a change in the Saha--Boltzmann normalisation, and $u$ has no normalisation to
+move. That confusion is not hypothetical --- an earlier version of the analysis
+reported in this section made exactly it, and the resulting contamination in
+$\Delta\ln\bdep$ was comparable to the quantity being measured.
+
+\textbf{Assumption.} Equation~\eqref{eq:u_def} treats $\nion$ as a fixed
+reservoir, unchanged by the step, as throughout this thesis
+(Section~\ref{sec:rate_equation}). This removes the freedom for the ionisation
+balance to respond, and it is what makes $u$ numerically equal to the
+ground-state population in the solved system. Chapter~\ref{ch:limits} returns
+to what a mobile ion population would change.
+
+With that, Eq.~\eqref{eq:R_of_b} makes the post-step observable a ratio of two
+affine functions of $u$, so the logarithmic sensitivity of
+Section~\ref{sec:ground_fed_fraction} is $\mathrm{d}\ln\Robs/\mathrm{d}\ln u =
+\ffrac{3}-\ffrac{4}$, the difference of the two ground-fed fractions.
+Integrating between the frozen and the equilibrated reservoir gives, with no
+approximation,
+\begin{equation}
+  \ln\frac{\Robs^{\rm PE}}{\Rcre}
+  \;=\; \int_{\ln u^+}^{\ln u^-}\!\!\big(\ffrac{3}-\ffrac{4}\big)\,\mathrm{d}\ln u
+  \;=\; \overline{S}\;\Delta\ln u ,
+  \label{eq:exact_decomposition}
+\end{equation}
+
+\noindent where $\Delta\ln u = \ln(u^-/u^+)$ is the reservoir displacement and
+\begin{equation}
+  \overline{S} \;\equiv\;
+  \frac{1}{\Delta\ln u}\int_{\ln u^+}^{\ln u^-}\!\!
+  \big(\ffrac{3}-\ffrac{4}\big)\,\mathrm{d}\ln u
+  \label{eq:Sbar_def}
+\end{equation}
+
+\noindent is the mean sensitivity over the interval the reservoir traverses.
+Both factors are dimensionless. Since $\ffrac{3},\ffrac{4}\in[0,1]$ by
+Section~\ref{sec:ground_fed_fraction}, and $\overline{S}$ is an average of their
+difference, $|\overline{S}|$ is bounded by the peak sensitivity of
+Eq.~\eqref{eq:peak_sensitivity} and so is strictly less than unity everywhere.
+The plateau error follows:
+\begin{equation}
+  \boxed{\ \epsplat = \left|\,\mathrm{e}^{\overline{S}\,\Delta\ln u} - 1\,\right|\ }
+  \label{eq:eps_plateau_exact}
+\end{equation}
+
+The consequence worth extracting is that a single scalar error has become a
+product of two quantities that can be measured independently: how strongly the
+observable responds to its reservoir, and how far the reservoir moved. Nothing
+in Eq.~\eqref{eq:exact_decomposition} says which of them varies across the
+operating map, and that is what the rest of this section determines.
+
+\textbf{Use Eq.~\eqref{eq:eps_plateau_exact}, not its linearisation.} The
+first-order form $\epsplat \approx |\overline{S}\,\Delta\ln u|$ is adequate for
+a small step and wrong for a large one: at the four-interval step used below it
+returns $59.4\,\%$ where the exact expression gives $81.1\,\%$, understating by
+more than a quarter (\texttt{verify\_ridge\_mechanism.py}). The exponential
+costs nothing.
+
+One caution about what follows. Because Eq.~\eqref{eq:exact_decomposition} is an
+identity, comparing its two sides tests nothing: a check that $\epsplat$ equals
+$|\mathrm{e}^{\overline{S}\Delta\ln u}-1|$ can fail only through arithmetic
+error. What the identity permits is an \emph{attribution} --- the two factors
+are separately measurable, so one may ask which carries the structure the maps
+show. That is a weaker kind of statement than a derivation, and it is the kind
+made below.
+
+\subsection{Across density: a sensitivity structure}
+\label{sec:density_mechanism}
+
+The plateau error has an interior maximum in density at
+$\nel \approx 1.93\times10^{13}\,\si{\per\cubic\centi\metre}$, at every
+temperature in the range this thesis defends.
+
+Evaluating both factors of Eq.~\eqref{eq:exact_decomposition} at every grid
+point settles which of them puts it there
+(\texttt{verify\_ridge\_mechanism.py}, over $\Te = 2$--$9\,$eV and all eight
+density columns). The column maximising $\epsplat$ is the column maximising
+$|\overline{S}|$ in $32$ of $32$ temperature rows for a one-interval
+temperature step and $31$ of $31$ for a four-interval step; the column
+maximising $|\Delta\ln u|$ coincides with the error maximum in $0$ of $32$ and
+$0$ of $31$.
+
+Coincidence counts are weak evidence on their own, because a quantity that
+barely varies still has its maximum somewhere. The amplitudes settle it. Across
+the three decades of density $|\overline{S}|$ varies by a factor $7.11$ and
+$|\Delta\ln u|$ by a factor $1.01$. \textbf{A quantity that changes by one per
+cent cannot produce a ridge in which the error changes by a factor of seven},
+wherever its own maximum falls. Table~\ref{tab:mechanism_profiles} makes the
+point without statistics.
+
+\begin{table}[htbp]
+\centering
+\caption{Density profiles of the plateau error and of the two factors of
+Eq.~\eqref{eq:exact_decomposition}, each normalised to its own row maximum and
+then taken as the median over the $32$ temperature rows with
+$\Te = 2$--$9\,$eV, for a one-interval temperature step. From
+\texttt{verify\_ridge\_mechanism.py}.}
+\label{tab:mechanism_profiles}
+\sisetup{table-format=1.3}
+\begin{tabular}{lSSSSSSSS}
+  \toprule
+  $\nel$ (\si{\per\cubic\centi\metre}) & {$10^{12}$} & {$2.7{\cdot}10^{12}$} &
+  {$7.2{\cdot}10^{12}$} & {$1.9{\cdot}10^{13}$} & {$5.2{\cdot}10^{13}$} &
+  {$1.4{\cdot}10^{14}$} & {$3.7{\cdot}10^{14}$} & {$10^{15}$} \\
+  \midrule
+  $\epsplat$        & 0.437 & 0.683 & 0.937 & 1.000 & 0.807 & 0.512 & 0.280 & 0.138 \\
+  $|\overline{S}|$  & 0.445 & 0.689 & 0.938 & 1.000 & 0.813 & 0.520 & 0.285 & 0.141 \\
+  $|\Delta\ln u|$   & 0.997 & 0.995 & 0.993 & 0.991 & 0.990 & 0.992 & 0.996 & 1.000 \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+The first two rows agree to $2.2\,\%$ at every column; the third is flat to one
+per cent. The density structure of the plateau error is the density structure of
+the observable's sensitivity to its reservoir.
+
+That sensitivity has an interior maximum for the reason
+Section~\ref{sec:ground_fed_fraction} gives. Both $\ffrac{3}$ and $\ffrac{4}$
+rise from zero to unity as the reservoir grows, but the two shells switch from
+recombination-fed to ground-fed at different reservoir strengths, because the
+ground-fed channel weakens with principal quantum number faster than the
+recombination-fed one. Their difference therefore vanishes in both supply limits
+and peaks between them. The density ridge is where the reservoir sits in that
+mixed-supply region.
+
+\subsection{Alternatives that would produce the same appearance}
+\label{sec:ridge_alternatives}
+
+An interior maximum on a coarse grid can be manufactured in several ways, and
+the attribution above does not by itself exclude them.
+
+\emph{Grid resolution.} The ridge occupies one density column and the grid is
+spaced by a factor $2.683$. Its location is therefore known only to that factor,
+and this work cannot say whether the true maximum lies at
+$1.93\times10^{13}\,\si{\per\cubic\centi\metre}$ or anywhere within a factor
+$2.7$ of it. What is established is that the maximum is interior --- not at
+either end of the density range --- and that it does not move between
+temperature rows. Refining the density grid requires rebuilding the rate matrix
+and revalidating every number in Chapter~\ref{ch:theory} against the new one;
+future work could determine the location more precisely.
+
+\emph{Step-size convention.} A ridge whose position depended on the size of the
+imposed step would be an artifact of that choice. It does not: the error maximum
+falls on the same density column for a one-interval and a four-interval step in
+$31$ of the $31$ temperature rows both can reach, and so does the maximum of
+$|\overline{S}|$ (\texttt{verify\_ridge\_mechanism.py}). This tests steps of
+fixed \emph{fractional} size; a step of fixed absolute size in electron-volts
+spans a different number of grid intervals at each temperature and is a
+different experiment, not tested here.
+
+\emph{Truncation.} The model resolves $n\le8$ and bundles $n=9$--$15$. The
+mechanism turns on the difference between the $n=3$ and $n=4$ supply fractions,
+both fully resolved, but those fractions depend on the recombination flux
+cascading from above, which the bundling approximates. This work does not test
+the sensitivity of the ridge to $n_{\max}$; Chapter~\ref{ch:limits} lists it
+among the outstanding checks.
+
+\subsection{Across temperature: a displacement effect}
+\label{sec:temperature_mechanism}
+
+The temperature dependence has the opposite explanation, and this is where
+treating the two axes alike would go wrong.
+
+Along the ridge column the plateau error falls monotonically from $18.07\,\%$ at
+$\Te = 2.02\,$eV to $4.55\,\%$ at $8.29\,$eV, a factor $3.72$. Decomposed
+through Eq.~\eqref{eq:exact_decomposition}, $|\Delta\ln u|$ contributes a factor
+$2.72$ of that fall and $|\overline{S}|$ only $1.29$; in logarithmic terms the
+displacement carries $76\,\%$ of the decay and the sensitivity $19\,\%$. At the
+four-interval step the split is $72\,\%$ and $13\,\%$
+(\texttt{verify\_ridge\_mechanism.py}).
+
+The observable therefore does not become much less sensitive as the plasma
+heats. \textbf{The ground state simply moves less.} A step of fixed fractional
+size displaces the reservoir progressively less at higher temperature, and the
+error follows it down.
+
+Why the displacement behaves this way is not established here. In particular
+$|\Delta\ln u|$ is flat to one per cent across three decades of density while
+varying by a factor $2.7$ across temperature, which implies that
+$\partial\ln\ngs/\partial\ln\Te$ at collisional--radiative equilibrium is
+controlled by temperature alone. \emph{[MECHANISM NOT ESTABLISHED: this is an
+observation from \texttt{verify\_ridge\_mechanism.py}, not a derived result. It
+has not been shown analytically and is a candidate for future work.]}
+
+There is no interior maximum in temperature anywhere in the defended range. The
+largest values, near $\Te\approx2\,$eV, are boundary values of the
+optical-thickness restriction of Section~\ref{sec:optical_depth}, not a peak.
+
+\subsection{Three explanations this work does not support}
+\label{sec:withdrawn}
+
+Three readings of the ridge are natural and do not survive the numbers. Each is
+recorded because it is among the first a reader is likely to propose.
+
+\textbf{It is not detachment.} The ridge sits at
+$1.93\times10^{19}\,\si{\per\cubic\metre}$: a factor $5.2$ below the density
+band that published edge modelling associates with a detached ITER divertor
+\emph{[SOURCE REQUIRED: Guillemaut et al.\ 2011, Fus.\ Eng.\ Des.\ 86, 2954 ---
+key not yet in the bibliography]}, and a factor $1.6$ below the modelled
+upstream separatrix density \emph{[SOURCE REQUIRED: Stangeby et al.\ 2022,
+Nucl.\ Fusion 62]}. It falls between the two, in a region neither source
+characterises. The ridge is reproducible; its identification with a named
+divertor operating regime is not supported by anything in this work.
+
+\textbf{It is not a peak in temperature.} The error decreases monotonically with
+temperature throughout the defended range, as
+Section~\ref{sec:temperature_mechanism} shows.
+
+\textbf{It is not simply where $\bdep^{\rm CRE}$ meets the sensitivity
+maximum.} That reading accounts for the density structure but fails on the
+temperature axis: at the four-interval step the ratio
+$\bdep^{\rm CRE}/\bdep^{\rm peak}$ passes through unity at $\Te = 4.7\,$eV,
+where the error is $33\,\%$ and falling monotonically
+(\texttt{verify\_plateau\_gridmap.py}). The endpoint of the reservoir
+trajectory is the wrong object: Eq.~\eqref{eq:Sbar_def} shows that what enters
+is the mean sensitivity over the whole interval traversed.
+
+\subsection{What this section establishes}
+
+The plateau error factorises exactly into a sensitivity and a displacement,
+Eq.~\eqref{eq:eps_plateau_exact}. Attributing the structure of the error maps to
+one factor or the other gives different answers on the two axes: across density
+the sensitivity carries the structure while the displacement is flat to one per
+cent, and across temperature the displacement carries three quarters of the
+decay. The ridge is a property of how the $n=3$ and $n=4$ shells divide their
+supply between excitation from the ground state and recombination from the
+continuum --- a property of the atomic system, needing no divertor geometry to
+produce it --- while its amplitude at any density is set by how far a
+temperature step moves the ground state.
+
+That the local model generates a ridge without spatial structure does not imply
+spatial structure is irrelevant to a real line-integrated measurement, which
+Chapter~\ref{ch:limits} takes up.
+
+The argument so far is entirely algebraic. Every quantity above is built from
+the partial-equilibrium state $\Robs^{\rm PE}$, and that state was constructed
+by freezing the ground state by hand rather than by integrating anything.
+Whether the time-dependent system actually visits it is a separate question.

@@ -1,0 +1,59 @@
+% ============================================================
+% chapter5.tex -- Chapter 5 wrapper.
+%
+% chapter5_C5D.tex is a SECTION (\section{...}), not a chapter. It needs a
+% \chapter{} above it or LaTeX has nowhere to attach it.
+%
+% Add to thesis_main.tex, in the document body, after chapter 4:
+%
+%     \include{chapter5}          % if the other chapters use \include
+%   or
+%     \input{chapter5}            % if they use \input
+%
+% Use whichever the neighbouring chapters use -- mixing them causes the page
+% breaks and numbering to differ from the rest of the thesis.
+% ============================================================
+
+\chapter{What the Model Says}
+\label{ch:results}
+
+% ------------------------------------------------------------------
+% PLACEHOLDER so the chapter is never empty while sections are drafted.
+% Delete this block once sec:error_maps exists.
+% ------------------------------------------------------------------
+\section{The error maps}
+\label{sec:error_maps}
+
+\emph{[TO BE WRITTEN --- C5-F. Defines the operating grid, presents
+$\epsstep$ and $\epsplat$ over it, and gives the headline numbers with their
+scopes. Section~\ref{sec:mechanism} below is drafted and refers back to this
+section for the maps it explains.]}
+
+% ------------------------------------------------------------------
+% C5-D, drafted 24 August 2026.
+% ------------------------------------------------------------------
+\input{chapter5_C5D}
+
+% ------------------------------------------------------------------
+% Sections still to be written. The labels are declared here so that the
+% cross-references in chapter5_C5D.tex resolve rather than printing "??".
+% Replace each stub with the real section as it is drafted.
+% ------------------------------------------------------------------
+\section{Does the transient visit the plateau?}
+\label{sec:bridge}
+
+\emph{[TO BE WRITTEN --- C5-A writeup. Full 43-state integration; the
+dynamic bridge; the closed form for the early-response slope $k$, which was
+cut from Section~\ref{sec:mechanism} because it needs the transient
+established first.]}
+
+\section{How long the error persists}
+\label{sec:persistence}
+
+\emph{[TO BE WRITTEN. $\tau_{\rm eff}/\tauqss = 1.01$ and $1.07$.]}
+
+\section{Optical thickness and the restricted range}
+\label{sec:optical_depth}
+
+\emph{[TO BE WRITTEN --- may instead live in Chapter~\ref{ch:theory};
+Section~\ref{sec:mechanism} refers to it for the $\Te \ge 2$~eV restriction.]}

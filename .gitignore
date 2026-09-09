@@ -339,3 +339,9 @@ data/processed/**/*.npy
 .DS_Store
 __pycache__/
 *.pyc
+
+# Third-party Agent Skills installed into this checkout (k-dense-ai/scientific-agent-skills).
+# Not part of the thesis; reinstall rather than version. The project's own
+# thesis-verification skill is tracked and is explicitly re-included below.
+.claude/skills/*
+!.claude/skills/thesis-verification/

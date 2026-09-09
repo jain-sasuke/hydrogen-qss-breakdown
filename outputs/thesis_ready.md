@@ -399,11 +399,19 @@ worst."* `findings_09` W1 and W2 withdraw both halves of that sentence:
   (win_lo × win_hi = 30 × 30). A constructed cut is not a measurement.
 
 **What survives, and it is weaker but real:** M and ε are uncorrelated once
-(Te, ne) is controlled. The raw correlation is +0.76, falls to +0.33 under
-linear control and **flips to −0.16 under quadratic control**, while a bare
-exp(13.6/Te) — which contains no dynamics at all — correlates at +0.71. The
-raw number is a temperature proxy, not evidence that timescale separation
-predicts anything.
+(Te, ne) is controlled. The raw correlation is **+0.757**, while a bare
+exp(13.6/Te) — which contains no dynamics at all — correlates at **+0.708**,
+and log M is 93% explained by (log Te, log ne) alone. Under control for
+(Te, ne) the correlation **changes sign**. The raw number is a temperature
+proxy, not evidence that timescale separation predicts anything.
+
+**Quote the sign, not the magnitude.** An independent recomputation
+(`make_ch5_figures.py`, 10 Sep 2026) reproduces the raw and Arrhenius values
+exactly but measures the controlled partials as +0.274 (linear, all 680 pairs;
++0.326 heating-only) and **−0.442** (quadratic), against findings_09 §3.1's
+recorded +0.33 and −0.16. Over eight scope/basis combinations the quadratic
+partial ran −0.22 to −0.70 and never reached −0.16. The sign flip is robust;
+the magnitude is basis-dependent and must carry its basis or not be quoted.
 
 **Do not write "the error is largest where M is largest."** Write: timescale
 separation does not predict where the diagnostic fails. Greenland (2001)

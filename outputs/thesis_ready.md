@@ -24,8 +24,18 @@ At the ITER reference (Te = 2.947 eV, ne = 1.389×10¹⁴ cm⁻³):
 
 $$\tau_{\rm QSS} = 2.2728\times10^{-5}\ {\rm s}, \qquad \tau_{\rm relax} = 2.2769\times10^{-9}\ {\rm s}, \qquad M = 9982$$
 
-Grid-wide: **M ranges 86.77 to 1.72928×10⁹** over all 400 points.
-τ_QSS spans 1.18 µs – 67.2 s; τ_relax spans 0.87 ns – 38.9 ns.
+Grid-wide, over **all 400 points**: **M ranges 86.77 to 1.72928×10⁹**;
+τ_QSS spans **75.4 ns – 67.2 s**; τ_relax spans 0.87 ns – 38.9 ns.
+
+**Scope correction, 10 Sep 2026.** An earlier version of this entry gave the
+τ_QSS floor as 1.18 µs "over all 400 points". That is the minimum over the
+346-point `window_ok` (M > 900) subset, not over the grid. The unrestricted
+minimum is **7.53769×10⁻⁸ s at [49,7]** (Te = 10 eV, ne = 10¹⁵), and **46 of
+400 points lie below 1.18 µs**. The three quoted extrema must share a scope or
+they are not mutually consistent: τ_relax_min and M_min both come from [49,7],
+and 75.4 ns / 0.8687 ns = 86.8 = M_min ✓, whereas 1.18 µs / 0.87 ns = 1356 ≠
+86.8. `verify_ch3_claims.py` reports this as its sole FAIL.
+`chapter3.tex` Eq. (M_range) already carried the correct value.
 
 **Why it is trusted:** three independent implementations agree bit-for-bit —
 `qss_analysis.py`, `validate_gates.py` Gate E, and an unconditional
@@ -225,7 +235,7 @@ beside the −46% Hα artifact.
 
 **Thesis home:** Ch. 4 (corrections), Ch. 3 (why the metric was changed).
 
-### A8. The QSS error is not bounded by the step error ✅
+### A8. The QSS error is not bounded by the step error ▶️
 
 Under a controlled ±5% fractional temperature step, over the 680 grid-point/
 direction pairs that possess a timescale-separated plateau:
@@ -253,7 +263,7 @@ median heat/cool ratio is **1.036**.
 
 **Thesis home:** Ch. 5, central result.
 
-### A9. The mechanism, quantitatively ✅
+### A9. The mechanism, quantitatively ▶️
 
 $$\varepsilon_{\rm plateau} \approx |f_3 - f_4|\cdot|\ln x_{\rm new}|$$
 
@@ -273,17 +283,29 @@ corner under a 0.6 eV step, the linear estimate misses by 46×.
 
 **Thesis home:** Ch. 3 (derivation), Ch. 5 (verification).
 
-### A10. The ridge — where the diagnostic is least reliable ✅
+### A10. The ridge — where the diagnostic is least reliable ▶️
 
 ε_plateau has an **interior maximum in density near ne ≈ 2×10¹³ cm⁻³, at every
 temperature tested**:
 
-| Te (eV) | 10¹² | 1.93×10¹³ | 1.39×10¹⁴ | 10¹⁵ |
-|---|---|---|---|---|
-| 1.000 | 0.083 | **0.371** | 0.303 | 0.131 |
-| 1.600 | 0.071 | **0.232** | 0.145 | 0.050 |
-| 2.947 | 0.049 | **0.122** | 0.064 | 0.018 |
-| 5.179 | 0.032 | **0.071** | 0.036 | 0.009 |
+| Te (eV) | 10¹² | 1.93×10¹³ | **5.18×10¹³** | 1.39×10¹⁴ | 10¹⁵ |
+|---|---|---|---|---|---|
+| 1.000 | 0.083 | 0.371 | **0.387** | 0.303 | 0.131 |
+| 1.099 | 0.082 | 0.340 | **0.343** | 0.261 | 0.107 |
+| 1.600 | 0.071 | **0.232** | 0.211 | 0.145 | 0.050 |
+| 2.947 | 0.049 | **0.122** | 0.100 | 0.064 | 0.018 |
+| 5.179 | 0.032 | **0.071** | 0.057 | 0.036 | 0.009 |
+
+**Column correction, 10 Sep 2026.** An earlier version of this table showed
+four of the eight density columns and omitted **j = 4 (5.18×10¹³)**, which is
+the row maximum at the three coldest rows. Per-row argmax over rows 0–15 is
+`[4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3]`. The claim "at ne ≈ 2×10¹³ **at every
+temperature**" is therefore false at 3 of 49 rows, and the omitted column is
+where A11's worst case lives — so the previous table contradicted A11 in the
+adjacent section. The corrected statement: **the maximum is at 1.93×10¹³ for
+Te ≥ 1.15 eV and at 5.18×10¹³ for the three coldest rows.** The table is
+heating-direction only; cooling moves the maximum to [1,3]. The 0.009 entry
+has `window_ok = False`.
 
 Rising and falling by factors of 4–5 either side. The ridge sits at roughly
 **fixed density** while its height falls with Te.
@@ -291,8 +313,26 @@ Rising and falling by factors of 4–5 either side. The ridge sits at roughly
 **This is the physics of A3 made visible.** ε_plateau tracks |f₃ − f₄|, which
 vanishes in both of Fujimoto's limits — fully ionizing (f₃ = f₄ → 1) and fully
 recombining (f₃ = f₄ → 0) — and is largest where the two supply channels
-compete. In divertor terms that crossover is **detachment**: the Balmer
-diagnostic is least trustworthy at the transition it is used to characterise.
+compete.
+
+**Retracted, 10 Sep 2026 — the detachment identification.** An earlier version
+of this entry read "in divertor terms that crossover is **detachment**".
+`chapter5_C5D.tex:284` states the opposite — *"It is not detachment"* — and the
+arithmetic is against the earlier claim: 1.93×10¹⁹ m⁻³ is **5.2× below**
+Guillemaut's detached-target band (10²⁰–10²¹ m⁻³) and **1.6× below** Stangeby's
+upstream separatrix band. At the citable detached band (10¹⁴–10¹⁵ cm⁻³) with
+Te ≥ 2 eV, ε_plateau ≤ 10.4% and the ELM-averaged lower bound **never reaches
+10%** (max 7.2%). The maximum and the detached band do not overlap.
+
+A second, independent reason not to quote the location as a plasma constant:
+it is proportional to the assumed neutral density. One decade in n(1s) moves it
+roughly one decade in ne. The agreement with Griem holds at *this model's* CRE
+ionisation balance, which has no transport and no recycling — and in a divertor
+the neutral density is set by recycling. Quote the location with that condition
+attached or not at all.
+
+The same sentence is still live at `chapter3.tex:1349` and
+`thesis_main.tex:336` and must be removed there too.
 
 **Caveats:** the Te-direction maximum sits on the grid edge (Te = 1 eV), so the
 temperature range is truncated and the error may keep rising below 1 eV — which
@@ -300,7 +340,7 @@ is detached-divertor territory. The ne direction is not truncated.
 
 **Thesis home:** Ch. 5, the headline figure.
 
-### A11. Divertor-relevant magnitudes ✅ (bounds, not point estimates)
+### A11. Divertor-relevant magnitudes ▶️ (bounds, not point estimates)
 
 Because the error decays on τ_QSS at some points and is pinned at others, the
 time-average over an event of duration τ_d is bracketed rather than estimated:
@@ -312,18 +352,63 @@ The lower bound is **conservative** — it understates the error wherever the
 observable decays more slowly than τ_QSS, as at the cold corner where
 τ_fit = 207 τ_QSS. Any breakdown reported at the lower bound is therefore robust.
 
-At ELM timescales (τ_d = 100 µs), lower bound above 10% at **202 of 680**
-points; 105 heating points confined to **Te ≤ 2.947 eV, ne ≥ 2.68×10¹²**.
-Worst case **38.7%** at Te = 1.0 eV, ne = 5.18×10¹³, where τ_QSS = 233 ms
-against a 100 µs event — the ground state cannot recover within the event, and
-the two bounds coincide (0.3868 vs 0.3869).
+**Restated 10 Sep 2026, inside the §3.5.3 optical-thickness scope.** At ELM
+timescales (τ_d = 100 µs):
+
+| scope | pairs | lower bound > 10% | worst |
+|---|---|---|---|
+| all `window_ok` (**as previously published**) | 680 | 202 | 0.3868 |
+| **Te ≥ 2 eV — the defensible range** | 448 | **45** | **0.1748** |
+| Te ≥ 2 eV **and** ne ≥ 10¹⁴ (citable divertor density) | 108 | **0** | 0.0717 |
+
+**157 of the previously quoted 202 points sit below 2 eV**, inside the region
+§3.5.3 excludes because the Lyman-α escape factor there falls to 3×10⁻⁵.
+`verify_lyman_trapping.py` now quantifies the cost: the 38.7% becomes
+**11.6–15.7%** depending on slab thickness, while **above 2 eV the count does
+not move at all (45/448) and the worst case moves 0.5% across a twentyfold
+range in slab thickness.** §3.5.3 is a measured boundary, not a hedge.
+
+**Quote this, not the old sentence:** 45 of 448 pairs above 2 eV, worst 17.5%
+at Te = 2.02 eV, ne = 1.93×10¹³; at citable divertor densities the ELM-averaged
+lower bound peaks at 7.2%. Report 38.7% only as an asymptotic cold-edge value,
+flagged with τ_Lyα > 100 and its trapped range. **Never pair it with the word
+"divertor".**
+
+Three further corrections from `findings_09` W3–W5, which this entry had not
+carried: these are (point, direction) **pairs**, not grid points — 105 heat +
+97 cool over 113 distinct points of 400, and the count is **201**, not 202. The
+"confined to Te ≤ 2.947 eV" boundary is a level set of two arbitrary constants
+(10.0 eV at a 1% threshold, 2.947 at 10%, 1.76 at 20%), not a physical
+confinement. And the lower bound is **not** conservative in the sense claimed —
+though direct 43-state integration shows it is near-exact for this observable,
+true/lower = 0.9999–1.0066 at seven points including the worst.
 
 **The ITER reference does not break down:** 1.2% at ELM timescales.
 
-**The claim M does not predict:** M ≥ 86.8 everywhere and reaches 1.7×10⁹ in
-the cold corner — the same corner carrying the 38.7% error. Timescale
-separation is *largest* where QSS is *worst*. Measured across 680 points, not
-argued.
+**The claim M does not predict — corrected 10 Sep 2026.** An earlier version
+read *"M ≥ 86.8 everywhere and reaches 1.7×10⁹ in the cold corner — the same
+corner carrying the 38.7% error. Timescale separation is largest where QSS is
+worst."* `findings_09` W1 and W2 withdraw both halves of that sentence:
+
+- **The colocation is false.** M_max = 1.73×10⁹ is at [0,0], ne = 10¹²;
+  ε_max is at [0,4], ne = 5.18×10¹³ — **52× apart in density**. At the M
+  maximum ε = 0.12, the 75th percentile and 3.2× below the actual maximum.
+- **M ≥ 86.8 quotes the floor of a set that excludes it.** That point has
+  `window_ok = False`. Over the analysed set the floor is M ≥ 902 — and that
+  floor is *imposed*, since `window_ok` ≡ M > 900 by construction
+  (win_lo × win_hi = 30 × 30). A constructed cut is not a measurement.
+
+**What survives, and it is weaker but real:** M and ε are uncorrelated once
+(Te, ne) is controlled. The raw correlation is +0.76, falls to +0.33 under
+linear control and **flips to −0.16 under quadratic control**, while a bare
+exp(13.6/Te) — which contains no dynamics at all — correlates at +0.71. The
+raw number is a temperature proxy, not evidence that timescale separation
+predicts anything.
+
+**Do not write "the error is largest where M is largest."** Write: timescale
+separation does not predict where the diagnostic fails. Greenland (2001)
+established the general form of that statement; this work quantifies it for one
+diagnostic. Cite him.
 
 **Thesis home:** Ch. 5, and the abstract.
 

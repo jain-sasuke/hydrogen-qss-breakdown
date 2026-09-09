@@ -357,7 +357,8 @@ Section~\ref{sec:atomic_uncertainty}.
 Excitation lifts atoms out of the ground state and populates everything the
 spectrometer sees, so its cross sections matter more than any other input. They
 come from the \emph{convergent close-coupling} (CCC) method of Bray and
-co-workers~\cite{Bray1992}, in which the collision problem is solved by
+co-workers~\cite{BrayStelbovics1992,Bray2002}, in which the collision
+problem is solved by
 expanding the target in a large square-integrable basis and enlarging that basis
 until the answer stops moving --- the ``convergent'' is the claim that the limit
 is reached rather than estimated. The dataset is the 3115 raw files supplied by
@@ -628,10 +629,7 @@ transitions for $n \le 15$ are stored in
 \texttt{Radiative/H\_A\_E1\_LS\_n1\_15\_physical.csv}; every entry has
 $|\Delta\ell| = 1$ and $n_{\text{upper}} > n_{\text{lower}}$, and
 \texttt{radiative\_rates.py} sweeps every allowed combination on load and raises
-if one is missing rather than assuming completeness. The benchmark worth quoting
-is $A_{2p\to1s} = \SI{6.2684e8}{\per\second}$ against the critical-compilation
-value \SI{6.2649e8}{\per\second}, differing by \SI{0.056}{\percent}
-(\texttt{data/raw/hoang\_binh/Hoang\_binh\_README.md}). For the bundled shells
+if one is missing rather than assuming completeness. For the bundled shells
 the $A$ values are averaged over $\ell$ with statistical weights --- the same
 assumption that justified bundling in Section~\ref{sec:state_space}, applied
 consistently. The pattern to notice is that $\gamma$ falls steeply with $n$,
@@ -639,6 +637,59 @@ from \SI{6.27e8}{\per\second} for $2p$ to \SI{8.16e4}{\per\second} for the
 $n=15$ bundle: radiative decay dominates at low $n$ and collisions at high $n$,
 and the level where they cross is a measurable feature of the model that
 Chapter~\ref{ch:validation} locates.
+
+\paragraph{These are not the recommended values, and it matters to say so.}
+An external check of the four Lyman-series coefficients finds them
+\SIrange{0.056}{0.060}{\percent} \emph{above} the critically evaluated values
+recommended by Wiese and Fuhr~\cite{WieseFuhr2009} --- for Lyman-$\alpha$,
+\SI{6.2684e8}{\per\second} stored against \SI{6.2649e8}{\per\second}
+recommended. The offset is systematic, not scattered, and it has a cause. What
+this code computes is the \emph{exact non-relativistic, infinite-nuclear-mass
+hydrogenic} transition probability, reproduced to 1--4 parts in $10^{5}$; the
+recommended values include the finite proton mass and the small relativistic and
+quantum-electrodynamic corrections that the non-relativistic Schr\"{o}dinger
+problem does not contain. Both sets are correct for what they are, and using the
+exact hydrogenic set throughout is internally self-consistent, which is what a
+rate matrix needs. \textbf{But this dataset must not be described as the
+recommended or evaluated set, and no evaluated compilation should be cited as
+its source.} It is the analytic hydrogenic solution, and that is what is written
+here.
+
+\paragraph{The largest silent error available in a rate matrix.} One number in
+this section can be wrong by a third without anything complaining, and the trap
+is worth spelling out because it is the exact mistake this chapter's
+$\ell$-resolution is designed to avoid. The value
+$A_{2p\to1s} = \SI{6.2684e8}{\per\second}$ is an \emph{$\ell$-resolved level
+rate}: it is the decay probability of an atom that is in $2p$. The
+corresponding \emph{$n$-resolved shell rate} for $n=2 \to n=1$ is smaller by
+the fraction of the shell that can radiate at all,
+\begin{equation}
+  A_{n=2 \to n=1}
+  = \frac{g_{2p}}{g_{2}}\,A_{2p\to1s}
+  = \frac{6}{8}\times\SI{6.2684e8}{\per\second}
+  = \SI{4.7013e8}{\per\second},
+  \label{eq:shell_rate}
+\end{equation}
+
+\noindent the factor $3/4$ being the statistical weight of $2p$ within $n=2$,
+and the missing quarter being the $2s$ sublevel that has no E1 route to the
+ground state at all. Both sides are in \si{\per\second}. Placing the
+$\ell$-resolved number on an $n$-resolved matrix element therefore overestimates
+Lyman-$\alpha$ emission by \SI{33.3}{\percent}, and nothing in a conservation
+check or a sign check would notice, because the error is in a magnitude and
+magnitudes cancel in column sums (Section~\ref{sec:atoms_corrections}).
+
+This model is $\ell$-resolved for $n \le 8$, so the $\ell$-resolved value is the
+correct one to use here --- but that was audited rather than assumed. Reading the
+stored block directly: the element $A[1s,2s]$ is exactly zero, the element
+$A[1s,2p]$ carries \SI{6.2684e8}{\per\second}, $\gamma_{2s} = 0$ and
+$\gamma_{2p} = \SI{6.2684e8}{\per\second}$, and across all
+$36\times36$ resolved elements there is not one non-zero entry with
+$|\Delta\ell| \neq 1$. The shell-averaged value of Eq.~\eqref{eq:shell_rate}
+appears nowhere in the resolved block. The bundled block $n = 9$--$15$ is
+$n$-resolved by construction and carries statistically weighted shell rates
+throughout, which is the consistent treatment for states that are always in
+statistical $\ell$-equilibrium.
 
 \subsection{The photons are assumed to leave}
 \label{sec:radiative_transfer}

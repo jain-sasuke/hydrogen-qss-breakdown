@@ -1,0 +1,119 @@
+%=============================================================================
+%  references.bib -- shared bibliography for thesis_main.tex
+%
+%  APPEND ONLY. Several agents write to this file concurrently. Re-read it
+%  immediately before adding entries; never overwrite it; never reorder it.
+%  Add a "% added by:" comment above each block.
+%=============================================================================
+
+%-----------------------------------------------------------------------------
+% added by: chapter6 (What This Model Cannot Say), 10 September 2026.
+% All fields verified against Crossref and cross-checked against OpenAlex.
+%
+% PROVENANCE WARNING, recorded here rather than silently corrected elsewhere:
+% the reference this repository calls "Stangeby 2022, Nucl. Fusion 62"
+% (src/validation/grid.py:29 and :69; outputs/CH5_EVIDENCE.md:74;
+% outputs/findings_10_four_agent_review.md:121; the [SOURCE REQUIRED] marker at
+% thesis_tex/chapter5_C5D.tex:289) is in fact Nucl. Fusion 63, 016017 (2023).
+% The DOI recorded in grid.py is correct; the volume and year are not. The key
+% below is therefore Stangeby2023. Anyone who has written \cite{Stangeby2022}
+% should repoint it rather than a duplicate entry being added.
+%
+% SECOND WARNING: the n_e,sep ~ 6e19 m^-3 band quoted from Stangeby part B
+% appears there as a block quotation from its own reference [1], which is
+% Pitts et al. (2019). Pitts2019 is the primary source and is included below.
+% Pitts's n_e,sep is an outboard-midplane quantity while Stangeby's n_e,u is
+% an X-point quantity, and part B records that the two differ
+% (3.98e19 vs 5.94e19 m^-3 on the same flux tube). Any sentence calling a
+% single band "the upstream separatrix density" is eliding that distinction.
+%-----------------------------------------------------------------------------
+
+@article{Holstein1947,
+  author  = {Holstein, T.},
+  title   = {Imprisonment of Resonance Radiation in Gases},
+  journal = {Physical Review},
+  volume  = {72},
+  number  = {12},
+  pages   = {1212--1233},
+  year    = {1947},
+  doi     = {10.1103/PhysRev.72.1212},
+}
+
+@article{Wijkamp2023,
+  author  = {Wijkamp, T. A. and Allcock, J. S. and Feng, X. and Kool, B. and
+             Lipschultz, B. and Verhaegh, K. and Duval, B. P. and
+             Harrison, J. R. and Kogan, L. and Lonigro, N. and Perek, A. and
+             Ryan, P. and Sharples, R. M. and Classen, I. G. J. and
+             Jaspers, R. J. E.},
+  title   = {Characterisation of detachment in the {MAST-U} {Super-X} divertor
+             using multi-wavelength imaging of 2{D} atomic and molecular
+             emission processes},
+  journal = {Nuclear Fusion},
+  volume  = {63},
+  number  = {5},
+  pages   = {056003},
+  year    = {2023},
+  doi     = {10.1088/1741-4326/acc191},
+}
+
+@article{Verhaegh2021,
+  author  = {Verhaegh, K. and Lipschultz, B. and Bowman, C. and Duval, B. P. and
+             Fantz, U. and Fil, A. and Harrison, J. R. and Moulton, D. and
+             Myatra, O. and W{\"u}nderlich, D. and Federici, F. and
+             Gahle, D. S. and Perek, A. and Wensing, M. and {the TCV Team} and
+             {the EUROfusion MST1 Team}},
+  title   = {A novel hydrogenic spectroscopic technique for inferring the role
+             of plasma--molecule interaction on power and particle balance
+             during detached conditions},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {63},
+  number  = {3},
+  pages   = {035018},
+  year    = {2021},
+  doi     = {10.1088/1361-6587/abd4c0},
+}
+
+@article{Guillemaut2011,
+  author  = {Guillemaut, C. and Pitts, R. A. and Kukushkin, A. S. and
+             O'Mullane, M.},
+  title   = {Radiative power loading in the {ITER} divertor},
+  journal = {Fusion Engineering and Design},
+  volume  = {86},
+  number  = {12},
+  pages   = {2954--2964},
+  year    = {2011},
+  doi     = {10.1016/j.fusengdes.2011.07.008},
+}
+
+@article{Stangeby2023,
+  author  = {Stangeby, P. C. and Lore, J. D. and Pitts, R. A. and
+             Canik, J. M. and Bonnin, X.},
+  title   = {A reduced model for the {ITER} divertor based on {SOLPS} solutions
+             for {ITER} $Q = 10$ baseline conditions: {B}. {A} reduced model
+             based on reversed-direction two point modeling},
+  journal = {Nuclear Fusion},
+  volume  = {63},
+  number  = {1},
+  pages   = {016017},
+  year    = {2023},
+  doi     = {10.1088/1741-4326/ac9917},
+  note    = {Published online 13 December 2022; print issue January 2023.
+             Companion part A: Nucl.\ Fusion 63, 016016 (2023),
+             doi:10.1088/1741-4326/ac9916. Cited in this repository as
+             ``Stangeby 2022, Nucl.\ Fusion 62'', which is incorrect.},
+}
+
+@article{Pitts2019,
+  author  = {Pitts, R. A. and Bonnin, X. and Escourbiac, F. and Frerichs, H. and
+             Gunn, J. P. and Hirai, T. and Kukushkin, A. S. and Kaveeva, E. and
+             Miller, M. A. and Moulton, D. and Rozhansky, V. and
+             Senichenkov, I. and Sytova, E. and Schmitz, O. and
+             Stangeby, P. C. and De Temmerman, G. and Veselova, I. and
+             Wiesen, S.},
+  title   = {Physics basis for the first {ITER} tungsten divertor},
+  journal = {Nuclear Materials and Energy},
+  volume  = {20},
+  pages   = {100696},
+  year    = {2019},
+  doi     = {10.1016/j.nme.2019.100696},
+}

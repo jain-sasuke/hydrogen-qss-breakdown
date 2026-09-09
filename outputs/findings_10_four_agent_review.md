@@ -181,9 +181,19 @@ is the same construction.
 | point | τ_QSS open | τ_QSS closed | factor |
 |---|---|---|---|
 | [0,0] Te 1.0, ne 1e12 | 67.23 s | 1.6226 s | 41.4 |
-| **[1,4] worst-case operator** | **0.23324 s** | **0.015173 s** | **15.4** |
+| **[1,4] — post-step operator at the worst point** | **0.23324 s** | **0.015173 s** | **15.4** |
 | [15,3] ridge | 2.027 ms | 1.999 ms | 1.01 |
 | [23,5] benchmark | 22.728 µs | 22.708 µs | 1.00 |
+
+**Index note, added 10 Sep 2026.** Two labels appear in this document for the
+same worst case; both are correct, for different objects. The grid point where
+the error is evaluated is **[0,4]** (Te = 1.000 eV, ne = 5.18e13), whose own
+operator has tau_QSS = **0.42101 s**. The value 0.23324 s belongs to **L[1,4]**
+(Te = 1.0481 eV), the **post-step** operator reached by the heating step from
+[0,4] -- verified by direct recomputation from the canonical L_grid. This is
+the same pre/post-step ambiguity recorded as trap 2 in section 8, which gives
+M = 9982 at L[23,5] against 8243 at L[24,5]. **Every tau_QSS, tau_relax and M
+quoted in the thesis must name which operator it belongs to.**
 
 Grid-wide: min 1.00, median 1.00, max 41.4. **The factor is large only where
 τ_QSS already exceeds the event duration by ~10³, and unity everywhere τ_QSS

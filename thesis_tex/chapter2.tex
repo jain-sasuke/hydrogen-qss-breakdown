@@ -348,6 +348,44 @@ The independent statement, that the underlying cross sections themselves respect
 microscopic reversibility, is a separate check reported in
 Section~\ref{sec:atomic_uncertainty}.
 
+\subsection{Two hydrogen energies, and why both are right}
+\label{sec:two_energies}
+
+A reader auditing the source will find two different numbers near
+\SI{13.6}{\electronvolt} and should not treat the difference as sloppiness.
+They are two distinct physical quantities.
+
+The first is the \emph{Rydberg energy} $R_\infty hc =
+\SI{13.605693122994}{\electronvolt}$, the ionisation energy of an idealised
+hydrogen atom with an infinitely heavy, point-like, non-relativistic nucleus. It
+is a defined constant of atomic theory, and it is the unit in which collision
+calculations tabulate their energies. The second is the \emph{ionisation energy
+of real hydrogen}, \SI{13.598434599702}{\electronvolt}, the measured energy
+needed to remove the electron from a real H atom in its ground state. The second
+is smaller by \SI{0.0534}{\percent}.
+
+The pipeline uses each where it belongs, and the rule is simple. Cross sections
+and thresholds supplied in Rydbergs must be converted back with the constant
+they were tabulated in, so every collisional quantity --- the excitation
+thresholds of Section~\ref{sec:excitation}, the ionisation thresholds of
+Section~\ref{sec:ion_recomb}, and $I_{\mathrm H}$ inside the $\ell$-mixing
+formula Eq.~\eqref{eq:psm20} --- carries $R_\infty hc$. Photon energies and
+spectroscopic level energies describe real atoms and carry the real ionisation
+energy. Both constants were checked against their published values and both are
+correct for what they are.
+
+Two warnings go with that. First, the difference is \emph{not} simply the
+reduced-mass correction: scaling $R_\infty hc$ by $\mu/m_e$ reproduces the
+ionisation energy for about five digits and then stops, and the residual
+$\SI{1.47e-4}{\electronvolt}$ is the Dirac fine-structure and Lamb-shift
+contribution. Writing one as the other times $m_e/m_{\mathrm H}$ is wrong at the
+$10^{-5}$ level. Second, the Rydberg energy is stored in the source under a name
+--- \texttt{CHI\_H} --- conventionally reserved for the ionisation potential.
+Anything that reads that symbol expecting an ionisation potential, a Saha or
+Boltzmann exponent in particular, is \SI{0.0534}{\percent} too large. Nothing in
+the assembled matrix does so, but the name is a trap and is flagged here rather
+than renamed.
+
 %-----------------------------------------------------------------------------
 \section{Electron-impact excitation}
 \label{sec:excitation}
@@ -1228,12 +1266,9 @@ note or record the outcome here.}
   to \texttt{data/processed/}; the arrays are those named in the \texttt{PATHS}
   dictionary of \texttt{src/rates/assemble\_cr\_matrix.py}. All rate-coefficient
   arrays are tabulated on the 50-point temperature grid
-  $\Te = 1$--\SI{10}{\electronvolt}. Two values of the hydrogen ionisation
-  energy are used deliberately and are not a discrepancy:
-  \SI{13.605693}{\electronvolt}, the Rydberg energy, for collision thresholds,
-  matching the convention of the collision data, and
-  \SI{13.598435}{\electronvolt}, the spectroscopic ionisation energy, for
-  radiative transition energies. They differ by \SI{0.05}{\percent}.}
+  $\Te = 1$--\SI{10}{\electronvolt}. Two hydrogen energies appear in the
+  pipeline and they are two \emph{different physical quantities}, not two
+  estimates of one; Section~\ref{sec:two_energies} says which is used where.}
   \label{tab:data_sources}
   \small
   \begin{tabular}{p{0.20\textwidth}p{0.25\textwidth}p{0.23\textwidth}p{0.22\textwidth}}

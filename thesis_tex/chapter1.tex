@@ -89,9 +89,13 @@ destroyed by the duty.
 Being destroyed by the duty is the entire difficulty. The exhaust power does not
 spread itself over the plate; it arrives concentrated in a narrow strip where the
 field lines land, and the resulting surface heat flux would be far above what any
-solid can survive. \todo{Insert the cited numbers here: ITER divertor target
-steady-state heat-flux design limit, and the unmitigated parallel heat flux.
-Source needed --- do not assert either figure without one.}
+solid can survive. \todo{The ITER divertor target steady-state heat-flux
+design limit and the unmitigated parallel heat flux are deliberately left
+unstated. The design-basis reference is Pitts \emph{et al.} (2019)
+\cite{Pitts2019}; its full text could not be obtained for this draft, and the
+figures in circulation could not be traced to a source that was actually read.
+Pull that paper through the institutional subscription and insert both numbers
+with a page reference, or delete this sentence's quantitative claim.}
 
 The way out is not a better plate material. It is to stop the plasma before it
 arrives. If enough neutral hydrogen gas is allowed to build up in front of the
@@ -114,35 +118,65 @@ the light emitted by neutral hydrogen becomes the brightest thing in the visible
 spectrum. The plasma one most needs to characterise is therefore exactly the
 plasma whose light carries the most information.
 
+What conditions are those, in numbers? Edge modelling of the ITER baseline
+burning plasma gives target electron temperatures spanning roughly one to a few
+tens of electronvolts across the design database, with the large majority of
+cases below \SI{15}{\electronvolt} \cite{Stangeby2023a, Stangeby2023b}, and
+falling below \SI{1}{\electronvolt} across half a metre of each target in the
+most strongly detached solutions obtained so far \cite{Lore2022}. The near-target
+electron density under partial detachment is expected to reach about
+\SI{e15}{\per\cubic\centi\metre} \cite{Krasheninnikov2017} --- and the same work
+makes the point this thesis depends on, that at such densities radiative decay is
+no longer fast compared with electron-impact processes, so the excited states
+must be treated with a full collisional--radiative calculation rather than a
+simple equilibrium formula.
+
 Every calculation in this thesis is performed on a fixed grid spanning
 $\Te = 1$--\SI{10}{\electronvolt} in electron temperature and
-$\nel = 10^{12}$--\SI{e15}{\per\cubic\centi\metre} in electron density. That
-range is a modelling choice, made to cover the conditions divertor spectroscopy
-is applied to with room to spare at both ends, and it should be read as a range
-of conditions the model was exercised over rather than as a prediction of what
-any particular machine will do. \todo{Insert the cited electron temperature and
-density range expected in the ITER divertor, with its source, and state
-explicitly how the grid above relates to it. This range must not be asserted
-without a citation.}
+$\nel = 10^{12}$--\SI{e15}{\per\cubic\centi\metre} in electron density. The
+upper density matches the expected near-target value cited above and the
+temperature range covers the cold, detached end of the modelled database, which
+is where the atomic physics of neutral hydrogen governs the emission. It does not
+cover the hotter attached cases, and it is a modelling choice rather than a
+prediction: it should be read as the range over which the model was exercised,
+not as a claim about what any particular machine will do.
+\todo{The lower end of the density range is not sourced. Every
+\SI{e13}{\per\cubic\centi\metre}-scale figure that could be verified is an
+\emph{upstream} separatrix or X-point density, not a divertor or near-target
+density, and no source read for this chapter states a divertor density that low
+in prose. Either pull Pitts \emph{et al.} (2019) \cite{Pitts2019} or Loarte
+\emph{et al.} (2007) \cite{Loarte2007} through the institutional subscription
+and read the number directly, or narrow the claim. Do not assert the lower bound
+without doing one or the other.}
 
-It would be far simpler to put an instrument into the plasma. In a small, cool
-device this is routine: a Langmuir probe is a small electrode inserted into the
-plasma and biased to different voltages, and the current it draws as a function
-of bias gives the local electron temperature and density. In a reactor divertor
-the probe is a much weaker tool than it sounds. It is mounted flush in the target
-surface, so it reports conditions in the thin charged layer at the plate rather
-than in the volume in front of it --- and the volume in front of it is precisely
-where a detached plasma does its recombining. It perturbs what it measures. Its
-interpretation relies on sheath theory that is least trustworthy in cold,
-strongly recycling conditions. And a burning plasma offers very few places to put
-a component that must survive neutron irradiation for years.
+It would be simpler to put an instrument into the plasma, and ITER will do
+exactly that. A Langmuir probe is a small electrode exposed to the plasma and
+biased to a range of voltages; the current it draws as a function of bias gives
+the local electron temperature and density. ITER carries a designed divertor
+Langmuir probe system whose stated purpose is to measure plasma parameters at the
+target plates, and whose thermomechanical analysis concludes that the sensors
+survive the environment \cite{Zhao2020}. It is worth being accurate about this,
+because the claim that probes cannot survive in a reactor divertor is often made
+and is not correct.
 
-Light has none of these problems and one decisive advantage: it leaves the plasma
-by itself. A window, a fibre, a spectrometer and a detector make a measurement
-that touches nothing, perturbs nothing, survives, and samples the volume rather
-than the surface. This is why hydrogen line emission is a workhorse divertor
-diagnostic --- and why the chain of reasoning that converts photons into $\Te$ and
-$\nel$ carries so much weight. The next section builds the atom that emits them.
+The limitation is not survival but what a probe can see. It is mounted flush in
+the target surface, so it reports conditions in the thin charged layer at the
+plate rather than in the volume in front of it --- and the volume in front of it
+is precisely where a detached plasma does its recombining. It perturbs what it
+measures. Its interpretation relies on sheath theory that is least trustworthy in
+exactly the cold, strongly recycling conditions of interest. And the coverage is
+necessarily sparse: a set of sensors embedded in a handful of divertor cassettes
+samples points on a surface, not a volume.
+
+Light has neither limitation, and one decisive advantage: it leaves the plasma by
+itself. A window, a fibre, a spectrometer and a detector make a measurement that
+touches nothing, perturbs nothing, and samples the emitting volume rather than
+the surface. Spectroscopy is therefore complementary to probe measurement rather
+than a replacement for it, and it is the only one of the two that reports on the
+recombining volume where a detached plasma does its interesting work. This is why
+hydrogen line emission is a workhorse divertor diagnostic --- and why the chain of
+reasoning that converts photons into $\Te$ and $\nel$ carries so much weight. The
+next section builds the atom that emits them.
 
 %-----------------------------------------------------------------------------
 \section{Light from a hydrogen atom}
@@ -353,9 +387,18 @@ plasma's own microscopic electric fields, continuum emission, or an independent
 estimate of one of the two parameters. The intersection of two contours fixes the
 point.
 
+This is not a hypothetical procedure. Balmer-spectrum analysis against a CR
+model has been used to infer divertor conditions since at least the Alcator
+C-Mod measurements of Pigarov, Terry and Lipschultz, who matched calculated and
+measured Balmer spectra --- populations of the excited states supplied by a
+collisional--radiative model --- to determine the plasma parameters in the
+recombining region of a divertor at electron temperatures near one electronvolt
+\cite{Pigarov1998}. The modern versions of the technique are more elaborate but
+the chain is the same one.
+
 In practice the table is rarely built by hand. The Atomic Data and Analysis
 Structure (ADAS) distributes precomputed coefficients for exactly this purpose,
-tabulated over $(\Te,\nel)$ \cite{Summers2006, OpenADAS}. What matters for the
+tabulated over $(\Te,\nel)$ \cite{Summers2006, ADAS}. What matters for the
 argument of this thesis is a detail of how ADAS stores them: for each line it
 supplies \emph{two} emissivity coefficients, one for the emission driven by
 excitation out of the neutral ground state and one for the emission driven by
@@ -438,10 +481,24 @@ coefficients separate precisely so that a user can weight them by the $\ngs$ and
 $\nion$ appropriate to the plasma in hand \cite{Summers2006}. The most careful
 divertor analyses do exactly that, and treat the neutral content as an unknown
 rather than a given: Verhaegh and co-workers, analysing Balmer emission from the
-divertor of the TCV tokamak, carry the neutral fraction as an assumed free parameter and
-propagate its uncertainty through the inference by Monte Carlo
-\cite{Verhaegh2019}. In that community, the dependence written in
-Eq.~\eqref{eq:ratio_three_args} is known and is handled. The assumption enters at
+divertor of the TCV tokamak, take the neutral fraction $\ngs/\nel$ to be a
+quantity that is estimated rather than measured, assign it a broad prior spanning
+more than an order of magnitude, and propagate that uncertainty through the whole
+inference by Monte Carlo so that every inferred quantity emerges as a probability
+distribution rather than a number \cite{Verhaegh2019}. In that community, the
+dependence written in Eq.~\eqref{eq:ratio_three_args} is known and is handled,
+and it should be said clearly that this thesis does not discover it.
+
+The same paper is worth one more sentence, because it draws a boundary this
+thesis has to respect. Verhaegh and co-workers restrict their analysis to the
+higher Balmer lines, $n \geq 5$, on the grounds that the lower ones --- $H_\alpha$
+above all --- are contaminated by emission from molecular processes that their
+atomic treatment does not model \cite{Verhaegh2019}. This thesis studies
+$H_\alpha$ and $H_\beta$, which is to say precisely the two lines that careful
+practice avoids in detached conditions, and it does so with a model containing no
+molecules. Section~\ref{sec:prior_work} returns to this and
+Chapter~\ref{ch:limits} quantifies what it costs; it is stated here so that no
+reader reaches those chapters feeling it was kept back. The assumption enters at
 the moment a measured ratio is inverted against a two-parameter lookup, because a
 two-parameter lookup returns exactly one value of $\Robs$ per $(\Te,\nel)$ pair
 and therefore requires the two supplies to have been combined in some fixed
@@ -491,11 +548,35 @@ still. They do not, and they are not meant to.
 The largest regular disturbance is the edge-localised mode (ELM). The confined
 plasma maintains a steep pressure gradient at its edge; periodically that
 gradient becomes unstable, the edge relaxes, and a burst of particles and energy
-is expelled into the SOL and flushed down the field lines onto the divertor. The
-burst arrives at the target over a fraction of a millisecond and the process
-repeats. \todo{Insert the cited ELM repetition frequency and target heat-flux
-rise time for present-day machines and for ITER. Source required --- do not
-assert these figures without one.}
+is expelled into the SOL and flushed down the field lines onto the divertor.
+
+The numbers that matter here are the ones describing a single event, and they are
+short. In present-day machines an ELM heat pulse at the target lasts between
+about \SI{0.75}{\milli\second} and \SI{3}{\milli\second}, and the scaling to
+ITER gives a deposition rise time of \SI{250}{\micro\second} with a decay
+roughly twice that, the pulse being well approximated by a triangular waveform;
+each event carries away between two and ten per cent of the energy stored in the
+plasma edge \cite{Eich2017}. So the conditions in the divertor are reset over a
+few hundred microseconds, repeatedly.
+
+How often they are reset is a more delicate question, and it is worth being
+careful because the usual figure is weaker than it looks. The expected natural
+ELM frequency in ITER is of order \SI{1}{\hertz} at the full plasma current of
+\SI{15}{\mega\ampere}, rising to a few hertz at reduced current and scaling
+roughly as the inverse square of the current \cite{Kirk2013}; present-day
+machines, being smaller, run at tens to hundreds of hertz. The frequently quoted
+range of one to two hertz for ITER traces, as far as could be established for
+this chapter, only to a conference paper that was not peer reviewed, and it is
+not repeated here for that reason. \todo{If a refereed derivation of the ITER
+natural ELM frequency exists, cite it here in place of Kirk \emph{et al.} (2013),
+whose statement of the number sits in an introduction rather than in a result.}
+
+The distinction matters for the argument. An ELM is not a gentle modulation that
+the plasma tracks quasi-statically; it is a step change delivered in a few
+hundred microseconds, after which the plasma is left to recover. The relevant
+question is therefore not how often the steps come but how long the recovery
+takes relative to a single step --- and that is a question about the plasma's own
+internal clocks.
 
 An ELM is not the only transient. The detachment front itself moves: as the
 neutral pressure in the divertor is raised, the ionisation region lifts off the
@@ -504,7 +585,10 @@ feedback on a gas valve. Operating near detachment onset means operating near a
 threshold, where the plasma responds to a small change in the control parameter
 by moving a long way. Add the current ramps at the start and end of a discharge,
 periodic core relaxations, and deliberate density modulation, and the picture is
-of a system disturbed on millisecond timescales, essentially always.
+of a system that is repeatedly stepped rather than one that is ever allowed to
+settle. Whether the intervals between steps are milliseconds or seconds does not
+by itself decide the question; what decides it is whether the plasma reaches its
+new balance before the next step arrives.
 
 Now set that against the clock the table assumes, and note carefully which clock
 that is. It is not the lifetime of an excited state. Those are nanoseconds ---
@@ -554,26 +638,44 @@ precise about what was established than to be told at an examination. The
 contribution of this thesis is narrower than the question it asks, and the
 narrowing is worth stating at the outset.
 
-\paragraph{The time-dependent hydrogen problem has been solved before.} Sawada
-and Fujimoto studied exactly this system --- atomic hydrogen, a CR model, and an
-abrupt change of plasma parameters --- and asked over what range of conditions
-the quasi-steady-state solution for the excited levels remains valid
-\cite{SawadaFujimoto1994}. \todo{Insert two sentences stating precisely what
-Sawada \& Fujimoto (1994) established: the validity range they report and the
-timescale that controls the response. Take the statement from the paper, not
-from memory.} The present work differs in what it measures rather than in what
-it models. Sawada and Fujimoto asked when the excited-level solution is valid.
-The question here is what a diagnostic inversion costs when the reservoir
-underneath that solution has not settled --- a different failure, on a different
-clock.
+\paragraph{The time-dependent hydrogen problem has been solved before, and the
+overlap is close enough to state plainly.} Sawada and Fujimoto studied exactly
+this system --- atomic hydrogen, a CR model, and an abrupt change of plasma
+parameters --- and their paper is titled, in part, for the validity range of the
+quasi-steady-state solution of the coupled rate equations
+\cite{SawadaFujimoto1994}. What they established is a statement about
+\emph{which level controls the approach to steady state}. Solving the coupled
+rate equations after a step, they found that in an ionising plasma the levels
+below Griem's boundary --- the level at which radiative and collisional
+depopulation rates are equal --- relax at their own natural lifetimes while every
+level above it relaxes at the rate of the boundary level itself; in a recombining
+plasma the roles invert, the levels above the boundary relaxing on their own
+timescales and those below following the boundary. Either way the overall
+response of the excited manifold is set by the relaxation time of Griem's
+boundary level.
+
+That is a result about the excited levels, and it is the reason this thesis does
+not claim to have discovered that the excited manifold responds on a finite
+timescale. The difference is in what is being asked. Sawada and Fujimoto asked
+when the excited-level solution is valid, and answered it with a timescale
+internal to that manifold. The question here is what a \emph{diagnostic
+inversion} costs when the ground-state reservoir underneath that solution has not
+settled --- a different quantity, controlled by a different and far slower clock,
+and one that can be wrong even when the excited-level solution is perfectly
+accurate. Chapter~\ref{ch:results} returns to Griem's boundary
+level, which the present model locates independently, and uses it as a check.
 
 \paragraph{The general validity question was settled, as a matter of principle,
 twenty-five years ago.} Greenland analysed the reduction of CR systems in general
-form and reached two conclusions that bear directly on this work: that the
-criteria for the validity of a reduced CR model are \emph{not} related to the
-equilibrium timescales of the system, and that the eigenvalues of the rate matrix
-are of secondary importance in establishing it \cite{Greenland2001a,
-Greenland2001b}. Those statements are general, they are prior, and this thesis
+form, in two papers of the same year, and reached two conclusions that bear
+directly on this work. The first is that the conditions for a valid reduced CR
+model are conditions on the \emph{eigenvectors} of the full matrix of rates, and
+that --- in his words, and in contrast to the conventional view --- the
+eigenvalues have secondary importance \cite{Greenland2001a}. The second is that
+the validity criteria he derives are \emph{not related to the equilibrium
+timescales} of the system \cite{Greenland2001b}. The two statements come from
+different papers and are cited separately here because they are separately
+attributable. Those statements are general, they are prior, and this thesis
 does not improve on them as statements. What it does is quantify them for one
 specific diagnostic: Chapter~\ref{ch:results} shows that the standard
 timescale-separation criterion does not predict the diagnostic error, measures
@@ -659,10 +761,10 @@ is the step that eliminates several dozen dynamical variables by fiat; it is the
 step that every review of CR modelling flags; and it is the step whose
 chemical-engineering analogue --- the Bodenstein approximation --- every
 undergraduate is warned can fail when the intermediates are not fast enough. In a
-plasma slammed by an ELM every few milliseconds, the natural expectation is that
-some of the excited levels will simply fail to keep up, the population
-distribution will lag behind the conditions, and $\Robs$ will be wrong for that
-reason. That was the expectation this work set out to test, and it is why the
+plasma whose conditions are reset over a few hundred microseconds by every ELM,
+the natural expectation is that some of the excited levels will simply fail to
+keep up, the population distribution will lag behind the conditions, and $\Robs$
+will be wrong for that reason. That was the expectation this work set out to test, and it is why the
 model tracks every level in time rather than assuming any of them are stationary.
 
 \paragraph{What is at stake if that expectation is right.} If the excited levels
@@ -690,8 +792,8 @@ Chapter~\ref{ch:limits} examines every one of those boundaries and quantifies
 what it costs, rather than listing them as caveats. A result stated without its
 scope is the characteristic failure of this subject, and it is not repeated here.
 
-Everything from this point on is construction. The next chapter assembles the
-atoms.
+Everything from this point on is construction. The section below says what each
+of the remaining chapters contributes to it.
 
 %-----------------------------------------------------------------------------
 \section{Outline of the thesis}

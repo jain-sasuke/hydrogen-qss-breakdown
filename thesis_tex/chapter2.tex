@@ -745,9 +745,10 @@ absorption lengths a photon must cross to escape, and carried by the
 \emph{population escape factor} $\Theta_P$, defined so that the effective
 coefficient is $\Theta_P A$. For the resonance line the model is most exposed
 to, Lyman-$\alpha$ ($2p \to 1s$), \texttt{src/analysis/escape\_factor.py}
-evaluates the escape factor of Holstein~\cite{Holstein1947} in the ADAS214
-formulation of Behringer~\cite{Behringer1998}, by direct quadrature and with no
-fitting formula:
+evaluates the escape factor of Holstein~\cite{Holstein1947} in the formulation
+of Behringer~\cite{Behringer1998} adopted as routine ADAS214 of the Atomic Data
+and Analysis Structure (ADAS)~\cite{Summers2006}, by direct quadrature and with
+no fitting formula:
 \begin{equation}
   \Theta_P(\tau_c)
   = \frac{1}{\sqrt{\pi}}\int_{-\infty}^{\infty}
@@ -1234,10 +1235,9 @@ one place and quantified where the thesis is able to quantify them.
     no 44th state, the model does not conserve nuclei, and ionisation is a
     one-way leak out of the tracked manifold. This is why the ionisation-balance
     timescale is boundary-dependent, and why the effective coefficients this
-    model produces cannot be compared directly with those tabulated by the
-    Atomic Data and Analysis Structure (ADAS)~\cite{Summers2006}. No ADAS
-    dataset enters the rate matrix at any point; ADAS appears in this thesis
-    only as an external comparison.
+    model produces cannot be compared directly with those tabulated by
+    ADAS. No ADAS dataset enters the rate matrix at any point; ADAS appears in
+    this thesis only as an external comparison.
 \end{description}
 
 %-----------------------------------------------------------------------------

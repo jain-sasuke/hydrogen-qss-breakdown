@@ -38,7 +38,7 @@
 \usepackage{microtype}
 \usepackage{xcolor}
 
-\graphicspath{{figures/}}
+\graphicspath{{../figures/}{figures/}}
 \sisetup{per-mode=symbol, range-units=single}
 
 % drafting aid -- remove before submission
@@ -138,108 +138,11 @@ Indian Institute of Technology Kanpur\par}
 \listoftables
 
 %=============================================================================
-\chapter{Reading the Light from a Divertor}
-\label{ch:intro}
-% BEAT: set up the problem and promise the reversal.
+% chapter{Reading the Light from a Divertor}  -- full text lives in chapter1.tex
+\input{chapter1}
 %=============================================================================
-
-\section{Why the divertor is hard}
-\label{sec:divertor}
-% QUESTION: what is a divertor for, and why is measuring it difficult?
-% Power exhaust; detachment as the operating requirement; no probe survives,
-% so the measurement must be optical. \needcite for ITER parameters.
-
-\section{What a spectrometer records}
-\label{sec:spectrometer}
-% QUESTION: what does the instrument actually give you?
-% Line-integrated brightness. Absolute intensity needs neutral density and
-% path length -- neither known. A ratio needs neither. Hence Halpha/Hbeta.
-
-\section{From a ratio to a temperature}
-\label{sec:inversion}
-% QUESTION: how is a number turned into plasma conditions?
-% The inversion chain: measured ratio -> lookup table -> (Te, ne).
-% Where the table comes from: a CR model solved to steady state.
-
-\section{The assumption inside the table}
-\label{sec:the_assumption}
-% QUESTION: what does the table assume, and is it true here?
-% THE HINGE OF THE THESIS. The table is indexed on (Te, ne) alone, which is
-% possible only if ionisation balance has equilibrated. ELMs arrive every few
-% ms; detachment fronts move. The plasma never finishes.
-
-\section{The question, and what this thesis found}
-\label{sec:question}
-% QUESTION: what is being asked, and what is the answer?
-% State the question plainly. Promise the reversal without spoiling the
-% derivation: the approximation everyone worries about turns out to be exact,
-% and the problem is one layer down.
-
-\section{Outline}
-\label{sec:outline}
-
-%=============================================================================
-\chapter{The Atoms}
-\label{ch:atoms}
-% BEAT: establish that the inputs are trustworthy -- and be honest where not.
-%=============================================================================
-
-\section{What happens to a hydrogen atom in a plasma}
-\label{sec:atom_processes}
-% QUESTION: what can happen to an atom, and on what timescale?
-% Excitation, de-excitation, ionisation, recombination, radiative decay,
-% l-mixing. Order-of-magnitude rates before any formalism.
-
-\section{The state space}
-\label{sec:state_space}
-% QUESTION: which levels are tracked, and why l-resolve some but not others?
-% 43 states: n=1-8 l-resolved (36), n=9-15 bundled (7). The 2s/2p asymmetry
-% is the reason. Measured: 4f fraction 0.4361-0.4375 vs statistical 0.4375.
-
-\section{From cross section to rate coefficient}
-\label{sec:maxwellian}
-% QUESTION: how does sigma(E) become a rate a model can use?
-% Maxwellian averaging, in full. Detailed balance as the consistency check.
-
-\section{Electron-impact excitation}
-\label{sec:excitation}
-% QUESTION: where do the excitation rates come from and how good are they?
-% CCC (Bray). Filename convention FINAL.INITIAL. Delta n = 0 EXCLUDED on the
-% data provider's instruction -- non-relativistic degeneracy. This exclusion
-% has a consequence in sec:lmixing.
-
-\section{Ionisation and recombination}
-\label{sec:ion_recomb}
-% QUESTION: what feeds the manifold from outside?
-% TICS/Lotz ionisation; radiative and three-body recombination.
-% S = ne(alpha_RR + ne alpha_3BR) -- quadratic in density. UNITS: s^-1.
-
-\section{Radiative decay}
-\label{sec:radiative}
-% QUESTION: how do atoms lose energy without collisions?
-% Hoang Binh A coefficients. Selection rules. 2s->1s is E1-forbidden --
-% remember this for the next section.
-
-\section{Proton-impact \texorpdfstring{$\ell$}{l}-mixing, and why it is not optional}
-\label{sec:lmixing}
-% QUESTION: why include a process the standard treatments omit?
-% THE STRUCTURAL ARGUMENT. 2s->1s E1-forbidden AND Delta n = 0 electron impact
-% excluded => proton l-mixing carries 99.92% of the 2S loss rate
-% (6.17e5 -> 7.79e8 s^-1). Without it the n=2 manifold is unphysical:
-% removing it inflates the n=2 population coefficient by 141x.
-
-\section{How well do we know these rates?}
-\label{sec:atomic_uncertainty}
-% QUESTION: where would the atomic data let us down?
-% Anderson RMPS benchmark. Delta l = 1 agrees at median -5.0% over 120
-% comparisons -- the dominant pathways are sound. n=5 forbidden channels
-% differ by -16% to -38%; CCC shows no truncation signature (smooth n^-3.62
-% from n=3 to 9, stable across 20-100 eV), so this is attributed to RMPS
-% pseudostate truncation at the top of Anderson's table.
-
-\section{Summary}
-\label{sec:atoms_summary}
-
+% chapter{The Atoms}  -- full text lives in chapter2.tex
+\input{chapter2}
 %=============================================================================
 %  Chapter 3 -- Two Clocks   (lives in chapter3.tex)
 %  Sections 3.1-3.3 written; 3.4-3.8 outlined in thesis_architecture.md
@@ -354,40 +257,8 @@ Indian Institute of Technology Kanpur\par}
 \label{sec:results_summary}
 
 %=============================================================================
-\chapter{What This Model Cannot Say}
-\label{ch:limits}
-% BEAT: bound the claim before an examiner does.
-%=============================================================================
-
-\section{Optical thickness}
-\label{sec:opacity}
-% At the worst point n(1s) ~ 1.5e15 cm^-3 -- 15x denser than the thickest
-% case tested. A uniform Ly-series probe moves eps by -13% to -77%.
-% Not boundable from the present data. State it.
-
-\section{No molecular channels}
-\label{sec:molecules}
-% 96.6% neutral at 1 eV, where MAR feeds n=3 directly. This is why the grid
-% stops at 1 eV -- a physics limit, not a data limit.
-
-\section{The upper truncation}
-\label{sec:nmax}
-% n_max = 15. MEASURED, not assumed: r_1(15) high by 4.9-6.2x against
-% published values while n=10 agrees to 4-20%. Results resting on the top
-% shell are upper bounds.
-
-\section{The open system}
-\label{sec:open_system}
-% The ion is a fixed reservoir; there is no 44th state. Consequence:
-% tau_QSS is boundary-dependent by 41x, lambda_0 is the CR ionisation rate of
-% ground-state hydrogen rather than an equilibration time, and effective
-% coefficients cannot be compared directly with ADAS.
-
-\section{Remaining assumptions}
-\label{sec:other_assumptions}
-% Maxwellian electrons; T_i = T_e in l-mixing; uniform plasma, no transport;
-% instantaneous step rather than a ramp.
-
+% chapter{What This Model Cannot Say}  -- full text lives in chapter6.tex
+\input{chapter6}
 %=============================================================================
 \chapter{Conclusions}
 \label{ch:conclusions}
@@ -422,7 +293,7 @@ Indian Institute of Technology Kanpur\par}
 \chapter{Numerical Methods and Convergence}
 \label{app:numerics}
 
-% \bibliographystyle{unsrtnat}  % uncomment once thesis.bib exists
-% \bibliography{thesis}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
 
 \end{document}

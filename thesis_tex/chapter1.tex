@@ -1,0 +1,747 @@
+%=============================================================================
+%  chapter1.tex -- Reading the Light from a Divertor
+%
+%  Uses the macros defined in thesis_main.tex Part 2. Defines no new notation.
+%  Every \section carries a % QUESTION: comment.
+%
+%  BEAT (writing_specification.md Sec.2): SETUP and COMPLICATION.
+%  A spectroscopist inverts a line ratio against a table; the table assumes
+%  equilibrium ionisation balance; a divertor is never in equilibrium. The
+%  obvious suspect -- that the excited states cannot keep up -- is set up here
+%  and overturned in Chapter 3. DO NOT RESOLVE THE REVERSAL IN THIS CHAPTER.
+%
+%  This chapter reports no number produced by this work.
+%=============================================================================
+
+\chapter{Reading the Light from a Divertor}
+\label{ch:intro}
+
+A physicist sits at a console and looks at a spectrum. An optical fibre viewing
+the bottom of a fusion reactor has collected light along a narrow line of sight,
+and a spectrometer has spread it out by wavelength. Two lines stand out: a red
+one at \SI{656}{\nano\metre} and a blue-green one at \SI{486}{\nano\metre}, both
+emitted by hydrogen atoms. She divides the brightness of the first by the
+brightness of the second, looks the resulting number up in a table, and reads
+off an electron temperature and an electron density. That is how the hottest and
+least accessible part of the machine gets measured.
+
+This thesis is about the table. It was built by solving a model of hydrogen's
+excited states to steady state, and it is indexed on two numbers: temperature
+and density. A table can be indexed on two numbers only if every other quantity
+the answer depends on has been eliminated by an assumption. The assumption in
+this case is that ionisation and recombination in the plasma have come into
+balance --- not that they are nearly balanced, or changing slowly, but that the
+plasma has \emph{finished changing}.
+
+The plasma in question never finishes changing. It is the most violently
+unsteady region of the machine. So the question is whether the table still
+holds, and if not, by how much it is wrong and where.
+
+That is all this chapter does: put the reader in front of the spectrum, show
+where the table comes from, and expose the assumption buried inside it.
+Section~\ref{sec:divertor} explains what the region being measured is for and
+why a probe cannot be put into it. Section~\ref{sec:hydrogen_atom} builds the
+hydrogen atom and its spectrum from scratch, because everything downstream is a
+statement about two of its lines. Section~\ref{sec:spectrometer} says what the
+instrument records and what it does not. Section~\ref{sec:inversion} follows the
+chain from a measured ratio to a pair of plasma parameters.
+Section~\ref{sec:the_assumption} is the hinge: it identifies the quantity the
+table has eliminated and separates two approximations that are routinely
+confused with one another. Section~\ref{sec:transients} asks whether the plasma
+is ever in the state the table assumes. Section~\ref{sec:prior_work} says what
+is already known and by whom, which is more than one might guess.
+Section~\ref{sec:question} states the question this thesis answers and names the
+suspect it went looking for.
+
+%-----------------------------------------------------------------------------
+\section{Why the divertor is hard}
+\label{sec:divertor}
+% QUESTION: what is a divertor for, and why must the plasma inside it be
+% measured with light rather than with an instrument?
+
+\emph{The question: what is the thing being measured, and why is measuring it
+hard enough to be worth a thesis?}
+
+Start with the machine. A tokamak is a doughnut-shaped vessel in which a gas of
+hydrogen isotopes is heated until its electrons separate from its nuclei --- the
+resulting mixture of free electrons and bare nuclei is a plasma --- and then held
+away from the walls by a magnetic field wound around the doughnut. If the plasma
+gets hot enough and stays confined long enough, deuterium and tritium nuclei fuse
+and release energy. ITER, under construction in southern France, is the machine
+built to demonstrate this at reactor scale.
+
+Confinement is never perfect, and this is the useful part. Particles and heat
+leak steadily outward across the magnetic field, and once they cross the last
+magnetic surface that closes on itself they are no longer trapped: they stream
+along field lines instead. The layer outside that surface is called the
+scrape-off layer (SOL), and in a modern tokamak the field lines in it are not
+allowed to strike the wall at random. They are steered magnetically to a
+dedicated set of water-cooled plates at the bottom of the vessel. Those plates,
+together with the volume of plasma and gas in front of them, are the
+\emph{divertor}.
+
+A chemical engineer already owns the right picture for this. The divertor is the
+quench-and-separation section bolted onto the outlet of a very hot reactor. It
+receives the reactor's waste heat and its ash --- helium, the product of fusion
+--- cools the stream, and pumps the ash away, and it must do so without being
+destroyed by the duty.
+
+Being destroyed by the duty is the entire difficulty. The exhaust power does not
+spread itself over the plate; it arrives concentrated in a narrow strip where the
+field lines land, and the resulting surface heat flux would be far above what any
+solid can survive. \todo{Insert the cited numbers here: ITER divertor target
+steady-state heat-flux design limit, and the unmitigated parallel heat flux.
+Source needed --- do not assert either figure without one.}
+
+The way out is not a better plate material. It is to stop the plasma before it
+arrives. If enough neutral hydrogen gas is allowed to build up in front of the
+target, the plasma ions collide with it: in a charge-exchange collision an ion
+takes an electron from a neutral atom and becomes a fast neutral itself, carrying
+its momentum out of the plasma stream, and the energy that remains is radiated
+away by excited atoms rather than deposited on the plate. Over the last few
+centimetres the plasma pressure and the heat flux both collapse. The plasma is
+then said to be \emph{detached} from the target: the region where ionisation
+happens lifts off the plate and sits in the volume in front of it. Detachment is
+not a fault to be avoided. It is the intended operating regime of a reactor
+divertor.
+
+Detachment is also what makes the atomic physics of hydrogen unavoidable. A
+detached divertor plasma is cold --- of order a few electronvolts, where one
+electronvolt corresponds to about \SI{11600}{\kelvin} --- and at a few
+electronvolts hydrogen is only partly ionised. Neutral atoms and ions coexist in
+comparable numbers, recombination competes with ionisation on equal terms, and
+the light emitted by neutral hydrogen becomes the brightest thing in the visible
+spectrum. The plasma one most needs to characterise is therefore exactly the
+plasma whose light carries the most information.
+
+Every calculation in this thesis is performed on a fixed grid spanning
+$\Te = 1$--\SI{10}{\electronvolt} in electron temperature and
+$\nel = 10^{12}$--\SI{e15}{\per\cubic\centi\metre} in electron density. That
+range is a modelling choice, made to cover the conditions divertor spectroscopy
+is applied to with room to spare at both ends, and it should be read as a range
+of conditions the model was exercised over rather than as a prediction of what
+any particular machine will do. \todo{Insert the cited electron temperature and
+density range expected in the ITER divertor, with its source, and state
+explicitly how the grid above relates to it. This range must not be asserted
+without a citation.}
+
+It would be far simpler to put an instrument into the plasma. In a small, cool
+device this is routine: a Langmuir probe is a small electrode inserted into the
+plasma and biased to different voltages, and the current it draws as a function
+of bias gives the local electron temperature and density. In a reactor divertor
+the probe is a much weaker tool than it sounds. It is mounted flush in the target
+surface, so it reports conditions in the thin charged layer at the plate rather
+than in the volume in front of it --- and the volume in front of it is precisely
+where a detached plasma does its recombining. It perturbs what it measures. Its
+interpretation relies on sheath theory that is least trustworthy in cold,
+strongly recycling conditions. And a burning plasma offers very few places to put
+a component that must survive neutron irradiation for years.
+
+Light has none of these problems and one decisive advantage: it leaves the plasma
+by itself. A window, a fibre, a spectrometer and a detector make a measurement
+that touches nothing, perturbs nothing, survives, and samples the volume rather
+than the surface. This is why hydrogen line emission is a workhorse divertor
+diagnostic --- and why the chain of reasoning that converts photons into $\Te$ and
+$\nel$ carries so much weight. The next section builds the atom that emits them.
+
+%-----------------------------------------------------------------------------
+\section{Light from a hydrogen atom}
+\label{sec:hydrogen_atom}
+% QUESTION: what is a spectral line, and which two lines is this thesis about?
+
+\emph{The question: where do the two lines in the opening paragraph come from,
+and what would make their brightnesses differ?}
+
+A hydrogen atom is one electron bound to one proton. The electron cannot take
+any energy it likes: the bound states form a discrete ladder, labelled by an
+integer $n = 1, 2, 3, \dots$ called the principal quantum number, with energies
+\begin{equation}
+  E_n \;=\; -\,\frac{\SI{13.6}{\electronvolt}}{n^{2}} .
+  \label{eq:bohr_levels}
+\end{equation}
+
+\noindent Here $E_n$ is the energy of the level in electronvolts, measured from
+the free-electron state at $E = 0$, so all bound levels are negative and $n = 1$
+--- the ground state --- is the deepest at \SI{-13.6}{\electronvolt}. What
+Eq.~\eqref{eq:bohr_levels} does physically is fix the whole spectrum of hydrogen
+with one constant: the levels crowd together as $n$ grows, and \SI{13.6}{\electronvolt}
+is the energy needed to remove the electron entirely from the ground state, which
+is called the ionisation energy.
+
+Each level $n$ is not a single state. The electron's orbital angular momentum is
+also quantised, by an integer $\ell = 0, 1, \dots, n-1$, and states of different
+$\ell$ have historically been labelled by letters: $\ell = 0$ is written S,
+$\ell = 1$ is P, $\ell = 2$ is D, $\ell = 3$ is F. So the $n = 2$ level contains
+a $2s$ state and a $2p$ state, the $n=3$ level contains $3s$, $3p$ and $3d$, and
+so on. In an isolated hydrogen atom all the $\ell$ states of a given $n$ have
+almost exactly the same energy, which is why they can often be lumped together
+--- and Chapter~\ref{ch:atoms} explains the one place in this problem where
+lumping them destroys the physics. The number of independent quantum states in a
+level is its statistical weight $g$, equal to $2n^{2}$ for hydrogen when electron
+spin is counted; a level with a larger $g$ has more ways of being occupied and is
+correspondingly favoured in thermal equilibrium.
+
+An atom in an excited level does not stay there. It can fall to a lower level and
+emit the energy difference as a single photon. This is spontaneous emission, and
+it is a first-order rate process exactly like a unimolecular decomposition: the
+probability per unit time that an atom in level $q$ decays to a lower level $p$
+is a constant $A_{qp}$, in \si{\per\second}, called the Einstein coefficient for
+spontaneous emission. The number of such decays per unit volume per unit time is
+therefore $A_{qp}n_q$, where $n_q$ is the population of level $q$ in
+\si{\per\cubic\centi\metre}. Not every pair of levels is connected: quantum
+mechanics permits a strong (electric-dipole) transition only when $\ell$ changes
+by exactly one, a restriction called a selection rule, and Chapter~\ref{ch:atoms}
+shows that the levels which \emph{cannot} decay this way are the ones that
+dominate this problem.
+
+Because the energy released is fixed by Eq.~\eqref{eq:bohr_levels}, every
+transition emits at one wavelength, and the emission appears in a spectrograph as
+a narrow \emph{spectral line}. Its brightness is proportional to the population
+of the upper level. That single sentence is why spectroscopy is a diagnostic at
+all: the light tells you how the atoms are distributed over their levels, and the
+distribution is set by the plasma conditions.
+
+The transitions that end on $n = 2$ fall in the visible, which is convenient for
+windows, fibres and detectors, and they are collectively called the Balmer
+series. The two brightest are the subject of this thesis:
+\begin{align}
+  H_\alpha:\quad n=3 \to 2, \qquad
+  \Delta E &= \SI{13.6}{\electronvolt}\left(\tfrac{1}{4}-\tfrac{1}{9}\right)
+            = \SI{1.89}{\electronvolt} \;\Rightarrow\; \SI{656}{\nano\metre},
+  \label{eq:halpha}\\
+  H_\beta:\quad n=4 \to 2, \qquad
+  \Delta E &= \SI{13.6}{\electronvolt}\left(\tfrac{1}{4}-\tfrac{1}{16}\right)
+            = \SI{2.55}{\electronvolt} \;\Rightarrow\; \SI{486}{\nano\metre}.
+  \label{eq:hbeta}
+\end{align}
+
+\noindent The arithmetic is worth doing once by hand, because it shows that the
+red line and the blue-green line of the opening paragraph are not empirical
+facts to be looked up: they follow from Eq.~\eqref{eq:bohr_levels} and the
+relation $\lambda = hc/\Delta E$, with $hc = \SI{1240}{\electronvolt\nano\metre}$.
+
+What these two lines have in common is their lower level. Both end on $n = 2$,
+so the ratio of their brightnesses does not depend on anything about $n = 2$: it
+depends only on how the atoms are shared between the $n = 3$ and $n = 4$ levels.
+The whole of this thesis is a statement about that one ratio, and
+Section~\ref{sec:spectrometer} explains why it, and not the brightness of either
+line by itself, is what a divertor spectroscopist can actually use.
+
+%-----------------------------------------------------------------------------
+\section{What a spectrometer records}
+\label{sec:spectrometer}
+% QUESTION: what does the instrument actually give you, and what does it not?
+
+\emph{The question: given that a spectrometer measures brightness, what can and
+cannot be extracted from that measurement?}
+
+Picture the geometry first. The instrument looks along a straight line through
+the plasma and collects the light emitted anywhere along it, from a small solid
+angle. It cannot tell where along the line a photon came from. Whatever it
+reports is a sum over the whole chord.
+
+Formally, if each decay from level $q$ to level $p$ releases a photon of energy
+$h\nu_{qp}$ in joules and the decays occur at $A_{qp}n_q$ per unit volume per
+unit time, the detector records the brightness
+\begin{equation}
+  I_{qp} \;=\; \frac{h\nu_{qp}}{4\pi}\int_{\text{chord}} A_{qp}\,n_q(s)\,\mathrm{d}s ,
+  \label{eq:brightness}
+\end{equation}
+
+\noindent in \si{\watt\per\square\metre\per\steradian}, where $s$ is distance
+along the line of sight in \si{\centi\metre} and the factor $4\pi$ accounts for
+the fact that an atom radiates into all directions equally, so only that fraction
+of the emission reaches the detector. Equation~\eqref{eq:brightness} says the
+brightness is the emission rate per unit volume, integrated over the length of
+plasma the instrument happens to be looking through.
+
+It also assumes that a photon, once emitted, escapes without being reabsorbed by
+another atom on its way out. A plasma for which that is true is called
+\emph{optically thin} at that wavelength. For the Balmer lines in a divertor this
+is usually a fair assumption, because the lower level $n=2$ holds very few atoms
+to absorb them; for transitions that end on the ground state it is often badly
+false, since the ground state holds almost all of them. Chapter~\ref{ch:limits}
+takes that up, quantifies it for this model, and it is the single most important
+restriction on what follows.
+
+Now the discouraging part. Equation~\eqref{eq:brightness} has one measured number
+on the left and, on the right, the population we want multiplied by a path length
+nobody knows, integrated over an emitting region whose extent nobody knows
+either. Worse, $n_q$ is itself proportional to the amount of neutral hydrogen in
+the viewing volume, and that is set by how much gas recycles off the target and
+how it moves --- neither of which the spectrometer sees. An absolutely calibrated
+brightness of a single line therefore determines a product of unknowns and none
+of them individually.
+
+Take the ratio of two lines and most of this cancels. Define the observable used
+throughout this thesis:
+\begin{equation}
+  \Robs \;\equiv\; \frac{I_{H\alpha}}{I_{H\beta}}
+        \;=\; \frac{\nu_{32}\,A_{32}}{\nu_{42}\,A_{42}}
+              \cdot\frac{\int n_3\,\mathrm{d}s}{\int n_4\,\mathrm{d}s},
+  \label{eq:ratio_def}
+\end{equation}
+
+\noindent where $n_3$ and $n_4$ are the populations of the $n=3$ and $n=4$
+levels in \si{\per\cubic\centi\metre} and $\Robs$ is dimensionless. The
+prefactor is a ratio of atomic constants, known to high accuracy. What
+Eq.~\eqref{eq:ratio_def} does is remove the geometry: provided the two lines are
+emitted by the same volume --- the substantive assumption here, and a good one
+for two lines of the same series from the same species --- the path length
+divides out, the absolute neutral density divides out, and the absolute
+calibration of the instrument divides out with them. Only the \emph{relative}
+sensitivity of the detector at two nearby visible wavelengths is needed, which is
+a far easier measurement to make and to maintain.
+
+What survives is a pure ratio of two excited-state populations. That is the whole
+appeal of a line ratio, and it is why $\Robs$, rather than any single brightness,
+is the quantity a divertor spectroscopist works with. It is also where the burden
+of interpretation now sits. A line ratio contains no geometry and no absolute
+density, so every piece of physics in it is compressed into one question:
+\emph{what sets the ratio of the $n=3$ and $n=4$ populations?} The next section
+answers that with a model, and the section after it examines what the model had
+to assume.
+
+%-----------------------------------------------------------------------------
+\section{From a ratio to a temperature}
+\label{sec:inversion}
+% QUESTION: how is a measured ratio turned into a temperature and a density, and
+% where does the model enter that chain?
+
+\emph{The question: what stands between the number the spectrometer produces and
+the $(\Te,\nel)$ the physicist writes down?}
+
+An atom in a plasma is pulled in several directions at once. Free electrons
+collide with it and knock its bound electron up the ladder of
+Eq.~\eqref{eq:bohr_levels}, or right off it, which is \emph{ionisation}. Ions
+capture free electrons back into bound levels, which is \emph{recombination};
+this happens either with the excess energy carried off by a photon (radiative
+recombination) or with it carried off by a second electron that happens to be
+present (three-body recombination, which therefore needs two electrons and
+becomes important at high density). Meanwhile every excited atom is decaying
+radiatively on its own clock, and every decay from a high level cascades down
+through the intermediate ones. No single one of these processes dominates in a
+divertor. All of them run at once, at comparable rates.
+
+The object that keeps track of all of it is a \emph{collisional--radiative} (CR)
+model. It is nothing more exotic than a population balance written for every
+level of the atom: accumulation equals everything arriving minus everything
+leaving, with one term per atomic process and a measured or computed rate
+coefficient attached to each. The framework was set out for hydrogenic ions by
+Bates, Kingston and McWhirter in 1962 \cite{Bates1962}, whose central point was
+that neither of the two classical limits describes a laboratory plasma: not
+coronal equilibrium, where the density is so low that every collisional
+excitation is followed by a radiative decay before anything else happens, and not
+local thermodynamic equilibrium (LTE), where collisions are so frequent that the
+level populations take their thermal equilibrium values. Real plasmas sit between
+the two, and the populations there have to be computed.
+
+A chemical engineer will recognise this object on sight. It is a reaction network
+in a well-mixed vessel: one species per energy level, one reaction per atomic
+process, a feed stream, and a set of coupled first-order rate equations with a
+rate-constant matrix. Chapter~\ref{ch:theory} builds it explicitly and pushes
+that correspondence considerably further than a metaphor would go.
+
+Solve the CR model at a fixed $\Te$ and $\nel$ and it returns the population of
+every level, hence $n_3$, hence $n_4$, hence $\Robs$ through
+Eq.~\eqref{eq:ratio_def}. Do that on a grid of $(\Te,\nel)$ and the result is a
+table --- equivalently, a family of contours in the $(\Te,\nel)$ plane along which
+$\Robs$ is constant. Inverting a measurement means locating the measured value of
+$\Robs$ on that map. One ratio is one constraint on two unknowns, so practice
+supplies a second: another line ratio, the Stark broadening of a line by the
+plasma's own microscopic electric fields, continuum emission, or an independent
+estimate of one of the two parameters. The intersection of two contours fixes the
+point.
+
+In practice the table is rarely built by hand. The Atomic Data and Analysis
+Structure (ADAS) distributes precomputed coefficients for exactly this purpose,
+tabulated over $(\Te,\nel)$ \cite{Summers2006, OpenADAS}. What matters for the
+argument of this thesis is a detail of how ADAS stores them: for each line it
+supplies \emph{two} emissivity coefficients, one for the emission driven by
+excitation out of the neutral ground state and one for the emission driven by
+recombination from the ion. The database keeps the two apart deliberately. The
+next section is about what happens when they are combined.
+
+%-----------------------------------------------------------------------------
+\section{The assumption inside the table}
+\label{sec:the_assumption}
+% QUESTION: what must a table indexed on (Te, ne) alone assume, and are there
+% really two separate assumptions rather than one?
+
+\emph{The question: a table has two axes; how many quantities does the answer
+actually depend on?}
+
+Take the physical picture before any algebra. An atom sitting in the $n=3$ level
+got there by one of two routes. Either it started as a neutral atom in the ground
+state and an electron collision kicked it up --- fed \emph{from below} --- or it
+started as an ion and captured a free electron into a high level, from which it
+cascaded down --- fed \emph{from above}. Those are two different supply lines
+drawing on two different reservoirs: the population of ground-state neutral
+atoms, $\ngs$, and the population of ions, $\nion$. Every excited level is
+filled by some mixture of the two.
+
+Because the population balances are linear in the populations, the mixture is
+exact rather than approximate. For every level $p$,
+\begin{equation}
+  n_p \;=\; \underbrace{a_p\,\ngs}_{\text{fed from below}}
+        \;+\; \underbrace{c_p\,\nion}_{\text{fed from above}},
+  \label{eq:two_supplies_intro}
+\end{equation}
+
+\noindent where $n_p$, $\ngs$ and $\nion$ are in \si{\per\cubic\centi\metre},
+the dimensionless coefficient $a_p$ is the number of atoms in level $p$ supported
+per ground-state atom, and $c_p$ is the number supported per ion. What
+Eq.~\eqref{eq:two_supplies_intro} does is separate the atomic physics from the
+plasma composition: $a_p$ and $c_p$ depend on $\Te$ and $\nel$ and on nothing
+else, while $\ngs$ and $\nion$ describe how much of each reservoir is present.
+This split is as old as the CR model itself --- it is the population-coefficient
+decomposition of Bates, Kingston and McWhirter, written by Fujimoto and McWhirter
+in the normalised form Chapter~\ref{ch:theory} adopts
+\cite{Bates1962, FujimotoMcWhirter1990, Fujimoto2004}. Its two limits have names
+that will recur: a plasma in which the first term dominates is called
+\emph{ionising}, one in which the second dominates is called \emph{recombining},
+and a divertor passes from the first into the second as it detaches.
+
+Now put Eq.~\eqref{eq:two_supplies_intro} into the observable. For the two Balmer
+levels,
+\begin{equation}
+  \Robs \;\propto\; \frac{a_3\,\ngs + c_3\,\nion}{a_4\,\ngs + c_4\,\nion}
+         \;=\; \frac{a_3\,(\ngs/\nion) + c_3}{a_4\,(\ngs/\nion) + c_4}.
+  \label{eq:ratio_three_args}
+\end{equation}
+
+\noindent The second form is the important one: dividing through by $\nion$ shows
+that the observable depends on the atomic coefficients, which are functions of
+$(\Te,\nel)$, \emph{and} on the ratio $\ngs/\nion$, which is not. That ratio is a
+third, independent quantity. It says how much neutral hydrogen is present per
+ion, and it is fixed by the plasma's recent history and by transport, not by the
+local temperature and density.
+
+A table with two axes must therefore dispose of the third quantity, and there are
+only two honest ways to do it. One is to work in a region of the operating range
+where a single supply dominates \emph{both} levels, so that the third argument
+cancels between numerator and denominator of Eq.~\eqref{eq:ratio_three_args} and
+the table is right whatever the neutral fraction does. The other is to adopt a
+closure --- a rule that fixes $\ngs/\nion$ in terms of $\Te$ and $\nel$. The rule
+used in practice is \emph{equilibrium ionisation balance}: solve the CR system
+all the way to steady state, and take the neutral-to-ion ratio it predicts for
+those local conditions. The state it predicts is called collisional--radiative
+equilibrium (CRE), and it is worth being clear that this is a much weaker
+condition than full thermodynamic equilibrium: it means only that the CR rate
+equations have stopped changing, not that the populations are thermal.
+
+That closure is an assumption about the plasma, not a piece of atomic physics.
+
+It is important to say who is and is not being criticised, because the databases
+are not at fault. ADAS keeps the excitation-driven and recombination-driven
+coefficients separate precisely so that a user can weight them by the $\ngs$ and
+$\nion$ appropriate to the plasma in hand \cite{Summers2006}. The most careful
+divertor analyses do exactly that, and treat the neutral content as an unknown
+rather than a given: Verhaegh and co-workers, analysing Balmer emission from the
+divertor of the TCV tokamak, carry the neutral fraction as an assumed free parameter and
+propagate its uncertainty through the inference by Monte Carlo
+\cite{Verhaegh2019}. In that community, the dependence written in
+Eq.~\eqref{eq:ratio_three_args} is known and is handled. The assumption enters at
+the moment a measured ratio is inverted against a two-parameter lookup, because a
+two-parameter lookup returns exactly one value of $\Robs$ per $(\Te,\nel)$ pair
+and therefore requires the two supplies to have been combined in some fixed
+proportion.
+
+There are now two approximations in play, and keeping them apart is the single
+most important thing this thesis does.
+
+\begin{description}
+\item[The quasi-steady-state (QSS) approximation.] That the \emph{excited} levels
+  have already reached steady state with whatever reservoirs are present at that
+  instant. This is the standard shortcut of CR theory, and it is what makes
+  $a_p$ and $c_p$ in Eq.~\eqref{eq:two_supplies_intro} functions of $(\Te,\nel)$
+  alone. \textbf{The approximation being tested in this thesis is the Bodenstein
+  steady-state approximation, applied to atomic level populations instead of
+  radical concentrations.} It is the same approximation the reader has already
+  met for reactive intermediates, with the same justification --- the
+  intermediates turn over far faster than anything else in the system --- and, in
+  principle, the same failure mode.
+
+\item[The ionisation-balance assumption.] That the \emph{reservoirs themselves},
+  $\ngs$ and $\nion$, stand in the proportion that CRE would give for the local
+  $\Te$ and $\nel$. This is what removes the third argument from
+  Eq.~\eqref{eq:ratio_three_args} and allows the table to have two axes.
+\end{description}
+
+These are statements about different populations relaxing at different speeds,
+and only the first is what the literature normally means by ``the validity of
+QSS''. A two-parameter table needs both to hold. Chapter~\ref{ch:theory} makes
+the distinction exact, defines a separate error measure for each, $\epsQSS$ and
+$\epsCRE$, and shows why conflating them makes it possible to measure the second
+and report it as the first. Whether either holds in a real divertor is the
+subject of the next section.
+
+%-----------------------------------------------------------------------------
+\section{A plasma that never finishes changing}
+\label{sec:transients}
+% QUESTION: is a divertor plasma ever in the equilibrium state the table
+% assumes?
+
+\emph{The question: how long does the plasma get between disturbances, and is
+that long enough?}
+
+The ionisation-balance assumption would be harmless if divertor plasmas sat
+still. They do not, and they are not meant to.
+
+The largest regular disturbance is the edge-localised mode (ELM). The confined
+plasma maintains a steep pressure gradient at its edge; periodically that
+gradient becomes unstable, the edge relaxes, and a burst of particles and energy
+is expelled into the SOL and flushed down the field lines onto the divertor. The
+burst arrives at the target over a fraction of a millisecond and the process
+repeats. \todo{Insert the cited ELM repetition frequency and target heat-flux
+rise time for present-day machines and for ITER. Source required --- do not
+assert these figures without one.}
+
+An ELM is not the only transient. The detachment front itself moves: as the
+neutral pressure in the divertor is raised, the ionisation region lifts off the
+plate and travels back up the field lines, and where it settles is controlled by
+feedback on a gas valve. Operating near detachment onset means operating near a
+threshold, where the plasma responds to a small change in the control parameter
+by moving a long way. Add the current ramps at the start and end of a discharge,
+periodic core relaxations, and deliberate density modulation, and the picture is
+of a system disturbed on millisecond timescales, essentially always.
+
+Now set that against the clock the table assumes, and note carefully which clock
+that is. It is not the lifetime of an excited state. Those are nanoseconds ---
+Eq.~\eqref{eq:brightness}'s Einstein coefficients are of order $10^{8}$
+\si{\per\second} --- and nothing a tokamak does on a millisecond disturbs them.
+The relevant clock is the time the \emph{ground-state} population takes to come
+back into balance with the ions after conditions change, and that is a much
+slower thing.
+
+One can see why it is slower without any model at all. To ionise a hydrogen atom
+out of the ground state an electron must bring \SI{13.6}{\electronvolt}. In a
+plasma at $\Te = \SI{3}{\electronvolt}$, the fraction of electrons in the
+Maxwellian tail with at least that energy is of order
+$\exp(-13.6/3) \approx 1.1\times10^{-2}$: about one electron in a hundred. To
+excite the same atom to $n=2$ costs only \SI{10.2}{\electronvolt}, and to move an
+atom that is \emph{already} in $n=3$ takes a fraction of an electronvolt, which
+essentially every electron can supply. The ground state is therefore separated
+from everything else by a barrier that only the tail of the distribution can
+cross, while the excited levels exchange population freely among themselves. That
+is the physical origin of the two very different clocks, and
+Chapter~\ref{ch:theory} turns the argument into a calculation.
+
+A chemical engineer will recognise this as a Damk\"ohler-number question, and
+that is exactly what it is. If the characteristic time of the disturbance is
+short compared with the slowest chemical relaxation in the system, then the
+composition during the disturbance is not the equilibrium composition, and a
+chart that assumes equilibrium describes a state the system has not reached. Here
+the disturbance lasts milliseconds; the fast levels relax in nanoseconds; and the
+slow reservoir relaxes on a timescale Chapter~\ref{ch:theory} computes and
+Chapter~\ref{ch:results} compares against the event.
+
+So the complication, stated in full: a table built on two assumptions is being
+applied to a plasma that plainly violates the second one, and possibly the first.
+Which of the two actually fails, and what it costs, is not obvious from anything
+said so far --- and it turns out not to be obvious at all.
+
+%-----------------------------------------------------------------------------
+\section{What is already known}
+\label{sec:prior_work}
+% QUESTION: who has asked this before, and what did they establish?
+
+\emph{The question: how much of this is new, and how much has been known for
+decades?}
+
+This question has been asked before, in several forms, and it is better to be
+precise about what was established than to be told at an examination. The
+contribution of this thesis is narrower than the question it asks, and the
+narrowing is worth stating at the outset.
+
+\paragraph{The time-dependent hydrogen problem has been solved before.} Sawada
+and Fujimoto studied exactly this system --- atomic hydrogen, a CR model, and an
+abrupt change of plasma parameters --- and asked over what range of conditions
+the quasi-steady-state solution for the excited levels remains valid
+\cite{SawadaFujimoto1994}. \todo{Insert two sentences stating precisely what
+Sawada \& Fujimoto (1994) established: the validity range they report and the
+timescale that controls the response. Take the statement from the paper, not
+from memory.} The present work differs in what it measures rather than in what
+it models. Sawada and Fujimoto asked when the excited-level solution is valid.
+The question here is what a diagnostic inversion costs when the reservoir
+underneath that solution has not settled --- a different failure, on a different
+clock.
+
+\paragraph{The general validity question was settled, as a matter of principle,
+twenty-five years ago.} Greenland analysed the reduction of CR systems in general
+form and reached two conclusions that bear directly on this work: that the
+criteria for the validity of a reduced CR model are \emph{not} related to the
+equilibrium timescales of the system, and that the eigenvalues of the rate matrix
+are of secondary importance in establishing it \cite{Greenland2001a,
+Greenland2001b}. Those statements are general, they are prior, and this thesis
+does not improve on them as statements. What it does is quantify them for one
+specific diagnostic: Chapter~\ref{ch:results} shows that the standard
+timescale-separation criterion does not predict the diagnostic error, measures
+the error it fails to predict, and maps where in the operating range that error
+is large. Turning a general criterion into a number a diagnostician can apply is
+the contribution; discovering the criterion is not.
+
+\paragraph{That the ratio depends on the neutral reservoir is current best
+practice, not a discovery.} As Section~\ref{sec:the_assumption} noted, Verhaegh
+and co-workers already treat the neutral fraction as a free assumed parameter and
+propagate its uncertainty by Monte Carlo \cite{Verhaegh2019}. The dependence in
+Eq.~\eqref{eq:ratio_three_args} is therefore known. What this thesis adds is a
+\emph{closed form} for the sensitivity --- an exact expression for how strongly
+the ratio responds to a change in the reservoir, derived in
+Chapter~\ref{ch:theory}, together with a bound showing that the response can
+never exceed a certain size --- and a \emph{map} of where in the $(\Te,\nel)$
+plane that sensitivity is large enough to matter. A closed form does something a
+Monte Carlo cannot: it says which conditions are safe without requiring the
+calculation to be repeated.
+
+\paragraph{The classical validity criteria answer a different question.} Griem
+asked at what principal quantum number collisions become fast enough to hold a
+level in thermal equilibrium with the free electrons, and defined a boundary
+level above which the upper part of the manifold is thermalised
+\cite{Griem1963, Griem1997}. That is a statement about the internal structure of
+the excited levels at one instant. It says nothing about whether the ground state
+has settled, which is the question here. Chapter~\ref{ch:results} nonetheless
+finds Griem's boundary level turning up where the present model says it should,
+which is a useful consistency check rather than a new result.
+
+\paragraph{Real divertor Balmer light is not purely atomic.} One line of work
+must be flagged now because it bounds what any conclusion of this thesis can
+claim. In detached conditions a substantial part of the observed Balmer emission
+does not come from the atomic processes modelled here at all. Hydrogen in a cold
+divertor is largely molecular, and molecules open additional routes to excited
+atomic levels --- among them molecular-assisted recombination (MAR), in which a
+molecular ion recombines and dissociates into an excited atom. Analyses of
+discharges on the TCV and MAST-U tokamaks attribute a large share of the low-$n$ Balmer light to
+these channels near detachment onset \cite{Verhaegh2021, Wijkamp2023}. The model
+built in this thesis contains no molecules at all. Chapter~\ref{ch:limits} states
+the consequence plainly, and it is the principal reason the results here are
+presented as statements about a class of CR model rather than as predictions for
+a particular machine.
+
+\medskip
+
+Taken together: the system has been modelled, the general validity criterion has
+been stated, and the dependence on the neutral reservoir is known and handled in
+practice. What is missing is a quantitative, closed-form answer to the specific
+question of how much a two-parameter inversion of the Balmer ratio is in error
+when the reservoir has not settled, and a map of where that error lives. That is
+the gap this thesis fills.
+
+%-----------------------------------------------------------------------------
+\section{The question, and the suspect}
+\label{sec:question}
+% QUESTION: what exactly is being asked, and what does everybody expect the
+% answer to be?
+
+\emph{The question: what is the thesis actually going to compute, and what does
+the obvious physical argument predict it will find?}
+
+The question, stated plainly:
+
+\begin{quote}
+When a hydrogen plasma at divertor conditions is disturbed on a timescale short
+compared with the relaxation of its ionisation balance, how large is the error in
+a $(\Te,\nel)$ inversion of the $H_\alpha/H_\beta$ ratio, what physical quantity
+sets that error, and where in the operating range is it largest?
+\end{quote}
+
+Answering it needs a model that does not assume the answer. This work therefore
+builds a time-dependent CR model of atomic hydrogen --- every level tracked as a
+dynamical variable, with orbital angular momentum resolved wherever that
+resolution changes the physics --- subjects it to an abrupt change in electron
+temperature of the kind an ELM delivers, and follows the line ratio in time.
+Chapter~\ref{ch:atoms} assembles the atomic data it runs on and
+Chapter~\ref{ch:theory} assembles the equations.
+
+\paragraph{What we expected to find.} Section~\ref{sec:the_assumption} identified
+two assumptions, and the obvious suspect is the first one. The QSS approximation
+is the step that eliminates several dozen dynamical variables by fiat; it is the
+step that every review of CR modelling flags; and it is the step whose
+chemical-engineering analogue --- the Bodenstein approximation --- every
+undergraduate is warned can fail when the intermediates are not fast enough. In a
+plasma slammed by an ELM every few milliseconds, the natural expectation is that
+some of the excited levels will simply fail to keep up, the population
+distribution will lag behind the conditions, and $\Robs$ will be wrong for that
+reason. That was the expectation this work set out to test, and it is why the
+model tracks every level in time rather than assuming any of them are stationary.
+
+\paragraph{What is at stake if that expectation is right.} If the excited levels
+lag, then the coefficients $a_p$ and $c_p$ of Eq.~\eqref{eq:two_supplies_intro}
+are not functions of $(\Te,\nel)$ during a transient, the whole
+population-coefficient framework loses its footing during exactly the events one
+most wants to diagnose, and the repair is a genuinely time-dependent inversion.
+
+\paragraph{And if it is wrong?} Then the second assumption is still standing
+there, untested, and it is the one the table needs just as much.
+
+Which of the two fails, by how much, and what physical quantity controls it, is
+the subject of Chapters~\ref{ch:theory} and~\ref{ch:results}. The answer is not
+the one stated above as the expectation --- that much can be said here, because
+the shape of the argument depends on it --- and the reason it is not is the reason
+this thesis exists.
+
+Two things should be said in the same breath, before any of it. First, the claim
+this work defends is conditional: \emph{if} the ground-state neutral population
+is frozen for the duration of the disturbance, which requires that neutral
+transport and recycling do not renew it faster than the atomic physics does, then
+the inversion carries the error computed here. Second, the model is
+zero-dimensional, optically thin, and contains no molecules.
+Chapter~\ref{ch:limits} examines every one of those boundaries and quantifies
+what it costs, rather than listing them as caveats. A result stated without its
+scope is the characteristic failure of this subject, and it is not repeated here.
+
+Everything from this point on is construction. The next chapter assembles the
+atoms.
+
+%-----------------------------------------------------------------------------
+\section{Outline of the thesis}
+\label{sec:outline}
+% QUESTION: what does each remaining chapter contribute to the argument?
+
+\emph{The question: where does the argument go from here?}
+
+\textbf{Chapter~\ref{ch:atoms}, \emph{The Atoms}}, establishes the inputs. It
+describes everything that can happen to a hydrogen atom in a plasma and how fast
+each process runs, sets out the levels the model tracks and the reason orbital
+angular momentum is resolved for the lower ones and bundled above them, shows how
+a measured collision cross section becomes a rate coefficient, and gives the
+provenance and accuracy of every dataset used. It makes a structural argument for
+including a process the standard treatments often omit, and is explicit about
+where the atomic data are least secure.
+
+\textbf{Chapter~\ref{ch:theory}, \emph{Two Clocks}}, is the conceptual core. It
+assembles the CR rate equation from a population balance on each level, checks
+the assembly against particle conservation, and then diagonalises the rate matrix
+to expose the timescale structure the Boltzmann-factor argument of
+Section~\ref{sec:transients} anticipated: one very slow mode --- the ground state
+--- sitting far above a dense band of fast ones. It presents the QSS
+approximation as the Bodenstein approximation applied to that fast band, derives
+the exact dependence of $\Robs$ on the ground-state reservoir, and defines the two
+reference states and the two error measures the rest of the thesis keeps apart.
+
+\textbf{Chapter~\ref{ch:validation}, \emph{Does the Model Work?}}, asks what a
+wrong model would fail, and then applies those tests: detailed balance, the
+coronal and LTE limits, the timescale hierarchy, and an external benchmark
+against independently published population coefficients. It also records the
+errors this project's own audit found, what each cost, and how each was caught.
+
+\textbf{Chapter~\ref{ch:results}, \emph{What the Model Says}}, reports the
+result: the relaxation in time, the size of each of the two errors, the mechanism
+that sets the larger one, a map of where in the $(\Te,\nel)$ plane it lives,
+whether it survives averaging over a transient event, and whether the standard
+timescale-separation criterion predicts any of it.
+
+\textbf{Chapter~\ref{ch:limits}, \emph{What This Model Cannot Say}}, bounds the
+claim --- optical thickness, molecular channels, the truncation of the level
+manifold, the fixed ion reservoir, and the remaining assumptions --- with each
+consequence quantified where quantification is possible and stated as open where
+it is not.
+
+\textbf{Chapter~\ref{ch:conclusions}} states the criterion in a form another
+modeller can apply to their own rate matrix, says where in the divertor operating
+range a $(\Te,\nel)$ inversion should be distrusted, and sets out what a
+time-dependent inversion would require.
+
+The argument begins with the atoms. Before anything can be said about how fast
+the populations change, we need to know what the processes are and how well their
+rates are known, which is where Chapter~\ref{ch:atoms} starts.

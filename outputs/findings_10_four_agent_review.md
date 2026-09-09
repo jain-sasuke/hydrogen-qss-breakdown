@@ -810,3 +810,154 @@ slab, constant emission, isotropic field, Doppler profile, evaluated at the
 plasma centre) are assumptions this 0-D model cannot check. Continuum lowering,
 opacity in the Balmer series itself, and the transport and molecular objections
 of §4.2–4.3 are untouched by this calculation and remain open.
+
+---
+
+# ADDENDUM B — First-principles re-derivation of the Chapter 3 core
+
+**Run 10 September 2026.** An independent agent derived all six central results
+from the linear CR system alone, implemented them from scratch, and wrote down
+predictions BEFORE opening any project file. Only then was the code read.
+Nothing in the repository was modified.
+
+## B.1 The verdict: the mathematics is correct
+
+All six reproduce. Every number in `chapter3.tex` §sec:ground_fed_fraction
+reproduces from an independent solve:
+
+| chapter3.tex | independent |
+|---|---|
+| b₁^CRE = 956 | 956.509 |
+| switching points 2.73×10³, 1.91×10⁴ | 2727.3, 19085.5 |
+| peak b₁ = 7.2×10³ | 7214.7 |
+| f₃ = 0.260, f₄ = 0.048, difference 0.212 | 0.259652, 0.047725, 0.211927 |
+| max = 0.4514, benchmark 47% of max | 0.451357, 46.95% |
+| R = 0.7778 | 0.777768, by three independent routes |
+
+τ_QSS = 22.73 µs, τ_relax = 2.277 ns, M = 9981.9 — CLAUDE.md's reference values
+to four digits. cond(L_EE) = 4.198×10⁴, solve residuals ~10⁻¹⁴; float32 moves
+the channels by 1.3×10⁻⁵, so double precision is nowhere near a conditioning
+cliff. **Tightening tolerances would change no conclusion.**
+
+Two results are strengthened by the re-derivation:
+
+- **The unit logistic width is not incidental — it is equivalent to result 1.**
+  A general Hill function x^m/(K+x^m) maps to σ(m(X−X₀)) with width 1/m. Here
+  m = 1 *because* the excited populations are affine in n_g. Width 1 ⟺ Hill
+  coefficient 1 ⟺ exact linearity in the reservoir. The whole 42-state network
+  enters only through the location x_p.
+- **Non-negativity is proved cleanly.** −L_EE is a Z-matrix with strictly
+  positive column sums (from Σᵢ L_ij = −S_j n_e), hence a non-singular
+  M-matrix, hence (−L_EE)⁻¹ ≥ 0 elementwise. Equivalently L_EE is Metzler and
+  Hurwitz, so (−L_EE)⁻¹ = ∫₀^∞ exp(L_EE t) dt ≥ 0 — entry (p,q) is the expected
+  time an atom created in q spends in p before leaving the manifold. Measured:
+  **0 negative entries at all 400 points**, minimum component +6.019×10⁻¹³.
+
+## B.2 The productive falsified prediction
+
+The agent predicted f₃−f₄ → 0 at high n_e for a structural reason: in LTE both
+channels give the same Boltzmann shape, so a₃/a₄ = c₃/c₄ and Δ → 0.
+**Falsified.** Δ is nearly *flat*: 0.979 at 10¹², 1.945 at 1.4×10¹⁴, 1.939 at
+10¹⁵. The grid never reaches LTE, and because the model is **open** — S_E is an
+externally imposed source not tied to n_i by Saha — the two channels can never
+merge by construction.
+
+**Consequence, and it sharpens the thesis's central claim.** Because Δ is flat
+across n_e above j ≈ 2 (tanh spans only 0.394 → 0.450, a 14% span) while the
+operating point ln(u_CRE/u_peak) sweeps from +1.29 to −3.29, **the density
+maximum is a *position* effect, not a *span* effect.** The tanh cap is not what
+locates it. At Te = 2.947 eV:
+
+| j | ne | Δ | tanh(Δ/4) | ln(u_old/u_peak) | \|S̄\| | ε |
+|---|---|---|---|---|---|---|
+| 0 | 1.00e12 | 0.9655 | 0.2368 | **+1.2877** | 0.1754 | 4.873% |
+| 2 | 7.20e12 | 1.6662 | 0.3940 | **+0.3842** | 0.3884 | 11.053% |
+| 3 | 1.93e13 | 1.8857 | 0.4394 | **−0.2487** | 0.4261 | 12.166% |
+| 5 | 1.39e14 | 1.9403 | 0.4503 | −1.7695 | 0.2288 | 6.361% |
+| 7 | 1.00e15 | 1.9368 | 0.4496 | −3.2910 | 0.0668 | 1.831% |
+
+**The maximum sits where ln(u_CRE/u_peak) changes sign.** This is more specific
+than "sensitivity-dominated" and should replace it in Chapter 5. It also
+forbids the inference that the effect vanishes at high n_e — it does not, on
+this grid.
+
+## B.3 Six required changes
+
+1. **The "linearisation understates" claim is false as one-sided.** It holds for
+   the *interval-mean* form and only on a rise. For the *endpoint* form actually
+   computed at `verify_plateau_gridmap.py:212` it understates in only **219 of
+   392** heat steps, and at the benchmark it **over**states (ratio 0.9459). The
+   gridmap's own recorded output already contradicts a one-sided claim:
+   `min 0.8417 median 1.0310 max 1.3891`. **Name which linearisation is meant.**
+2. **The tanh gate is not a severe check.** Fed corrupted input it still
+   passes: swapping shells 3↔4 leaves |Δ| and |ln r| unchanged; swapping c₃↔c₄
+   likewise. It is a theorem given a, c ≥ 0, so it can only fail on an
+   arithmetic bug. The docstring correctly calls it a wiring check; the printed
+   line "tanh bound honoured at all 248 points" reads as validation and should
+   not. **The severe checks are the superposition residual (3.075×10⁻¹⁴) and
+   the reduced-vs-full R test** — those *do* catch the 3↔4 swap.
+3. **Quote the density maximum as a range.** 1.931×10¹³ is a grid node; a
+   parabolic fit in ln n_e puts the vertex at **1.65×10¹³**, a 15% shift, and
+   the 8-point grid resolves only 0.43 decades per column. Write
+   **7×10¹² – 5×10¹³ cm⁻³**. This is the second independent agent to reach this
+   conclusion — see the figure builder's finding that ε varies only 6–22%
+   across a factor 7.2 in density.
+4. **The two scripts use different point sets.** `verify_plateau_gridmap.py`
+   excludes points with no plateau window (M ≤ 900); `verify_ridge_mechanism.py`
+   applies no such filter. **54 of 400 points have M ≤ 900**, all at j ≥ 4. The
+   ridge script's j=6 and j=7 statistics — including the modal-argmax |Δln u|
+   figure the verdict leans on — include points where the plateau state being
+   computed does not physically exist.
+5. **State that Δ is flat and the maximum is a position effect** (B.2).
+6. **Downgrade the novelty wording.** See B.5.
+
+## B.4 The opacity chain — state it where the logistic is derived
+
+This is the most defence-dangerous item and it is currently only in Chapter 6:
+
+$$\text{radiation trapping} \Rightarrow A = A(n_g) \Rightarrow \text{linearity in } n_g \text{ broken} \Rightarrow \text{Hill coefficient} \neq 1 \Rightarrow \text{width} \neq 1 \Rightarrow \text{bound becomes } \tanh(m\Delta/4),\ m \text{ unknown}$$
+
+The exactness of the two-channel split requires L_EE, L_Eg and S_E to contain
+no n_g. Trapping makes the effective A coefficients depend on n(1s) and breaks
+that. With τ_Lyα = 114 cm⁻¹ at the cold corner this is not hypothetical. **It
+belongs beside the derivation, not only in the limitations chapter.**
+
+Similarly, **molecular channels would add a *third* channel**, which does not
+perturb the two-channel split — it destroys its functional form. Chapter 6
+should say the framework is two-channel *by construction*.
+
+The fixed-ion-reservoir assumption, by contrast, is bounded: total bound
+population per unit n_i at the benchmark is 8.925×10⁻⁴, so freezing n_i costs
+at most **0.09%**. Quote that bound.
+
+## B.5 Normalisation dependence, and novelty
+
+**Δ and the tanh bound are invariant under rescaling the n_g/n_i normalisation
+(verified exactly under factors of 10¹⁰ and 10⁻⁷); x₃, x₄ and f_p individually
+are not.** Say so next to the 0.212. Δ is also insensitive to ℓ-weighting:
+1.94561 (population sum), 1.94474 (p-states), 1.94447 (d), 1.94471 (s),
+1.94574 (g-weighted) — a **0.07% spread**, so the bound is not a weighting
+artifact.
+
+**Novelty, revised.** The two-channel split is correctly credited to
+Bates/Kingston/McWhirter and Fujimoto/McWhirter in `chapter3.tex:1372-1377`.
+The **logistic form is a one-line rewriting** of that published formula, is the
+same object as the Michaelis–Menten saturation fraction whose elasticity bound
+is textbook, and is structurally the Rasch/1PL curve family. Write "not
+previously stated in this form in the CR literature", **not** "genuinely new".
+For the tanh bound the agent found no prior statement — but searched only
+Crossref and OpenAlex, which retrieve equations buried in textbook chapters
+poorly. **Before claiming novelty, read Fujimoto (2004) Ch. 4 and the Fujimoto
+JPSJ *Kinetics of Ionization-Recombination* series I–IV (1979–1985) directly**;
+that series develops the r₀/r₁ crossover in most detail and is the most likely
+place for the switching point c_m/a_m to already appear.
+
+The defensible claim is the **application**: that this bounds the diagnostic
+error of a hydrogen line ratio with respect to the ground-state reservoir,
+uniformly over atomic data.
+
+Sawada & Fujimoto (1994) is confirmed to carry *"Validity range of the
+quasi-steady-state solution of coupled rate equations"* **in its title** — the
+thesis's exact question, 32 years earlier. It is now cited in Chapter 1 but
+with an open `\todo` demanding the precise statement of what it established.
+**That `\todo` is the single largest unresolved publication risk in Chapter 1.**

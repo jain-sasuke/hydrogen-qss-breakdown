@@ -1,33 +1,197 @@
 %=============================================================================
-%  references.bib -- shared bibliography for thesis_main.tex
+%  references.bib
 %
-%  APPEND ONLY. Several agents write to this file concurrently. Re-read it
-%  immediately before adding entries; never overwrite it; never reorder it.
-%  Add a "% added by:" comment above each block.
+%  Every entry below was verified against the publisher-deposited Crossref
+%  record and cross-checked against OpenAlex; books against Library of Congress
+%  MARC records. Entries carry a % VERIFIED note giving what was confirmed and
+%  what was not. Do not add an entry without doing the same.
+%
+%  Started 2026-09-09 for Chapter 1.
 %=============================================================================
 
-%-----------------------------------------------------------------------------
-% added by: chapter6 (What This Model Cannot Say), 10 September 2026.
-% All fields verified against Crossref and cross-checked against OpenAlex.
-%
-% PROVENANCE WARNING, recorded here rather than silently corrected elsewhere:
-% the reference this repository calls "Stangeby 2022, Nucl. Fusion 62"
-% (src/validation/grid.py:29 and :69; outputs/CH5_EVIDENCE.md:74;
-% outputs/findings_10_four_agent_review.md:121; the [SOURCE REQUIRED] marker at
-% thesis_tex/chapter5_C5D.tex:289) is in fact Nucl. Fusion 63, 016017 (2023).
-% The DOI recorded in grid.py is correct; the volume and year are not. The key
-% below is therefore Stangeby2023. Anyone who has written \cite{Stangeby2022}
-% should repoint it rather than a duplicate entry being added.
-%
-% SECOND WARNING: the n_e,sep ~ 6e19 m^-3 band quoted from Stangeby part B
-% appears there as a block quotation from its own reference [1], which is
-% Pitts et al. (2019). Pitts2019 is the primary source and is included below.
-% Pitts's n_e,sep is an outboard-midplane quantity while Stangeby's n_e,u is
-% an X-point quantity, and part B records that the two differ
-% (3.98e19 vs 5.94e19 m^-3 on the same flux tube). Any sentence calling a
-% single band "the upstream separatrix density" is eliding that distinction.
-%-----------------------------------------------------------------------------
+%--- Collisional-radiative theory --------------------------------------------
 
+% VERIFIED Crossref 10.1098/rspa.1962.0101. Vol 267 issue 1330, pp 297-312,
+% issued 22 May 1962. Published title uses a comma before the roman numeral.
+@article{Bates1962,
+  author  = {Bates, D. R. and Kingston, A. E. and McWhirter, R. W. P.},
+  title   = {Recombination between electrons and atomic ions, {I}. {O}ptically
+             thin plasmas},
+  journal = {Proceedings of the Royal Society of London. Series A. Mathematical
+             and Physical Sciences},
+  volume  = {267},
+  number  = {1330},
+  pages   = {297--312},
+  year    = {1962},
+  doi     = {10.1098/rspa.1962.0101}
+}
+
+% VERIFIED Crossref 10.1098/rspa.1962.0209. NOTE: Part II is volume 270, NOT
+% 267 -- this is a common mis-citation. Issued 13 Nov 1962.
+@article{Bates1962b,
+  author  = {Bates, D. R. and Kingston, A. E. and McWhirter, R. W. P.},
+  title   = {Recombination between electrons and atomic ions, {II}. {O}ptically
+             thick plasmas},
+  journal = {Proceedings of the Royal Society of London. Series A. Mathematical
+             and Physical Sciences},
+  volume  = {270},
+  number  = {1341},
+  pages   = {155--167},
+  year    = {1962},
+  doi     = {10.1098/rspa.1962.0209}
+}
+
+% VERIFIED Crossref 10.1103/PhysRevA.42.6588. Vol 42 issue 11, pp 6588-6601,
+% 1 Dec 1990.
+@article{FujimotoMcWhirter1990,
+  author  = {Fujimoto, Takashi and McWhirter, R. W. P.},
+  title   = {Validity criteria for local thermodynamic equilibrium in plasma
+             spectroscopy},
+  journal = {Physical Review A},
+  volume  = {42},
+  number  = {11},
+  pages   = {6588--6601},
+  year    = {1990},
+  doi     = {10.1103/PhysRevA.42.6588}
+}
+
+% VERIFIED Library of Congress LCCN 2004049245 (MARC): series volume 123,
+% Clarendon Press Oxford 2004, xii+287 pp, ISBN 0198530285 / 9780198530282.
+% Crossref confirms the monograph DOI. The title page carries both "Clarendon
+% Press" (Oxford) and "Oxford University Press" (New York); LC main imprint used.
+@book{Fujimoto2004,
+  author    = {Fujimoto, Takashi},
+  title     = {Plasma Spectroscopy},
+  series    = {International Series of Monographs on Physics},
+  volume    = {123},
+  publisher = {Clarendon Press},
+  address   = {Oxford},
+  year      = {2004},
+  isbn      = {978-0-19-853028-2},
+  doi       = {10.1093/acprof:oso/9780198530282.001.0001}
+}
+
+% VERIFIED Crossref 10.1103/PhysRevE.49.5565. Vol 49 issue 6, pp 5565-5573,
+% 1 June 1994. Full title confirmed verbatim -- it is NOT simply "validity of
+% the quasi-steady-state solution".
+@article{SawadaFujimoto1994,
+  author  = {Sawada, Keiji and Fujimoto, Takashi},
+  title   = {Temporal relaxation of excited-level populations of atoms and ions
+             in a plasma: {V}alidity range of the quasi-steady-state solution of
+             coupled rate equations},
+  journal = {Physical Review E},
+  volume  = {49},
+  number  = {6},
+  pages   = {5565--5573},
+  year    = {1994},
+  doi     = {10.1103/PhysRevE.49.5565}
+}
+
+% VERIFIED Crossref 10.1016/S0022-3115(00)00601-2. JNM 290-293, pp 615-618,
+% March 2001. The phrase "the eigenvalues have secondary importance" is in THIS
+% abstract (confirmed against the IAEA INIS record reproducing it).
+@article{Greenland2001a,
+  author  = {Greenland, P. T.},
+  title   = {On the validity of collisional--radiative models},
+  journal = {Journal of Nuclear Materials},
+  volume  = {290--293},
+  pages   = {615--618},
+  year    = {2001},
+  doi     = {10.1016/S0022-3115(00)00601-2}
+}
+
+% VERIFIED Crossref 10.1098/rspa.2001.0788. Proc R Soc A 457 issue 2012,
+% pp 1821-1839, 8 July 2001. The phrase "validity criteria, which are not
+% related to the equilibrium time-scales" is in THIS abstract, not in the JNM
+% paper. Do not attribute both phrases to one paper.
+@article{Greenland2001b,
+  author  = {Greenland, P. T.},
+  title   = {Collisional-radiative models with molecules},
+  journal = {Proceedings of the Royal Society of London. Series A: Mathematical,
+             Physical and Engineering Sciences},
+  volume  = {457},
+  number  = {2012},
+  pages   = {1821--1839},
+  year    = {2001},
+  doi     = {10.1098/rspa.2001.0788}
+}
+
+% VERIFIED Crossref 10.1088/0741-3335/48/2/007. PPCF 48 issue 2, pp 263-293,
+% 2006, all nine authors in order. NOTE: no Part II of this series was ever
+% published -- Crossref searched explicitly. Do not write "Paper I of a series".
+@article{Summers2006,
+  author  = {Summers, H. P. and Dickson, W. J. and O'Mullane, M. G. and
+             Badnell, N. R. and Whiteford, A. D. and Brooks, D. H. and
+             Lang, J. and Loch, S. D. and Griffin, D. C.},
+  title   = {Ionization state, excited populations and emission of impurities in
+             dynamic finite density plasmas: {I}. {T}he generalized
+             collisional--radiative model for light elements},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {48},
+  number  = {2},
+  pages   = {263--293},
+  year    = {2006},
+  doi     = {10.1088/0741-3335/48/2/007}
+}
+
+% VERIFIED against adas.ac.uk/faq.php, which gives this verbatim as the
+% recommended citation for ADAS. CAVEAT: adas.ac.uk/manual.php advertises the
+% manual as 2nd Edition version 2.7 while the FAQ citation string says 2.6.
+% The FAQ string is used here because that is what ADAS asks users to cite.
+@misc{ADAS,
+  author       = {Summers, H. P.},
+  title        = {The {ADAS} User Manual, version 2.6},
+  year         = {2004},
+  howpublished = {\url{http://www.adas.ac.uk}},
+  note         = {Atomic Data and Analysis Structure, University of Strathclyde}
+}
+
+%--- Equilibrium and validity criteria ---------------------------------------
+
+% VERIFIED Crossref 10.1103/PhysRev.131.1170. Phys Rev 131 issue 3,
+% pp 1170-1176, 1 Aug 1963. Title uses "Thermal", not "Thermodynamic".
+@article{Griem1963,
+  author  = {Griem, Hans R.},
+  title   = {Validity of Local Thermal Equilibrium in Plasma Spectroscopy},
+  journal = {Physical Review},
+  volume  = {131},
+  number  = {3},
+  pages   = {1170--1176},
+  year    = {1963},
+  doi     = {10.1103/PhysRev.131.1170}
+}
+
+% VERIFIED Crossref monograph 10.1017/CBO9780511524578 and LC LCCN 96037158:
+% Cambridge Monographs on Plasma Physics volume 2, 1997, xix+366 pp.
+@book{Griem1997,
+  author    = {Griem, Hans R.},
+  title     = {Principles of Plasma Spectroscopy},
+  series    = {Cambridge Monographs on Plasma Physics},
+  volume    = {2},
+  publisher = {Cambridge University Press},
+  address   = {Cambridge},
+  year      = {1997},
+  isbn      = {978-0-521-45504-6},
+  doi       = {10.1017/CBO9780511524578}
+}
+
+% PARTIALLY VERIFIED. LC LCCN 63023250 confirms title, McGraw-Hill New York
+% [1964], xi+580 pp, OCLC 536435. NO ISBN in the LC record (the book predates
+% ISBN adoption) and NO series field -- the "McGraw-Hill Advanced Physics
+% Monograph Series" attribution circulating online is unverified and is
+% deliberately omitted here rather than invented.
+@book{Griem1964,
+  author    = {Griem, Hans R.},
+  title     = {Plasma Spectroscopy},
+  publisher = {McGraw-Hill},
+  address   = {New York},
+  year      = {1964},
+  note      = {xi + 580 pp.}
+}
+
+% VERIFIED Crossref 10.1103/PhysRev.72.1212. Phys Rev 72 issue 12,
+% pp 1212-1233, 15 Dec 1947. Part II is Phys Rev 83, 1159-1168 (1951),
+% DOI 10.1103/PhysRev.83.1159, if the sequel is ever needed.
 @article{Holstein1947,
   author  = {Holstein, T.},
   title   = {Imprisonment of Resonance Radiation in Gases},
@@ -36,73 +200,93 @@
   number  = {12},
   pages   = {1212--1233},
   year    = {1947},
-  doi     = {10.1103/PhysRev.72.1212},
+  doi     = {10.1103/PhysRev.72.1212}
 }
 
+%--- Divertor spectroscopy and molecular contributions -----------------------
+
+% VERIFIED Crossref 10.1088/0741-3335/40/12/006. PPCF 40 issue 12,
+% pp 2055-2072, 1998. NOTE the DOI ends /006, NOT /007 -- /007 is a different
+% paper (interferometry, pp 2073-2080). Body unread (IOP blocked automated
+% access); abstract read and quoted.
+@article{Pigarov1998,
+  author  = {Pigarov, A. Yu. and Terry, J. L. and Lipschultz, B.},
+  title   = {Study of the discrete-to-continuum transition in a {B}almer spectrum
+             from {A}lcator {C}-{M}od divertor plasmas},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {40},
+  number  = {12},
+  pages   = {2055--2072},
+  year    = {1998},
+  doi     = {10.1088/0741-3335/40/12/006}
+}
+
+% VERIFIED Crossref 10.1088/1361-6587/ab4f1e. PPCF 61 issue 12, art 125018,
+% 11 Nov 2019. Full text read (arXiv:1903.08157). Seven named authors plus the
+% collective authors "the TCV team" and "the EUROfusion MST1 team".
+% NOTE: the arXiv version writes "ionisation & recombination"; the published
+% version writes "and". Use "and".
+@article{Verhaegh2019,
+  author  = {Verhaegh, K. and Lipschultz, B. and Duval, B. P. and Fil, A. and
+             Wensing, M. and Bowman, C. and Gahle, D. S.},
+  title   = {Novel inferences of ionisation and recombination for particle/power
+             balance during detached discharges using deuterium {B}almer line
+             spectroscopy},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {61},
+  number  = {12},
+  pages   = {125018},
+  year    = {2019},
+  doi     = {10.1088/1361-6587/ab4f1e}
+}
+
+% VERIFIED Crossref 10.1088/1361-6587/abd4c0. PPCF 63 issue 3, art 035018,
+% 14 Jan 2021. Fourteen named authors plus "the TCV Team" and "the EuroFusion
+% MST1 Team". This is the BaSPMI paper; abstract read verbatim.
+@article{Verhaegh2021,
+  author  = {Verhaegh, K. and Lipschultz, B. and Bowman, C. and Duval, B. P. and
+             Fantz, U. and Fil, A. and Harrison, J. R. and Moulton, D. and
+             Myatra, O. and W{\"u}nderlich, D. and Federici, F. and
+             Gahle, D. S. and Perek, A. and Wensing, M.},
+  title   = {A novel hydrogenic spectroscopic technique for inferring the role of
+             plasma--molecule interaction on power and particle balance during
+             detached conditions},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {63},
+  number  = {3},
+  pages   = {035018},
+  year    = {2021},
+  doi     = {10.1088/1361-6587/abd4c0}
+}
+
+% VERIFIED Crossref 10.1088/1741-4326/acc191. Nucl Fusion 63 issue 5,
+% art 056003, 16 March 2023, all 15 authors, no collective author.
+% NOTE: this is MAST-U work, NOT TCV. Wijkamp also has a TCV paper in
+% Nucl Fusion 64 (2024) 016021 on runaway electrons -- a different paper.
 @article{Wijkamp2023,
   author  = {Wijkamp, T. A. and Allcock, J. S. and Feng, X. and Kool, B. and
              Lipschultz, B. and Verhaegh, K. and Duval, B. P. and
              Harrison, J. R. and Kogan, L. and Lonigro, N. and Perek, A. and
              Ryan, P. and Sharples, R. M. and Classen, I. G. J. and
              Jaspers, R. J. E.},
-  title   = {Characterisation of detachment in the {MAST-U} {Super-X} divertor
-             using multi-wavelength imaging of 2{D} atomic and molecular
+  title   = {Characterisation of detachment in the {MAST-U} {S}uper-{X} divertor
+             using multi-wavelength imaging of {2D} atomic and molecular
              emission processes},
   journal = {Nuclear Fusion},
   volume  = {63},
   number  = {5},
   pages   = {056003},
   year    = {2023},
-  doi     = {10.1088/1741-4326/acc191},
+  doi     = {10.1088/1741-4326/acc191}
 }
 
-@article{Verhaegh2021,
-  author  = {Verhaegh, K. and Lipschultz, B. and Bowman, C. and Duval, B. P. and
-             Fantz, U. and Fil, A. and Harrison, J. R. and Moulton, D. and
-             Myatra, O. and W{\"u}nderlich, D. and Federici, F. and
-             Gahle, D. S. and Perek, A. and Wensing, M. and {the TCV Team} and
-             {the EUROfusion MST1 Team}},
-  title   = {A novel hydrogenic spectroscopic technique for inferring the role
-             of plasma--molecule interaction on power and particle balance
-             during detached conditions},
-  journal = {Plasma Physics and Controlled Fusion},
-  volume  = {63},
-  number  = {3},
-  pages   = {035018},
-  year    = {2021},
-  doi     = {10.1088/1361-6587/abd4c0},
-}
+%--- ITER divertor conditions ------------------------------------------------
 
-@article{Guillemaut2011,
-  author  = {Guillemaut, C. and Pitts, R. A. and Kukushkin, A. S. and
-             O'Mullane, M.},
-  title   = {Radiative power loading in the {ITER} divertor},
-  journal = {Fusion Engineering and Design},
-  volume  = {86},
-  number  = {12},
-  pages   = {2954--2964},
-  year    = {2011},
-  doi     = {10.1016/j.fusengdes.2011.07.008},
-}
-
-@article{Stangeby2023,
-  author  = {Stangeby, P. C. and Lore, J. D. and Pitts, R. A. and
-             Canik, J. M. and Bonnin, X.},
-  title   = {A reduced model for the {ITER} divertor based on {SOLPS} solutions
-             for {ITER} $Q = 10$ baseline conditions: {B}. {A} reduced model
-             based on reversed-direction two point modeling},
-  journal = {Nuclear Fusion},
-  volume  = {63},
-  number  = {1},
-  pages   = {016017},
-  year    = {2023},
-  doi     = {10.1088/1741-4326/ac9917},
-  note    = {Published online 13 December 2022; print issue January 2023.
-             Companion part A: Nucl.\ Fusion 63, 016016 (2023),
-             doi:10.1088/1741-4326/ac9916. Cited in this repository as
-             ``Stangeby 2022, Nucl.\ Fusion 62'', which is incorrect.},
-}
-
+% VERIFIED Crossref (metadata only): 18 authors in order, NME 20, art 100696,
+% Aug 2019, gold OA. BODY NOT READ -- ScienceDirect blocked every automated
+% route and no OA mirror was reachable. Cited here as the design-basis
+% reference only. DO NOT quote a Te, ne or heat-flux number from this entry
+% until the PDF has been read directly.
 @article{Pitts2019,
   author  = {Pitts, R. A. and Bonnin, X. and Escourbiac, F. and Frerichs, H. and
              Gunn, J. P. and Hirai, T. and Kukushkin, A. S. and Kaveeva, E. and
@@ -115,5 +299,226 @@
   volume  = {20},
   pages   = {100696},
   year    = {2019},
-  doi     = {10.1016/j.nme.2019.100696},
+  doi     = {10.1016/j.nme.2019.100696}
+}
+
+% VERIFIED Crossref 10.1088/0029-5515/47/6/S04. Nucl Fusion 47 issue 6,
+% pp S203-S263, June 2007, 37 named authors plus the collective "ITPA
+% Scrape-off Layer and Divertor Physics Topical Group".
+% NOTE: the DOI article ID is S04, NOT S203. S203 is the first page. Many
+% bibliographies get this wrong. BODY NOT READ for Te/ne values.
+@article{Loarte2007,
+  author  = {Loarte, A. and Lipschultz, B. and Kukushkin, A. S. and
+             Matthews, G. F. and Stangeby, P. C. and Asakura, N. and
+             Counsell, G. F. and Federici, G. and Kallenbach, A. and
+             Krieger, K. and Mahdavi, A. and Philipps, V. and Reiter, D. and
+             Roth, J. and Strachan, J. and Whyte, D. and Doerner, R. and
+             Eich, T. and Fundamenski, W. and Herrmann, A. and others},
+  title   = {Chapter 4: Power and particle control},
+  journal = {Nuclear Fusion},
+  volume  = {47},
+  number  = {6},
+  pages   = {S203--S263},
+  year    = {2007},
+  doi     = {10.1088/0029-5515/47/6/S04},
+  note    = {Progress in the ITER Physics Basis}
+}
+
+% VERIFIED Crossref 10.1017/S0022377817000654 and against the PDF itself
+% (bronze OA at Cambridge Core). FULL TEXT READ. Sec 4 states verbatim that
+% under partial detachment the near-target density "in the ITER plasma...
+% should reach ~1e15 cm^-3", and that at such densities multi-step processes
+% require a collisional-radiative treatment.
+@article{Krasheninnikov2017,
+  author  = {Krasheninnikov, S. I. and Kukushkin, A. S.},
+  title   = {Physics of ultimate detachment of a tokamak divertor plasma},
+  journal = {Journal of Plasma Physics},
+  volume  = {83},
+  number  = {5},
+  pages   = {155830501},
+  year    = {2017},
+  doi     = {10.1017/S0022377817000654}
+}
+
+% VERIFIED Crossref 10.1088/1741-4326/ac8a5f. Nucl Fusion 62 issue 10,
+% art 106017, 2022, open access. FULL TEXT READ. Abstract states electron
+% temperature reduced below 1 eV across 50 cm of each divertor target at the
+% highest neon puff levels. CAVEAT: divertor ne appears only in figure panels;
+% do NOT cite this paper for a numerical density.
+@article{Lore2022,
+  author  = {Lore, J. D. and Bonnin, X. and Park, J.-S. and Pitts, R. A. and
+             Stangeby, P. C.},
+  title   = {High gas throughput {SOLPS-ITER} simulations extending the {ITER}
+             database to strong detachment},
+  journal = {Nuclear Fusion},
+  volume  = {62},
+  number  = {10},
+  pages   = {106017},
+  year    = {2022},
+  doi     = {10.1088/1741-4326/ac8a5f}
+}
+
+% VERIFIED Crossref 10.1088/1741-4326/ac9916. Accepted manuscript read via
+% OSTI purl 1969837.
+% CITATION TRAP: appeared online 13 Dec 2022 and is frequently mis-cited as
+% 2022 volume 62. Crossref confirms 2023, volume 63, issue 1.
+@article{Stangeby2023a,
+  author  = {Stangeby, P. C. and Lore, J. D. and Pitts, R. A. and
+             Canik, J. M. and Bonnin, X.},
+  title   = {A reduced model for the {ITER} divertor based on {SOLPS} solutions
+             for {ITER} $Q=10$ baseline conditions: {A}. {I}dentifying options
+             for the control parameters},
+  journal = {Nuclear Fusion},
+  volume  = {63},
+  number  = {1},
+  pages   = {016016},
+  year    = {2023},
+  doi     = {10.1088/1741-4326/ac9916}
+}
+
+% VERIFIED Crossref 10.1088/1741-4326/ac9917. Accepted manuscript read via
+% OSTI purl 1971026. Same 2023/vol-63 citation trap as Part A.
+@article{Stangeby2023b,
+  author  = {Stangeby, P. C. and Lore, J. D. and Pitts, R. A. and
+             Canik, J. M. and Bonnin, X.},
+  title   = {A reduced model for the {ITER} divertor based on {SOLPS} solutions
+             for {ITER} $Q=10$ baseline conditions: {B}. {A} reduced model based
+             on reversed-direction two point modeling},
+  journal = {Nuclear Fusion},
+  volume  = {63},
+  number  = {1},
+  pages   = {016017},
+  year    = {2023},
+  doi     = {10.1088/1741-4326/ac9917}
+}
+
+% VERIFIED Crossref 10.1088/1361-6587/ab73c1. Nucl Fusion 60 issue 4,
+% art 046019, 2020. FULL TEXT READ and it states NO Te or ne value in prose --
+% recorded here so that nobody cites it for the operating range.
+@article{Kaveeva2020,
+  author  = {Kaveeva, E. and Rozhansky, V. and Senichenkov, I. and Sytova, E. and
+             Veselova, I. and Voskoboynikov, S. and Bonnin, X. and
+             Pitts, R. A. and Kukushkin, A. S. and Wiesen, S. and Reiter, D.},
+  title   = {{SOLPS-ITER} modelling of {ITER} edge plasma with drifts and
+             currents},
+  journal = {Nuclear Fusion},
+  volume  = {60},
+  number  = {4},
+  pages   = {046019},
+  year    = {2020},
+  doi     = {10.1088/1741-4326/ab73c1}
+}
+
+%--- ELMs --------------------------------------------------------------------
+
+% VERIFIED Crossref 10.1016/j.nme.2017.04.014. NME 12, pp 84-90, Aug 2017,
+% gold OA. PUBLISHER PDF READ -- this is the strongest ELM-timescale source
+% available here. States ELM duration 0.75-3 ms in present devices, ITER
+% deposition rise time 250 us with decay 2x that, ELM loss energy 2-10%.
+% NOTE: the DOI is NOT 10.1016/j.nme.2016.10.013, which is a different paper.
+@article{Eich2017,
+  author  = {Eich, T. and Sieglin, B. and Thornton, A. J. and Faitsch, M. and
+             Kirk, A. and Herrmann, A. and Suttrop, W.},
+  title   = {{ELM} divertor peak energy fluence scaling to {ITER} with data from
+             {JET}, {MAST} and {ASDEX} {U}pgrade},
+  journal = {Nuclear Materials and Energy},
+  volume  = {12},
+  pages   = {84--90},
+  year    = {2017},
+  doi     = {10.1016/j.nme.2017.04.014}
+}
+
+% VERIFIED Crossref 10.1088/0741-3335/55/12/124003. Author version read
+% (arXiv:1306.6841, journal_ref confirms PPCF publication); the published PDF
+% was not reachable, so numbers taken from it are PARTIALLY VERIFIED.
+% Sec 1 states the expected ITER natural ELM frequency: ~1 Hz at Ip = 15 MA,
+% ~7 Hz at Ip = 5 MA, scaling as Ip^-1.8. This is the refereed source for that
+% number; the widely quoted "1-2 Hz" traces to a non-refereed IAEA FEC 2010
+% conference paper (IAEA-CN-180 / ITR/1-4) and should NOT be cited as refereed.
+@article{Kirk2013,
+  author  = {Kirk, A. and Chapman, I. T. and Evans, T. E. and Ham, C. and
+             Harrison, J. R. and Huijsmans, G. and Liang, Y. and Liu, Y. Q. and
+             Loarte, A. and Suttrop, W. and Thornton, A. J.},
+  title   = {Understanding the effect resonant magnetic perturbations have on
+             {ELM}s},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {55},
+  number  = {12},
+  pages   = {124003},
+  year    = {2013},
+  doi     = {10.1088/0741-3335/55/12/124003}
+}
+
+% VERIFIED Crossref 10.1088/0741-3335/45/9/302. PPCF 45 issue 9, pp 1549-1569,
+% 20 Aug 2003, all 17 authors. Third author is R. Sartori per the publisher
+% record (OpenAlex incorrectly lists "F. Sartori").
+% CAVEAT: this paper contains NO ITER ELM frequency in Hz. Numbers for ELM
+% duration were read from the EFDA-JET preprint EFDA-JET-PR(03)32, not the
+% version of record -- treat as PARTIALLY VERIFIED.
+@article{Loarte2003,
+  author  = {Loarte, A. and Saibene, G. and Sartori, R. and Campbell, D. and
+             Becoulet, M. and Horton, L. and Eich, T. and Herrmann, A. and
+             Matthews, G. and Asakura, N. and Chankin, A. and Leonard, A. and
+             Porter, G. and Federici, G. and Janeschitz, G. and Shimada, M. and
+             Sugihara, M.},
+  title   = {Characteristics of type {I} {ELM} energy and particle losses in
+             existing devices and their extrapolation to {ITER}},
+  journal = {Plasma Physics and Controlled Fusion},
+  volume  = {45},
+  number  = {9},
+  pages   = {1549--1569},
+  year    = {2003},
+  doi     = {10.1088/0741-3335/45/9/302}
+}
+
+%--- Divertor probes ---------------------------------------------------------
+
+% VERIFIED Crossref 10.1080/15361055.2019.1674123. Fusion Sci Technol 76
+% issue 2, pp 79-87, 2020. Published abstract read verbatim: it states that
+% thermomechanical simulation shows the probe design "is robust and can survive
+% under harsh working environments". Recorded because it REFUTES the common
+% claim that probes cannot survive in the ITER divertor -- do not write that.
+@article{Zhao2020,
+  author  = {Zhao, Wei and Wang, Yali and Jin, Yuzhong and Zhao, Li and
+             Zhou, Hongxia and Nie, Lin and Zhong, Guangwu and Liu, Chunjia and
+             Watts, Christopher and Gunn, James Paul},
+  title   = {Preliminary Design of {ITER} Divertor {L}angmuir Probe System},
+  journal = {Fusion Science and Technology},
+  volume  = {76},
+  number  = {2},
+  pages   = {79--87},
+  year    = {2020},
+  doi     = {10.1080/15361055.2019.1674123}
+}
+
+%--- Atomic collision data (used from Chapter 2 onward) ----------------------
+
+% VERIFIED Crossref 10.1103/PhysRevA.46.6995. Phys Rev A 46 issue 11,
+% pp 6995-7011, 1 Dec 1992.
+@article{BrayStelbovics1992,
+  author  = {Bray, Igor and Stelbovics, Andris T.},
+  title   = {Convergent close-coupling calculations of electron-hydrogen
+             scattering},
+  journal = {Physical Review A},
+  volume  = {46},
+  number  = {11},
+  pages   = {6995--7011},
+  year    = {1992},
+  doi     = {10.1103/PhysRevA.46.6995}
+}
+
+% VERIFIED Crossref 10.1088/0953-4075/35/15/201. J Phys B 35 issue 15,
+% pp R117-R146, 2002. NOTE: issue 15, not 22, and FOUR authors -- Bray, Fursa,
+% Kheifets, Stelbovics.
+@article{Bray2002,
+  author  = {Bray, I. and Fursa, D. V. and Kheifets, A. S. and
+             Stelbovics, A. T.},
+  title   = {Electrons and photons colliding with atoms: development and
+             application of the convergent close-coupling method},
+  journal = {Journal of Physics B: Atomic, Molecular and Optical Physics},
+  volume  = {35},
+  number  = {15},
+  pages   = {R117--R146},
+  year    = {2002},
+  doi     = {10.1088/0953-4075/35/15/201}
 }

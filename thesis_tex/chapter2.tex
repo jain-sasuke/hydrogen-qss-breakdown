@@ -1,0 +1,1213 @@
+%=============================================================================
+%  chapter2.tex -- The Atoms
+%
+%  Uses macros from thesis_main.tex Part 2 only. No notation is defined here.
+%
+%  BEAT: we build the instrument that will test the obvious suspect. Establish
+%  that the inputs are trustworthy, and be honest about where they are not.
+%
+%  Every \section carries a % QUESTION: comment (thesis_main.tex:19).
+%=============================================================================
+
+\chapter{The Atoms}
+\label{ch:atoms}
+
+Chapter~\ref{ch:intro} left us with a question and no instrument to answer it. A
+spectroscopist measures the ratio of two hydrogen lines in a divertor, looks the
+answer up in a table, and reads off a temperature and a density. The table was
+computed on the assumption that the plasma has stopped changing; a divertor
+never stops changing. Everyone asked whether the table still holds worries about
+the same thing first: the excited states of the atom are the fast, delicate part
+of the system, and surely they cannot keep up with a plasma torn about on
+microsecond timescales. Testing that suspicion needs a model that follows every
+level of the atom in time, assuming in advance that none of them has settled.
+
+This chapter builds the raw material for that model. There is no time derivative
+anywhere in it. It is about the \emph{atoms}: what can happen to a hydrogen atom
+in a plasma, how fast, where the numbers come from, and how far they can be
+trusted. Chapter~\ref{ch:theory} puts them in motion.
+
+One sentence belongs before any physics, because it is the reader's fastest
+route into everything that follows. \textbf{The approximation this thesis tests
+is the Bodenstein steady-state approximation, applied to atomic energy levels
+instead of radical concentrations.} Anyone who has written
+$\mathrm{d}[\mathrm{R}^{\bullet}]/\mathrm{d}t \approx 0$ for a reactive
+intermediate has used it. The 43 energy levels below are the chemical species,
+the atomic processes are the elementary reactions, and this chapter measures the
+rate constants before that approximation is made.
+
+%-----------------------------------------------------------------------------
+\section{What happens to a hydrogen atom in a plasma}
+\label{sec:atom_processes}
+% QUESTION: what can happen to a hydrogen atom, and on what timescale does each
+% thing happen?
+
+\subsection{The atom, from scratch}
+
+A hydrogen atom is one electron bound to one proton. Quantum mechanics allows
+the electron only certain energies, labelled by the \emph{principal quantum
+number} $n = 1,2,3,\dots$, with binding energy
+\begin{equation}
+  I_n = \frac{I_{\mathrm H}}{n^{2}},
+  \qquad I_{\mathrm H} = \SI{13.6058}{\electronvolt}.
+  \label{eq:binding}
+\end{equation}
+
+\noindent $I_n$ (\si{\electronvolt}) is the energy needed to pull the electron
+free and leave a bare proton. Both sides are an energy, so the dimensional check
+is trivial; the \emph{shape} of Eq.~\eqref{eq:binding} is what matters. The
+levels crowd together as $n$ grows: $n=1$ lies \SI{10.20}{\electronvolt} below
+$n=2$, but $n=14$ and $n=15$ are separated by \SI{0.0089}{\electronvolt}. High
+levels are easy to move between and easy to strip off; low levels are not. That
+asymmetry generates the two timescales of Chapter~\ref{ch:theory}.
+
+Within a shell the electron also carries \emph{orbital angular momentum},
+quantised by $\ell = 0,1,\dots,n-1$. In hydrogen, and only in hydrogen, all
+$\ell$ states of a given $n$ have the same energy: they are \emph{degenerate}.
+Spectroscopy labels them $\ell = 0,1,2,3,\dots \equiv
+\mathrm{S},\mathrm{P},\mathrm{D},\mathrm{F},\dots$, so ``$2p$'' means $n=2$,
+$\ell=1$. The number of quantum states sharing a label is the
+\emph{statistical weight}
+\begin{equation}
+  g_{n\ell} = 2(2\ell+1),
+  \qquad g_n = \sum_{\ell=0}^{n-1} g_{n\ell} = 2n^{2},
+  \label{eq:weights}
+\end{equation}
+
+\noindent the factor 2 counting electron spin. $g$ is a dimensionless counting
+number and appears only where a thermodynamic argument needs to know how many
+ways a state can be occupied: $g = 6$ for $2p$, $g = 2$ for $2s$.
+
+An atom dropping to a lower level can emit the energy difference as one photon.
+The levels are discrete, so the photon energy is too, and the light appears at
+one sharp wavelength: a \emph{spectral line}. Lines ending on $n=2$ form the
+Balmer series and lie in the visible, which is why a fibre-coupled spectrometer
+sees them; this thesis uses $H_\alpha$ ($n=3\to2$, \SI{656}{\nano\metre}) and
+$H_\beta$ ($n=4\to2$, \SI{486}{\nano\metre}). A line's brightness is
+proportional to the population of the level it comes from, so measuring light
+measures populations --- which is why the populations are worth computing.
+
+\subsection{Six processes, and how fast they run}
+
+Six things can happen to an atom in a plasma of electron density $\nel$
+(\si{\per\cubic\centi\metre}) and temperature $\Te$ (\si{\electronvolt}), and
+the model is built from these and nothing else. \emph{Electron-impact
+excitation} pushes the bound electron up, and needs a free electron carrying at
+least the energy gap. \emph{Electron-impact de-excitation} is the reverse and
+has no threshold, so it is generally the faster of the pair. \emph{Ionisation}
+removes the electron altogether, and is the only process that takes an atom out
+of the set of levels we track. \emph{Recombination} does the reverse, by two
+distinct mechanisms treated in Section~\ref{sec:ion_recomb}.
+\emph{Spontaneous emission} drops the atom to a lower level with no collision
+partner at all --- the only process whose rate is independent of density.
+\emph{Proton-impact $\ell$-mixing} shuffles population between the $\ell$
+sublevels of one shell; it costs no energy, because those sublevels are
+degenerate, and Section~\ref{sec:lmixing} shows it is the fastest process in the
+model.
+
+The chemical-engineering reading is exact. Each level is a species and each
+process an elementary reaction. Excitation, de-excitation, ionisation and
+$\ell$-mixing need a collision partner, so their rates carry a density factor
+exactly as a second-order rate law does. Spontaneous emission is unimolecular,
+like a first-order decomposition. Recombination is the odd one out, because it
+creates atoms out of a species we have chosen not to track, and
+Chapter~\ref{ch:theory} shows it therefore behaves like a constant feed stream
+into a stirred tank rather than a reaction inside it.
+
+Before quoting numbers it is worth saying what we expect, so the table can
+disagree. An allowed optical transition should run at
+$\sim10^{8}\,\si{\per\second}$; collisions at
+$\nel \sim \SI{e14}{\per\cubic\centi\metre}$ should be slower, since a
+coefficient of order $10^{-9}\,\si{\cubic\centi\metre\per\second}$ times that
+density is only $10^{5}\,\si{\per\second}$; and ground-state ionisation at a few
+electronvolts should be slower still, needing an electron above
+\SI{13.6}{\electronvolt} from a distribution whose mean energy is far below it.
+What $\ell$-mixing will do is not obvious in advance.
+
+\begin{table}[tbp]
+  \centering
+  \caption[Process rates at the benchmark point]{Representative rates for the
+  six processes at the benchmark point $\Te = \benchTe$, $\nel = \benchne$
+  (grid indices $[23,5]$). Rate coefficients are read from the stored arrays of
+  Table~\ref{tab:data_sources} at temperature index 23; a rate in
+  \si{\per\second} is the coefficient times $\nel$, except for spontaneous
+  emission, which needs no partner. The recombination entry is a feed per unit
+  proton density, not a rate an atom experiences. The spread is fourteen orders
+  of magnitude, which is why the problem is numerically stiff.}
+  \label{tab:process_rates}
+  \begin{tabular}{llrr}
+    \toprule
+    Process & Example & Rate (\si{\per\second}) & $1/\text{rate}$ \\
+    \midrule
+    Proton $\ell$-mixing      & $2s \to 2p$   & $1.475\times10^{11}$ & \SI{6.78}{\pico\second} \\
+    Spontaneous emission      & $2p \to 1s$   & $6.268\times10^{8}$  & \SI{1.60}{\nano\second} \\
+    Ionisation                & $2p \to$ H$^+$& $8.639\times10^{6}$  & \SI{116}{\nano\second} \\
+    Collisional de-excitation & $2p \to 1s$   & $8.173\times10^{5}$  & \SI{1.22}{\micro\second} \\
+    Collisional excitation    & $1s \to 2p$   & $7.686\times10^{4}$  & \SI{13.0}{\micro\second} \\
+    Ionisation                & $1s \to$ H$^+$& $1.409\times10^{4}$  & \SI{71.0}{\micro\second} \\
+    Recombination feed        & H$^+ \to 1s$  & $1.095\times10^{1}$  & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Table~\ref{tab:process_rates} confirms the expectations and exceeds one of them
+by three orders of magnitude. Radiative decay of $2p$ takes
+\SI{1.60}{\nano\second} and ground-state ionisation \SI{71.0}{\micro\second},
+both as anticipated --- but $\ell$-mixing empties $2s$ in under
+\SI{7}{\pico\second}, two hundred times faster than the fastest radiative decay
+in the atom. That number is why Section~\ref{sec:lmixing} exists. It is also the
+first sight of the difficulty: a chemical engineer recognises a rate spread of
+fourteen decades as a stiff network, of exactly the kind that motivates the
+steady-state approximation for intermediates in the first place.
+
+%-----------------------------------------------------------------------------
+\section{The state space}
+\label{sec:state_space}
+% QUESTION: which energy levels does the model track, and why is l resolved
+% below n=9 but not above it?
+
+Hydrogen has infinitely many bound levels, so a model must stop somewhere, and
+must also decide how finely to describe each level it keeps. Too few levels and
+the cascade feeding the Balmer lines is cut short; too much detail at high $n$
+and the matrix grows without the extra states carrying independent information.
+
+This model tracks \textbf{43 states}. Levels $n=1$--$8$ are resolved in $\ell$
+(indices 0--35, ordered $1S$, $2S$, $2P$, $3S$, \dots, $8J$); levels $n=9$--$15$
+are \emph{bundled}, one state per shell carrying the full shell weight
+$g_n = 2n^{2}$ (indices 36--42). The ordering is fixed by
+\texttt{data/processed/collisions/K\_exc\_full/state\_index.csv} and every array
+in the pipeline is indexed in it. The ion H$^{+}$ is deliberately \emph{not} a
+44th state: it is an external reservoir, a choice whose consequences are listed
+in Section~\ref{sec:atoms_scope}.
+
+\paragraph{Why $\ell$ must be resolved at low $n$.} The obvious guess is that
+$\ell$ is a refinement --- nice to have, not load-bearing. At $n=2$ it is wrong,
+and a selection rule is the reason. Electric-dipole (E1) radiation, much the
+strongest emission mechanism, requires $\Delta\ell = \pm1$. The transition
+$2p \to 1s$ satisfies this and runs at
+$A_{2p\to1s} = \SI{6.2684e8}{\per\second}$
+(\texttt{Radiative/A\_resolved.npy}, element $[0,2]$). The transition
+$2s \to 1s$ does not: both states have $\ell = 0$, and the E1 rate is exactly
+zero. In this dataset the total radiative loss from $2s$ is $\gamma_{2s} = 0$
+identically; the two-photon decay hydrogen really possesses, of order
+\SI{10}{\per\second}, is not included, and would be negligible beside the
+collisional rates of Table~\ref{tab:process_rates} in any case. So the two
+sublevels of $n=2$ are not refinements of each other: one empties in
+\SI{1.6}{\nano\second} and the other cannot empty radiatively at all. Bundling
+them and weighting the decay statistically would hand the metastable $2s$ level
+a decay rate it does not have.
+
+\paragraph{Why bundling is safe at high $n$.} Above $n=8$ the argument reverses.
+Proton $\ell$-mixing scales roughly as $n^{4}$ (Section~\ref{sec:lmixing}), so
+by $n \approx 9$ it redistributes population within a shell far faster than
+anything else happens to that shell. The sublevels then sit permanently in the
+ratio of their statistical weights and one number per shell holds all the
+information.
+
+That is an argument, not a measurement, and it can be tested: do the $\ell$
+sublevels of a shell the model \emph{does} resolve come out statistical anyway?
+For $n=4$ the statistical share of the $4f$ sublevel is $g_{4f}/g_4 = 14/32 =
+0.4375$. Solving the model across the grid gives $0.4361$--$0.4375$ (register
+entry A6) --- statistical to four figures, with the largest departure,
+\SI{0.3}{\percent}, at $\nel = \SI{e12}{\per\cubic\centi\metre}$, the lowest
+density on the grid and exactly where $\ell$-mixing is weakest. Two caveats
+belong in the same breath. The bundled block carries no $\ell$-mixing of its own
+--- it is \emph{assumed} statistical rather than driven to it, and that assumption
+has not been tested directly. And the truncation at $n_{\max} = 15$ is a real
+limitation whose size Chapter~\ref{ch:limits} reports as measured rather than
+assumed.
+
+\paragraph{Where the ordering and the grids come from.} A 43-state model has one
+correct row ordering, and every array must agree on it; getting it wrong
+produces no error, only plausible numbers about the wrong states. The pipeline
+therefore never lets a script declare the ordering for itself.
+\texttt{src/validation/cr\_context.py} loads the grids, the matrix and the state
+ordering from the files the pipeline wrote, cross-checks their shapes, and
+raises if any is missing or inconsistent; its docstring names the failure mode
+it prevents --- ``If a verification script hardcodes them and the pipeline later
+changes, the script keeps running and silently mislabels every result --- which
+is exactly the failure mode verification is supposed to catch.'' Every
+verification result in Chapters~\ref{ch:validation} and~\ref{ch:results} comes
+from a script that imports it. The grid itself is declared in
+\texttt{src/rates/assemble\_cr\_matrix.py} and written to disk so downstream code
+reads rather than redeclares it: 50 temperatures logarithmically spaced over
+$\Te = 1$--\SI{10}{\electronvolt} and 8 densities over
+$\nel = 10^{12}$--\SI{e15}{\per\cubic\centi\metre}, giving 400 points. The
+benchmark point carried through this thesis is the one nearest
+$\Te = \SI{3}{\electronvolt}$, $\nel = \SI{e14}{\per\cubic\centi\metre}$: index
+$[23,5]$, $\Te = \benchTe$, $\nel = \benchne$. It is an illustrative anchor, so
+that the reader accumulates familiarity with one place in parameter space. No
+conclusion rests on it; every general claim is carried by the full grid.
+
+%-----------------------------------------------------------------------------
+\section{From a cross section to a rate coefficient}
+\label{sec:maxwellian}
+% QUESTION: how does a cross section sigma(E), which is what atomic physics
+% computes, become a rate constant a kinetic model can use?
+
+Atomic collision theory does not deliver rate constants; it delivers
+\emph{cross sections}. The cross section $\sigma(E)$ (\si{\square\centi\metre})
+is the effective target area an atom presents to an electron of kinetic energy
+$E$: a beam of flux $\Gamma$ (\si{\per\square\centi\metre\per\second}) drives the
+process $\Gamma\sigma$ times per second. For excitation $\sigma$ vanishes below
+the threshold $\Delta E$, rises above it, and falls again at high energy as the
+electron passes too quickly to interact.
+
+A plasma is not a beam. What a kinetic model needs is one number per
+temperature, the \emph{rate coefficient} $C(\Te) = \langle\sigma v\rangle$,
+which for a Maxwell--Boltzmann electron distribution reduces to
+\begin{equation}
+  C(\Te) = \sqrt{\frac{8}{\pi m_e}}\;(k_B\Te)^{-3/2}
+           \int_{\Delta E}^{\infty}
+           \sigma(E)\,E\,\mathrm{e}^{-E/k_B\Te}\,\mathrm{d}E,
+  \label{eq:maxwell_average}
+\end{equation}
+
+\noindent with $m_e$ the electron mass (\si{\kilogram}), $k_B\Te$ the
+temperature as an energy (\si{\joule}), $E$ the incident energy (\si{\joule}),
+$\Delta E$ the threshold (\si{\joule}) and $\sigma$ in \si{\square\metre}; the
+result is converted to \si{\cubic\centi\metre\per\second}. Dimensionally
+$\si{\square\centi\metre}\times\si{\centi\metre\per\second} =
+\si{\cubic\centi\metre\per\second}$, and $C\nel n_p$ is then
+\si{\per\cubic\centi\metre\per\second}, a number of events per unit volume per
+unit time: this is mass-action kinetics with $C$ as a second-order rate
+constant. What Eq.~\eqref{eq:maxwell_average} does physically is weight the
+cross section by how many electrons arrive at each energy and how fast, with the
+lower limit enforcing that electrons below threshold contribute nothing.
+
+One reading of it is a common trap. The prefactor carries $\Te^{-3/2}$, but
+$C(\Te)$ does not fall as $\Te^{-3/2}$: the integral grows as more of the
+distribution clears the threshold, and for a threshold process that growth wins
+easily. The ground-state excitation coefficient $C_{1s\to2p}$ is
+\SI{5.5316e-10}{\cubic\centi\metre\per\second} at the benchmark temperature and
+nearly three orders of magnitude smaller at \SI{1}{\electronvolt}.
+
+The implementation is \texttt{compute\_K\_CCC.py}, function
+\texttt{maxwell\_average}, and four choices in it could have gone wrong
+silently. The integral is trapezoidal on a 5000-point uniform grid; a 500-point
+grid was tested and gives $\sim\SI{17}{\percent}$ error at
+\SI{1}{\electronvolt}, so the grid density is measured, not defaulted. The
+threshold is taken from Eq.~\eqref{eq:binding} rather than from the data file,
+avoiding the noisy near-threshold region. Interpolation returns zero outside the
+tabulated range. And the integral stops at the top of the data
+(\SIrange{100}{968}{\electronvolt}) rather than at infinity; since
+$\mathrm{e}^{-E/k_B\Te} = 4.5\times10^{-5}$ at \SI{100}{\electronvolt} and
+$\Te = \SI{10}{\electronvolt}$, the missing tail is below \SI{0.01}{\percent}
+over the range used here.
+
+\subsection{Detailed balance, and why de-excitation is never computed directly}
+
+Excitation and de-excitation are not independent. This is the statement a
+chemical engineer makes when insisting that forward and reverse rate constants
+of an elementary step be consistent with the equilibrium constant, and the
+argument has the same shape. Put the plasma in complete thermodynamic
+equilibrium, where every process is balanced by its reverse. For levels 1
+(lower) and 2 (upper),
+\begin{equation}
+  n_1\,\nel\,C_{12} = n_2\,\nel\,C_{21}
+  \quad\Longrightarrow\quad
+  \frac{C_{12}}{C_{21}} = \left.\frac{n_2}{n_1}\right|_{\mathrm{eq}}
+  = \frac{g_2}{g_1}\,\exp\!\left(-\frac{\Delta E}{k_B\Te}\right),
+  \label{eq:detailed_balance}
+\end{equation}
+
+\noindent with $C_{12},C_{21}$ in \si{\cubic\centi\metre\per\second}, $g_1,g_2$
+from Eq.~\eqref{eq:weights}, and $\Delta E = I_1 - I_2 > 0$. Both sides are
+dimensionless. Physically: going up needs a rare fast electron and coming down
+does not, so de-excitation wins by the Boltzmann factor, partly offset by there
+being more upper states to fall out of.
+
+The electron density cancels, because the same electron is the partner in both
+directions. So do the populations: $C_{12}$ and $C_{21}$ are Maxwellian averages
+of cross sections, which depend on $\Te$ and atomic structure and nothing else.
+Equilibrium was only a device to fix the ratio; the ratio holds in any
+Maxwellian plasma, however far the populations are from equilibrium. That is the
+entire justification for using Eq.~\eqref{eq:detailed_balance} in a model whose
+subject is departure from equilibrium. It fails only if the electrons themselves
+are non-Maxwellian.
+
+\paragraph{Worked number.} For $1s \to 2p$ at the benchmark temperature,
+$g_1 = 2$, $g_2 = 6$, $\Delta E = \SI{10.20435}{\electronvolt}$, so
+Eq.~\eqref{eq:detailed_balance} predicts $3\exp(-10.20435/2.947052) =
+9.404800\times10^{-2}$. The stored arrays give $C_{1s\to2p}/C_{2p\to1s} =
+\num{5.53155e-10}/\num{5.88163e-09} = 9.404800\times10^{-2}$, identical to seven
+figures. Over all 819 transition pairs at that temperature, using $g$ and $I_n$
+from \texttt{state\_index.csv}, the largest relative deviation is
+$2.48\times10^{-9}$.
+
+That agreement checks the implementation and nothing more, and must not be
+reported as validating the atomic data. It is machine precision because it is
+true by construction: de-excitation coefficients are never Maxwell-averaged from
+de-excitation cross sections but derived from the excitation coefficients
+through Eq.~\eqref{eq:detailed_balance}
+(\texttt{compute\_K\_CCC.py}, function \texttt{detailed\_balance}). The reason
+for building it that way is that it guarantees Saha--Boltzmann populations in
+the high-density limit, which Chapter~\ref{ch:validation} uses as a gate --- and
+which is therefore a weaker gate than one the construction did not guarantee.
+The independent statement, that the underlying cross sections themselves respect
+microscopic reversibility, is a separate check reported in
+Section~\ref{sec:atomic_uncertainty}.
+
+%-----------------------------------------------------------------------------
+\section{Electron-impact excitation}
+\label{sec:excitation}
+% QUESTION: where do the excitation cross sections come from, and what was
+% deliberately left out of them?
+
+Excitation lifts atoms out of the ground state and populates everything the
+spectrometer sees, so its cross sections matter more than any other input. They
+come from the \emph{convergent close-coupling} (CCC) method of Bray and
+co-workers~\cite{Bray1992}, in which the collision problem is solved by
+expanding the target in a large square-integrable basis and enlarging that basis
+until the answer stops moving --- the ``convergent'' is the claim that the limit
+is reached rather than estimated. The dataset is the 3115 raw files supplied by
+Prof.\ Igor Bray (personal communication, 22 February 2026) in
+\texttt{data/raw/ccc/e-H\_XSEC\_LS/}, parsed by
+\texttt{src/parsers/parse\_ccc.py}. The acquisition report for the same dataset
+records 3117 files; 3115 are on disk, and the difference is noted here rather
+than reconciled.
+
+Three instructions came with the data and all three are load-bearing.
+
+\paragraph{The filenames read backwards.} The convention is
+\texttt{FINAL.INITIAL}, so \texttt{1S.2P} holds $2p \to 1s$
+\emph{de}-excitation and the excitation $1s \to 2p$ lives in \texttt{2P.1S}.
+Reading it the wrong way round would transpose the dataset with no obvious
+symptom, so it is worth saying which direction the model uses: rate coefficients
+are Maxwell-averaged from the \emph{excitation}-direction files, selected in
+\texttt{compute\_K\_CCC.py} by the test $n_{\mathrm f} > n_{\mathrm i}$, and
+de-excitation follows by Eq.~\eqref{eq:detailed_balance}. The
+de-excitation-direction files are parsed and stored but never enter the rate
+tables.
+
+\paragraph{Transitions with $\Delta n = 0$ were excluded, on the data
+provider's instruction.} The note reads: ``Transitions with
+$n_{\mathrm{final}} = n_{\mathrm{initial}}$ (e.g.\ 2S$\leftrightarrow$2P,
+3S$\leftrightarrow$3P) have unphysically large cross sections due to
+non-relativistic degeneracy in the CCC calculation. All $\Delta n = 0$
+transitions are excluded from the database.'' The reason is that in a strictly
+non-relativistic treatment the $\ell$ sublevels of a shell are exactly
+degenerate, the transition energy is zero, and the long-range dipole interaction
+gives a divergent cross section. After the exclusion 1740 transitions remain,
+all with $\Delta n \ne 0$. The stated accuracy for what remains is
+$\sim$\SI{5}{\percent}, which the benchmark of
+Section~\ref{sec:atomic_uncertainty} is able to test.
+
+That exclusion has a consequence which is easy to miss and which
+Section~\ref{sec:lmixing} turns into the central argument of this chapter. With
+$\Delta n = 0$ electron impact removed there is no electron-driven route between
+$2s$ and $2p$ at all. Together with the fact that $2s$ cannot radiate, it leaves
+the $n=2$ manifold with almost nothing to do --- unless another collision partner
+is admitted.
+
+\paragraph{Covering the shells CCC does not reach.} CCC data extend to $n=8$
+resolved in $\ell$, with resolved data reaching $n=9$ and $n=10$. Transitions
+involving higher bundled shells are filled from the semi-empirical formulae of
+Vriens and Smeets~\cite{VriensSmeets1980}, coded in \texttt{compute\_K\_VS.py};
+the implemented expressions are their Eqs.~(17)--(19) directly, not the
+equivalent rearrangement of Hartgers \emph{et al.}~\cite{Hartgers2001} that the
+file's header docstring describes. Their accuracy is $\sim$\SI{20}{\percent}
+against $\sim$\SI{5}{\percent} for CCC, so the merge uses CCC wherever it
+exists. Those formulae need one further input, the shell-to-shell absorption
+oscillator strength, built from the same Einstein coefficients used in
+Section~\ref{sec:radiative}, with a Kramers fallback where a value is missing
+that is recorded per transition in the metadata.
+Table~\ref{tab:exc_coverage} records which source supplies which block, because
+``the excitation data are from CCC'' would misdescribe a table that is a quarter
+Vriens--Smeets.
+
+\begin{table}[tbp]
+  \centering
+  \caption[Provenance of the excitation rate coefficients]{Which source supplies
+  which excitation transitions, from the coverage record in
+  \texttt{src/rates/assemble\_K\_exc.py} and the per-transition attribution in
+  \texttt{K\_exc\_meta.csv}. ``res'' is an $\ell$-resolved state ($n \le 8$),
+  ``bund'' a bundled shell ($n = 9$--$15$). The collapse rows are $\ell$-resolved
+  CCC data summed over final $\ell$ to give a shell total, which keeps CCC
+  accuracy for the first two bundled shells instead of falling back to
+  Vriens--Smeets. De-excitation coefficients are not listed because they are not
+  independent data: each follows from its excitation partner by
+  Eq.~\eqref{eq:detailed_balance}.}
+  \label{tab:exc_coverage}
+  \begin{tabular}{llrl}
+    \toprule
+    Block & Source & Pairs & Stated accuracy \\
+    \midrule
+    res $\to$ res, $n \le 8$      & CCC                        & 546 & $\sim$\SI{5}{\percent} \\
+    res $\to$ $n=9$ bundled       & CCC, collapsed over $\ell$ &  36 & $\sim$\SI{5}{\percent} \\
+    res $\to$ $n=10$ bundled      & CCC, collapsed over $\ell$ &  36 & $\sim$\SI{5}{\percent} \\
+    res $\to$ $n=11$--$15$        & Vriens--Smeets             & 180 & $\sim$\SI{20}{\percent} \\
+    bund $\leftrightarrow$ bund   & Vriens--Smeets             &  21 & $\sim$\SI{20}{\percent} \\
+    \midrule
+    total                         &                            & 819 & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+%-----------------------------------------------------------------------------
+\section{Ionisation and recombination}
+\label{sec:ion_recomb}
+% QUESTION: what connects the 43 bound levels to the ion reservoir outside them,
+% and why is recombination quadratic in density?
+
+\subsection{Ionisation: the only true loss}
+
+Ionisation is the only process that removes an atom from the bound manifold
+altogether; everything else moves an atom from one tracked level to another. In
+reactor terms it is the irreversible step consuming reactant to product, and the
+rest is internal shuffling. The ionisation rate coefficient $Q_p$
+(\si{\cubic\centi\metre\per\second}) is obtained by Maxwell-averaging the CCC
+\emph{total ionisation cross section} (TICS) with
+Eq.~\eqref{eq:maxwell_average}, the lower limit being the binding energy of
+Eq.~\eqref{eq:binding} (\texttt{compute\_K\_TICS.py}). The threshold is
+$\ell$-independent in hydrogen but the cross sections are not, so the
+coefficients are $\ell$-resolved for $n \le 8$.
+
+The stored coefficients are not uniform in origin and the metadata records this
+state by state. The 36 resolved levels carry \texttt{CCC\_TICS}; the $n=9$
+bundle carries \texttt{CCC\_TICS\_direct}, taken from the bundled
+\texttt{TICS.9} file rather than assembled from sublevels; the six shells
+$n=10$--$15$ carry \texttt{Lotz1968}, the semi-empirical formula of
+Lotz~\cite{Lotz1968}, with a note recorded against every one of them:
+``overestimates CCC by factor \textasciitilde4--8; negligible impact''
+(\texttt{collisions/tics/K\_ion\_final\_meta.csv}). That is an honest flag, not
+a resolved question, and Section~\ref{sec:atomic_uncertainty} returns to it,
+because the overestimate does not stay confined to ionisation.
+
+\paragraph{Worked number.} At the benchmark point
+$Q_{1s} = \SI{1.0140e-10}{\cubic\centi\metre\per\second}$ and
+$Q_{2p} = \SI{6.2171e-8}{\cubic\centi\metre\per\second}$
+(\texttt{K\_ion\_final.npy}, temperature index 23) --- about 600 times easier to
+ionise an atom already in $n=2$, which has to supply only
+\SI{3.40}{\electronvolt} instead of \SI{13.61}{\electronvolt}. This step-ladder
+character is why the excited levels matter to a quantity as apparently unrelated
+as the total ionisation rate.
+
+\subsection{Recombination: two mechanisms, two density dependences}
+
+Recombination runs the other way, and telling its two mechanisms apart matters
+because they scale differently with density. In \emph{radiative recombination}
+the excess energy leaves as a photon: one electron and one proton are needed, so
+events go as $\nel\nion$ and the coefficient $\alpha_{\mathrm{RR}}$ has units
+\si{\cubic\centi\metre\per\second}. In \emph{three-body recombination} a second
+free electron carries the energy away: three particles must meet, so events go
+as $\nel^{2}\nion$ and $\alpha_{\mathrm{3BR}}$ has units
+\si{\centi\metre\tothe{6}\per\second}. Nothing here is special to plasmas. It is
+the difference between a bimolecular and a termolecular elementary step, with
+the same consequence: the second mechanism takes over as density rises.
+
+Radiative recombination is computed shell by shell from Johnson's three-term
+Gaunt-factor expansion~\cite{Johnson1972}, itself a fit to the treatment of
+Seaton~\cite{Seaton1959},
+\begin{equation}
+  \alpha_{\mathrm{RR}}(n,\Te)
+  = D\,y^{3/2}\,\mathrm{e}^{y}
+    \left[g_0(n)E_1(y) + g_1(n)E_2(y) + g_2(n)E_3(y)\right],
+  \qquad y = \frac{I_n}{k_B\Te},
+  \label{eq:alpha_RR}
+\end{equation}
+
+\noindent with $D = \SI{5.197e-14}{\cubic\centi\metre\per\second}$, $E_i$ the
+exponential integrals and $g_0,g_1,g_2$ the Gaunt polynomials of Johnson's
+Table~1 (\texttt{recombination\_rates.py}). $y$ and the bracket are
+dimensionless and $D$ carries the units, so both sides are
+\si{\cubic\centi\metre\per\second}. Physically, capture into a shell is easiest
+when the electron's thermal energy matches that shell's binding energy, so
+$\alpha_{\mathrm{RR}}$ peaks near $\Te \sim I_n$. The shell total is split over
+$\ell$ statistically, $\alpha_{\mathrm{RR}}(n,\ell) =
+\alpha_{\mathrm{RR}}(n)(2\ell+1)/n^{2}$~\cite{MaoKaastra2016}, a step requiring
+$\nel \gtrsim \SI{e10}{\per\cubic\centi\metre}$ --- two decades below our lowest
+density.
+
+One property of Eq.~\eqref{eq:alpha_RR} needed checking rather than assuming.
+$g_1(n)$ is negative and grows with $n$, so the three-term sum can in principle
+turn negative for high shells at low temperature; an earlier analysis in this
+project raised that objection and recommended the single-term form instead. The
+code keeps the three-term expansion and guards it with a clamp at zero, which
+would silently replace a negative value rather than report it. Reading the
+stored arrays directly, neither \texttt{alpha\_RR\_resolved.npy} nor
+\texttt{alpha\_RR\_bundled.npy} contains an exact zero anywhere on the 50-point
+temperature grid: the clamp never fires over the range this thesis uses, though
+it would need revisiting for a colder grid or a longer ladder.
+
+Three-body recombination is not computed independently at all. It comes from
+ionisation by detailed balance~\cite{Griem1997}, exactly as de-excitation came
+from excitation:
+\begin{equation}
+  \alpha_{\mathrm{3BR}}(n,\ell,\Te)
+  = Q_{n\ell}(\Te)\,\frac{g_{n\ell}}{2}
+    \left(\frac{h^{2}}{2\pi m_e k_B \Te}\right)^{3/2}
+    \exp\!\left(\frac{I_n}{k_B\Te}\right),
+  \label{eq:alpha_3BR}
+\end{equation}
+
+\noindent where $h$ is Planck's constant and the bracketed factor is the cube of
+the electron thermal de Broglie wavelength, a volume --- so the units read
+$\si{\cubic\centi\metre\per\second}\times\si{\cubic\centi\metre} =
+\si{\centi\metre\tothe{6}\per\second}$, as required.
+Equation~\eqref{eq:alpha_3BR} imposes Saha equilibrium between a level and the
+continuum: in complete equilibrium the ionisation flux $Q\,n_{n\ell}\nel$ and
+the recombination flux $\alpha_{\mathrm{3BR}}\nel^{2}\nion$ must balance, and
+rearranging Saha for $\nel\nion/n_{n\ell}$ gives it directly. Like detailed
+balance for de-excitation, this guarantees the high-density limit rather than
+testing it.
+
+Assembled, the two mechanisms give the source used throughout the thesis,
+$\Svec = \nel(\bm{\alpha}_{\mathrm{RR}} + \nel\bm{\alpha}_{\mathrm{3BR}})$,
+whose units are $\si{\per\cubic\centi\metre} \times
+\si{\cubic\centi\metre\per\second} = \si{\per\second}$, so that $\Svec\nion$ is
+atoms created per unit volume per unit time. Chapter~\ref{ch:theory} explains
+why this is a feed stream rather than an element of the rate matrix.
+
+\paragraph{Worked numbers, and a surprise.} The obvious guess is that three-body
+recombination is a high-density correction, negligible at
+$\nel = \SI{e12}{\per\cubic\centi\metre}$. That is true only for the ground
+state. Forming the three-body fraction
+$\nel\alpha_{\mathrm{3BR}}/(\alpha_{\mathrm{RR}}+\nel\alpha_{\mathrm{3BR}})$
+from the stored coefficients at temperature index 23 gives, for $1s$, below
+$10^{-4}$ at $\nel = \SI{e12}{\per\cubic\centi\metre}$ and $0.0085$ at
+\SI{e15}{\per\cubic\centi\metre}; but for $n=15$ it gives $0.9996$ at the
+\emph{lower} density and above $0.9999$ at the higher. Capture into the ground
+state is radiative essentially everywhere on the grid; capture into the top
+shell is three-body essentially everywhere on the grid. Equation~\eqref{eq:alpha_3BR}
+shows why: $\alpha_{\mathrm{3BR}}$ inherits an ionisation coefficient that is
+enormous for a shell bound by \SI{0.060}{\electronvolt}, and the exponential
+that suppresses it for the ground state is close to unity at the top of the
+ladder. A loosely bound electron is easy to knock off and, by the same token,
+easy to capture in a three-body encounter.
+
+That has a consequence Section~\ref{sec:atomic_uncertainty} takes up: the
+three-body coefficients for $n=10$--$15$ are built by
+Eq.~\eqref{eq:alpha_3BR} from Lotz ionisation coefficients the metadata itself
+calls too large by 4--8, and those are precisely the shells whose feed is
+entirely three-body.
+
+%-----------------------------------------------------------------------------
+\section{Radiative decay}
+\label{sec:radiative}
+% QUESTION: how does an atom lose energy without a collision partner, and which
+% transitions are forbidden to it?
+
+An excited atom need not be disturbed to decay. The \emph{Einstein coefficient
+for spontaneous emission} $A_{qp}$ (\si{\per\second}) is the probability per unit
+time that an atom in upper level $q$ drops to lower level $p$, and the total
+radiative loss from $q$ is $\gamma_q = \sum_{p<q}A_{qp}$, also in
+\si{\per\second}, with $1/\gamma_q$ the radiative lifetime. This is a
+first-order rate constant in the ordinary chemical sense --- the one process with
+no concentration dependence, so the only one whose relative importance rises as
+the plasma thins.
+
+Not every pair of levels is connected. E1 radiation requires $\Delta\ell = \pm1$;
+transitions violating it are \emph{forbidden}, meaning slower by many orders of
+magnitude rather than impossible. The dataset here contains E1 transitions only,
+so a forbidden transition has $A = 0$ exactly. The related \emph{oscillator
+strength}, a dimensionless measure of how strongly a transition couples to the
+radiation field, feeds the Vriens--Smeets formulae of
+Section~\ref{sec:excitation}.
+
+Two consequences of the selection rule matter to this thesis. First,
+$2s \to 1s$ is forbidden, so $\gamma_{2s} = 0$ against
+$\gamma_{2p} = \SI{6.2684e8}{\per\second}$ --- the $n=2$ shell holds one level
+that empties in \SI{1.6}{\nano\second} and one that cannot empty radiatively.
+Second, $4f \to 2p$ is forbidden because $\ell$ would change by two, so the $4f$
+sublevel holds \SI{43.75}{\percent} of the $n=4$ shell by weight and contributes
+nothing to $H_\beta$, decaying only to $3d$. The $n=4$ \emph{shell} population
+and the $H_\beta$ \emph{line} intensity are therefore not proportional, and
+Chapter~\ref{ch:validation} measures how much that matters to the observable.
+The three channels that do make $H_\alpha$ are $3s \to 2p$
+($\SI{6.3172e6}{\per\second}$), $3p \to 2s$ ($\SI{2.2461e7}{\per\second}$) and
+$3d \to 2p$ ($\SI{6.4688e7}{\per\second}$); the three that make $H_\beta$ are
+$4s \to 2p$ ($\SI{2.5796e6}{\per\second}$), $4p \to 2s$
+($\SI{9.6735e6}{\per\second}$) and $4d \to 2p$ ($\SI{2.0637e7}{\per\second}$).
+
+The coefficients come from the exact hydrogenic code of
+Hoang-Binh~\cite{HoangBinh2005}, distributed through the Computer Physics
+Communications Program Library as ADUU~v1.0, which evaluates the radial
+integrals analytically rather than fitting them~\cite{HoangBinh1990}. Its 1015
+transitions for $n \le 15$ are stored in
+\texttt{Radiative/H\_A\_E1\_LS\_n1\_15\_physical.csv}; every entry has
+$|\Delta\ell| = 1$ and $n_{\text{upper}} > n_{\text{lower}}$, and
+\texttt{radiative\_rates.py} sweeps every allowed combination on load and raises
+if one is missing rather than assuming completeness. The benchmark worth quoting
+is $A_{2p\to1s} = \SI{6.2684e8}{\per\second}$ against the critical-compilation
+value \SI{6.2649e8}{\per\second}, differing by \SI{0.056}{\percent}
+(\texttt{data/raw/hoang\_binh/Hoang\_binh\_README.md}). For the bundled shells
+the $A$ values are averaged over $\ell$ with statistical weights --- the same
+assumption that justified bundling in Section~\ref{sec:state_space}, applied
+consistently. The pattern to notice is that $\gamma$ falls steeply with $n$,
+from \SI{6.27e8}{\per\second} for $2p$ to \SI{8.16e4}{\per\second} for the
+$n=15$ bundle: radiative decay dominates at low $n$ and collisions at high $n$,
+and the level where they cross is a measurable feature of the model that
+Chapter~\ref{ch:validation} locates.
+
+\subsection{The photons are assumed to leave}
+\label{sec:radiative_transfer}
+
+Writing $\gamma_q$ as a bare sum of Einstein coefficients contains an
+assumption: that every emitted photon escapes and never returns. A plasma for
+which this holds is \emph{optically thin}. If it is optically thick, a photon
+emitted by one atom is absorbed by another, which returns to the upper level,
+and the effective decay rate falls. The chemical-engineering analogue is a
+reaction slowed because the product cannot leave and keeps re-adsorbing:
+the kinetics are unchanged, the effective rate constant is not.
+
+The size of the effect is set by the \emph{optical depth} $\tau_c$, the number of
+absorption lengths a photon must cross to escape, and carried by the
+\emph{population escape factor} $\Theta_P$, defined so that the effective
+coefficient is $\Theta_P A$. For the resonance line the model is most exposed
+to, Lyman-$\alpha$ ($2p \to 1s$), \texttt{src/analysis/escape\_factor.py}
+evaluates the escape factor of Holstein~\cite{Holstein1947} in the ADAS214 slab
+formulation of Behringer~\cite{Behringer1998}, by direct quadrature and with no
+fitting formula:
+\begin{equation}
+  \Theta_P(\tau_c)
+  = \frac{1}{\sqrt{\pi}}\int_{-\infty}^{\infty}
+    \mathrm{e}^{-x^{2}}\,
+    \exp\!\left(-\tau_c\,\mathrm{e}^{-x^{2}}\right)\mathrm{d}x,
+  \qquad
+  \tau_c = \ngs\,\sigma_0\,\frac{D}{2},
+  \label{eq:escape}
+\end{equation}
+
+\noindent with $x$ the frequency offset in Doppler widths (dimensionless),
+$\ngs$ the ground-state density (\si{\per\cubic\centi\metre}), $\sigma_0$ the
+line-centre absorption cross section (\si{\square\centi\metre}) from the
+Ladenburg relation with oscillator strength $f_{12} = 0.4162$ and
+$\lambda_0 = \SI{121.567}{\nano\metre}$, and $D$ the slab thickness
+(\si{\centi\metre}). Both sides of the first expression are dimensionless.
+It says: weight the escape probability by the fraction of photons emitted at
+each frequency, and note that photons in the line wings get out when photons at
+the line centre cannot.
+
+\textbf{Every rate matrix in this thesis is built with bare $A$ coefficients,
+$\Theta_P \equiv 1$.} Equation~\eqref{eq:escape} is a diagnostic applied
+afterwards, to find where that choice is defensible. Chapter~\ref{ch:theory}
+carries out that evaluation across the grid and Chapter~\ref{ch:limits} states
+the consequences where the plasma is not thin. The question can be deferred
+because $\tau_c$ depends on $\ngs$, an output of the model rather than an input,
+and on a path length $D$ the model does not contain at all.
+
+%-----------------------------------------------------------------------------
+\section{Proton-impact \texorpdfstring{$\ell$}{l}-mixing, and why it is not optional}
+\label{sec:lmixing}
+% QUESTION: why include a collision process that most collisional-radiative
+% treatments of hydrogen leave out?
+
+\subsection{The physical picture, before any formula}
+
+Collisional--radiative treatments of hydrogen often omit proton collisions on
+the grounds that protons are slow and heavy and therefore ineffective. For
+transitions that change $n$ that is right. For transitions that only change
+$\ell$ it is exactly backwards, and the chain is worth following link by link,
+because it explains a rate that would otherwise be merely a large number in a
+table.
+
+\emph{Degeneracy makes the mixing free, and slowness helps.} Within a shell,
+$ns$, $np$, $nd$ have identical energy, so moving population among them costs
+nothing --- there is no threshold to clear, unlike excitation $n \to n+1$. And a
+proton, 1836 times heavier than an electron, moves 43 times more slowly at the
+same temperature, so the encounter lasts far longer. For a process needing a
+sustained push rather than a sharp kick, a long gentle encounter is worth more.
+
+\emph{The mechanism is the linear Stark effect.} A passing proton is a moving
+charge; while nearby, the atom sits in a nearly static electric field. Because
+$s$, $p$ and $d$ are degenerate, hydrogen responds linearly, and the field's own
+eigenstates are mixtures of $s$, $p$ and $d$. An atom in a pure $np$ state is
+therefore no longer in an eigenstate once the field arrives; it evolves as a
+superposition, and when the proton leaves the population has been redistributed
+across $\ell$. No photon and no dipole selection rule is involved.
+
+\emph{Distant collisions dominate, logarithmically, and Debye screening cuts
+them off.} The field at impact parameter $b$ falls as $1/b^{2}$, so the
+transition probability does too; but the number of protons passing near $b$
+grows as $b\,\mathrm{d}b$. The product is $\mathrm{d}b/b$, so every decade in
+$b$ contributes equally and the integral produces a logarithm --- which is why
+the process is strong, and why it needs a cut-off. That cut-off is physical: a
+proton is dressed by a screening cloud, its potential falls as
+$\mathrm{e}^{-R/\lambda_D}/R$, and beyond about one Debye length $\lambda_D$ the
+atom feels nothing. So $b_{\max}\approx\lambda_D$ and the Coulomb logarithm is
+$\ln(\lambda_D/b_{\min})$.
+
+Assembling those links by an impact-parameter calculation gives the scaling
+\begin{equation}
+  \nu_{\ell\text{-mix}} \;\propto\; \nion\, n^{4}\, T_i^{-1/2}\, \ln\Lambda,
+  \label{eq:lmix_scaling}
+\end{equation}
+
+\noindent with $\nu$ in \si{\per\second}, $\nion$ the proton density
+(\si{\per\cubic\centi\metre}), $T_i$ the \emph{proton} temperature
+(\si{\electronvolt}) and $\ln\Lambda$ the Coulomb logarithm. The $n^{4}$ comes
+from a dipole matrix element scaling as $n^{2}$ and entering squared; the
+$T_i^{-1/2}$ from slower protons interacting for longer.
+Equation~\eqref{eq:lmix_scaling} tells us in advance that $\ell$-mixing will be
+fast, will get faster with density, and will grow explosively up the ladder ---
+which is the quantitative content of the bundling argument in
+Section~\ref{sec:state_space}.
+
+\subsection{The implemented formula}
+
+The rates actually used come from the Debye-cutoff form of the Pengelly--Seaton
+treatment~\cite{PengellySeaton1964} given by Badnell \emph{et
+al.}~\cite{Badnell2021} --- called PSM20 in the code and in this thesis --- coded
+in \texttt{src/rates/compute\_lmix.py}. For the downward transition within shell
+$n$, writing $\ell_> = \max(\ell,\ell')$,
+\begin{equation}
+  q_{ji} = \frac{a_0^{3}}{\tau_0}
+           \left(\frac{\pi\mu I_{\mathrm H}}{k_B\Te}\right)^{1/2}
+           \frac{D_{ji}}{\omega_\ell}\,F(U_m),
+  \qquad
+  D_{ji} = 6n^{2}\ell_>\left(n^{2}-\ell_>^{2}\right),
+  \label{eq:psm20}
+\end{equation}
+
+\noindent with $a_0$ the Bohr radius, $\tau_0 = a_0/\alpha c$ the atomic unit of
+time, $\mu = m_{\mathrm H}/m_e = 918.08$, $\omega_\ell = 2\ell_>-1$ the weight of
+the lower sublevel, and $D_{ji}$ the dimensionless dipole coupling. The
+prefactor $a_0^{3}/\tau_0$ carries the units and everything else is
+dimensionless, so $q_{ji}$ is a rate coefficient. Note $D_{ji} \sim 6n^{4}$ for
+$\ell_> \ll n$, recovering the $n^{4}$ of Eq.~\eqref{eq:lmix_scaling}, and that
+temperature enters as $\Te^{-1/2}$, recovering the $T_i^{-1/2}$ under
+$T_i = \Te$. The upward rate follows by reciprocity,
+$q_{\mathrm{up}}/q_{\mathrm{down}} =
+(2\ell_{\mathrm{hi}}+1)/(2\ell_{\mathrm{lo}}+1)$, which is
+Eq.~\eqref{eq:detailed_balance} for degenerate states, where the Boltzmann factor
+is unity and only the weights survive.
+
+$F(U_m)$ is the Coulomb logarithm of the physical picture, in the form Badnell's
+Eq.~9 gives it:
+\begin{equation}
+  F(U_m) = \frac{\sqrt{\pi}}{2}U_m^{-3/2}\mathrm{erf}\!\left(\sqrt{U_m}\right)
+           - \frac{\mathrm{e}^{-U_m}}{U_m} + E_1(U_m),
+  \qquad
+  U_m = \frac{E_{\min}}{k_B\Te},
+  \label{eq:F_Um}
+\end{equation}
+
+\noindent with $E_{\min}$ the minimum energy transfer set by the cut-off radius
+$R_c = \lambda_D$. $F$ is dimensionless and \emph{diverges} logarithmically as
+$U_m \to 0$: a smaller minimum energy transfer means a larger cut-off radius
+means more decades of impact parameter contributing. That behaviour is the
+subject of Section~\ref{sec:atoms_corrections}, because an earlier version of
+the code had the limit backwards.
+
+Three approximations enter and are carried through the thesis: $T_i = \Te$,
+$\nion = \nel$ by quasi-neutrality, and $\Delta\ell = \pm1$ only. A fourth is
+easy to miss on reading the code. The Debye length inside $U_m$ is evaluated at
+a fixed reference density \SI{e14}{\per\cubic\centi\metre} rather than at each
+grid density, on the stated grounds that $F$ depends on density only
+logarithmically and varies by about \SI{30}{\percent} across the grid. The
+stored table has no density axis at all, so the linear $\propto\nel$ scaling
+applied at assembly is exact while the Coulomb-logarithm factor inside it is
+frozen at mid-grid. One item is left open rather than settled: Badnell's
+formulation offers competing cut-offs to the Debye radius, one set by the level
+lifetime and one by any residual splitting of the $\ell$ degeneracy, and the
+correct $R_c$ is the smallest of the three. Only the Debye cut-off is
+implemented. At these densities it is expected to be the binding one, but that
+has not been tested across the grid.
+
+\subsection{Without it, \texorpdfstring{$n=2$}{n=2} is not a physical manifold}
+
+We can now close the loop that Sections~\ref{sec:state_space},
+\ref{sec:excitation} and~\ref{sec:radiative} each opened, and the result is the
+strongest single statement in this chapter.
+
+Ask what an atom in $2s$ can do. It cannot radiate: $2s \to 1s$ is E1-forbidden
+and $\gamma_{2s} = 0$. It cannot be moved to $2p$ by an electron: $\Delta n = 0$
+transitions were excluded from the CCC dataset on the provider's instruction.
+What is left is electron-impact excitation to $n \ge 3$, electron-impact
+ionisation, and proton $\ell$-mixing. Decomposing the total loss from $2s$ into
+those channels, from the stored coefficient arrays at the benchmark point:
+proton $\ell$-mixing $\SI{1.4745e11}{\per\second}$; electron-impact collisions
+to $n \ge 3$ $\SI{3.4030e7}{\per\second}$; electron-impact ionisation
+$\SI{6.9216e6}{\per\second}$; radiative decay zero. $\ell$-mixing carries
+\SI{99.972}{\percent} of everything that happens to a $2s$ atom.
+
+Because $\gamma_{2s}$ is exactly zero, every remaining channel is collisional
+and scales with $\nel$, so that share is independent of density: it depends only
+on temperature, running from \SI{99.994}{\percent} at
+$\Te = \SI{1}{\electronvolt}$ to \SI{99.921}{\percent} at
+\SI{10}{\electronvolt}. \textbf{Over the whole 400-point grid, proton
+$\ell$-mixing carries at least \SI{99.92}{\percent} of the $2s$ loss rate}, the
+minimum falling at the hot edge. There the contrast is starkest: without
+$\ell$-mixing $2s$ would empty at \SI{6.17e5}{\per\second}; with it, at
+\SI{7.79e8}{\per\second}, a factor of 1262.
+
+The conclusion is not that omitting $\ell$-mixing perturbs the $n=2$ manifold.
+It is that omitting it changes which process controls the manifold, by three
+orders of magnitude, and leaves $2s$ an artificial metastable trap. Any model of
+hydrogen that resolves $\ell$ and excludes $\Delta n = 0$ electron impact
+\emph{must} include proton $\ell$-mixing or it is not describing the $n=2$ shell
+at all.
+
+\paragraph{Worked numbers.} At the benchmark point
+$q_{2s\to2p} = \SI{1.0612e-3}{\cubic\centi\metre\per\second}$
+(\texttt{K\_lmix.npy}, element $[2,1,23]$), giving
+\SI{1.4745e11}{\per\second} and a $2s$ lifetime of \SI{6.78}{\pico\second}.
+Within $n=5$ the $\ell$-mixing loss rates run from \SI{3.25e12}{\per\second} for
+$5s$ (\SI{0.31}{\pico\second}) to \SI{3.47e11}{\per\second} for $5g$
+(\SI{2.88}{\pico\second}). An independent hand estimate from the
+impact-parameter picture, with the Debye length as cut-off and
+$b_{\min} = n^{2}a_0$, gives \SI{0.16}{\pico\second} for $n=5$: high by roughly
+six, in the expected direction, because the crude estimate uses the full orbital
+size for the dipole matrix element and drops the angular factors that $D_{ji}$
+supplies. An order-of-magnitude derivation agreeing to within a factor of six
+for an understood reason is doing its job --- it confirms that the large number
+in the table is physics and not a coding error. Finally, the largest single
+entry anywhere in the assembled rate matrix at the benchmark point is the $8s$
+diagonal, $-\SI{9.5235e12}{\per\second}$ (\texttt{L\_grid.npy}, element
+$[23,5,28,28]$): again $\ell$-mixing, at the highest resolved shell, exactly
+where the $n^{4}$ of Eq.~\eqref{eq:lmix_scaling} puts it. The stiffest direction
+of the whole problem is a process most treatments omit.
+
+%-----------------------------------------------------------------------------
+\section{How well do we know these rates?}
+\label{sec:atomic_uncertainty}
+% QUESTION: where would the atomic data let this model down, and how would we
+% know?
+
+Internal consistency checks cannot establish that a rate is the right size.
+Detailed balance holds to $2.5\times10^{-9}$ because it was imposed;
+column-sum conservation, which Chapter~\ref{ch:theory} uses, holds to
+$3.6\times10^{-11}$ because every transition entered as a loss also entered as a
+gain. Both would hold for a dataset uniformly wrong by a factor of three. The
+only test with real severity is comparison against an independent calculation.
+
+That comparison is against Anderson \emph{et al.}~\cite{Anderson2000,Anderson2002},
+who computed effective collision strengths for all $n \le 5$, $\Delta n \ne 0$
+transitions in hydrogen using the R-matrix with pseudostates (RMPS) method --- a
+different formulation, basis and code from CCC. Their collision strengths are
+converted to rate coefficients and compared point by point in
+\texttt{src/validation/anderson\_benchmark\_qc.py}, with the 340-row comparison
+stored in \texttt{collisions/anderson\_benchmark\_full.csv}.
+Table~\ref{tab:anderson} gives the outcome. For the two transitions this thesis
+leans on hardest the agreement is better than the aggregate: $1s \to 2p$ differs
+by \SI{-14.5}{\percent} at \SI{1}{\electronvolt} and \SI{-2.2}{\percent} at
+\SI{10}{\electronvolt}; $2p \to 3d$ by \SI{-6.7}{\percent} and
+\SI{-0.7}{\percent}.
+
+\begin{table}[tbp]
+  \centering
+  \caption[CCC benchmarked against Anderson RMPS]{The CCC excitation rate
+  coefficients used in this model, compared against the R-matrix with
+  pseudostates (RMPS) calculation of Anderson \emph{et al.}, over 85 matched
+  transitions at $\Te = 1, 3, 5$ and \SI{10}{\electronvolt} (340 comparisons).
+  Source: \texttt{data/processed/collisions/anderson\_benchmark\_full.csv} and
+  the report \texttt{ccc\_anderson.md}. Transitions with
+  $n_{\text{upper}} \le 4$ dominate collisional--radiative kinetics in this
+  range; the disagreement is concentrated entirely in $n_{\text{upper}} = 5$.}
+  \label{tab:anderson}
+  \begin{tabular}{lrrr}
+    \toprule
+    Subset & comparisons & within \SI{20}{\percent} & mean $|$error$|$ \\
+    \midrule
+    all transitions                         & 340 & \SI{42.4}{\percent} & \SI{29.0}{\percent} \\
+    $n_{\text{upper}} \le 4$                & 140 & \SI{82.1}{\percent} & \SI{12.7}{\percent} \\
+    excited-state, $n_{\text{upper}} \le 4$ & 104 & \SI{86.5}{\percent} & \SI{10.7}{\percent} \\
+    $n_{\text{upper}} = 5$ only             & 200 & \SI{14.5}{\percent} & \SI{40.4}{\percent} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Taken at face value the first row is a failure: fewer than half the comparisons
+agree within \SI{20}{\percent}. The disagreement is not spread out. It sits
+entirely in transitions reaching $n=5$, which supply 200 of the 340 comparisons,
+and has two modes with opposite signs. Where the transition is dipole-allowed
+between nearly degenerate shells --- $4s \to 5p$, gap \SI{0.31}{\electronvolt} ---
+CCC gives rates 2 to 3 times larger than RMPS. Where it is a high-multipole
+transition with no dipole matrix element --- $1s \to 5g$, in which $\ell$ changes
+by four --- CCC gives rates 3 to 5 times smaller.
+
+The temptation is to declare one of them right. The honest position is that we
+cannot. Both are approximate, and both face the same difficulty at $n=5$: the
+orbitals are large and diffuse. Anderson \emph{et al.} state that $n=6$ orbitals
+would have needed an R-matrix box of $140\,a_0$, too large to include, and that
+constraint affects how their $n=5$ states couple to the continuum. \textbf{The
+direction of the error is not established}, and this thesis does not claim it
+is. What can be said is where the disagreement lands: kinetics in this range is
+driven by $n \le 4$ processes --- ground-state excitation to $2p$ and $3p$, and
+stepwise transitions such as $2p \to 3d$ and $2s \to 3p$ --- while $n=5$
+contributes to cascades but not to the supply of the Balmer-emitting levels. A
+factor of three in a weak cascade channel is not a factor of three in the
+observable. That is an argument, not a measurement; it would be strengthened by
+scaling the $n=5$ block and recomputing the observable, and that test was not
+performed.
+
+Three further soft spots are worth naming rather than leaving to be discovered.
+\emph{Detailed balance in the raw cross sections}: separately from the enforced
+consistency above, the CCC cross sections were checked for microscopic
+reversibility as supplied (\texttt{src/parsers/qc\_ccc.py}) and satisfy it at
+the \SI{0.05}{\percent} level --- a genuine physics check on the provider's
+calculation, and it passes comfortably. \emph{Lotz ionisation for the top six
+shells, and its echo in recombination}: the metadata records that Lotz
+``overestimates CCC by factor \textasciitilde4--8'' for $n = 10$--$15$, and
+because Eq.~\eqref{eq:alpha_3BR} builds $\alpha_{\mathrm{3BR}}$ \emph{from} $Q$,
+that overestimate propagates straight into the three-body coefficients of the
+same shells --- the shells whose feed is essentially all three-body.
+Chapter~\ref{ch:limits} reports, from an independent comparison against
+published population coefficients, that the terminal shell is over-populated by
+4.9--6.2 times while $n=10$ agrees to \SIrange{4}{20}{\percent}. The two
+observations agree in size and location, but the test that would establish the
+link has not been done, so the connection is a hypothesis, not a finding.
+\emph{Vriens--Smeets for the bundled block}: 201 of the 819 excitation pairs
+come from a semi-empirical fit of quoted accuracy $\sim$\SI{20}{\percent} rather
+than a close-coupling calculation, which is the price of the ladder reaching
+$n=15$.
+
+%-----------------------------------------------------------------------------
+\section{Two errors found by audit}
+\label{sec:atoms_corrections}
+% QUESTION: what did we get wrong while building this, how was it found, and
+% how large was it?
+
+Two implementation errors were found in this pipeline by auditing it against its
+own published sources. Neither was found by a test failing; both were found by
+reading the code against the paper it claimed to implement, and by recomputing a
+quantity unconditionally and comparing with the stored value. They belong in the
+body of the thesis for two reasons: a reader assessing the numbers is entitled
+to know what the audit turned up, and the \emph{size} of each error, once
+bounded, is a physical result in its own right.
+
+\subsection{The \texorpdfstring{$\ell$}{l}-mixing Coulomb logarithm}
+
+An earlier version of \texttt{src/rates/compute\_lmix.py} set the factor $F(U_m)$
+of Eq.~\eqref{eq:F_Um} to $1$, justified in a comment as ``the low-density limit
+$U_m \to 0$, $F \to 1$''.
+
+The justification inverts the limit. Reading Badnell's Eq.~9~\cite{Badnell2021}
+directly from the source, $F(U_m)$ \emph{is} the Coulomb logarithm of the
+impact-parameter picture, and $F(U_m \to 0)$ diverges logarithmically rather than
+tending to one --- as it must, since a vanishing minimum energy transfer means an
+unbounded cut-off radius. The values of $U_m$ at divertor conditions are indeed
+small, $10^{-3}$ to $10^{-1}$, which is precisely where $F$ is \emph{large}. At
+the benchmark temperature the correct factor for $2p \to 2s$ is $F = 6.95$ at
+$U_m = 1.05\times10^{-3}$; across transitions it runs from about 7 at low $n$ to
+about 3 at $n=8$. The old code under-counted every $\ell$-mixing rate by 3 to 7.
+
+That the correction is present in the data this thesis uses can be checked
+rather than taken on trust. The canonical matrix is
+\texttt{cr\_matrix/L\_grid.npy}, written 21 July 2026, SHA-256 beginning
+\texttt{2d92b58e1693}; the $\ell$-mixing coefficient it was built from is
+$q_{2p\to2s} = \SI{3.53722e-4}{\cubic\centi\metre\per\second}$ at temperature
+index 23, while evaluating Eq.~\eqref{eq:psm20} independently with $F$ set to 1
+gives \SI{5.08977e-5}{\cubic\centi\metre\per\second}. The ratio is $6.9497$ and
+the independently computed $F(U_m)$ at the same point is $6.94961$, so the
+stored coefficient equals $q\,F$ to 8 parts in $10^{6}$.
+
+What the correction changed is the interesting part. Scaling every intra-shell
+off-diagonal by the correct $F$, restoring the exact column sums and recomputing
+the spectrum moves the excited-state relaxation time by \SI{-0.12}{\percent} and
+the ionisation-balance time by \SI{+0.07}{\percent} at the benchmark point;
+across the grid the effect on the relaxation time is bounded by
+\SI{0.85}{\percent} (register entry A12). A factor of 3 to 7 in the fastest
+rates in the matrix moves the slow eigenvalues by less than one percent.
+
+That insensitivity is not luck and it is not an excuse. It is the timescale
+separation of Chapter~\ref{ch:theory} doing what timescale separation does.
+$\ell$-mixing runs at picoseconds; the relaxation being measured runs at
+nanoseconds, and on that timescale the $\ell$ sublevels are fully equilibrated
+whether the mixing is three times faster or seven, so the slow eigenvalue cannot
+see the difference. Finding a factor-of-five error in an input and then proving
+the headline moves by less than one percent is a stronger statement about the
+model than never having looked. It licenses nothing elsewhere: absolute
+$\ell$-resolved populations and any $\ell$-resolved line ratio depend on the
+correction directly, which is why it was fixed rather than merely bounded.
+
+\subsection{The eigenvalue magnitude filter}
+
+Two analysis scripts extracted timescales by sorting the eigenvalues of the rate
+matrix and then discarding every eigenvalue of magnitude below
+\SI{1}{\per\second}, with the literal \texttt{eigs = eigs[eigs < -1.0]} and a
+comment calling the discarded values ``near-zero numerical noise''.
+
+The slowest genuine eigenvalue of this system is not noise. It is the
+ionisation-balance rate, and in the cold, thin corner of the grid its magnitude
+falls below \SI{1}{\per\second} --- the corresponding timescale reaches tens of
+seconds. Wherever that happened the filter deleted the physical slow mode and
+promoted the whole eigenvalue ladder by one rung, so the reported
+ionisation-balance time was really the relaxation time of the level above it.
+
+19 of the 400 grid points were affected, all at $\Te \le
+\SI{1.389}{\electronvolt}$ and $\nel \in
+[10^{12}, 1.93\times10^{13}]\,\si{\per\cubic\centi\metre}$. At every one the
+corrupted relaxation time equalled the corrupted ionisation-balance time of the
+unfiltered calculation exactly --- the signature of a one-rung shift, and how the
+mechanism was confirmed rather than guessed. The reported range of the
+timescale-separation ratio changed from $1.34$--$1.01\times10^{8}$ to
+$86.77$--$1.72928\times10^{9}$. The benchmark point was bit-identical before and
+after, and so were the step-error maps at all 400 points: the corruption was
+real, confined, and did not touch the central result. It was not found by a
+check failing --- every check the filtered code ran continued to pass --- but by
+recomputing the spectrum unconditionally, storing it separately, and comparing
+bit-for-bit. The filtered outputs were kept rather than deleted, under names
+ending \texttt{\_FILTERED\_20260721}, so the comparison remains reproducible.
+
+Honesty requires the last statement to be precise rather than tidy. The filter
+was removed from the analysis scripts that write the timescale grids, which now
+select on \texttt{eigs < 0.0}. The literal \texttt{eigs[eigs < -1.0]} is still
+present in two other files: \texttt{src/rates/solve\_cr.py} line 269 and
+\texttt{src/rates/check\_mz.py} line 10. Neither produces any number quoted in
+this thesis --- the first is a superseded solver, the second a diagnostic print
+--- but the repository has not been swept clean, and a reader who searches for
+the literal will find it. Saying so is cheaper than being caught.
+
+\subsection{What both errors have in common}
+
+Both were invisible to every consistency test the pipeline ran. The
+$\ell$-mixing error preserved column sums exactly, because $\ell$-mixing is a
+conservative redistribution and its magnitude cancels in the sum. The eigenvalue
+filter produced eigenvalues that were all negative, all finite and correctly
+ordered. A structurally consistent, physically wrong result is the
+characteristic failure mode of this kind of model, and it is why
+Chapter~\ref{ch:validation} separates checks a wrong result would also have
+passed from checks it would not. The structural response is the one described in
+Section~\ref{sec:state_space}: grids, state ordering and matrices are loaded
+from the pipeline's own files through a single module that raises on any
+inconsistency, so a stale array cannot be silently combined with a fresh one.
+
+%-----------------------------------------------------------------------------
+\section{What this model assumes}
+\label{sec:atoms_scope}
+% QUESTION: what has been left out of the atomic description, and where would
+% each omission bite?
+
+Every item here is a deliberate choice, gathered so that they can be found in
+one place and quantified where the thesis is able to quantify them.
+
+\begin{description}
+  \item[Maxwellian electrons.] Every rate coefficient is an average over a
+    Maxwell--Boltzmann distribution, and Eq.~\eqref{eq:detailed_balance} --- on
+    which every de-excitation and every three-body coefficient rests --- holds
+    exactly for a Maxwellian and not otherwise. A suprathermal tail, which a
+    real transient can produce, would break it.
+  \item[$T_i = \Te$ and $\nion = \nel$.] The proton temperature in the
+    $\ell$-mixing rate is set to the electron temperature; since
+    $\nu_{\ell\text{-mix}} \propto T_i^{-1/2}$, a factor of two error in $T_i$
+    is \SI{40}{\percent} in the rate --- inside the insensitivity of
+    Section~\ref{sec:atoms_corrections}, but stated rather than assumed away.
+    Quasi-neutrality gives $\nion = \nel$; no impurities are modelled.
+  \item[A fixed reference density in the Debye cut-off.] $U_m$ in
+    Eq.~\eqref{eq:F_Um} is evaluated at \SI{e14}{\per\cubic\centi\metre} rather
+    than at each grid density; the dependence is logarithmic, and the stated
+    variation across the grid is about \SI{30}{\percent} in $F$.
+  \item[Optically thin.] All Einstein coefficients enter bare,
+    $\Theta_P \equiv 1$. Chapter~\ref{ch:theory} evaluates
+    Eq.~\eqref{eq:escape} across the grid and finds the assumption excellent
+    over the hot half and failing along the $\Te = \SI{1}{\electronvolt}$ edge;
+    Chapter~\ref{ch:limits} quantifies the consequence.
+  \item[$n_{\max} = 15$, with $n \ge 9$ bundled.] Seven shells are one state
+    each, with no $\ell$-mixing inside the bundled block: they are \emph{assumed}
+    in statistical $\ell$-equilibrium rather than driven to it, and that has not
+    been tested directly. Chapter~\ref{ch:limits} reports the measured excess in
+    the terminal shell.
+  \item[Uniform plasma, no transport, no molecules.] A single well-mixed volume
+    --- in reactor terms a perfectly stirred tank, not a plug-flow reactor --- of
+    atomic hydrogen only. At the cold end of the grid the gas is largely neutral
+    and in reality substantially molecular, and molecular-assisted recombination
+    would feed $n=3$ directly. That is a physics limit rather than a data limit,
+    and it is why the grid stops at \SI{1}{\electronvolt}.
+  \item[An open system.] The ion H$^{+}$ is a fixed external reservoir: there is
+    no 44th state, the model does not conserve nuclei, and ionisation is a
+    one-way leak out of the tracked manifold. This is why the ionisation-balance
+    timescale is boundary-dependent, and why the effective coefficients this
+    model produces cannot be compared directly with those tabulated by the
+    Atomic Data and Analysis Structure (ADAS)~\cite{Summers2006}. No ADAS
+    dataset enters the rate matrix at any point; ADAS appears in this thesis
+    only as an external comparison.
+\end{description}
+
+%-----------------------------------------------------------------------------
+\section{Summary}
+\label{sec:atoms_summary}
+% QUESTION: what has this chapter established, and what is now possible that
+% was not possible before it?
+
+This chapter has built the input side of a collisional--radiative model of
+atomic hydrogen: 43 levels, six elementary processes, and a rate coefficient for
+every pair of levels at every point of a $50\times8$ grid in temperature and
+density. Table~\ref{tab:data_sources} is the provenance record for all of it.
+
+\todo{Provenance item outstanding. The merged excitation arrays
+\texttt{K\_exc\_full.npy} and \texttt{K\_deexc\_full.npy} carry a modification
+date earlier than the CCC rate tables they are assembled from, which would mean
+\texttt{assemble\_K\_exc.py} has not been re-run since those tables were last
+regenerated. The array shapes are compatible, so nothing would have raised.
+Re-run the merge, byte-compare against the stored arrays, and either delete this
+note or record the outcome here.}
+
+\begin{table}[tbp]
+  \centering
+  \caption[Atomic data sources]{Every atomic dataset entering the model, with
+  the file it is stored in and the script that produced it. Paths are relative
+  to \texttt{data/processed/}; the arrays are those named in the \texttt{PATHS}
+  dictionary of \texttt{src/rates/assemble\_cr\_matrix.py}. All rate-coefficient
+  arrays are tabulated on the 50-point temperature grid
+  $\Te = 1$--\SI{10}{\electronvolt}. Two values of the hydrogen ionisation
+  energy are used deliberately and are not a discrepancy:
+  \SI{13.605693}{\electronvolt}, the Rydberg energy, for collision thresholds,
+  matching the convention of the collision data, and
+  \SI{13.598435}{\electronvolt}, the spectroscopic ionisation energy, for
+  radiative transition energies. They differ by \SI{0.05}{\percent}.}
+  \label{tab:data_sources}
+  \small
+  \begin{tabular}{p{0.20\textwidth}p{0.25\textwidth}p{0.23\textwidth}p{0.22\textwidth}}
+    \toprule
+    Quantity & Source & Stored file & Producing script \\
+    \midrule
+    Excitation and de-excitation, $n \le 10$ &
+      CCC (Bray, priv.\ comm.\ 2026); $\Delta n = 0$ excluded &
+      \texttt{collisions/K\_exc\_full/K\_exc\_full.npy}, \texttt{K\_deexc\_full.npy} &
+      \texttt{compute\_K\_CCC.py}, \texttt{assemble\_K\_exc.py} \\
+    Excitation, bundled shells &
+      Vriens--Smeets Eqs.~(17)--(19) &
+      merged into the same arrays &
+      \texttt{compute\_K\_VS.py} \\
+    Ionisation, $n \le 9$ &
+      CCC total ionisation cross sections &
+      \texttt{collisions/tics/K\_ion\_final.npy} &
+      \texttt{compute\_K\_TICS.py} \\
+    Ionisation, $n = 10$--$15$ &
+      Lotz semi-empirical formula &
+      same array &
+      \texttt{ionization\_rates.py} \\
+    Radiative recombination &
+      Johnson three-term Gaunt expansion; $\ell$-split statistically &
+      \texttt{recombination/alpha\_RR\_resolved.npy}, \texttt{\_bundled.npy} &
+      \texttt{recombination\_rates.py} \\
+    Three-body recombination &
+      detailed balance from ionisation, via Saha &
+      \texttt{recombination/alpha\_3BR\_resolved.npy}, \texttt{\_bundled.npy} &
+      \texttt{recombination\_rates.py} \\
+    Einstein $A$ coefficients &
+      Hoang-Binh, ADUU v1.0 &
+      \texttt{Radiative/A\_resolved.npy}, \texttt{A\_bund\_res.npy}, \texttt{A\_bund\_bund.npy}, \texttt{gamma\_*.npy} &
+      \texttt{radiative\_rates.py} \\
+    Proton-impact $\ell$-mixing &
+      PSM20 Debye-cutoff formula, Badnell \emph{et al.} &
+      \texttt{lmix/K\_lmix.npy} &
+      \texttt{compute\_lmix.py} \\
+    State ordering and grids &
+      the pipeline's own output &
+      \texttt{collisions/K\_exc\_full/state\_index.csv}, \texttt{cr\_matrix/Te\_grid\_L.npy}, \texttt{ne\_grid\_L.npy} &
+      \texttt{assemble\_cr\_matrix.py}, read via \texttt{cr\_context.py} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Four things carry forward. The \textbf{state space is not arbitrary}: $\ell$ is
+resolved below $n=9$ because $2s$ and $2p$ behave completely differently, and
+bundled above it because $\ell$-mixing makes the sublevels of a high shell
+indistinguishable --- which was checked, not asserted. \textbf{Proton-impact
+$\ell$-mixing is structural}: it carries at least \SI{99.92}{\percent} of the
+loss from $2s$ everywhere on the grid. \textbf{The data are good where it
+matters}: the $n_{\text{upper}} \le 4$ transitions that drive the kinetics agree
+with an independent RMPS calculation at a mean absolute error of
+\SI{12.7}{\percent}, and the factor 2--5 disagreement is confined to $n=5$,
+where neither method establishes the direction of the error. And \textbf{two
+implementation errors were found by audit and both were bounded}.
+
+What none of this has done is put the atoms in motion. We have $43 \times 43$
+rate coefficients and a feed term, and no idea what the system does with them.
+Chapter~\ref{ch:theory} assembles them into a single matrix equation, finds that
+the network runs on two clocks separated by four orders of magnitude, and asks
+the question this thesis was built to answer: whether the fast one is fast
+enough for the standard shortcut to be safe.

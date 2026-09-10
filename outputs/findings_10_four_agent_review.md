@@ -1071,7 +1071,7 @@ factor. If it is transport-fed so n_e stays fixed, the ground state is being
 resupplied and is not stale, which is the entire error mechanism. **Both cannot
 hold.** §sec:transport and §sec:open_system must be merged into one dilemma.
 
-Above Te ≈ 2 eV, Δn_e/n_e < 10⁻³. **The Te ≥ 2 eV restriction is therefore not
+Above Te ≈ 2 eV the requirement falls to 8.2×10⁻³ at worst. **The Te ≥ 2 eV restriction is therefore not
 merely defensible; it is the only self-consistent region of the grid.** This
 strengthens the pivot in `pivot_decision.md` rather than weakening it.
 
@@ -1448,3 +1448,99 @@ document over an artifact, which is the ground-truth hierarchy exactly
 inverted. `chapter7.tex` corrected to 6.74%. The lesson is the one CLAUDE.md
 already states and which is easy to lose under time pressure: **documents are
 consistency checks, never authorities.**
+
+---
+
+# ADDENDUM G — the six story figures, and six numbers they corrected
+
+**10 September 2026.** `src/analysis/make_story_figures.py`, 2089 lines,
+produces six figures plus `figures/story_captions.tex` with 117 injected
+numbers. Byte-idempotent on a second run, identical under `python -O`, and three
+deliberate perturbations each raise. All recorded values reproduce to better
+than 0.06%.
+
+The figures were built to describe the argument, and in the course of building
+them they corrected six numbers that had propagated through this session's
+documents. Four of the six were mine.
+
+## G.1 The corrections
+
+**1. The reversal gap is not seven to nine orders.** Measured across the grid it
+spans 2.90 to 9.72 decades: **3.86 at the benchmark**, 7.76 at [0,4].
+`claim_hierarchy.md`'s "four orders" was right. Already corrected in the
+`fig5_5_reversal` commit, and this is the second independent confirmation.
+
+**2. "Holds to one part in 10⁸" is the [0,4] value, not a general one.** At the
+benchmark the closure residual is 8.65971×10⁻⁶, so one part in 1.15×10⁵. Quote
+the point with the number.
+
+**3. Quasi-neutrality above 2 eV.** ADDENDUM D said the requirement falls below
+10⁻³. It falls to **8.176×10⁻³ at worst**, median 2.6×10⁻⁵, and is everywhere
+below 10⁻³ only above **2.683 eV**. Corrected in D.1 above. The scope argument
+survives; the figure was wrong by an order of magnitude.
+
+**4. The two boundaries do not coincide *at* 2 eV.** Quasi-neutrality crosses at
+1.412 to 1.501 eV; optical depth crosses at 1.007 to 1.667 eV (D = 1 cm),
+1.125 to 1.984 (D = 5), and 1.250 to 2.356 (D = 20). **Both lie inside
+1.01 to 2.36 eV**, and 2 of 24 optical-depth crossings sit above 2 eV. The
+honest statement is that two independent constraints fail in the same narrow
+band below about 2.4 eV, which is a weaker and more defensible claim than
+coincidence at a point.
+
+**5. The 2s ℓ-mixing dominance of 99.99% is the grid *maximum*,** reached at the
+cold edge. At the benchmark it is 99.97% and the grid floor is **99.92%**.
+`chapter2.tex:955` already used 99.92% and was right.
+
+**6. σ₀ at 1 eV is 5.47374×10⁻¹⁴ cm²** from the `escape_factor` module, 0.078%
+below the 5.478×10⁻¹⁴ I derived independently. The √2 diagnosis stands
+confirmed: the erroneous 7.7469×10⁻¹⁴ is 1.41529 times the module value.
+
+## G.2 What the figures establish
+
+**fig5_5_reversal**, Chapter 5's opening figure. Closure residual 8.65971×10⁻⁶
+at the benchmark and 6.72617×10⁻⁹ at [0,4]; CRE distance 0.0633859 and 0.386902.
+Grid ranges: closure 4.606×10⁻¹¹ to 4.446×10⁻⁵, CRE 1.664×10⁻² to 3.869×10⁻¹.
+
+**fig5_6_trajectory**, immediately after. The plateau made visible under the
+post-step operator. At the benchmark R runs 0.777768 → 0.820114 → 0.771066 and
+the plateau is flat to 0.170%; at the cold point 1.239080 → 1.671151 → 1.204952,
+flat to 0.762%. **The partial-equilibrium value from an independent single
+linear solve agrees with the propagated trajectory to 2.2×10⁻¹⁶.**
+
+**fig5_7_structural_maps**. Over the 338 window_ok k=1 heating cells: |S̄|
+0.06493 / 0.27521 / 0.48221, |G| 2.63961 / 6.21634 / 14.51921, product
+0.36195 / 1.52240 / 6.96025 (min/median/max). Over all 2288 rows |S̄| runs
+0.03545 to 0.49634. G stability over 736 triples: median 1.0555, max 1.0674.
+
+**fig6_1_scope**, **fig1_1_diagnostic_chain** (whose only numbers, 656.1 and
+486.0 nm, are computed from the state index's own ionisation energies and
+checked against laboratory values), and **fig2_1_state_space**, which confirms
+`A[1s←2s] = 0` exactly and gives 2s total loss 1.47490×10¹¹ s⁻¹ at the
+benchmark.
+
+## G.3 A defect in the existing figures
+
+The Chapter 3 and Chapter 5 accent palette **fails a colour-blind validator**.
+`#2e7d32` and `#c0392b` separate by only ΔE 4.2 under deuteranopia, below the
+ΔE 6 floor, so secondary encoding cannot rescue the pair; `#1f4e79` also fails
+the lightness band and the chroma floor. The new figures use Okabe-Ito, which
+passes. **This is a defect in `make_ch3_figures.py` and `make_ch5_figures.py`,
+reported and not repaired.** Eight existing figures are affected.
+
+## G.4 A tolerance that was derived rather than widened
+
+The agent's eigen-propagation cross-check against `scipy.linalg.expm` failed at
+the cold point. The cause is that `expm`'s scaling-and-squaring error grows as
+‖At‖₁, which reaches 4×10¹¹ at t = τ_QSS there, while cond(V) is only 5.6.
+Rather than widen the tolerance it made the test a **derived bound**,
+ε_machine·‖At‖₁, the known error floor of the weaker method. The measured
+agreement sits only 4× below that bound at the tightest of 338 points, so the
+test still bites. That is the correct response to a failing check and the
+opposite of making one pass.
+
+## G.5 Two things left out rather than guessed
+
+The 2s two-photon rate is **absent from the matrices** (A is exactly zero), so
+`fig2_1` says only "no E1 decay" and quotes no two-photon number. And the
+optical-depth boundary uses τ₀ rather than the escape factor Θ_P, because Θ_P
+requires the self-consistent fixed point that `verify_lyman_trapping.py` owns.

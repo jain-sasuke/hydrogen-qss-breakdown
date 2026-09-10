@@ -385,7 +385,11 @@ flagged with τ_Lyα > 100 and its trapped range. **Never pair it with the word
 
 Three further corrections from `findings_09` W3–W5, which this entry had not
 carried: these are (point, direction) **pairs**, not grid points — 105 heat +
-97 cool over 113 distinct points of 400, and the count is **201**, not 202. The
+97 cool over 113 distinct points of 400. (`findings_09` W5 also asserted the
+count is "201, not 202"; that correction is itself wrong. Recounted from
+`validation/divertor_map/divertor_map.csv` on 10 Sep 2026: 105 heat + 97 cool
+= **202** pairs over 113 distinct grid points, of 680 window_ok pairs. The
+category-error point stands; the arithmetic in it does not.) The
 "confined to Te ≤ 2.947 eV" boundary is a level set of two arbitrary constants
 (10.0 eV at a 1% threshold, 2.947 at 10%, 1.76 at 20%), not a physical
 confinement. And the lower bound is **not** conservative in the sense claimed —

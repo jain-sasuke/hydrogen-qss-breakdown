@@ -203,60 +203,8 @@ Indian Institute of Technology Kanpur\par}
 \label{sec:validation_summary}
 
 %=============================================================================
-\chapter{What the Model Says}
-\label{ch:results}
-% BEAT: the reversal, delivered.
-%=============================================================================
-
-\section{What happens after a temperature step}
-\label{sec:step_response}
-% QUESTION: what does the system actually do?
-% Three stages: relax (ns) -> plateau -> ionisation balance (us to s).
-% Show it in time before mapping it.
-
-\section{The quasi-steady-state approximation is exact}
-\label{sec:qss_is_exact}
-% QUESTION: does the textbook worry materialise?
-% *** SAY THIS FIRST -- IT FRAMES EVERYTHING ***
-% eps^QSS = 8.66e-6 at the benchmark point, 6.73e-9 at the worst point on the
-% grid. Eight significant figures. The excited states keep up.
-
-\section{The table does not}
-\label{sec:cre_error}
-% QUESTION: so what is wrong?
-% eps^CRE: median 7.0%, at least 38.7% at the low-Te edge. The system sits in
-% partial equilibrium with a stale reservoir, and the table assumes otherwise.
-
-\section{Why: the two supplies}
-\label{sec:mechanism}
-% QUESTION: what sets the size of the error?
-% eps_plateau = |f3-f4| |dln n_1s| to within a factor 1.35 over 680 points.
-% Derived in sec:two_channels, verified here.
-
-\section{Where: the ridge}
-\label{sec:ridge}
-% QUESTION: where in the operating space does this matter?
-% Interior maximum in density at ne ~ 2e13, at every temperature. Vanishes in
-% both Fujimoto limits. The crossover is detachment -- the transition the
-% diagnostic is used to characterise.
-
-\section{Not averaged away}
-\label{sec:elm_persistence}
-% QUESTION: does it survive a real transient event?
-% The error persists for tau_QSS. Report the measured time-average with its
-% deviation from the exponential estimate -- it is an estimate, not a bound,
-% and overstates at 330 of 680 cooling pairs.
-
-\section{Timescale separation does not predict it}
-\label{sec:M_does_not_predict}
-% QUESTION: can the standard validity criterion see this coming?
-% No. And the apparent correlation is a temperature proxy: +0.76 raw, +0.33
-% controlling for (Te,ne), -0.16 under quadratic control, while a bare
-% exp(13.6/Te) with no dynamics in it correlates at +0.71.
-
-\section{Summary}
-\label{sec:results_summary}
-
+% chapter{What the Model Says}  -- full text lives in chapter5.tex
+\input{chapter5}
 %=============================================================================
 % chapter{What This Model Cannot Say}  -- full text lives in chapter6.tex
 \input{chapter6}

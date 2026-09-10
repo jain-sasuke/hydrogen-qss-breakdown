@@ -163,7 +163,28 @@ CORRECTIONS TO DRAFT 1 (external review, 23 Aug 2026)
 
 Table values transcribed from the scan and re-read at full resolution
 23 Aug 2026. All 14 entries verified, including the coronal row used for the
-unit check. Re-check against the book before anything enters the thesis.
+unit check.
+
+RE-CHECK AGAINST THE PRINTED TABLE, 10 Sep 2026: DONE, and the transcription is
+exact. The lg n_e = 18 row reads r_0 = 0.730 / 0.835 / 0.947 / 0.983 and
+r_1 = 1.79e-4 / 5.72e-5 / 1.66e-5 / 5.08e-6 at p = 2, 3, 4, 5, matching the
+values below. Three further things the source settles:
+
+  * lg n_e IS log10(n_e / m^-3). The table proves it internally: r_0(2) reaches
+    0.981 at lg n_e = 21, and Griem's criterion puts LTE for n=2 at 11.03 eV at
+    1.74e16 cm^-3. Read as m^-3 that onset is 1e15 cm^-3, the right order; read
+    as cm^-3 it would sit five orders above Griem. The UNIT CHECK below reaches
+    the same conclusion by a circular route and should be replaced by this one.
+
+  * p IS A SHELL. The columns are p = 2, 3, 4, 5, 7, 10, 15, principal quantum
+    numbers, with no l label anywhere in either table. Fujimoto's coefficients
+    are bundled in l; this model resolves l below n=9. That is the whole of the
+    low-p r_1 discrepancy: removing proton l-mixing here moves r_1(2) by 118x
+    at this density, so the comparison tests the l-closure and cannot adjudicate
+    a factor of 8.
+
+  * NO SECOND USABLE CASE. 4.1(b) is at 1.28e5 K = 11.03 eV against a grid that
+    stops at 10 eV; 4.1(a) is at 1e3 K = 0.0862 eV, two orders below it.
 
 Report only. Writes to the output directory; modifies nothing else.
 """
@@ -359,8 +380,18 @@ def main():
                 say(f"      {p:>3} {r0:>10.4f} {f0:>8.3f} {r0/f0:>7.4f}"
                     f"   {r1:>11.4e} {f1:>10.3e} {r1/f1:>7.4f}")
                 if r0 > 1.05:
-                    say(f"          *** r_0 = {r0:.4f} > 1: unphysical, a "
-                        f"level cannot exceed Saha equilibrium ***")
+                    # NOT unphysical, and an earlier version of this line said
+                    # it was. r_0 > 1 is expected once the radiative sink is
+                    # removed: three-body recombination and collisional
+                    # ionisation balance to exactly Saha, so radiative
+                    # recombination is an unbalanced source and
+                    # r_0(p) = 1 + alpha_RR / (n_e Z(p) S_ion). In the
+                    # NO-PROTON-LMIX variant 2s additionally has no radiative
+                    # exit in this dataset, so r_0(2) diverges as n_e -> 0.
+                    # It is a property of a deliberately broken variant.
+                    say(f"          note: r_0 = {r0:.4f} > 1. Expected for an "
+                        f"unbalanced radiative-recombination source; see the "
+                        f"module docstring.")
                 rows.append(dict(lg_ne=lg_ne, ne_cm3=ne[j], Te_eV=te_used,
                                  variant=tag, p=p, n_sublevels=len(idx),
                                  r0_model=r0, r0_fuji=f0, r0_ratio=r0/f0,

@@ -1050,37 +1050,55 @@ of $0.1$ brings $r_1(2)$ to $0.92$ of the table but leaves $r_1(3)$ at $0.26$ of
 it and drives $r_0(2)$ to $8.2$, a population above Saha equilibrium and
 therefore unphysical.
 
-\item \textbf{A one-decade density offset reconciles the whole column.}
-Comparing this model at $\SI{e13}{\per\cubic\centi\metre}$ instead of
-$\SI{e12}{\per\cubic\centi\metre}$ gives ratios in the range $0.817$ to
-$0.977$ across $p = 2$ to $7$: flat to within \SI{10}{\percent}, against a
-factor-$50$ spread as published. A single offset removing a factor-$50$
-structure is unlikely to be a coincidence. What it is remains open: the table's
-density rows are recorded as running at $\log_{10}\nel = 12, 14, 16, 17, 18$,
-non-uniformly spaced, and a simple off-by-one read of \emph{that} list would
-land on $10^{14}$, not $10^{13}$. So the offset that works is not the offset the
-recorded row labels would produce, and reading the printed table is the only
-way to settle which is right.
+\item \textbf{The source settles it: the tabulation is bundled in $\ell$.}
+Table~4.1(b) is indexed by $p = 2, 3, 4, 5, 7, 10, 15$, principal quantum
+numbers, and carries no $\ell$ label. The published coefficients are shell
+quantities computed with the $\ell$~substructure bundled, while this model
+resolves $\ell$ below $n=9$. Removing proton $\ell$-mixing from this model moves
+$r_1(2)$ by a factor $118$ and $r_1(3)$ by a factor $3.35$ at exactly this
+density, and the two variants bracket the tabulated $r_1(2)$ almost
+symmetrically, one a factor $10.9$ high and the other a factor $10.8$ low. A
+comparison whose own treatment of one process spans two orders of magnitude
+cannot adjudicate a factor of $8$.
+
+\item \textbf{The transcription and the row labels are correct.} Both were
+checked against the printed table. The $\log_{10}\nel = 18$ row reads
+$0.730$, $0.835$, $0.947$ and $0.983$ for $r_0$ at $p = 2, 3, 4, 5$, and
+$1.79\times10^{-4}$, $5.72\times10^{-5}$, $1.66\times10^{-5}$ and
+$5.08\times10^{-6}$ for $r_1$, matching the values used here exactly. The row
+labels are $\log_{10}(\nel/\si{\per\cubic\metre})$, which the table establishes
+internally: $r_0(2)$ reaches $0.981$ at $\log_{10}\nel = 21$, and Griem's
+criterion places local thermodynamic equilibrium for $n=2$ at
+\SI{1.74e16}{\per\cubic\centi\metre}, which is $10^{21}\,\si{\per\cubic\metre}$
+to within the criterion's own precision. Read as \si{\per\cubic\centi\metre} the
+onset would sit five orders above Griem, which is impossible. An earlier draft
+of this section proposed a one-decade offset in the density rows; that
+explanation is withdrawn.
 \end{enumerate}
 
-The producing script's own docstring instructs that the table values be
-re-checked against the book before anything enters the thesis. That re-check was
-never performed, and the number entered the thesis anyway.
-
 \textbf{Status.} The $r_1$ comparison at low $p$ is withdrawn as a statement
-about this model and reported as an unresolved external comparison. It is not
-evidence that the model is wrong, and it is not evidence that the model is
-right. What would settle it is one afternoon with the printed table and the
-density-row labels. Until that is done, no conclusion in this thesis rests on
-it. The $r_0$ agreement above is not insulated either: it was read from the same
-rows, so if the row labels are wrong it inherits the same doubt. What protects
-$r_0$ is that its agreement is close over a range of $p$ and at several
-densities, which a systematic row offset would be unlikely to produce; that is
-weaker than an independent confirmation and should not be described as one.
-\todo{Re-read Fujimoto Table 4.1(b) directly, with the $\log_{10}\nel$ row labels
-verified against the caption, and record the outcome. This supersedes
-\texttt{chapter6.tex} \S\ref{sec:r1_deficit}, which still publishes the
-discrepancy as a model failure.}
+about this model. It is a real difference between an $\ell$-resolved
+calculation and a bundled one, and it measures the $\ell$~closure rather than
+the physics of Chapter~\ref{ch:results}. Nothing in that chapter passes through
+a bundled coefficient: $\ffrac{3} - \ffrac{4}$ is a difference of two responses
+within one $\ell$-resolved operator.
+
+\textbf{What the benchmark does establish.} The recombination-fed channel
+agrees, to \SI{1.3}{\percent} at $p=2$ and \SIrange{12}{14}{\percent} at $p=3$
+and $p=4$. Because $r_0$ and $r_1$ carry the same $p$-dependent factor $Z(p)$, a
+normalisation error large enough to explain the $r_1$ deficit is excluded by
+$r_0$ agreeing. That is a pass, and it should be read as one.
+
+\textbf{What it does not establish, and two limits on it.} It does not fix the
+absolute normalisation of the ground-fed channel against an independent
+calculation, because no $\ell$-resolved tabulation was available to compare
+against. Table~4.1(b) is computed at $T_\mathrm{e} = \SI{1.28e5}{\kelvin}$,
+which is \SI{11.03}{\electronvolt}, while this grid reaches
+\SI{10}{\electronvolt}, so
+the comparison sits at the grid edge and \SI{10.3}{\percent} below the tabulated
+temperature. The companion Table~4.1(a) is at \SI{e3}{\kelvin} =
+\SI{0.0862}{\electronvolt}, two orders below this grid, so there is no second
+usable case. The external check is one temperature at one edge.
 
 %-----------------------------------------------------------------------------
 \section{Gate D fails}

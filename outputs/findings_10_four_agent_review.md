@@ -1666,3 +1666,98 @@ Fujimoto & Iwamae's *Plasma Polarization Spectroscopy* (2008), showing the
 population-coefficient formalism and no bound. **Fujimoto's *Plasma
 Spectroscopy* (2004) is not in the scanned corpus at all**, which is why that
 open item cannot be closed remotely and needs a physical copy.
+
+---
+
+# ADDENDUM I — Fujimoto Table 4.1 read from the source. The benchmark is closed.
+
+**10 September 2026.** The primary source was supplied directly. This closes
+the item ranked first in `thesis_grade_results_backlog.md` §I and removes the
+referee pass's single strongest objection to the thesis.
+
+## I.1 The transcription is exact
+
+Table 4.1(b), lg n_e = 18 row, read from the source against
+`verify_fujimoto_table41.py`:
+
+| p | repo r₀ | table r₀ | repo r₁ | table r₁ |
+|---|---|---|---|---|
+| 2 | 0.730 | **0.730** | 1.790×10⁻⁴ | **1.79×10⁻⁴** |
+| 3 | 0.835 | **0.835** | 5.720×10⁻⁵ | **5.72×10⁻⁵** |
+| 4 | 0.947 | **0.947** | 1.660×10⁻⁵ | **1.66×10⁻⁵** |
+| 5 | 0.983 | **0.983** | 5.080×10⁻⁶ | **5.08×10⁻⁶** |
+
+**No transcription error. The off-by-one hypothesis is dead**, for the second
+time and now conclusively. ADDENDUM D.3 proposed it; the row labels already
+failed to support it; the source now confirms the values were read correctly.
+
+## I.2 The units are m⁻³, and the table proves it internally
+
+The row labels give lg n_e with no unit stated. The table settles it:
+
+| lg n_e | r₀(2) |
+|---|---|
+| 19 | 0.787 |
+| 20 | 0.915 |
+| **21** | **0.981** |
+| 22 | 0.991 |
+| 24 | 0.992 |
+
+r₀ → 1 is the LTE limit. Griem's criterion for n = 2 at Te = 11.03 eV gives
+n_e ≥ **1.74×10¹⁶ cm⁻³**. Read as m⁻³, the onset at lg n_e = 21 is 10¹⁵ cm⁻³,
+the right order. Read as cm⁻³ it would be **5.7×10⁴ times** above Griem, which
+is impossible. **`lg n_e = log₁₀(n_e / m⁻³)`.** The repo's reading was right,
+and the argument for it in `verify_fujimoto_table41.py` was circular; this one
+is not.
+
+## I.3 p is a shell. That is the whole explanation.
+
+**The columns are p = 2, 3, 4, 5, 7, 10, 15. Principal quantum numbers. There
+is no ℓ label anywhere in either table.** Fujimoto's population coefficients are
+bundled-n.
+
+This model is ℓ-resolved to n = 8. Gate 3 measured that switching proton
+ℓ-mixing off moves r₁(2) by **118×** and r₁(3) by **3.35×** at exactly this
+density, and that the two variants bracket Fujimoto's r₁(2) almost symmetrically
+(10.9× high, 10.8× low).
+
+**A benchmark whose own input assumption spans 118× cannot adjudicate an 8×
+discrepancy.** The comparison tests the ℓ-closure, not f₃ − f₄.
+
+## I.4 What the benchmark actually establishes, and it is positive
+
+**r₀ agrees.** 1.3% at p = 2, 12% at p = 3, 14% at p = 4 at lg n_e = 18. r₀ and
+r₁ share the same p-dependent factor Z(p), so a normalisation error large enough
+to explain the r₁ deficit is excluded by r₀ — which was already the argument in
+ADDENDUM D.3, and now rests on a verified transcription.
+
+**The r₁ deficit is an ℓ-closure difference**, not a model defect. Report it that
+way.
+
+## I.5 Two limitations of the benchmark, now precisely stated
+
+**Temperature.** Table 4.1(b) is at Te = 1.28×10⁵ K = **11.03 eV**. The thesis
+grid tops out at 10.00 eV, so the only usable table sits **10.3% above the grid
+maximum** and the comparison is made at the grid edge.
+
+**No usable second case.** Table 4.1(a) is at Te = 1×10³ K = **0.0862 eV**, two
+orders below the grid. There is no tabulated case inside 1 to 10 eV, so the
+benchmark is one temperature at one edge.
+
+## I.6 What must change in the thesis
+
+1. **Withdraw the self-indictment.** `chapter6.tex:849-868` publishes r₁ low by
+   8.3× at p=3 as a model failure on the two shells the mechanism is built from.
+   It is not a model failure. Restate it as a comparison against a bundled-n
+   table that tests this model's ℓ-closure, with the 118× sensitivity quoted.
+2. **Report the r₀ agreement**, which is the part that passes and is currently
+   underweighted.
+3. **State both limitations**: 11.03 eV against a 10 eV grid edge, and no second
+   usable temperature.
+4. **Retire the `\todo` and the docstring instruction.**
+   `verify_fujimoto_table41.py` says *"Table values … Re-check against the book
+   before anything enters the thesis."* That has now been done.
+5. **Remove the "unphysical" flag** on r₀ > 1 in the NO-PROTON-LMIX column.
+   ADDENDUM D already explained it: with ℓ-mixing removed, 2s has no radiative
+   exit in this dataset and r₀(2) diverges as n_e → 0. It is a property of a
+   deliberately broken variant, not evidence of mis-normalisation.

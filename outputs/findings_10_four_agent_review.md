@@ -1032,3 +1032,182 @@ weakest chain into one of the strongest.
   construction: the tanh gate, Gate A's detailed balance, and Gate C's Saha
   limit whose `approaching` column is computed and then excluded (populations
   reach only 1.5% of Saha).
+
+---
+
+# ADDENDUM D — Gate 3 CR physics audit
+
+**10 September 2026.** Read-only against the canonical matrix. Provenance
+anchors reproduced first: τ_QSS[23,5] = 22.728 µs, τ_relax = 2.2769 ns,
+M = 9981.9, cold corner 67.233 s, and Chapter 6's "96.6% neutral" at [0,4]
+(0.96590, n_g = 1.4669×10¹⁵).
+
+**Nothing in this audit changes f₃, f₄, τ_QSS, τ_relax, M, or the structural
+theorems.** What changes is which claims the model is entitled to make about
+where those numbers apply, and one claim it should never have made about
+itself.
+
+## D.1 The finding that reshapes the scope: quasi-neutrality fails at the cold end
+
+Holding n_e fixed while n_g varies is self-consistent only where the ionisation
+degree is high. At Te = 1 eV the plasma is 95 to 98 percent neutral, so a
+factor-2 fall in n_g releases about 20 n_e worth of electrons. Imposing nuclei
+conservation (Δn_e = −Δn_g) across one 4.81% temperature step:
+
+| Te step | ne | x = n_g,new/n_g,old | required Δn_e/n_e |
+|---|---|---|---|
+| 1.000 → 1.048 eV | 1.0×10¹² | 0.506 | **+20.0** |
+| 1.000 → 1.048 eV | 5.18×10¹³ | 0.508 | **+13.9** |
+| 1.000 → 1.048 eV | 1.39×10¹⁴ | 0.507 | **+12.6** |
+| 2.947 → 3.089 eV | 1.39×10¹⁴ | 0.764 | +0.0002 |
+
+**68 of 392 one-step operators (17%) require |Δn_e/n_e| > 10%; 36 (9%) require
+> 100%.** The model evaluates the new operator at the old n_e at all of them.
+
+**The dilemma the thesis currently presents as two separate survivable
+objections.** If the parcel is closed, quasi-neutrality forces n_e up 10 to 20
+times at the cold end and every rate in the new operator is wrong by that
+factor. If it is transport-fed so n_e stays fixed, the ground state is being
+resupplied and is not stale, which is the entire error mechanism. **Both cannot
+hold.** §sec:transport and §sec:open_system must be merged into one dilemma.
+
+Above Te ≈ 2 eV, Δn_e/n_e < 10⁻³. **The Te ≥ 2 eV restriction is therefore not
+merely defensible; it is the only self-consistent region of the grid.** This
+strengthens the pivot in `pivot_decision.md` rather than weakening it.
+
+Supporting: the cold corner is not an ITER divertor state. n_g = 1.47×10¹⁵ at
+[0,4] is a neutral pressure of **235 Pa (1.8 Torr)** at T_n = 1 eV, twelve
+times the upper end of the ITER divertor design range of roughly 1 to 20 Pa. At
+[0,7] it is 3280 Pa, 164 times over. These are fixed points of a 0-D box.
+
+## D.2 The QSS partition is right everywhere. 2s is not a second reservoir.
+
+This was flagged as the potentially most damaging question. It is not damaging,
+and the margin is large.
+
+- 2s loss is 99.99% proton ℓ-mixing: |L[2s,2s]| = 1.2564×10⁹ s⁻¹ at the
+  thinnest, coldest point against λ₀ = 0.0149 s⁻¹. Separation 8×10¹⁰.
+- **A bound independent of the ℓ-mixing rate:** with proton ℓ-mixing deleted
+  entirely, the two-photon rate 8.229 s⁻¹ alone is **553× faster** than |λ₀| at
+  the cold corner.
+- Spectral test over all 400 points: min |Re λ(L_EE)|/|λ₀| = **86.5**, at
+  Te = 10 eV, ne = 10¹⁵. No near-degenerate second slow mode, no slow
+  eigenvector with dominant 2s weight.
+- 2s would become a second reservoir only below ne ≈ 7×10³ cm⁻³, nine orders
+  below the grid.
+
+**{1s} is the correct slow subspace. The two-channel decomposition does not
+change shape.** Quote the worst-case separation **86.5**, not a benchmark-point
+figure.
+
+## D.3 The Fujimoto self-indictment is probably a transcription error
+
+`chapter6.tex:849-868` reports r₁ low by 8.3× at p=3 and publishes it as a
+model failure on the two shells the mechanism is built from. The model was
+attacked first and did not break; the target was attacked and did.
+
+- **The model's r₁ reproduces analytically.** Coronal r₁(2) from C(1s→n=2) =
+  9.2796×10⁻⁹ cm³/s gives 1.37×10⁻⁵ against the full 43-state solve's
+  1.66×10⁻⁵. The atomic stack passes three external checks: α_RR(1s) within
+  2% of the scaled standard value, Σα_RR(n≥2) = 2.08×10⁻¹³ against α_B ≈
+  2.31×10⁻¹³ (the 10% shortfall is exactly the n>15 truncation), and
+  S_ion(1s) = 4.864×10⁻⁹ against Janev's ~5×10⁻⁹.
+- **The tabulated target demands impossible atomic data.** Fujimoto's quoted
+  coronal asymptote requires C(1s→n=2) = 1.44×10⁻⁷ cm³/s at 11.03 eV,
+  **fifteen times the accepted value**.
+- **Truncation eliminated:** r₁(3) moves 1.2% from n_max = 10 to 15.
+- **Lyman trapping eliminated:** Θ = 0.1 brings r₁(2) to 0.92× the table but
+  leaves r₁(3) at 0.26× and drives r₀(2) to 8.2, a level above Saha.
+- **A single-row density offset reconciles it.** The table's rows run at
+  lg n_e = 12, 14, 16, 17, 18, …, non-uniform spacing, the classic setup for an
+  off-by-one read. Against the model at 10¹³ instead of 10¹², the p = 2 to 7
+  ratios are 0.817, 0.888, 0.836, 0.819, 0.977: **flat to ±10%, against a
+  factor 50 spread as published.**
+
+`verify_fujimoto_table41.py`'s own docstring says *"Table values … Re-check
+against the book before anything enters the thesis."* It was not done, and it
+has entered the thesis. **Withdraw or heavily qualify §sec:r1_deficit until the
+table is re-read with the density-row labels verified.**
+
+## D.4 The molecular bound is constructible, and Chapter 6 says it is not
+
+`chapter6.tex:566` states "this work offers no bound on how much, and none can
+be constructed from the data in this repository." A bound follows from the two
+references cited in the same paragraph. For a given upper level the molecular
+emissivity fraction equals the population fraction, and MAR bypasses the ground
+state, so f_m → f_m(1−φ_m):
+
+| point | atomic f₃−f₄ | φ₃=0.60, φ₄=0.30 | φ₃=0.70, φ₄=0.45 |
+|---|---|---|---|
+| cold corner [0,0] | +0.20109 | +0.05411 (×0.27) | +0.03839 (×0.19) |
+| ridge [0,4] | +0.05294 | +0.01894 (×0.36) | +0.01402 (×0.27) |
+
+ε_plateau is linear in f₃−f₄, so this is a **factor 3 to 5 reduction of the
+cold-corner ε_plateau.** Replace "no bound can be constructed" with that.
+
+## D.5 Charge exchange is correctly absent, and it corrects a number in the thesis's favour
+
+Symmetric resonant CX is the identity operator on the population vector, so
+there is nothing to include. CX into excited states is adiabatically dead:
+Massey parameter ξ = 26 for a 10 eV deuteron, giving ~e⁻²⁶.
+
+**But CX changes §sec:transport by an order of magnitude, helpfully.** That
+section uses free-streaming transit, "6 to 10 µs across a 10 cm plasma". With
+CX at n_p = 5.18×10¹³ the neutral mean free path is **1.72 cm**, escape is
+diffusive with D = 5.6×10⁵ cm²/s, and the slab escape time is **72 µs**, not
+6 to 10. Chapter 6's own threshold for the worst point to fall below 10% is
+26 µs. **The result survives, by a factor 2.8, and only because CX traps the
+neutrals.** The free-streaming number understates the thesis's own case at
+exactly the point that matters.
+
+## D.6 Detailed balance passes, and the two-energy trap is not sprung
+
+Over 2457 excitation pairs × 3 temperatures: max deviation from detailed
+balance **7.31×10⁻⁹**, median 7.5×10⁻¹⁰, consistent with the state table's
+8-figure rounding. Ionisation against three-body via Saha: **0.999997 for every
+one of the 43 states at every temperature, to eight identical digits.** Because
+the ratio is state-independent across levels whose exp(I_p/kT) spans e^13.6 to
+e^0.06, the same energy is provably used on both sides.
+
+## D.7 Corrections to Chapter 2
+
+- **`chapter2.tex:924`**: the claim that the frozen Debye density varies F "by
+  about 30 percent across the grid" is wrong. Evaluating the module's own
+  functions, q spans **×3.7 for n=2 and ×50 for n=8** across the grid. But
+  rebuilding L with a density-consistent cutoff moves f₃−f₄ by **≤ 0.42%**, and
+  scaling all ℓ-mixing rates over ×0.1 to ×10 moves it < 0.3% at the benchmark
+  and ridge. **ℓ-mixing is saturated.** Correct the statement, keep the result,
+  and report it as the CLAUDE.md pattern: error found, traced, sized, headline
+  insensitive.
+- **`chapter2.tex:940`**: "It cannot radiate" about 2s is wrong. Two-photon at
+  8.229 s⁻¹. Line 192 concedes it two paragraphs earlier. Say instead that its
+  only radiative exit is two-photon at 8.2 s⁻¹, ten orders below the
+  collisional rates, which makes the argument stronger by supplying the
+  n_e-independent floor.
+- The "×141 ℓ-mixing effect" in `verify_fujimoto_table41.py` is a comparison
+  against a non-physical reference: with ℓ-mixing removed, 2s has no radiative
+  exit in the dataset and r₀(2) diverges as n_e → 0. Do not quote 141. The
+  genuine measurement is the saturation result.
+
+## D.8 Items closed cheaply
+
+- **Balmer opacity**: τ(Hα, 10 cm) = 6.3×10⁻⁷ at [0,0], 1.0×10⁻³ at [0,4],
+  **0.263** at the single worst cell [0,7]. Escape factor ≥ 0.85 there, moving
+  the observed ratio ≲ 10% in one cell and nowhere else. Closes
+  `chapter6.tex:414`.
+- **n_max = 15 convergence**: f₃−f₄ increments decay geometrically with ratio
+  ≈ 0.75. Extrapolated error **+0.9% at the benchmark, −1.4% at the cold
+  corner, −0.55% at the ridge.** Truncation makes f₃−f₄ slightly too large at
+  cold points and too small at the benchmark. This is rung 6 of the validation
+  ladder, previously NOT DONE.
+- **Terminal-shell over-population measured internally**: comparing each shell
+  as terminal against interior gives 9.4× at p=8, 10.7× at p=9, 6.3× at p=10.
+  The observed 4.9 to 6.2× excess at p=15 sits inside this band. This closes an
+  open `\todo` with an internal measurement rather than an inference from the
+  external table.
+
+**A methodological warning recorded by the auditor:** an initial truncation test
+that dropped states without removing their loss channels from the diagonal
+produced a spurious 22 to 37% jump that looked like a headline finding. It was
+an artifact. Anyone repeating the test must add back Σ_dropped L[k,i] to L[i,i].
+The production matrix is self-consistently truncated.

@@ -1761,3 +1761,108 @@ benchmark is one temperature at one edge.
    ADDENDUM D already explained it: with ℓ-mixing removed, 2s has no radiative
    exit in this dataset and r₀(2) diverges as n_e → 0. It is a property of a
    deliberately broken variant, not evidence of mis-normalisation.
+
+---
+
+# ADDENDUM J — Sawada & Fujimoto (1994) read from the source
+
+**10 September 2026.** The paper was supplied and read. This closes the item
+`findings_10` and `novelty_classification.md` both named as **the single largest
+publication risk**: whether their examination of "the overall response of
+excited level populations to ionization and recombination rates" contains what
+this thesis claims.
+
+**It does not, and the reason is structural rather than a matter of emphasis.**
+
+## J.1 They freeze the reservoir by construction
+
+Page 5566, left column, stating their method verbatim:
+
+> "Following this spirit we solve the set of the rate equations under the
+> conditions corresponding to these cases; **under the ionizing plasma condition
+> n(1) is kept constant and n_z is set equal to zero**, and vice versa under the
+> recombining plasma condition."
+
+And page 5565, first column:
+
+> "We assume that the electron density n_e, ion density n_z, and the electron
+> temperature T_e **are given**."
+
+Their transient is an abrupt switch-on: for t < 0 the excited populations are
+zero, and at t = 0 the parameters jump to n(1) = 1 cm⁻³, n_e = 10¹² cm⁻³,
+T_e = 10 eV, all held constant thereafter.
+
+**The reservoir is a fixed parameter in their calculation.** It cannot be stale,
+because it never moves. The question this thesis asks cannot arise inside their
+framework.
+
+## J.2 What they actually establish, and it is a different question
+
+Their question is stated at page 5566: Eq. (2) "corresponds to the assumption
+that the population densities of excited levels adjust themselves
+instantaneously to the changing n(1), n_z, n_e and T_e. **However, each of the
+excited levels should have a finite response time to these parameters.**"
+
+So: **how fast does the excited manifold follow a change in the parameters?**
+Answer: the response time τ_res is the relaxation time of Griem's boundary
+level.
+
+This thesis takes that as established and asks the next question: **given that
+the excited manifold follows, what error follows from the reservoir not having
+reached the equilibrium value a lookup table assigns it?**
+
+## J.3 Their validity condition is about the fast states, not the reservoir
+
+Page 5572 gives the criterion for a temporal change in T_e, their Eq. (23):
+
+$$\left|\frac{\tau_{\rm res}}{T}\,\frac{E(1,p_G)}{kT_e}\right| \ll 1$$
+
+with T the time constant of the T_e change. **This bounds whether the excited
+levels keep up.** There is no companion condition on the reservoir anywhere in
+the paper, because the reservoir is held fixed.
+
+**A subtlety worth stating in the thesis rather than leaving for an examiner.**
+For a true step, T → 0 and Eq. (23) is violated. That is not a contradiction
+with ε_QSS = 8.66×10⁻⁶: this thesis evaluates ε_QSS **on the plateau**, after
+the manifold has settled, whereas Eq. (23) governs the settling itself. During
+the first few nanoseconds the excited-state QSS closure genuinely does fail, and
+after that it holds to a part in 10⁵ to 10⁸. **The two results are complementary
+in a precise and stateable way**, which is stronger than the current
+"compatible, and neither contains the other."
+
+## J.4 Two things worth citing that the thesis does not
+
+**Their quotation of the original validity argument**, page 5566, which is this
+thesis's premise in 1962 language:
+
+> "a quasiequilibrium number density of excited system is established almost
+> instantaneously **without the number densities of free electrons and bare
+> nuclei being appreciably altered**" … "the relaxation times for the excited
+> levels are **very much shorter than the relaxation time for the ground levels
+> or for the free electrons**."
+
+That is the timescale separation this thesis measures as M, quoted from the
+source that introduced it.
+
+**Their Eq. (3) and Eq. (4).** Eq. (3) is
+n(p) = R₀(p) n_z n_e + R₁(p) n(1) n_e, the two-channel decomposition. Eq. (4) is
+dn(1)/dt = −S_CR n(1) n_e + α_CR n_z n_e, the ground-state equation whose
+eigenvalue is this thesis's slow clock. **They write Eq. (4) and do not solve
+it.** The thesis solves it. That is the gap, and it is now citable rather than
+asserted.
+
+## J.5 Consequences
+
+1. **`chapter7.tex:316-317` is safe** and should be sharpened. "Neither contains
+   the other" is correct; replace it with the precise statement of J.1 to J.3.
+2. **The `[UNVERIFIED]` on Sawada & Fujimoto can be retired.** The body has been
+   read.
+3. The conditions in J.4 should be quoted in Chapter 1 or 3, where the
+   timescale separation is introduced.
+4. Their benchmark, n_e = 10¹² cm⁻³ and T_e = 10 eV, is within one grid point of
+   this thesis's own Fujimoto comparison point, which makes the two papers
+   directly comparable and is worth noting.
+
+**One risk remains from the same family and it is unchanged:** Fujimoto's
+*Plasma Spectroscopy* (2004) Chapter 4 is still unread, and is not in any
+scanned corpus reachable from here.

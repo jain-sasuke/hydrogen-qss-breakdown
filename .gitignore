@@ -346,3 +346,4 @@ __pycache__/
 .claude/skills/*
 !.claude/skills/thesis-verification/
 !.claude/skills/scientific-prose-audit/
+!.claude/skills/thesis-writing/

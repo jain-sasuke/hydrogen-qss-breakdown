@@ -905,3 +905,100 @@
   year    = {1974},
   doi     = {10.1111/j.1432-1033.1974.tb03318.x}
 }
+
+% ---------------------------------------------------------------------------
+% Added 10 Sep 2026 by the prior-art search on the tanh bound. Each entry is a
+% place the bound, its location, or its corollary already appears. The identity
+% tanh(Delta/4) = Yule's Y of the odds ratio e^Delta was verified numerically
+% to machine precision before these were added.
+% ---------------------------------------------------------------------------
+
+% VERIFIED Crossref 10.2307/2340126 -- JRSS 75(6), 579-652. Defines the
+% coefficient of colligation Y = (sqrt(w)-1)/(sqrt(w)+1), which is identically
+% tanh((ln w)/4). For two unit-width logistics separated by Delta the odds
+% ratio is e^Delta, so Yule's Y IS tanh(Delta/4). He does not frame it as a
+% maximum.
+@article{Yule1912,
+  author  = {Yule, G. Udny},
+  title   = {On the Methods of Measuring Association Between Two Attributes},
+  journal = {Journal of the Royal Statistical Society},
+  volume  = {75},
+  number  = {6},
+  pages   = {579--652},
+  year    = {1912},
+  doi     = {10.2307/2340126}
+}
+
+% Psychometrika Monograph Supplement No. 17. The graded-response operating
+% characteristic is a difference of two shifted logistic ogives; p. 34,
+% eqs 5-40 to 5-42, states it is unimodal and symmetric with the modal point at
+% the midpoint. The peak HEIGHT is not given; "tanh" does not appear.
+@article{Samejima1969,
+  author  = {Samejima, Fumiko},
+  title   = {Estimation of Latent Ability Using a Response Pattern of Graded
+             Scores},
+  journal = {Psychometrika Monograph Supplement},
+  number  = {17},
+  year    = {1969}
+}
+
+% VERIFIED Crossref 10.1090/S0002-9939-1955-0069229-1 -- Proc. AMS 6(2),
+% 170-176. For a symmetric unimodal density the centred interval carries the
+% most mass, giving sup_x [F(x) - F(x-Delta)] = 2F(Delta/2) - 1. The tanh
+% result is the logistic instance. The object is the Levy concentration
+% function, named since 1937.
+@article{Anderson1955,
+  author  = {Anderson, T. W.},
+  title   = {The Integral of a Symmetric Unimodal Function over a Symmetric
+             Convex Set and Some Probability Inequalities},
+  journal = {Proceedings of the American Mathematical Society},
+  volume  = {6},
+  number  = {2},
+  pages   = {170--176},
+  year    = {1955},
+  doi     = {10.1090/S0002-9939-1955-0069229-1}
+}
+
+% VERIFIED Crossref 10.1038/s41467-023-36705-8 -- Nat. Commun. 14, 1280. Their
+% Eq. (7) bounds the logarithmic sensitivity of a RATIO of steady-state
+% observables by m, the number of states with an x-dependent outgoing
+% transition. With the ground state as the sole such source, m = 1 and the
+% corollary |dlnR/dln b1| <= 1 follows. Caveat: their setting is a Markov chain
+% with normalised pi; the CR mapping is defensible but not automatic.
+@article{OwenHorowitz2023,
+  author  = {Owen, Jeremy A. and Horowitz, Jordan M.},
+  title   = {Size limits the sensitivity of kinetic schemes},
+  journal = {Nature Communications},
+  volume  = {14},
+  pages   = {1280},
+  year    = {2023},
+  doi     = {10.1038/s41467-023-36705-8}
+}
+
+% Section 12.3.2, verbatim: "in the absence of cooperativity and substrate
+% inhibition, substrate elasticities are normally in the range 0 to 1".
+% Verified against the author's own chapter text and the scanned 1995 edition
+% p. 366. This is f_p in (0,1) under another name.
+@book{CornishBowden2012,
+  author    = {Cornish-Bowden, Athel},
+  title     = {Fundamentals of Enzyme Kinetics},
+  edition   = {4},
+  publisher = {Wiley-Blackwell},
+  address   = {Weinheim},
+  year      = {2012}
+}
+
+% VERIFIED Crossref 10.1007/BF02294403 -- Psychometrika 53(4), 495-502. The
+% unsigned area between two item characteristic curves. For the 1PL /
+% equal-discrimination case it reduces to the displacement b_F - b_R, which is
+% the companion identity int (f3 - f4) dln b = Delta.
+@article{Raju1988,
+  author  = {Raju, Nambury S.},
+  title   = {The Area between Two Item Characteristic Curves},
+  journal = {Psychometrika},
+  volume  = {53},
+  number  = {4},
+  pages   = {495--502},
+  year    = {1988},
+  doi     = {10.1007/BF02294403}
+}

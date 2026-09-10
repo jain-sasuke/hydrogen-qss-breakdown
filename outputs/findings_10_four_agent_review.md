@@ -1561,3 +1561,108 @@ The 2s two-photon rate is **absent from the matrices** (A is exactly zero), so
 `fig2_1` says only "no E1 decay" and quotes no two-photon number. And the
 optical-depth boundary uses τ₀ rather than the escape factor Θ_P, because Θ_P
 requires the self-consistent fixed point that `verify_lyman_trapping.py` owns.
+
+---
+
+# ADDENDUM H — the bound is a 1912 statistic
+
+**10 September 2026.** A dedicated prior-art search on the tanh bound. Verified
+numerically here before acting on it.
+
+## H.1 tanh(Δ/4) is Yule's coefficient of colligation
+
+Two unit-width logistic curves separated by Δ have constant odds ratio
+ω = e^Δ. Yule's *coefficient of colligation* (1912) is
+Y = (√ω − 1)/(√ω + 1), and
+
+$$\tanh(\Delta/4) \equiv \frac{\sqrt{e^{\Delta}}-1}{\sqrt{e^{\Delta}}+1} = Y(e^{\Delta})$$
+
+**Checked to machine precision at six values of Δ**, against both Yule's closed
+form and a direct numerical maximisation of the difference of two displaced
+logistics. Agreement 10⁻¹⁶ to 10⁻¹². The same number is the maximum risk
+difference at fixed odds ratio, attained at baseline 1/(1+√ω).
+
+**The bound is a 1912 statistic.** ADDENDUM G recorded Foieri et al. (2006) as
+the prior statement. That was right and it was not the earliest by ninety-four
+years.
+
+## H.2 Every part is already in print, in four literatures
+
+| part | prior statement |
+|---|---|
+| the **value** tanh(Δ/4) | **Yule (1912)**, JRSS 75(6), 579 |
+| the **location** of the maximum | **Samejima (1969)**, Psychometrika Mono. Suppl. 17, p. 34: the difference of two shifted logistic ogives is unimodal and symmetric about the midpoint. She does not give the height |
+| the **general theorem** | **Anderson (1955)**, Proc. AMS 6(2), 170: sup[F(x)−F(x−Δ)] = 2F(Δ/2)−1 for symmetric unimodal densities. The object is the Lévy concentration function, named since 1937 |
+| f_p ∈ (0,1) | **Cornish-Bowden**, §12.3.2, verbatim: "substrate elasticities are normally in the range 0 to 1" |
+| the **ratio bound** \|d ln R/d ln b₁\| ≤ 1 | **Owen & Horowitz (2023)**, Nat. Commun. 14, 1280, Eq. (7), in general form with m the number of x-dependent states. m = 1 here |
+| the **area** identity | **Raju (1988)**, Psychometrika 53(4), 495 |
+| the **empirical face, in this field** | **Verhaegh et al. (2019)**: a unique solution for F_rec from a measured Balmer ratio exists only for F_rec between about 0.15 and 0.85 |
+
+The last row matters most. That is the saturation of f_p, observed directly in
+divertor spectroscopy and published, parameterised by Te rather than by n₁. It
+weakens any framing in which nobody had noticed the saturation, while leaving
+the analytic bound standing.
+
+**A near-miss in physics:** Belzig et al. (1999) write the transverse
+distribution as ½[tanh((E+eV)/2kT) − tanh((E−eV)/2kT)], which is the difference
+of shifted logistics **already in tanh form**, equal to tanh(eV/2kT) at E = 0.
+The rewriting is routine in mesoscopic physics.
+
+## H.3 What survives, and it is a reasonable position
+
+**The assembly.** That these are one object; that it bounds the diagnostic error
+of a hydrogen Balmer ratio with respect to its ground-state reservoir, uniformly
+over every atomic dataset; and that the bound is near-tight exactly where the
+error is largest.
+
+`chapter7.tex` rewritten to say this, with all six citations added. The claim is
+now written so that finding an older statement of any single part costs nothing,
+**because that has now happened four times in two days**: Foieri (2006), then
+Yule (1912), Samejima (1969) and Anderson (1955).
+
+An assumption to state where the corollary is: it needs n_p = A_p + B_p·u with
+A, B independent of u. Two Michaelian enzymes competing for a *shared* substrate
+reach effective Hill coefficients above 8 and are the standard counterexample to
+the loose version. It does not apply here, because u is an external reservoir,
+but an examiner who knows the ultrasensitivity literature will reach for it.
+
+## H.4 Four bibliography corrections
+
+- **JQSRT 21, 439 (1979) is Fujimoto on helium**, not hydrogen.
+- **Sawada & Fujimoto, JAP 78, 2913 (1995) is molecular hydrogen** rate
+  coefficients.
+- The atomic-hydrogen r₀/r₁ paper is **Sawada, Eriguchi & Fujimoto, JAP 73,
+  8122 (1993)**, doi:10.1063/1.353930.
+- Fujimoto's own Balmer-ratio paper is **JAP 66, 2315 (1989)**,
+  doi:10.1063/1.344289.
+
+## H.5 A hallucination caught, and worth recording as a method note
+
+During the search, web-search summarisation twice asserted **in formula form** a
+published bound `RD ∈ [min(0,Y), max(0,Y)]`, attributed to two specific arXiv
+identifiers. Both PDFs were downloaded and grepped: **neither contains the word
+"Yule"**. The assertion was model-generated and it looked exactly like the hit
+being searched for.
+
+This is the failure mode that a literature search is most vulnerable to, because
+a fabricated citation confirming your hypothesis is indistinguishable from a
+real one until someone opens the file. The search that found Yule is trustworthy
+*because* it also caught this.
+
+## H.6 The negatives now carry weight
+
+Google Books, HathiTrust and scholar.archive.org were all blocked. The search
+used `openlibrary.org/search/inside.json`, which phrase-searches the full text
+of millions of scanned Internet Archive books, and passed a coverage check: the
+corpus does contain Hengartner & Theodorescu's *Concentration Functions*,
+Petrov, Cornish-Bowden, Heinrich & Schuster, Savageau and the IRT texts.
+
+Zero hits for eight targeted phrasings of the identity. Those are informative
+negatives rather than absent evidence.
+
+One plasma finding from the same tool: exactly **one** scanned book contains
+"ionizing plasma component" and "recombining plasma component" together,
+Fujimoto & Iwamae's *Plasma Polarization Spectroscopy* (2008), showing the
+population-coefficient formalism and no bound. **Fujimoto's *Plasma
+Spectroscopy* (2004) is not in the scanned corpus at all**, which is why that
+open item cannot be closed remotely and needs a physical copy.

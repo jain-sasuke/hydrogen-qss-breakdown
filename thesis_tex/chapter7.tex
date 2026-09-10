@@ -267,47 +267,56 @@ defensible statement is that it has not previously been stated in this form in
 the collisional--radiative literature. It is not a new function and it is not a
 new result about hydrogen.
 
-\paragraph{The bound is elementary, it is in print, and only its application is
-claimed.} That $\max|\ffrac{3}-\ffrac{4}| = \tanh(|\Delta|/4) < 1$ follows in a
-few steps from two displaced logistics. \textbf{The identity is published.}
-Foieri and co-workers, treating conduction through a disordered wire at finite
-bias, write the difference of two Fermi functions displaced by $eV$ and
-approximate it by a rectangle of height $\tanh(eV/4kT)$ and width
-$eV/\tanh(eV/4kT)$~\cite{Foieri2006}. A Fermi function is a unit-width logistic
-in $E/kT$ and $eV/kT$ plays the part of $\Delta$, so both of this chapter's
-statements are there: the peak height, and the area $\Delta$ of
-Eq.~\eqref{eq:sensitivity_area}. They state it without derivation or citation,
-which suggests it was already regarded as known in that field.
+\paragraph{The bound is old, it is old in several fields at once, and only the
+assembly is claimed.} That $\max|\ffrac{3}-\ffrac{4}| = \tanh(|\Delta|/4) < 1$
+follows in a few steps from two displaced logistics. A literature search
+conducted for this thesis found each of its parts already in print, in four
+separate literatures, the earliest by more than a century.
 
-The corollary $|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ is likewise not new
-in substance. Each $\ffrac{p}$ is the elasticity of a function affine in the
-reservoir, and that an elasticity is bounded by the Hill coefficient, here
-unity, is standard in metabolic control analysis~\cite{HeinrichRapoport1974}.
-The $\tanh$ sharpens that bound from $1$ to $\tanh(|\Delta|/4)$; it does not
-establish it.
+The \emph{value} is Yule's coefficient of colligation~\cite{Yule1912}. Two
+unit-width logistic curves separated by $\Delta$ have constant odds ratio
+$\omega = e^{\Delta}$, and Yule's $Y = (\sqrt{\omega}-1)/(\sqrt{\omega}+1)$ is
+identically $\tanh(\tfrac14\ln\omega)$. The two agree to machine precision at
+every $\Delta$ tested. The same number is the maximum risk difference at fixed
+odds ratio, attained at baseline $1/(1+\sqrt{\omega})$.
 
-What this work claims is therefore only the \emph{application}: that the
-inequality bounds the diagnostic error of a hydrogen line ratio with respect to
-its ground-state reservoir, uniformly over every atomic dataset, and that the
-bound is near-tight where the error is largest. No prior statement of a
-data-independent ceiling on a collisional--radiative line ratio's response to
-the neutral reservoir was located, in this literature or in divertor
-spectroscopy. That claim is written so that finding an older statement of the
-mathematics costs it nothing.
-\emph{[UNVERIFIED: the mathematical priority question is now closed by
-\cite{Foieri2006}. What remains open is whether the switching point
-$c_m/a_m$, or a closed form for the ratio of two population coefficients,
-already appears in the plasma-spectroscopy literature. Two bodies of work must
-be read, and neither has been. Fujimoto's \emph{Plasma
-Spectroscopy} Chapter~4 \cite{Fujimoto2004}, which develops the population
-coefficients in the normalised form this work uses; and Fujimoto's series on
-the kinetics of ionisation and recombination in the Journal of the Physical
-Society of Japan \cite{Fujimoto1979a, Fujimoto1979b, Fujimoto1980a,
-Fujimoto1980b, Fujimoto1985}, which runs to five parts rather than the four it
-is usually cited as, and which is where a closed-form statement about the ratio
-of two population coefficients would most plausibly already appear. The
-bibliographic records for all five parts were verified against Crossref and
-OpenAlex on 10 September 2026; the papers themselves have not been obtained.]}
+The \emph{location} of the maximum is Samejima's~\cite{Samejima1969}: the
+difference of two shifted logistic ogives is the graded-response operating
+characteristic, and she states it is unimodal and symmetric about the midpoint.
+She does not give the height.
+
+The \emph{general theorem} is Anderson's~\cite{Anderson1955}: for a symmetric
+unimodal density, $\sup_x[F(x)-F(x-\Delta)] = 2F(\Delta/2)-1$. This claim is its
+logistic instance, and the object itself is the L\'evy concentration function.
+
+The corollary $|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ is likewise not new.
+That $\ffrac{p}\in(0,1)$ is the standard statement that substrate elasticities
+lie between zero and the Hill coefficient~\cite{CornishBowden2012}, and a
+general bound on the logarithmic sensitivity of a \emph{ratio} of steady-state
+observables, reducing to unity when a single state carries the
+perturbation, is Owen and Horowitz's~\cite{OwenHorowitz2023}. The companion
+identity $\int(\ffrac{3}-\ffrac{4})\,\mathrm{d}\ln\bdep = \Delta$ is Raju's
+unsigned area for equal-discrimination curves~\cite{Raju1988}.
+
+The qualitative content has an empirical face in this field already. Verhaegh
+and co-workers report that a unique solution for the recombining fraction from a
+measured Balmer ratio exists only for $F_{\mathrm{rec}}$ between about $0.15$
+and $0.85$~\cite{Verhaegh2019}, which is the saturation of $\ffrac{p}$ observed
+directly rather than derived.
+
+What is left, and what this thesis claims, is the \emph{assembly}: that these
+are one object; that it bounds the diagnostic error of a hydrogen Balmer ratio
+with respect to its ground-state reservoir, uniformly over every atomic dataset;
+and that the bound is near-tight exactly where the error is largest. The claim
+is deliberately written so that finding an older statement of any single part
+costs it nothing, because that has now happened four times.
+
+\emph{[The corollary requires $n_p = A_p + B_p u$ with $A_p$, $B_p$ independent
+of $u$. Where that fails, effective Hill coefficients well above unity are
+reachable; two Michaelian enzymes competing for a shared substrate is the
+standard counterexample. It does not apply here, because $u$ is an external
+reservoir rather than a shared pool, but an examiner who knows the
+ultrasensitivity literature will reach for it.]}
 
 \paragraph{Greenland stated the negative result in general form, twenty-five
 years ago.} That the validity criteria for a reduced CR model are conditions on

@@ -857,8 +857,18 @@ Two results are strengthened by the re-derivation:
 
 The agent predicted f₃−f₄ → 0 at high n_e for a structural reason: in LTE both
 channels give the same Boltzmann shape, so a₃/a₄ = c₃/c₄ and Δ → 0.
-**Falsified.** Δ is nearly *flat*: 0.979 at 10¹², 1.945 at 1.4×10¹⁴, 1.939 at
-10¹⁵. The grid never reaches LTE, and because the model is **open** — S_E is an
+**Falsified**, though not for the reason first recorded. **Correction,
+10 Sep 2026:** an earlier version of this section called Δ "nearly flat" while
+quoting 0.979 at 10¹², 1.945 at 1.4×10¹⁴ and 1.939 at 10¹⁵. Those numbers show
+Δ **doubling**, and tanh(Δ/4) spreading 89% (0.2399 to 0.4529) across the full
+density range. The flat object is Δ **above about 7×10¹² cm⁻³**, where it runs
+1.679 to 1.953, a factor 1.163, and tanh spans 0.397 to 0.453, a 14% spread.
+The 14% figure was the restricted range quoted alongside full-range endpoints,
+which is the same scope defect this document catalogues elsewhere.
+
+**The position-effect conclusion survives** because the maximum sits at
+1.93×10¹³, inside the flat region: near the maximum the cap is flat to 14% while
+the operating point sweeps 4.6 e-folds. State the restriction with it. The grid never reaches LTE, and because the model is **open** — S_E is an
 externally imposed source not tied to n_i by Saha — the two channels can never
 merge by construction.
 
@@ -1118,11 +1128,18 @@ attacked first and did not break; the target was attacked and did.
 - **Truncation eliminated:** r₁(3) moves 1.2% from n_max = 10 to 15.
 - **Lyman trapping eliminated:** Θ = 0.1 brings r₁(2) to 0.92× the table but
   leaves r₁(3) at 0.26× and drives r₀(2) to 8.2, a level above Saha.
-- **A single-row density offset reconciles it.** The table's rows run at
-  lg n_e = 12, 14, 16, 17, 18, …, non-uniform spacing, the classic setup for an
-  off-by-one read. Against the model at 10¹³ instead of 10¹², the p = 2 to 7
-  ratios are 0.817, 0.888, 0.836, 0.819, 0.977: **flat to ±10%, against a
-  factor 50 spread as published.**
+- **Comparing against the model at 10¹³ instead of 10¹² flattens the column**:
+  the p = 2 to 7 ratios become 0.817, 0.888, 0.836, 0.819, 0.977, **flat to
+  ±10% against a factor 50 spread as published.** That is a striking
+  coincidence and it is evidence that the comparison is misaligned somewhere.
+
+  **Correction, 10 Sep 2026: the off-by-one explanation offered for it does not
+  follow.** An earlier version attributed the flattening to a single-row
+  misread of a table whose rows run at lg n_e = 12, 14, 16, 17, 18. An
+  off-by-one read of those labels lands at 10¹⁴ or 10¹¹, not the 10¹³ that
+  flattens the ratios. **Record this as an open discrepancy with an unexplained
+  density offset, not as a solved transcription error.** What settles it is
+  unchanged: read Table 4.1(b)'s row labels and level structure from the book.
 
 `verify_fujimoto_table41.py`'s own docstring says *"Table values … Re-check
 against the book before anything enters the thesis."* It was not done, and it
@@ -1202,7 +1219,7 @@ e^0.06, the same energy is provably used on both sides.
   ladder, previously NOT DONE.
 - **Terminal-shell over-population measured internally**: comparing each shell
   as terminal against interior gives 9.4× at p=8, 10.7× at p=9, 6.3× at p=10.
-  The observed 4.9 to 6.2× excess at p=15 sits inside this band. This closes an
+  **Correction, 10 Sep 2026:** an earlier version said the observed 4.9 to 6.2× excess at p=15 "sits inside this band". The band **decreases with p** (9.4, 10.7, 6.3, 4.4, 3.1), so extrapolating the trend to p=15 predicts something below 3.1, not 4.9 to 6.2. The defensible claim is agreement **in order of magnitude**, which still supports truncation as the mechanism but does not make the numbers consistent. This closes an
   open `\todo` with an internal measurement rather than an inference from the
   external table.
 

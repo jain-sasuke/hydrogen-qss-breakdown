@@ -623,25 +623,22 @@ The relevant quantity is the condition number of $\Lmat_{FF}$, the block of
 $\Lmat$ coupling the $42$ excited levels to each other
 (Section~\ref{sec:qss}), and it is the factor by which a relative perturbation
 of the matrix can be amplified in the solution.
-Computed directly from the canonical $\Lmat$ at all $400$ grid points:
-minimum $1.4821\times10^{3}$ at $[0,0]$ ($\Te = \SI{1.000}{\electronvolt}$),
-maximum $1.7436\times10^{5}$ at $[33,7]$ ($\Te = \SI{4.715}{\electronvolt}$),
-median $2.1044\times10^{4}$. In double precision, which carries about sixteen
+Computed from the canonical $\Lmat$ at all $400$ grid points by
+\texttt{src/validation/verify\_operator\_conditioning.py} and stamped to
+\texttt{validation/operator\_conditioning/operator\_conditioning.csv}: minimum
+$1.4821\times10^{3}$ at $[0,0]$ ($\Te = \SI{1.000}{\electronvolt}$), maximum
+$1.7436\times10^{5}$ at $[33,7]$ ($\Te = \SI{4.715}{\electronvolt}$), median
+$2.1044\times10^{4}$. In double precision, which carries about sixteen
 significant digits, a condition number of $10^{5}$ costs five of them. Eleven
 remain, and every conclusion in this thesis turns on the first three.
 
-\textbf{[UNVERIFIED: no committed script produces the grid-wide condition
-number.]} The values above are from \texttt{findings\_10} ADDENDUM~C.1
-(10 September 2026), an uncommitted direct computation from the canonical
-matrix, which agrees with the range asserted at \texttt{chapter3.tex}:719--721
-to \SI{0.1}{\percent} and \SI{0.2}{\percent}. Two computations agreeing is
-better than one assertion standing alone, and it is still weaker than a
-committed script, which is what this needs. \texttt{np.linalg.cond} appears at one
-site in \texttt{src/}, inside \texttt{verify\_fujimoto\_table41.py}:334, and
-covers four point-variants at $\Te = \SI{10}{\electronvolt}$ only. The value is
-corroborated and not yet reproducible from the repository.
-\todo{Commit the script that produces the grid-wide condition number of
-$\Lmat_{FF}$, then delete this bracket.}
+That provenance is recent, and the history is worth one sentence because it is
+the failure mode this chapter is about. The range was asserted in
+\texttt{chapter3.tex} before anything computed it grid-wide; an audit then found
+that the only support was a markdown file recording an ad-hoc session, which is
+not a check; the script above was written to close that, and it reproduces the
+asserted range to \SI{0.14}{\percent} and \SI{0.21}{\percent}. The number was
+right the whole time and was not evidence until it could be re-run.
 
 Three further measurements bound the arithmetic. The eigenvalue condition
 number is a different quantity from the matrix condition number above: it is
@@ -1554,12 +1551,9 @@ Chapter~\ref{ch:results} relies on.
 
 \textbf{The equations are solved correctly.} The superposition residual, the
 independent re-derivation of all six central results, the bit-for-bit
-regeneration together establish that the linear algebra does what
-Chapter~\ref{ch:theory} says it does, to a precision many orders of magnitude
-finer than any quantity the thesis reports. The conditioning measurements point
-the same way and are not counted here, because
-Section~\ref{sec:conditioning} marks the grid-wide condition number as having no
-committed producing script.
+regeneration, and the grid-wide conditioning measurement together establish that
+the linear algebra does what Chapter~\ref{ch:theory} says it does, to a
+precision many orders of magnitude finer than any quantity the thesis reports.
 
 \textbf{The atomic data are traceable and benchmarked where the observable
 lives.} The rates feeding $n \le 4$, which is where $H_\alpha$ and $H_\beta$

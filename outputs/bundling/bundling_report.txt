@@ -1,0 +1,42 @@
+============================================================================
+PSM20 BUNDLING VALIDITY CHECK — l-mixing rate out of np vs A(np_total)
+============================================================================
+Grid: Te = 1.00..10.00 eV (50 pts)
+      ne = 1.00e+12..1.00e+15 cm^-3 (8 pts)
+
+Per-shell summary at Te = 3 eV (closest to benchmark point):
+----------------------------------------------------------------------------
+  n    A(np_tot)    K_lmix(lo ne)    K_lmix(hi ne)    ratio lo-ne  status
+----------------------------------------------------------------------------
+  9     7.51e+06         6.49e+10         6.49e+13        8648.54  OK
+ 10     5.45e+06         7.28e+10         7.28e+13       13347.67  OK
+ 11     4.09e+06         7.66e+10         7.66e+13       18744.75  OK
+ 12     3.14e+06         7.63e+10         7.63e+13       24329.30  OK
+ 13     2.46e+06         7.28e+10         7.28e+13       29593.23  OK
+ 14     1.96e+06         6.72e+10         6.72e+13       34231.50  OK
+ 15     1.59e+06         6.07e+10         6.07e+13       38143.36  OK
+----------------------------------------------------------------------------
+
+Worst offender across full (n, Te, ne) grid:
+  n = 9, Te = 1.000 eV, ne = 1.000e+12 cm^-3
+  K_lmix = 1.155e+10 s^-1   A(np) = 7.509e+06 s^-1   ratio = 1537.581
+
+Grid fraction summary (over 7 × 50 × 8 = 2800 points):
+  ratio < 1  (invalid):      0.0%
+  ratio 1–10 (marginal):     0.0%
+  ratio ≥ 10 (valid):      100.0%
+
+Rate at the worst offender, recomputed through the same call path:
+  K_lmix = 1.155e+10 s^-1   ratio = 1537.581
+  agreement: +0.0%. This is zero by construction, since both sides are compute_lmix.py; it is a wiring check, not a physics one.
+
+============================================================================
+VERDICT: bundling assumption holds across the working grid.
+Worst point is n = 9 at Te = 1.00 eV, ne = 1.00e+12,
+where the mixing rate beats A(np) by 1538x, clearing the
+well-mixed threshold of 10 by a factor 154.
+Cite Badnell+2021 PSM20 in Methods. The caveat that remains is not
+the mixing rate: it is that the bundled block carries no l-mixing in
+the matrix at all, so the shells are ASSUMED statistical, and this
+test shows only that the assumption is the right one to make.
+============================================================================

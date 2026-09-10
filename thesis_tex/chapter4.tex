@@ -705,20 +705,21 @@ top shell: the observable is built from $n=3$ and $n=4$, both fully resolved in
 orbital angular momentum $\ell$ and eleven shells below the cut at
 $n_{\max}=15$.
 
-\paragraph{What has not been checked.} Above $n=8$ the shells are bundled and
-their internal $\ell$-distribution is assumed statistical rather than computed.
-A script to test that assumption, \texttt{verify\_bundling\_psm20.py}, exists
-and has never been executed. It is reported here as not run rather than omitted.
-Two defects must be understood before it is: it synthesises grids silently when
-its input files are missing (lines 160--166), which violates the project's own
-fail-loudly rule and would produce a confident answer from no data; and if the
-$\ell$-mixing rate array is zero for the bundled indices, as
-\texttt{compute\_lmix.py}:465 suggests, it will read those zeros and return a
-verdict of ``bundling invalid'' that is a statement about missing data rather
-than about physics.
-\todo{Run \texttt{verify\_bundling\_psm20.py} after fixing the silent grid
-fallback, or state the bundled $\ell$-distribution as a scope limitation in
-Chapter~\ref{ch:limits}. Not both, and not silence.}
+\paragraph{What has now been checked, and what the check cost.} Above $n=8$ the
+shells are bundled and their internal $\ell$-distribution is assumed statistical
+rather than computed. The script that tests that assumption,
+\texttt{verify\_bundling\_psm20.py}, had never been executed. Both defects
+predicted for it here were confirmed on the first run. It synthesised its own
+temperature grid when the pipeline's grid files were absent, printing a warning
+and continuing, which would have attached every ratio to conditions the model
+was never evaluated at; it now raises. And the $\ell$-mixing array is indeed
+identically zero for the bundled indices, so the script could not have tested
+what it promised to test and would have reported missing data as physics. A
+third defect was not predicted: its own Pengelly--Seaton expression, maintained
+separately from the pipeline's, is low by a factor of $95$ at $n=2$ rising to
+$5.6\times10^{3}$ at $n=8$. Section~\ref{sec:bundling_check} gives the result,
+which is that the bundled shells clear the well-mixed criterion by a factor
+$154$ at the worst point on the grid.
 
 %-----------------------------------------------------------------------------
 \section{Is the shell ratio the line ratio?}
@@ -1101,7 +1102,7 @@ temperature. The companion Table~4.1(a) is at \SI{e3}{\kelvin} =
 usable case. The external check is one temperature at one edge.
 
 %-----------------------------------------------------------------------------
-\section{Gate D fails}
+\section{Gate D fails, and the failure is in the gate}
 \label{sec:gate_d}
 % QUESTION: the one gate that compares against an external atomic database
 % disagrees at every point. What does that mean, and what does it not mean?
@@ -1136,9 +1137,11 @@ grid the model sits high by a factor between $9$ and $65$, and that systematic
 offset peaks near $\Te \approx \SI{2}{\electronvolt}$. The disagreement has a
 shape, which is what makes it diagnosable rather than random.
 
-\subsection{The diagnosis}
+\subsection{The diagnosis, and the test that settles it}
+\label{sec:gate_d_diagnosis}
 
-Two readings are open, and neither has been demonstrated.
+Two readings were open. One of them has now been tested and it is the
+explanation.
 
 The first is that Eq.~\eqref{eq:scd_model} is not the quantity ADAS tabulates.
 ADAS defines SCD as the \emph{ionising} coefficient, the ionisation flux
@@ -1151,25 +1154,99 @@ Since the high levels have small ionisation potentials and large ionisation
 coefficients, moving them to the wrong side of the ledger inflates the model's
 SCD by a large factor, and inflation is what is measured. The test that would
 settle it is to recompute Eq.~\eqref{eq:scd_model} over the ground-fed channel
-$\none$ alone, and it has not been run.
+$\none$ alone, and it has now been run
+(\texttt{diagnose\_gate\_d.py}).
 
-The second is that the two quantities are not defined on the same system at all.
-ADAS coefficients describe a closed atom-plus-ion system; this model holds the
-ion as a fixed external reservoir with no forty-fourth state
+The two channels separate exactly, with no approximation:
+$\nvec_E = \nzero + \none$ to a relative residual below $10^{-8}$ at every grid
+point, which the script checks before using either. Rebuilding the coefficient
+on the ground-fed channel alone,
+\begin{equation}
+  {\rm SCD}_{\rm model} = Q_{1s}
+  + \sum_{p \neq 1s} Q_p\,\frac{n^{(1)}_p}{\ngs},
+  \label{eq:scd_groundfed}
+\end{equation}
+
+\noindent and comparing against the same ADAS table, read the same way, with the
+same factor-of-two tolerance, moves the agreement from $0$ of $400$ points to
+$323$ of $400$. The ratio $\eta$ falls from a range of $5.73$ to $8346$ to a
+range of $0.130$ to $0.931$, with median $0.696$. Above
+\SI{2}{\electronvolt} it is $263$ of $280$, median $0.767$.
+
+The mechanism is visible directly. At collisional--radiative equilibrium the
+recombination-fed channel carries between \SI{89.5}{\percent} and
+\SI{99.99}{\percent} of $\sum_p Q_p n_p$, and its share rises monotonically with
+density, from \SI{97.8}{\percent} at $\SI{e12}{\per\cubic\centi\metre}$ to
+\SI{99.99}{\percent} at $\SI{e15}{\per\cubic\centi\metre}$ at
+\SI{1}{\electronvolt}. Equation~\eqref{eq:scd_model} is therefore reporting the
+recombination channel with a small ground-fed correction, which is why $\eta$
+tracks $\nel$: three-body recombination carries an extra factor of $\nel$ and
+the mislabelled flux carries it into the coefficient.
+
+\paragraph{The recombination half, built and compared for the first time.}
+The same decomposition supplies the coefficient the gate never computed. The net
+flux into the neutral ground state carried by the recombination-fed channel,
+per unit $\nel\nion$, is
+\begin{equation}
+  {\rm ACD}_{\rm model}
+  = \frac{S_{1s}\,\nion + \sum_{p \neq 1s} L_{1s,p}\,n^{(0)}_p}{\nel\,\nion},
+  \label{eq:acd_groundfed}
+\end{equation}
+
+\noindent direct radiative recombination into $1s$ plus everything that cascades
+or is collisionally transferred down into it. Against ACD96 this agrees at
+\emph{all} $400$ points, with $\eta$ between $0.729$ and $1.042$ and median
+$0.943$; at the benchmark the model gives
+$\SI{2.788e-13}{\cubic\centi\metre\per\second}$ against ADAS's
+$\SI{3.074e-13}{}$, a ratio of $0.907$.
+
+\textbf{That is the strongest external check in this thesis.} It is an absolute
+coefficient, compared against an independent database built from independent
+atomic data, agreeing to better than \SI{10}{\percent} at the benchmark and
+within a factor of two everywhere. It was available all along and was not taken,
+because the half of the gate that would have taken it was never written.
+
+The second reading was that the two quantities are not defined on the same
+system at all. ADAS coefficients describe a closed atom-plus-ion system; this
+model holds the ion as a fixed external reservoir with no forty-fourth state
 (Section~\ref{sec:two_references}). A stage-to-stage coefficient extracted from
 an open system need not equal one extracted from a closed one, and
 Section~\ref{sec:attacks} has already shown that the boundary condition moves
-$\tauslow$ by up to a factor of $41$.
+$\tauslow$ by up to a factor of $41$. \textbf{The ACD result argues against this
+being the dominant effect.} ACD is extracted from the same open system, through
+the same fixed-ion reservoir, and it agrees with ADAS to within
+\SI{6}{\percent} at the benchmark and within a factor of two at every point. An
+open-system artifact large enough to produce $\eta$ of $8346$ in SCD would not
+leave ACD intact.
+
+\paragraph{The residual SCD deficit, stated rather than dismissed.} Rebuilding
+SCD on the ground-fed channel does not make the agreement perfect, and the
+remaining disagreement is systematic in a way worth reporting: $\eta$ never
+exceeds $0.931$, so the model's ionisation is below ADAS everywhere, and the gap
+closes as temperature rises, from a median of $0.302$ over $1$ to
+\SI{1.5}{\electronvolt} to $0.817$ over $5$ to \SI{10}{\electronvolt}. That is
+the shape truncation would produce: ADAS96 carries levels above
+$n_{\max} = 15$, the levels nearest the continuum ionise most easily, and their
+contribution matters most where the ionisation is most stepwise. The measurement
+that bears on it: between \SI{9.3}{\percent} and \SI{44.9}{\percent} of the
+ground-fed ionisation flux in this model is carried by shells $n \ge 12$, the
+top four retained, and the deficit correlates with that share at $r = +0.47$ in
+logarithm. \textbf{Correlation is all that is claimed.} Temperature drives both,
+so the correlation cannot separate them, and the test that would is the
+$n_{\max}$ convergence study of Chapter~\ref{ch:limits} rather than this one.
 
 \subsection{Three further defects in the gate itself}
 
 The gate is also incompletely implemented, and this must be said alongside the
 failure rather than instead of it.
 
-The recombination half does not exist. The ACD table is loaded once, at line
-299 of \texttt{validate\_gates.py}, and the variable holding it is never read
-again anywhere in the file. Only the ionisation comparison runs, despite a docstring
-that describes both.
+The recombination half does not exist \emph{in the gate}. The ACD table is
+loaded once, at line 299 of \texttt{validate\_gates.py}, and the variable
+holding it is never read again anywhere in the file. Only the ionisation
+comparison runs, despite a docstring that describes both. That half is now
+computed in \texttt{diagnose\_gate\_d.py} and reported in
+Section~\ref{sec:gate_d_diagnosis}, where it turns out to be the comparison the
+model passes most convincingly.
 
 The interpolation is wrapped in a catch-all exception handler that sets the
 comparison value to not-a-number and continues, so a failure to find the right
@@ -1185,15 +1262,26 @@ propagated. The correct entry is the measured one: Gate~D fails.
 
 \subsection{What is claimed, and what is not}
 
-\textbf{No agreement with ADAS is claimed anywhere in this thesis.} Gate~D is
-reported as failing, with the two candidate diagnoses stated and neither
-demonstrated. It is not repaired, no tolerance is widened, and the
-$\eta$ range is not restricted to a subset that would pass.
+\textbf{Gate~D itself still fails, and it has not been changed.}
+\texttt{validate\_gates.py} is untouched: no tolerance was widened, no subset
+was selected, and \texttt{gate\_summary.txt} still records
+\SI{0}{\percent}. What has changed is that the failure now has a demonstrated
+cause rather than two undemonstrated candidates. The gate compares a mixed
+quantity against a table that keeps the two channels apart by design, which is
+a defect in the comparison and not in the matrix.
 
-What this costs is less than it first appears and more than nothing, and the
-difference should be stated precisely. It costs the thesis its only comparison of
-absolute effective coefficients against an external database, which is a real
-loss and an examiner will ask about it. It does not touch the structural results
+Deciding what Gate~D should test is a separate act from diagnosing why it fails,
+and it belongs with whoever owns the gate. What is claimed here is narrower and
+is stated with its scope: rebuilding the coefficients on the two channels
+separately gives agreement with ADAS at $323$ of $400$ points for SCD, with a
+systematic deficit consistent with the $n_{\max}$ truncation, and at $400$ of
+$400$ for ACD.
+
+What the gate's failure costs is less than it first appeared. It was read, in
+earlier drafts, as costing the thesis its only comparison of absolute effective
+coefficients against an external database. That comparison exists after all: it
+was hidden by the definition, and the recombination side of it agrees to
+\SI{6}{\percent} at the benchmark. The failure does not touch the structural results
 of Chapter~\ref{ch:theory}, which are statements about whatever $\Lmat$ is
 supplied and would hold for the ADAS-consistent matrix equally. It does not
 touch the level-resolved comparison of Section~\ref{sec:fujimoto}, which

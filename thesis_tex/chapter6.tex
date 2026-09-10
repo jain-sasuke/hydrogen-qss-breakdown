@@ -1057,7 +1057,7 @@ neutral density, which is a stronger reason to quote it as a range than
 anything the benchmark shows.
 
 %-----------------------------------------------------------------------------
-\section{The top of the level ladder, and a check that has not been run}
+\section{The top of the level ladder, and what the bundling costs}
 \label{sec:nmax}
 % QUESTION: the model stops at n=15 and bundles the levels above n=8 -- what
 % rests on the part that is approximated?
@@ -1107,14 +1107,76 @@ high $n$ that assumption is far more defensible than it would be at low $n$,
 because the sublevels are nearly degenerate and every collisional process mixes
 them, but it is assumed, not measured, and this thesis has not measured it.
 
-\subsection{The check that would close this}
+\subsection{The check, run}
+\label{sec:bundling_check}
 
-A script to quantify the effect of the bundling on the $\ell$-distribution
-within the bundled shells was written and \textbf{has never been executed}. It
-is one command. It is reported here as not run, rather than omitted, because an
-examiner reading Section~\ref{sec:ridge_alternatives} will ask for exactly this.
-\todo{Run \texttt{verify\_bundling\_psm20.py}. Written, never executed. It is
-the outstanding check named in Section~\ref{sec:ridge_alternatives}.}
+The script that quantifies this was written and, until now, never executed.
+Running it produced a result and also produced three defects in the script
+itself, which are reported here because two of them would have made its verdict
+worthless.
+
+\paragraph{What the script could not do.} It promised to test the bundled
+shells against the pipeline's own $\ell$-mixing array, and that is impossible:
+the array is identically zero for states $36$ to $42$, in both directions,
+because $\ell$-mixing was computed for the resolved block alone. The file
+contains nothing to test. The comparison has to be made against the rate
+\emph{function} rather than the rate table, and the function is the one
+\texttt{compute\_lmix.py} used to build the resolved block, so it is the model's
+own rate rather than a second one. Calling it at $n = 2$ to $8$ reproduces the
+stored array to $1.0000$, which is a wiring check and not a physical
+confirmation; it establishes only that the rate carried up to the bundled
+shells is the same function with the same arguments.
+
+\paragraph{The two defects that would have inverted the answer.} The script
+carried its own Pengelly--Seaton expression, independent of the pipeline's,
+which disagrees with the rate the model actually uses by a factor of $95$ at
+$n = 2$ rising to $5.6\times10^{3}$ at $n = 8$, growing roughly as $n^{2}$. Used
+as written, it would have reported the mixing rate two to three orders of
+magnitude below its true value and could have returned a verdict of marginal
+where the answer is not close. It is deleted rather than corrected: a
+verification script has no business maintaining a second implementation of a
+rate the pipeline already computes. The script also fell back on a synthesised
+logarithmic temperature grid of its own when the pipeline's grid files were
+absent,
+printing a warning and continuing, which is the failure mode described in
+Chapter~\ref{ch:validation}: every ratio would have carried a correct-looking
+label attached to conditions the model was never evaluated at. It now raises.
+
+\paragraph{The result.} The criterion is that the $\ell$-mixing rate out of the
+$np$ substate, the substate the Lyman channel empties fastest, must exceed that
+substate's total radiative rate. Over the seven bundled shells and all $400$
+grid points, the ratio is above the well-mixed threshold of $10$ at every one of
+the $2800$ combinations. The worst case is $n = 9$ at
+$\Te = \SI{1}{\electronvolt}$, $\nel = \SI{e12}{\per\cubic\centi\metre}$, where
+the mixing rate is $\SI{1.155e10}{\per\second}$ against
+$A(9p) = \SI{7.51e6}{\per\second}$, a margin of $1538$, that is, a factor $154$
+clear of the threshold (\texttt{verify\_bundling\_psm20.py},
+\texttt{outputs/bundling/bundling\_report.txt}).
+
+Two inputs to that comparison were checked rather than assumed. The Einstein
+coefficients $A(np\to1s)$ for $n = 9$ to $15$ are hardcoded in the script,
+because the model's own radiative file resolves $\ell$ only to $n = 8$ and has
+nothing to read above it. Since $A(np\to1s)\,n^{3}$ tends to a constant for
+hydrogen, the model's resolved values and the hardcoded table must lie on one
+curve: they do, with a step of \SI{0.43}{\percent} across the boundary at
+$n = 8$ to $9$ and a monotone approach to $4.13\times10^{9}$ at $n = 15$. And
+the $\ell$-mixing coefficient carries a Debye cutoff frozen at
+$\nel = \SI{e14}{\per\cubic\centi\metre}$, because the array has no density
+axis. That freezing is not small: re-evaluating the cutoff at the local density
+changes the $n = 15$ rate by a factor $20$ upward at
+\SI{e12}{\per\cubic\centi\metre} and a factor $30$ downward at
+\SI{e15}{\per\cubic\centi\metre}. It does not move the verdict, because the
+worst ratio is $1538$ with the freezing and $3.26\times10^{4}$ without it, and
+both clear $10$ by more than two orders of magnitude.
+
+\paragraph{What this closes and what it does not.} It closes the question of
+whether the bundled shells \emph{would} be statistical if the mixing were
+present: they would, by three orders of magnitude, and the assumption is the
+right one to make. It does not close the terminal-shell over-population above,
+which is a different defect with a different cause, and it does not make the
+bundled block's $\ell$-distribution a computed quantity. It remains assumed.
+The contribution of this check is that the assumption now has a number
+attached.
 
 %-----------------------------------------------------------------------------
 \section{Remaining assumptions, and the sensitivities that are known}

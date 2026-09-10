@@ -146,10 +146,14 @@ $\epsplat$ at the same points changes by up to a factor $8.44$. A percentage
 quoted without its step is not a property of the plasma; $G$ very nearly is.
 Both figures are direct reductions of
 \texttt{validation/reservoir\_gain/reservoir\_gain.csv} ($2288$ rows, stamped
-10 September 2026). \emph{[UNVERIFIED: no script in the repository performs
-these two aggregations. What would close this: a reduction script that writes
-the spread of $|G|$ and the range of $\epsplat$ over $k$ to \texttt{validation/}
-alongside the table it summarises.]}
+10 September 2026). Both aggregations are performed by
+\texttt{verify\_reservoir\_gain.py} and written to
+\texttt{validation/reservoir\_gain/reservoir\_gain\_summary.csv}, one row per
+filter, because the same quantity over a different filter is a different number
+and this is where the two used to be confused. The spread of $|G|$ is $1.039$ to
+$1.065$ over $368$ heating triples and $1.039$ to $1.067$ over $368$ cooling
+triples; the spread of $\epsplat$ over the same points is $2.27$ to $8.44$
+heating and $2.33$ to $4.70$ cooling.
 
 \paragraph{The scale, before anyone computes anything.} Over the $982$ heating
 steps of that file that have a resolvable plateau window, $|\overline{S}|$ runs
@@ -440,11 +444,12 @@ molecular emissivity fractions of $0.60$ and $0.30$ at $n=3$ and $n=4$ reduces
 the cold-corner plateau error by a factor of $3$ to $5$
 (\texttt{findings\_10}~ADDENDUM~D.4). That bound applies to the cold corner,
 which lies outside the defended range in any case.
-\emph{[UNVERIFIED: Section~\ref{sec:molecules} states that no bound on the
-molecular effect can be constructed from the data in this repository, and
-ADDENDUM~D.4 constructs one from the two references cited in that same section.
-The two statements are inconsistent. This chapter quotes the bound because it
-exists; the reconciliation belongs in Chapter~\ref{ch:limits}.]}
+The bound is built in Section~\ref{sec:molecules} from the emissivity
+fractions cited there, not computed from a matrix containing molecules, and it
+inherits every uncertainty in those fractions. An earlier draft of this chapter
+recorded the two chapters as contradicting each other on whether a bound could
+be constructed at all; Section~\ref{sec:molecules} constructs one, and this
+paragraph quotes it with the same caveats.
 
 \paragraph{The density maximum is a range, not a density.} It lies between
 $7\times10^{12}$ and \SI{5e13}{\per\cubic\centi\metre}, resolved to about a

@@ -238,6 +238,69 @@ def main() -> int:
             w.writeheader()
             w.writerows(rows)
         print(f"  wrote {out/'reservoir_gain.csv'}  ({len(rows)} rows)")
+
+        # The aggregations chapter 7 quotes. They were previously computed by
+        # reading the csv by hand, which is why chapter7.tex carried an
+        # [UNVERIFIED] saying no script performed them. It does now, and every
+        # aggregate is written with the filter that produced it, because the
+        # same quantity over a different filter is a different number and this
+        # file is where the two get confused.
+        def agg(name, sel, key):
+            v = np.array([abs(r[key]) for r in rows if sel(r)])
+            if v.size == 0:
+                raise RuntimeError(f"filter '{name}' selected no rows")
+            return dict(filter=name, quantity=key, n=int(v.size),
+                        min=float(v.min()), median=float(np.median(v)),
+                        max=float(v.max()))
+
+        summ = []
+        for dlab in ("heat", "cool"):
+            sub = [r for r in rows if r["direction"] == dlab]
+            pts = sorted({(r["i"], r["j"]) for r in sub})
+            gs, es = [], []
+            for (i, j) in pts:
+                rr = {r["k"]: r for r in sub if r["i"] == i and r["j"] == j}
+                if set(a.steps) - set(rr):
+                    continue
+                gv = np.array([abs(rr[k]["G"]) for k in a.steps])
+                ev = np.array([rr[k]["eps"] for k in a.steps])
+                gs.append(gv.max() / gv.min())
+                if ev.min() > 0:
+                    es.append(ev.max() / ev.min())
+            gs, es = np.array(gs), np.array(es)
+            summ.append(dict(filter=f"{dlab}, all of k={a.steps}",
+                             quantity="spread of |G| across k", n=int(gs.size),
+                             min=float(gs.min()), median=float(np.median(gs)),
+                             max=float(gs.max())))
+            summ.append(dict(filter=f"{dlab}, all of k={a.steps}",
+                             quantity="spread of eps across k", n=int(es.size),
+                             min=float(es.min()), median=float(np.median(es)),
+                             max=float(es.max())))
+        summ.append(agg("all rows", lambda r: True, "G"))
+        summ.append(agg("all rows", lambda r: True, "Sbar"))
+        summ.append(agg("k=1 heating, window_ok",
+                        lambda r: r["k"] == 1 and r["direction"] == "heat"
+                        and r["window_ok"], "Sbar"))
+        summ.append(agg("k=1 heating, window_ok",
+                        lambda r: r["k"] == 1 and r["direction"] == "heat"
+                        and r["window_ok"], "G"))
+        summ.append(agg("heating, window_ok, any k",
+                        lambda r: r["direction"] == "heat" and r["window_ok"],
+                        "Sbar"))
+        summ.append(agg("heating, window_ok, any k, Te >= 2 eV",
+                        lambda r: r["direction"] == "heat" and r["window_ok"]
+                        and r["Te"] >= 2.0, "Sbar"))
+        summ.append(agg("heating, window_ok, any k, Te >= 2 eV",
+                        lambda r: r["direction"] == "heat" and r["window_ok"]
+                        and r["Te"] >= 2.0, "G"))
+        with (out / "reservoir_gain_summary.csv").open("w", newline="") as fh:
+            w = _csv.DictWriter(fh, fieldnames=list(summ[0].keys()))
+            w.writeheader()
+            w.writerows(summ)
+        print(f"  wrote {out/'reservoir_gain_summary.csv'}  ({len(summ)} rows)")
+        for s in summ:
+            print(f"    {s['quantity']:<26} [{s['filter']:<38}] n={s['n']:>5}  "
+                  f"{s['min']:.4g} to {s['max']:.4g}, median {s['median']:.4g}")
     return 0
 
 

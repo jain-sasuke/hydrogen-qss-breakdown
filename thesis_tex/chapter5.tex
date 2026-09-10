@@ -367,12 +367,19 @@ over rows $0$ to $15$ is $[4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3]$
 (\texttt{findings\_10}~\S1.2). And a parabolic fit in $\ln\nel$ through the
 three columns around the maximum places its vertex at
 $\SI{1.65e13}{\per\cubic\centi\metre}$, a \SI{15}{\percent} shift off the grid
-node \emph{[UNVERIFIED: the parabolic vertex $1.65\times10^{13}$ is recorded in
-\texttt{findings\_10}~\S B.3 as prose only. No script in the repository
-computes it and no artifact under \texttt{validation/} stores it. What would
-close this: a sub-grid fit written into
-\texttt{verify\_eps\_gridmap.py} that stamps its vertex and residual to
-\texttt{validation/}.]}
+node. That fit is now performed on every row
+(\texttt{verify\_crest\_subgrid.py}, stamped to
+\texttt{validation/crest\_subgrid/crest\_vertices.csv}), and the result needs
+two qualifications the single number does not carry. Over the $49$ rows with an
+interior maximum the vertex runs from $\SI{1.45e13}{}$ to
+\SI{3.71e13}{\per\cubic\centi\metre} with median
+\SI{1.62e13}{\per\cubic\centi\metre}, so $\SI{1.65e13}{\per\cubic\centi\metre}$
+is the median rather than the value, and the row-to-row spread is a factor
+$2.6$. And a parabola through three points is an interpolation with no residual
+to report: refitting through five points where five exist moves the vertex by
+between $-3.4$ and $+\SI{9.6}{\percent}$, median \SI{0.27}{\percent}. \textbf{A
+sub-grid fit locates the crest to about \SI{10}{\percent} at best}, which is why
+this chapter reports the crest as a range
 
 Reporting a single density would also overstate what this result is about. The
 crest belongs to the $n=3$ and $n=4$ pair specifically. An
@@ -795,11 +802,25 @@ rest of the chapter maps, it is arguably the more severe of the two for a
 practitioner, and it is visible only because $\epsstep$ was computed and kept
 rather than discarded as uninteresting.
 
-The scan above is one density column. \emph{[UNVERIFIED: whether the locus
-$\partial\ln\Robs/\partial\ln\Te = 0$ crosses the operating range at other
-densities has not been mapped. What would close this: evaluate $\epsstep$ on
-the full grid, which \texttt{verify\_plateau\_gridmap.py} already does, and
-contour its minimum.]}
+The scan above is one density column, and the locus is not confined to it.
+Evaluating $\Rcre$ on the full grid and locating where
+$\partial\ln\Robs/\partial\ln\Te$ changes sign
+(\texttt{verify\_crest\_subgrid.py},
+\texttt{validation/crest\_subgrid/eps\_step\_locus.csv}) puts a stationary point
+inside the operating range in \textbf{six of the eight density columns}, at
+\SIrange{5.18}{8.69}{\electronvolt}, moving to higher temperature as the density
+rises. It leaves the range only at the two highest densities,
+$\nel \ge \SI{3.73e14}{\per\cubic\centi\metre}$, where $\Robs$ is monotone in
+$\Te$ throughout and the smallest $\epsstep$ on the column is
+$1.1\times10^{-3}$ rather than the $10^{-5}$ to $10^{-4}$ found elsewhere.
+
+Where the locus exists the diagnostic is locally blind: a temperature excursion
+of any size moves the tabulated ratio by almost nothing, so the inversion cannot
+see it at all. \textbf{That is a different failure from the one this thesis
+maps, and a worse one for a practitioner, because it has no transient in it and
+persists in steady state.} It is reported here and not pursued. It also bears on
+the non-uniqueness of the inversion: a stationary point in $\Robs(\Te)$ is a
+fold, and on either side of it two temperatures return the same ratio.
 
 %-----------------------------------------------------------------------------
 \section{Where the error is largest, and why}
@@ -1009,10 +1030,15 @@ and is a different experiment, not tested here.
 \emph{Truncation.} The model resolves $n\le8$ and bundles $n=9$--$15$. The
 mechanism turns on the difference between the $n=3$ and $n=4$ supply fractions,
 both fully resolved, but those fractions depend on the recombination flux
-cascading from above, which the bundling approximates. \emph{[UNVERIFIED: the
-sensitivity of the crest to $n_{\max}$ has not been tested.
-\texttt{src/validation/verify\_bundling\_psm20.py} exists for this purpose and
-has never been run.]}
+cascading from above, which the bundling approximates. Two things have since
+been separated here that this alternative ran together.
+\texttt{verify\_bundling\_psm20.py} has now been run
+(Section~\ref{sec:bundling_check}) and it answers a different question: whether
+the bundled shells would be statistical in $\ell$ if the mixing were present.
+They would, by three orders of magnitude. \emph{[UNVERIFIED: the sensitivity of
+the crest \emph{position} to $n_{\max}$ is still untested. What would close it
+is rebuilding $\Lmat$ at $n_{\max} = 12$ and $20$ and relocating the crest,
+which needs the rate pipeline rerun rather than a validation script.]}
 
 \emph{The population set.} Two of the scripts used here apply different filters:
 \texttt{verify\_plateau\_gridmap.py} excludes the $54$ points with no plateau

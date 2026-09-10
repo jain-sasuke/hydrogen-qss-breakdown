@@ -190,14 +190,28 @@ the reading would change by if the plasma re-equilibrated instantly. The
   \epsplat = \left|\frac{\Rpe}
                         {\Rcre(\Te+\dTe,\nel)} - 1\right|,
   \qquad
-  \Rpe \equiv \Rqss\!\left(\Te+\dTe,\nel;\,\bdep^-\right),
+  \Rpe \equiv \Rqss\!\left(\Te+\dTe,\nel;\,u^-\right),
   \label{eq:eps_plateau_def}
 \end{equation}
 
 \noindent is the distance between the tabulated answer and the state the plasma
 occupies once the excited manifold has settled but before the ground state has
 moved: the post-step excited response of Eq.~\eqref{eq:qss_ratio}, evaluated on
-the \emph{pre-step} reservoir. Both are dimensionless, both are non-negative,
+the \emph{pre-step} reservoir.
+
+\textbf{The third argument is $u^- = \ngs^-/\nion$ and not $\bdep^-$, and the
+difference is a factor of $24$.} What is frozen across the step is the
+ground-state \emph{population}, which is what transport and ionisation would
+have to change. The departure coefficient is not frozen with it, because
+$\bdep = u/(\Zsb{1}(\Te)\nel)$ carries the Saha coefficient and $\Zsb{1}$ moves
+when $\Te$ does. Holding $\bdep^-$ instead of $u^-$ at the benchmark gives
+$\epsplat = 0.00267$ rather than $0.0636$, because $\bdep^{\mathrm{CRE}}$ shifts
+by only \SI{1.3}{\percent} across one interval, from $956.5$ to $968.9$, while
+$u$ shifts by \SI{23.6}{\percent}. An earlier draft wrote $\bdep^-$ here; the
+code has always frozen the population
+(\texttt{verify\_reservoir\_gain.py}, line 143), so no computed number was
+affected, but the definition as printed did not support the error the chapter
+reports. Both are dimensionless, both are non-negative,
 and both are zero for a zero step.
 
 Keeping them separate matters because they are not close. Across the operating
@@ -624,10 +638,16 @@ and $\overline{S}$ together and leaves $\epsplat$ unchanged, which is why the
 tables report $|\overline{S}|$ and $|G|$. The convention is spelled out because
 an earlier draft defined $\Delta\ln u$ with the opposite orientation from the
 script that computes it; the two disagreed about the sign of $G$ while agreeing
-about every error. Since $\ffrac{3},\ffrac{4}\in[0,1]$ by
-Section~\ref{sec:ground_fed_fraction}, and $\overline{S}$ is an average of their
-difference, $|\overline{S}|$ is bounded by the peak sensitivity of
-Eq.~\eqref{eq:peak_sensitivity} and so is strictly less than unity everywhere.
+about every error.
+
+Since $\ffrac{3},\ffrac{4}\in[0,1]$ by Section~\ref{sec:ground_fed_fraction},
+and $\overline{S}$ is an average of their difference, $|\overline{S}| < 1$
+everywhere. That is the universal bound and it follows from positivity alone.
+The sharper $|\overline{S}| \le \tanh(|\Delta|/4)$ of
+Eq.~\eqref{eq:peak_sensitivity} is a separate statement resting on the
+unit-width logistic, and Section~\ref{sec:bound} keeps the two apart
+deliberately; an earlier draft here derived the sharper one from
+$\ffrac{m}\in[0,1]$, which yields only the weaker.
 Exponentiating gives the plateau error:
 \begin{equation}
   \boxed{\ \epsplat = \left|\,\mathrm{e}^{\overline{S}\,\Delta\ln u} - 1\,\right|\ }
@@ -691,9 +711,19 @@ the modulus,
 \end{equation}
 
 \noindent which is the form to differentiate if anything downstream needs a
-derivative. At the benchmark point it is $1.31$, at $[15,3]$ it is $3.54$ and
-at $[0,4]$ it is $6.96$, all computed as $|\overline{S}G|$ from the values in
-Table~\ref{tab:gain}. Read the middle one as: in the worst conditions this
+derivative. In fact Eq.~\eqref{eq:signed_response} holds as an exact identity at
+every finite step, not merely in the limit, because $\overline{S}$ and $G$ are
+both defined as secants over the step actually taken; writing it as a limit is
+weaker than the truth and the limit is kept only to make the comparison with a
+derivative explicit.
+
+At one grid interval $|\overline{S}G|$ is $1.31$ at the benchmark, $3.54$ at
+$[15,3]$ and $6.96$ at $[0,4]$, computed from the values in
+Table~\ref{tab:gain}. \textbf{Those are one-interval secants, not the zero-step
+limit.} Extrapolating linearly in the number of intervals to $k\to0$ gives
+$1.25$, $3.66$ and $7.41$, so the secant sits $5.1$, $3.5$ and
+\SI{6.4}{\percent} from the tangent at the three points, and the two should not
+be quoted interchangeably. Read the middle one as: in the worst conditions this
 thesis defends, a \SI{1}{\percent} temperature transient costs the Balmer
 inversion about \SI{3.5}{\percent} in the line ratio.
 
@@ -723,9 +753,10 @@ Table~\ref{tab:gain} are recorded in \texttt{outputs/pivot\_decision.md}~\S4 as
 measured on 10 September 2026 against the canonical matrix. No script in the
 repository computes them and no artifact under \texttt{validation/} stores
 them. The three $k=1$ entries can be checked against artifacts that do exist,
-and all three pass. One grid interval is $\Delta\ln\Te = 0.046984$, so
-$|G|\,\Delta\ln\Te$ predicts $|\Delta\ln u| = 0.2695$, $0.3649$ and $0.6781$ at
-the three points, against measured values of $0.2694$ (recovered below from
+and all three pass. One grid interval is
+$\Delta\ln\Te = \ln(10)/49 = 0.0469915$, so
+$|G|\,\Delta\ln\Te$ predicts $|\Delta\ln u| = 0.2695$, $0.3649$ and $0.6783$ at
+the three points, against measured values of $0.2695$ (recovered below from
 $\epsplat$ and $\overline{S}$ at the benchmark), $0.3649$
 (\texttt{verify\_ridge\_mechanism.py}, quoted in
 \texttt{CH5\_EVIDENCE.md}~\S4.4) and $0.6783$
@@ -753,13 +784,35 @@ Figure~\ref{fig:structural_maps} maps both coefficients and their product over
 the grid. The two carry different information and different scopes:
 $|\overline{S}|$ belongs to the line pair and would change if a different
 $\alpha/\beta$ ratio were chosen, while $|G|$ belongs to the plasma and would
-not. Panel (c) is the product, the near-step-independent quantity this chapter
-reports in place of a percentage. Across step sizes of one, two and four grid
-intervals at the 736 points that carry all three, $|G|$ varies by at most
-\SI{6.74}{\percent}, with median $1.0555$, while $\epsplat$ over the same
-points varies by up to a factor $8.44$
-(\texttt{verify\_reservoir\_gain.py}). That contrast is the whole reason for
-the reframing.
+not. Panel (c) is the product, the coefficient this chapter
+reports in place of a percentage.
+
+\textbf{Step dependence is not the same for all three, and the ordering is the
+point.} Across step sizes of one, two and four grid intervals at the $736$
+points carrying all three, the max-to-min spread is
+
+\begin{center}
+\begin{tabular}{lrr}
+  \toprule
+  quantity & median spread & worst \\
+  \midrule
+  $|G|$              & $1.0555$ & $1.0674$ \\
+  $|\overline{S}|$   & $1.1853$ & $1.7366$ \\
+  $|\overline{S}G|$  & $1.1625$ & $1.8492$ \\
+  $\epsplat$         & $3.7319$ & $8.4437$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent so $|G|$ is the near-step-independent quantity, varying by at most
+\SI{6.7}{\percent}, and the product is not: it moves by up to \SI{85}{\percent}
+because the sensitivity $|\overline{S}|$ carries most of the residual step
+dependence (\texttt{verify\_reservoir\_gain.py}). An earlier draft called the
+product near-step-independent, which the same table refutes. What justifies
+reporting the product rather than a percentage is weaker but still decisive: it
+is stable to a factor $1.85$ where $\epsplat$ moves by $8.44$, so a coefficient
+quoted with its step is a far more portable number than an error quoted with
+its step.
 
 \begin{figure}[tbp]
   \centering
@@ -774,14 +827,16 @@ The chain closes arithmetically, and it is worked with signs rather than
 magnitudes so that the convention above can be checked rather than trusted. At
 $[23,5]$ the mean sensitivity over the step is $\overline{S} = -0.2288$
 (\texttt{findings\_10} ADDENDUM~B.2, which lists $|\overline{S}|$ alongside
-$\Delta = 1.9403$ and $\tanh(\Delta/4) = 0.4503$ at that point), the gain is
-$G = -5.736$, and one heating interval is $\Delta\ln\Te = +0.046984$. Two
-negatives and a positive give
+$\Delta = 1.9403$ and $\tanh(\Delta/4) = 0.4503$ at the \emph{post-step}
+operator $[24,5]$, which is the one the bound of
+Eq.~\eqref{eq:Sbar_bound} refers to), the gain is
+$G = -5.736$, and one heating interval is
+$\Delta\ln\Te = \ln(10)/49 = +0.0469915$. Two negatives and a positive give
 \begin{equation*}
-  \overline{S}\,G\,\Delta\ln\Te = (-0.2288)\times(-5.736)\times(+0.046984)
-  = +0.06166,
+  \overline{S}\,G\,\Delta\ln\Te = (-0.2288)\times(-5.736)\times(+0.0469915)
+  = +0.061672,
   \qquad
-  \mathrm{e}^{+0.06166} - 1 = +0.0636 ,
+  \mathrm{e}^{+0.061672} - 1 = +0.063613 ,
 \end{equation*}
 %
 against the $0.063612$ that \texttt{verify\_plateau\_gridmap.py} obtains for the
@@ -834,9 +889,20 @@ Eq.~\eqref{eq:peak_sensitivity}. Since $\overline{S}$ of
 Eq.~\eqref{eq:Sbar_def} is an average of $\ffrac{3}-\ffrac{4}$ over an
 interval, it inherits the bound:
 \begin{equation}
-  \big|\overline{S}\big| \;\le\; \tanh\!\left(\frac{|\Delta|}{4}\right) \;<\; 1 .
+  \big|\overline{S}\big| \;\le\; \tanh\!\left(\frac{|\Delta|}{4}\right) \;<\; 1 ,
+  \qquad \Delta \text{ evaluated on the \emph{post-step} operator.}
   \label{eq:Sbar_bound}
 \end{equation}
+
+\noindent The qualifier is load-bearing and was missing from an earlier draft.
+$\overline{S}$ averages $\ffrac{3}-\ffrac{4}$ along the post-step curve, so the
+displacement that caps it is the post-step one. Tested over all $2288$ rows of
+\texttt{reservoir\_gain.csv}, the bound holds with \textbf{zero} exceptions when
+$\Delta$ is read on the post-step operator, and is violated at $101$ of them,
+\SI{4.4}{\percent}, worst excess $0.0087$, when it is read on the pre-step
+operator that labels each row. The natural reading of a row label is the wrong
+one here, which is why the condition belongs in the equation rather than in the
+reader's head.
 
 Three properties make this worth stating separately from the algebra that
 produced it.

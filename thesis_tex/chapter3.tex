@@ -1354,7 +1354,10 @@ $\int_{-\infty}^{+\infty}(\ffrac{3}-\ffrac{4})\,\mathrm{d}\ln\bdep =
 \ln\Robs^{\rm grd} - \ln\Robs^{\rm rec} = \Delta$. The limits are not
 decoration: the identity is a sum rule over the full excursion from
 purely recombination-fed to purely ground-fed, and an integral over any finite
-interval is smaller. Chapter~\ref{ch:results} uses a finite-interval version of
+interval is smaller \emph{in magnitude}. The magnitude matters because the
+integrand keeps a fixed sign only while $\Delta > 0$, which holds for the
+$(3,4)$ pair; for a pair taken in the opposite order the integrand is negative
+throughout and every finite-interval integral is larger, not smaller. Chapter~\ref{ch:results} uses a finite-interval version of
 the same integral for a different purpose, to define a mean sensitivity over the
 excursion a real step produces, and the two must not be confused. That second relation is only the fundamental
 theorem of calculus, and it is quoted here for what it is, a consistency check
@@ -1402,9 +1405,14 @@ Eq.~\eqref{eq:two_supplies} gives
   \label{eq:emissivity_two_channel}
 \end{equation}
 
-\noindent and $A_\alpha, C_\alpha \ge 0$ because $\bm{a}$ and $\bm{c}$ are
-non-negative elementwise and $\bm{w}_\alpha$ is a vector of transition
-probabilities. \textbf{That is the same affine form with the same positivity},
+\noindent where $\bm{w}_\alpha$ carries $h\nu A$ on the levels the line drains,
+in energy per unit time, and $A_\alpha, C_\alpha \ge 0$ because $\bm{a}$ and
+$\bm{c}$ are non-negative elementwise and $\bm{w}_\alpha$ is non-negative. The
+logistic form needs the \emph{strict} inequality, since $A_\alpha = 0$ would put
+the switching point at infinity, and strictness follows from
+$-\Lmat_{FF}^{-1}$ being strictly positive here rather than merely
+non-negative; it is confirmed numerically below.
+\textbf{That is the same affine form with the same positivity},
 so the line ratio
 $j_\alpha/j_\beta = (A_\alpha u + C_\alpha)/(A_\beta u + C_\beta)$ is
 affine-over-affine in the reservoir exactly as the shell ratio is, and every
@@ -1431,7 +1439,11 @@ vector cancels out of $\Delta_j$, so a photon-counting detector and an
 energy-weighted one must return the \emph{same} $\Delta_j$ even though their
 emissivities differ by $h\nu$. Measured, the two agree to
 $7\times10^{-16}$. \textbf{The displacement that sets the bound is a property of
-the atomic network and not of the detector.}
+the atomic network and not of the detector.} The cancellation is exact because
+every channel of a given line carries the same $h\nu$ in this model, the levels
+being degenerate in $\ell$; with fine structure resolved the two weightings
+would differ within a line and the agreement would be approximate rather than
+exact.
 
 \paragraph{How far the shell ratio was from the observable.} Over the grid
 $\Delta_j$ runs from $0.673$ to $2.196$ against $0.711$ to $2.199$ for the shell
@@ -1441,9 +1453,11 @@ $\Delta$, a median disagreement of \SI{0.134}{\percent} and a worst case of
 $1.9456$, and the cap is $0.4511$ against $0.4514$. The worst case sits at
 $\Te = \SI{10}{\electronvolt}$, $\nel = \SI{e12}{\per\cubic\centi\metre}$, the
 low-density corner, for the reason Section~\ref{sec:balmer_equivalence} gives:
-$4f$ holds \SI{43.75}{\percent} of the $n=4$ shell and contributes exactly zero
-to $H_\beta$, and $\ell$-mixing is weakest there, so the shell and the line
-disagree most about what $n=4$ contains.
+$4f$ contributes exactly zero to $H_\beta$ while carrying a large share of the
+$n=4$ shell, $14/32 = \SI{43.75}{\percent}$ by statistical weight and
+\SI{43.66}{\percent} as actually populated at that corner. The two differ
+precisely because $\ell$-mixing is weakest there, which is also why the shell
+and the line disagree most about what $n=4$ contains.
 
 The shell ratio was therefore a good proxy, and this subsection means the thesis
 no longer needs it to be one. \textbf{Section~\ref{sec:balmer_equivalence}'s
@@ -1467,7 +1481,11 @@ temperature is
 \noindent Both derivatives are taken at fixed $\nel$, and the relation is a
 local linearisation: it is exact only in the limit of small $\delta\ln\bdep$,
 and Chapter~\ref{ch:results} uses the exact finite-step form in its place
-wherever a number is quoted.
+wherever a number is quoted. It also requires the denominator to be non-zero,
+which is not a formality: Section~\ref{sec:inversion_jacobian} finds
+$\mathrm{d}\ln\Rcre/\mathrm{d}\ln\Te$ passing through zero inside the operating
+range on six of the eight density columns, and there the quotient diverges and
+the inversion has no temperature resolution at all.
 
 \textbf{If $\nel$ is not known independently, one ratio is not enough.} Two
 unknowns need two observables, and the honest local statement is a Jacobian
@@ -1482,7 +1500,17 @@ $\Robs^{(2)}$,
   \label{eq:inversion_2x2}
 \end{equation}
 
-\noindent and the amplification is governed by the conditioning of $\bm{J}$
+\noindent where $\bm{J}$ is the Jacobian of $(\ln\Robs^{(1)},\ln\Robs^{(2)})$
+with respect to $(\ln\Te,\ln\nel)$, and the inversion exists only where
+$\det\bm{J} \ne 0$. That condition is the classical failure mode of
+two-ratio diagnostics rather than a technicality, because the two families of
+contours in the $(\Te,\nel)$ plane can run nearly parallel over wide regions.
+To parallel Eq.~\eqref{eq:inversion_jacobian}, a reservoir displacement
+$\delta\ln\bdep$ enters as
+$(\delta\ln\Te, \delta\ln\nel)^{\mathsf T} = \bm{J}^{-1}
+(\partial\ln\Robs^{(1)}/\partial\ln\bdep,\,
+\partial\ln\Robs^{(2)}/\partial\ln\bdep)^{\mathsf T}\,\delta\ln\bdep$,
+and the amplification is governed by the conditioning of $\bm{J}$
 rather than by a single quotient. Chapter~\ref{ch:intro} already noted that one
 ratio is one constraint on two unknowns and that practice supplies a second;
 Eq.~\eqref{eq:inversion_jacobian} is what that second constraint buys.

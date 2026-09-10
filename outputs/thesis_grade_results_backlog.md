@@ -715,3 +715,209 @@ committed one at any of 400 points; ε_plateau ≤ ε_step at any of 680 pairs; 
 non-negative eigenvalue anywhere (max Re λ = −1.487e−02); complex eigenvalues
 (max |Im|/|λ| = 0); a filtered/unfiltered ε_step difference; an eigenvalue
 condition number large enough to put λ₀ at the roundoff floor.
+
+---
+
+# SESSION REGISTER — 9 to 10 September 2026
+
+Ten review passes: four on `thesis_ready.md` PART A, three verification agents,
+and Gates 1, 3 and 4 of the ten-gate thesis system. All ran read-only against
+`L_grid.npy` SHA-256 `2d92b58e…59224e`. Full accounts in
+`findings_10_four_agent_review.md` (four addenda), `claim_hierarchy.md`,
+`pivot_decision.md` and `CHANGE_REPORT.md`.
+
+## F. IDEAS CLOSED BY THIS SESSION
+
+### C1. Map μ(L) across the grid — ✅ Verified, closed
+
+Measured over all 400 points: **min 3.396×10⁸, max 1.513×10¹², benchmark
+1.2841×10¹¹ s⁻¹**, reproducing CLAUDE.md's +1.28×10¹¹. μ(L) > 0 everywhere, so
+the operator is non-normal at every grid point.
+
+**The question C1 actually asked was whether μ(L) predicts the QSS error better
+than M does. It does not, and neither does M.** ADDENDUM D and the correlation
+work show M and ε are uncorrelated once (Te, ne) is controlled. There is no
+predictive non-normality criterion here. Recording the negative result closes
+the idea; a *predictive* criterion was the only thing that would have made it a
+thesis result.
+
+### C2. Participation ratio across the spectrum — ✅ Verified, closed
+
+PR(v₀) = 1.00, trivially, because λ₀ is the ground-state mode. **PR(v₁) = 2.64
+at the benchmark and 1.88 at [49,7].**
+
+This closes C2 and simultaneously **refutes a sentence in Chapter 3**:
+`chapter3.tex:444-446` describes v₁ as "distributed across the excited
+manifold", which PR ≈ 2 contradicts. The chapter also quotes PR for v₀ only,
+where it carries no information, and describes v₁ verbally. Quote both or
+neither. See also the norm collision at W3 in ADDENDUM to Gate 4: v₁'s
+ground-state weight is 1.0000 in the raw measure and 1.9×10⁻⁴ in the
+population-scaled one, and two adjacent sentences use different norms without
+naming either.
+
+### C6. Truncation sensitivity — ✅ Verified, closed. This is validation ladder rung 6.
+
+f₃−f₄ against n_max, increments decaying geometrically with ratio ≈ 0.75:
+
+| point | n=10 | 12 | 14 | **15** | extrapolated n→∞ |
+|---|---|---|---|---|---|
+| benchmark [23,5] | 1.3870e-2 | 1.4494e-2 | 1.4701e-2 | **1.4759e-2** | ≈1.490e-2, **+0.9%** |
+| cold corner [0,0] | 2.1168e-1 | 2.0498e-1 | 2.0203e-1 | **2.0109e-1** | ≈1.98e-1, **−1.4%** |
+| ridge [0,4] | 5.3830e-2 | 5.3288e-2 | 5.3024e-2 | **5.2936e-2** | ≈5.265e-2, **−0.55%** |
+
+Truncation makes f₃−f₄ slightly **too large** at cold points and **too small**
+at the benchmark. It is a 1% effect, not a mechanism. Independently consistent
+with Σα_RR(n≥2,≤15) capturing 90% of α_B.
+
+**A methodological warning that must travel with this result.** A truncation
+test that drops states without removing their loss channels from the diagonal
+produces a spurious 22 to 37 percent jump between n_max = 14 and 15 that looks
+exactly like a headline finding. It is an artifact. The correct sub-model adds
+back Σ_{k dropped} L[k,i] to L[i,i]. The production matrix is self-consistently
+truncated (column sums = −K_ion·n_e to 2.2×10⁻¹²).
+
+**Bonus result, closing an open `\todo` in Chapter 6.** Terminal-shell
+over-population measured internally, comparing each shell as terminal against
+interior: **9.4× at p=8, 10.7× at p=9, 6.3× at p=10, 4.4× at p=11, 3.1× at
+p=12.** The 4.9 to 6.2× excess observed at p=15 against Fujimoto sits inside
+this band. This is an internal measurement, which is stronger than the
+inference from the external table it replaces.
+
+## G. NEW RESULTS FROM THIS SESSION
+
+### G1. The reservoir gain G is step-independent where ε is not ✅ Verified
+
+**The result the thesis now headlines.** With ε = |exp(S̄·G·Δln Te) − 1| and
+G ≡ d ln u/d ln Te, measured over all 368 points carrying k = 1, 2, 4
+(`verify_reservoir_gain.py`, `validation/reservoir_gain/reservoir_gain.csv`,
+2288 rows):
+
+| | median spread across k | maximum |
+|---|---|---|
+| \|G\| | 1.0549 | **1.0652** |
+| ε | 4.49 | **8.44** |
+
+**|G| varies by at most 6.5% where ε varies by up to a factor 8.4.** Grid-wide
+|S̄| runs 0.065 to 0.482 and |G| runs 2.64 to 14.52; the invariant
+dε/d ln Te = |S̄·G| runs 0.362 to 6.960, median 1.522.
+
+**Falsifier stated in advance and did not appear:** if G varied across k by as
+much as ε does, there would be no step-independent coefficient and the
+reframing would fail. Sensitivity: the two-channel identity is enforced as a
+raise and the superposition residual is checked at every point.
+
+**Caveat:** G is *stable*, not invariant. Quote 6.5% with it.
+
+### G2. Lyman trapping does not touch the defended range ✅ Verified
+
+`verify_lyman_trapping.py`, self-consistent Θ_P ↔ n(1s) fixed point converged
+at all 400 points, all 14 Lyman channels, slab thickness swept. **Above 2 eV
+the ELM breakdown count does not move (45/448) and the worst case moves 0.5%
+across a twentyfold slab range.** Below 2 eV the 38.7% becomes 11.6 to 15.7%
+and the density maximum wanders across three columns.
+
+Gate: oscillator strengths derived from the repo's own A-values give 0.4162,
+0.0791, 0.0290, 0.0139 for Ly-α to δ, the literature values to four figures,
+with none imported. The σ₀ cross-check against an independent implementation
+**failed at 1156% on first run**, catching a 4π error from using the SI Einstein
+coefficient with CGS constants. The result exists because that gate fired.
+
+**Open defect in the write-up, not the script:** ADDENDUM A and
+`chapter6.tex:143` quote σ₀ = 7.74×10⁻¹⁴ cm², high by exactly √2. Correct value
+5.478×10⁻¹⁴. τ per cm at [0,4] is 80.4, not 114, and 7900 follows from no
+convention. The script used the right value throughout.
+
+### G3. Quasi-neutrality fails at the cold end ▶️ Run — the hardest new constraint
+
+Holding n_e fixed while n_g varies is self-consistent only where the ionisation
+degree is high. **68 of 392 one-step operators require |Δn_e/n_e| > 10%, and 36
+require > 100%.** At [0,0] the requirement is +20.0.
+
+The closed-parcel and transport-fed pictures cannot both hold: closed forces
+n_e up tenfold to twentyfold at the cold end, transport-fed resupplies the
+reservoir so it is not stale, which is the entire mechanism. Above Te ≈ 2 eV,
+Δn_e/n_e < 10⁻³. **Te ≥ 2 eV is the only self-consistent region of the grid.**
+
+Supporting: n_g at [0,4] corresponds to 235 Pa neutral pressure, twelve times
+the upper end of the ITER divertor design range; at [0,7], 3280 Pa, 164 times.
+
+### G4. The QSS partition is correct everywhere ✅ Verified
+
+2s is **not** a second reservoir. Loss is 99.99% proton ℓ-mixing. With ℓ-mixing
+deleted entirely the two-photon rate 8.229 s⁻¹ alone is still **553× faster**
+than |λ₀| at the cold corner. Minimum spectral separation over all 400 points
+**86.5**, at Te = 10 eV, ne = 10¹⁵. 2s would become a reservoir only below
+ne ≈ 7×10³ cm⁻³, nine orders below the grid.
+
+**Quote 86.5, not the benchmark 9982.** This was the one open question that
+could have changed the shape of the two-channel decomposition. It does not.
+
+### G5. Detailed balance passes, and the two-energy trap is not sprung ✅ Verified
+
+2457 excitation pairs × 3 temperatures: max deviation **7.31×10⁻⁹**, median
+7.5×10⁻¹⁰, consistent with the state table's 8-figure rounding. Ionisation
+against three-body via Saha: **0.999997 for every one of the 43 states at every
+temperature, to eight identical digits**. Because the ratio is state-independent
+across levels whose exp(I_p/kT) spans e^13.6 to e^0.06, the same energy ladder
+is provably used on both sides.
+
+### G6. ℓ-mixing is saturated ✅ Verified
+
+Scaling all ℓ-mixing rates over ×0.1 to ×10 moves f₃−f₄ by **< 0.3%** at the
+benchmark and ridge and **< 5%** at the cold corner. Only s = 0 changes
+anything. A density-consistent Debye cutoff instead of the frozen one moves it
+**≤ 0.42%**.
+
+**This also refutes `chapter2.tex:924`,** which justifies the frozen cutoff with
+"F varies by about 30% across the grid". Evaluating the module's own functions,
+q spans **×3.7 for n=2 and ×50 for n=8**. The documented justification is wrong
+by up to a factor 50 and the result is insensitive anyway. Report it as the
+CLAUDE.md pattern: error found, traced, sized, headline unaffected.
+
+### G7. Balmer opacity bounded ✅ Verified — closes an open item cheaply
+
+τ(Hα, 10 cm) = 6.3×10⁻⁷ at [0,0], 1.0×10⁻³ at [0,4], **0.263 at the single
+worst cell [0,7]**, where the escape factor is still ≥ 0.85. The observed ratio
+would move ≲ 10% in that one cell and nowhere else.
+
+## H. CORRECTIONS FORCED BY THIS SESSION
+
+| # | Item | Correction |
+|---|---|---|
+| H1 | A1 τ_QSS floor | 1.18 µs → **75.4 ns**. The old value is the minimum over the 346-point M>900 subset quoted as a 400-point range; 46 of 400 points lie below it |
+| H2 | A10 table | Column j=4 (5.18×10¹³) restored; it is the row maximum at the three coldest rows and is where A11's worst case lives |
+| H3 | A10 detachment | Retracted. 5.2× below the detached band, and the location moves a decade per decade in assumed n(1s) |
+| H4 | A11 scope | Restated inside Te ≥ 2 eV: 45 of 448, worst 17.5%, zero at citable divertor densities |
+| H5 | W2 colocation | "M is largest where the error is worst" is false; the maxima are 52× apart |
+| H6 | A5 | **Demoted ✅ → ▶️.** `derivation_04:375-381` says the May run was never independently re-run, while A5 called it "the strongest single check" |
+| H7 | B8 | **Resolved.** The S_grid cm³/s mislabel is gone |
+| H8 | Controlled correlations | findings_09 §3.1's +0.33 and −0.16 do not reproduce. Measured +0.274 (all pairs), +0.326 (heating only, which is where +0.33 came from), and **−0.442** quadratic. The **sign flip is robust across eight bases**; the magnitude is basis-dependent and must carry its basis |
+| H9 | ELM count | **202, not 201.** findings_09 W5 asserted "201, not 202" while decomposing it as 105 heat + 97 cool in the same sentence. Recounted: 105 + 97 = 202 over 113 distinct points |
+| H10 | ε at [23,3] | **0.12166.** findings_10 A10's 0.122 is right; its own §7.1 figure of 0.111 is wrong |
+| H11 | cond(L_EE) | `chapter3.tex:719-721`'s 1.48×10³ to 1.74×10⁵ is **correct**, verified over all 400 points (1.4821e3, 1.7436e5, median 2.1044e4). It was unsupported, not wrong, and now has a script |
+
+## I. OPEN, RANKED BY DAMAGE
+
+1. **The Fujimoto benchmark target is unverified.** The thesis publishes an 8.3× model failure on the two shells the mechanism is built from. The model reproduces analytically and passes three external checks; the tabulated asymptote demands C(1s→n=2) fifteen times the accepted value; a single-row density offset takes the p=2..7 ratios from a factor-50 spread to flat within ±10%. `verify_fujimoto_table41.py`'s own docstring instructed a re-check against the book that was never done. **One sentence from Fujimoto (2004) Ch. 4 settles it: is Table 4.1(b) bundled-n with statistical ℓ, or ℓ-resolved?**
+2. **The conservation gate is tautological.** Three injected faults (a tenfold rate error, all de-excitation deleted, the whole input array transposed) left the residual unchanged. It detects only an A/γ inconsistency. `chapter3.tex:222-225` claims otherwise.
+3. **Chapters 3 and 6 contradict each other about the same operator.** Chapter 3 says the split and the tanh bound hold for a trapped matrix; Chapter 6 correctly says Θ_P depends on n(1s).
+4. **Gate D fails at 100% of points**, ACD half unimplemented.
+5. **The molecular bound is constructible and Chapter 6 says it is not.** Factor 3 to 5 on cold-corner ε_plateau, from references it already cites.
+6. **Transport uses the wrong timescale, in the thesis's disfavour.** Free-streaming gives 6 to 10 µs; with CX trapping the neutrals it is **72 µs** against a 26 µs threshold. The result survives by 2.8×.
+7. **Three-body recombination at 10¹².** `chapter3.tex:190-193` says "under 10% of the feed into any level"; 30 of 36 levels exceed 10%.
+8. **261 em dashes** across Chapters 1, 2, 3 and 6, against a house rule of zero.
+9. `verify_bundling_psm20.py` synthesises grids silently when files are missing. Fix the fallback before running it.
+10. **Validation ladder rung 9** contains the one honest FAIL (Gate D); rung 6 is now closed by C6 above.
+
+## J. THE STRUCTURAL FINDING
+
+Of thirteen major results audited against the chain physical picture →
+mathematics → prediction → numerical test, twelve have all four. **R6, the
+magnitude, is the only one with no prediction step.** Nothing was written down
+saying how large the error should be or what would refute it, which is exactly
+why it turned out to be linear in an arbitrary grid step. A number produced with
+no prior expectation can only be rationalised, never falsified.
+
+The repair is G1: headline dε/d ln Te = |S̄·G|, both factors independently
+measurable. That converts the weakest chain into one of the strongest, and it is
+what `pivot_decision.md` implements.

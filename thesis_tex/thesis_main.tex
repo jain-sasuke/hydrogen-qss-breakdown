@@ -109,6 +109,7 @@
 \newcommand{\epsCRE}{\varepsilon^{\mathrm{CRE}}}
 \newcommand{\epsstep}{\varepsilon_{\mathrm{step}}}
 \newcommand{\epsplat}{\varepsilon_{\mathrm{plateau}}}
+\newcommand{\epsestim}{\widehat{\varepsilon}}    % event-averaged estimate, Ch 5
 
 % Benchmark point -- one definition, used everywhere
 \newcommand{\benchTe}{\SI{2.947}{\electronvolt}}
@@ -297,7 +298,9 @@ Chapter~\ref{ch:atoms}, whose work this thesis rearranges rather than replaces.
   $\bdep$ & ground-state departure coefficient & \\
   \addlinespace
   \multicolumn{3}{@{}l}{\emph{Observable and its two supply channels}}\\
-  $\Robs$ & shell population ratio $n_3/n_4$ & \\
+  $\Robs$ & the observable ratio; $n_3/n_4$ where a shell ratio is meant, & \\
+   & and the $A$-weighted $H_\alpha/H_\beta$ ratio where a line ratio is, & \\
+   & the derivation covering both (Sec.~\ref{sec:emissivity_generalisation}) & \\
   $\Rcre$ & $\Robs$ at collisional--radiative equilibrium & \\
   $\Rqss$ & $\Robs$ from the excited block at a given $\ngs$ & \\
   $\Rpe$ & $\Robs$ on the plateau: new operator, old reservoir & \\
@@ -321,6 +324,8 @@ Chapter~\ref{ch:atoms}, whose work this thesis rearranges rather than replaces.
   $\epsCRE$ & distance to collisional--radiative equilibrium & \\
   $\epsstep$ & distance between the two tabulated answers & \\
   $\epsplat$ & plateau error, the quantity this thesis reports & \\
+  $\epsestim$ & event-averaged estimate, Eq.~\eqref{eq:elm_bound}; an estimate & \\
+   & accurate to \SI{0.7}{\percent}, not a bound & \\
   \addlinespace
   \multicolumn{3}{@{}l}{\emph{Abbreviations}}\\
   CR & collisional--radiative & \\

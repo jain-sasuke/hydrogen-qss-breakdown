@@ -296,7 +296,7 @@ $3.075\times10^{-14}$ over the whole grid
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{fig5_1_eps_map}
-  \caption[Where the quasi-steady-state closure fails]{\CapFigEpsMap}
+  \caption[Where the equilibrium-reservoir closure costs most]{\CapFigEpsMap}
   \label{fig:eps_map}
 \end{figure}
 
@@ -1343,23 +1343,45 @@ defines the end of the plateau, the half-life carries no threshold dependence.
 That gives a time-average over an event of duration $\taudrive$:
 \begin{equation}
   \big\langle\epsCRE\big\rangle_{\taudrive}
-  \;\ge\; \epsplat\,\frac{\tauslow}{\taudrive}
+  \;\simeq\; \epsestim \;\equiv\; \epsplat\,\frac{\tauslow}{\taudrive}
           \left(1 - \mathrm{e}^{-\taudrive/\tauslow}\right) ,
   \label{eq:elm_bound}
 \end{equation}
 
 \noindent which tends to $\epsplat$ as $\taudrive\to0$ and to zero as
-$\taudrive\to\infty$, both as they should. Equation~\eqref{eq:elm_bound} was
-constructed as a conservative lower bound, on the reasoning that the observable
-cannot decay faster than the slowest mode. Direct 43-state eigen-propagation
-shows it is much better than that: the ratio of the true \SI{100}{\micro\second}
-average to the bound is between $0.9999$ and $1.0066$ at seven points including
-the worst on the grid (\texttt{findings\_10}~\S3.2). The reason is the spectral
-gap of Section~\ref{sec:qss_is_exact}. With nothing between $\lambda_0$ and
-$\lambda_1$, there is no intermediate mode for the observable to decay on, so
-the bound is essentially the answer. It should be described as a near-exact
-estimate whose error is under \SI{0.7}{\percent} at every point tested, not as a
-loose bound.
+$\taudrive\to\infty$, both as they should.
+
+\textbf{It is written with $\simeq$ rather than $\ge$, and that is a
+correction.} Equation~\eqref{eq:elm_bound} was constructed as a conservative
+lower bound, on the reasoning that the observable cannot decay faster than the
+slowest mode, and earlier drafts of this thesis called it one throughout. Direct
+43-state eigen-propagation shows it is much better than a bound and also,
+occasionally, not one: the ratio of the true \SI{100}{\micro\second} average to
+$\epsestim$ runs from $0.9999$ to $1.0066$ at seven points including the worst
+on the grid (\texttt{findings\_10}~\S3.2). \textbf{The $0.9999$ is a
+counterexample to the inequality, sitting inside this thesis's own data}, and it
+is four orders of magnitude larger than the $10^{-7}$ to $10^{-9}$ agreement the
+propagation achieves elsewhere, so it is not numerical noise. An inequality with
+a known counterexample is not an inequality, and $\epsestim$ is demoted to what
+it is: a single-slow-mode estimate, accurate to under \SI{0.7}{\percent} at
+every point tested.
+
+The reason it is that accurate is the spectral gap of
+Section~\ref{sec:qss_is_exact}. With nothing between $\lambda_0$ and
+$\lambda_1$, there is no intermediate mode for the observable to decay on, so a
+single exponential is very nearly the whole answer.
+
+\textbf{What the demotion costs the census is one point, and it is worth
+computing rather than waving at.} No analysed pair lies within
+\SI{0.01}{\percent} of the \SI{10}{\percent} threshold, which is the size of the
+counterexample, so the counterexample itself cannot move any count. Carrying the
+full observed spread instead, and taking the true average to be $\epsestim$
+times anything in $[0.9999, 1.0066]$, the census above \SI{2}{\electronvolt} is
+$45$ of $448$ at the low end and at the estimate, and $46$ at the high end. The
+single pair that can enter is $\Te = \SI{2.12}{\electronvolt}$, whose estimate
+is $0.09962$ and whose high-end value is $0.10027$. No pair leaves.
+\textbf{Every census in this chapter should therefore be read as $45$, or $46$
+if the estimate sits at the top of its measured spread.}
 
 \subsection{The census, inside the defensible scope}
 
@@ -1370,7 +1392,7 @@ $\taudrive = \SI{100}{\micro\second}$, with a one-interval step
 \begin{table}[htbp]
 \centering
 \caption{ELM-averaged breakdown census at $\taudrive = \SI{100}{\micro\second}$,
-one-interval step, counted on the lower bound of
+one-interval step, counted on the single-slow-mode estimate of
 Eq.~\eqref{eq:elm_bound}. Each row states the set it counts over.}
 \label{tab:elm_census}
 \begin{tabular}{lrrl}
@@ -1456,12 +1478,36 @@ over the same $680$ pairs, so the count should always be quoted with the
 threshold that produced it. The worst case does not reference the threshold at
 all and is unaffected by it. And the $104$ points excluded for having no plateau window
 contain no breakdowns whatever, all sitting at $\Te\ge\SI{3.24}{\electronvolt}$
-with a maximum bound of $0.0011$, so the exclusion does not hide anything;
+with a maximum estimate of $0.0011$, so the exclusion does not hide anything;
 including them changes $202/680$ to $202/784$.
+
+\paragraph{The plateau window itself is a free parameter, and it moves only one
+of the two things.} The window is defined by a separation factor $k$, taken as
+$30$ throughout, so that a point is analysed only where
+$k\,\taurel < \tauslow/k$. That choice is imposed rather than measured, and its
+effect was swept at $k = 10$, $30$ and $100$ before this chapter was written
+(\texttt{verify\_plateau\_window.py} and the two re-runs stamped in
+\texttt{validation/plateau\_slowmode\_w10/} and
+\texttt{\ldots\_w100/}). The result separates cleanly.
+
+\emph{Magnitudes do not move at all.} At the benchmark $\epsplat$ is
+$0.32902966$ at $k=10$ and $0.32902966$ at $k=30$, identical to eight figures,
+and $0.24075077$ at the cold corner under both. That is not a numerical
+coincidence: $\epsplat$ is a frozen-reservoir linear solve evaluated at one
+instant, so it cannot depend on the width of a window it is not averaged over.
+Sampling the trajectory across the window and extrapolating back to $t=0$
+returns the analytic value to \SI{0.005}{\percent}.
+
+\emph{Membership does move.} $k$ decides which points have a resolvable plateau
+at all, and it bites: at $k=100$ the benchmark itself is excluded, needing
+$\Msep > 10^4$ and having $4856$. \textbf{So $k$ sets the denominator of every
+census and never the numerator's magnitude}, and a census quoted without its $k$
+is as incomplete as one quoted without its threshold. Every count in this
+chapter uses $k=30$.
 
 \subsection{Two structural objections, tested}
 
-The lower bound of Eq.~\eqref{eq:elm_bound} uses $\tauslow$, and $\tauslow$ in
+The estimate of Eq.~\eqref{eq:elm_bound} uses $\tauslow$, and $\tauslow$ in
 this model is the relaxation time of an \emph{open} system: the ground state
 loses atoms to an ion reservoir that is held fixed and never gives them back.
 An artificially long $\tauslow$ would inflate every entry in
@@ -1594,13 +1640,19 @@ fast variables in the first place. Chapter~\ref{ch:theory} measured it from
 $86.8$ to $1.73\times10^{9}$ across the grid. The natural expectation is that
 the diagnostic is worst where $\Msep$ is smallest.
 
-It is not, and $\Msep$ carries no information about the diagnostic error once
-the operating point is accounted for.
+It is not. Once the operating point is accounted for, what remains is not an
+absence of information but information with the \emph{opposite} sign to the
+naive expectation: the controlled partial correlation is negative in all twelve
+combinations of Table~\ref{tab:partial_sweep}, median $-0.53$. Larger timescale
+separation goes with \emph{larger} diagnostic error at fixed $(\Te,\nel)$, which
+is the reverse of what the stiffness argument would suggest. An earlier draft
+said $\Msep$ carried no information at all; that is contradicted by the table
+sixty lines below it and is withdrawn.
 
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=0.8\textwidth]{fig5_3_M_vs_eps}
-  \caption[Timescale separation does not predict closure error]{\CapFigMvsEps}
+  \caption[Timescale separation does not predict reservoir-closure error]{\CapFigMvsEps}
   \label{fig:M_vs_eps}
 \end{figure}
 

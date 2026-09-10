@@ -46,6 +46,43 @@ Three findings came out of that work that were not on the list:
 
 ---
 
+## A2. Round 1 mathematical review, closed 11 September 2026
+
+A reviewer audited sections 3.5, 5.4 and 5.5 and returned FAIL in current form
+while confirming the mathematical core survives. Independently checked against
+the text and the stamped artifacts; most of it landed. No computed number
+changed anywhere in the repair.
+
+| item | outcome |
+|---|---|
+| Sign inconsistency in the gain equation | **Real, diagnosis wrong.** Root cause: u- and u+ were never defined. Orientation now pinned to the artifact, `Delta ln u = ln(u+/u-)` |
+| Derivative versus finite difference; "step-independent" heading | Already fixed by the author before the review arrived |
+| `d eps / d ln Te` ill-posed at zero | **Correct.** `|e^z - 1|` has a corner; replaced by the ratio limit plus a smooth signed form |
+| tanh bound "does not depend on the atomic data" | **Correct.** Split into the universal `|f3-f4| < 1` and the sharp `tanh(|Delta|/4)`, whose value moves with `Delta` |
+| "No refinement of the rate coefficients can make that worse" | **Withdrawn.** Does not follow from sitting at 97% of the cap |
+| ionising versus ground-fed | **Correct and worse than stated.** Chapter 3 contradicted itself 92 lines apart; two further instances fixed |
+| switching point "a property of the network" | **Correct.** It is `u_m = c_m/a_m`; the `b_1` form carries `Z_1 n_e` |
+| sum-rule integral limits | **Correct.** Now `-inf` to `+inf`, with a note that chapter 5's is a finite-interval object |
+| inversion relation | **Correct.** Now carries its fixed-`n_e` assumption plus the 2x2 Jacobian form |
+| generalise to the A-weighted emissivity | **Done.** New section sec:emissivity_generalisation, new script and artifact |
+
+The emissivity generalisation closed a live overclaim: chapter 3 previously
+stated the amplification bound for "a line ratio" while proving it only for a
+shell ratio. It now proves it for any non-negative linear functional of the
+fast-state vector. Verified at all 400 grid points: all four emissivity
+coefficients strictly positive; `max|F_a - F_b|` reproduces `tanh(|Delta_j|/4)`
+by direct maximisation to 9e-16; and `Delta_j` is invariant to the photon-versus
+-energy weighting to 7e-16, since a constant per line cancels. `Delta_j` runs
+0.673 to 2.196 against the shell 0.711 to 2.199, median disagreement 0.134% and
+worst 5.4% at the low-density corner, which is where 4f matters most.
+
+One repair caught an error of my own before it landed. The first draft of the
+sign-convention paragraph said cooling reverses both factors so the product
+stays positive. The data says otherwise: over all 2288 rows both `Sbar` and `G`
+are negative in **both** directions, so the product is positive for heating and
+negative for cooling, and `eps` is positive in both only because the equation
+takes a modulus.
+
 ## B. Open, and needs a decision only the author can make
 
 1. **PE versus a chemical-kinetics name.** The reviewer objects that partial

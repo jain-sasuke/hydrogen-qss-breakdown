@@ -911,7 +911,12 @@ The ratio used throughout this thesis is
 
 \noindent the population ratio of the $n=3$ and $n=4$ shells. Up to Einstein
 coefficients it is the Balmer $H_\alpha/H_\beta$ ratio, since $H_\alpha$ is the
-$3\to2$ transition and $H_\beta$ the $4\to2$. The substitution is not free, and
+$3\to2$ transition and $H_\beta$ the $4\to2$. The shell ratio is used here
+because it is the cleaner object to derive with, not because the results are
+restricted to it: Section~\ref{sec:emissivity_generalisation} shows every result
+of this chapter holds for the $A$-weighted line ratio itself, and for any
+non-negative linear functional of the state vector. The substitution is
+therefore not free but it is also not load-bearing, and
 Section~\ref{sec:balmer_equivalence} measures what it costs. The transient error
 of Chapter~\ref{ch:results}, computed from the $A$-weighted line ratio and from
 the shell ratio, agrees to \SI{0.014}{\percent} at the benchmark point; across
@@ -1365,11 +1370,85 @@ their cascade networks.
 
 Second, $\tanh$ is bounded by unity, so
 $|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ everywhere and for every pair of
-shells. \textbf{A line ratio can never respond to the ground-state reservoir
+shells. \textbf{A shell ratio can never respond to the ground-state reservoir
 faster, in relative terms, than the reservoir itself moves.} Integrating a
 logarithmic sensitivity whose magnitude is everywhere below unity gives the
 finite-excursion statement $|\Delta\ln\Robs| \le |\Delta\ln\bdep|$, so a stale
-reservoir cannot be amplified in logarithmic space, only attenuated.
+reservoir cannot be amplified in logarithmic space, only attenuated. The next
+subsection shows the same statement holds for the line ratio a spectrometer
+actually measures, which is what makes it worth having.
+
+\subsection{The same result for what a spectrometer measures}
+\label{sec:emissivity_generalisation}
+
+Everything above is derived for the shell ratio $\Robs = n_3/n_4$, and a
+spectrometer does not measure shell populations. It measures line intensities,
+which are sums over the dipole-allowed sublevel transitions weighted by their
+Einstein coefficients. The gap is worth closing rather than measuring, because
+the derivation never used the fact that the weights are unity. It used only
+that they are non-negative.
+
+Let $\bm{w}_\alpha$ and $\bm{w}_\beta$ be the weight vectors of the two lines,
+carrying $h\nu A$ on the levels each line drains and zero elsewhere. The local
+emissivity is $j_\alpha = \bm{w}_\alpha^{\mathsf T}\nF$, and substituting the
+two-channel form $\nF = \bm{a}\ngs + \bm{c}\nion$ of
+Eq.~\eqref{eq:two_supplies} gives
+\begin{equation}
+  j_\alpha = A_\alpha\,\ngs + C_\alpha\,\nion ,
+  \qquad
+  A_\alpha \equiv \bm{w}_\alpha^{\mathsf T}\bm{a},
+  \qquad
+  C_\alpha \equiv \bm{w}_\alpha^{\mathsf T}\bm{c} ,
+  \label{eq:emissivity_two_channel}
+\end{equation}
+
+\noindent and $A_\alpha, C_\alpha \ge 0$ because $\bm{a}$ and $\bm{c}$ are
+non-negative elementwise and $\bm{w}_\alpha$ is a vector of transition
+probabilities. \textbf{That is the same affine form with the same positivity},
+so the line ratio
+$j_\alpha/j_\beta = (A_\alpha u + C_\alpha)/(A_\beta u + C_\beta)$ is
+affine-over-affine in the reservoir exactly as the shell ratio is, and every
+result of this section carries over unchanged: the ground-fed fraction of a
+\emph{line} is the same unit-width logistic, its switching point is
+$C_\alpha/A_\alpha$, the logarithmic sensitivity is the difference of two such
+fractions, and the peak is $\tanh(|\Delta_j|/4)$ with
+$\Delta_j = \ln[(A_\alpha/A_\beta)/(C_\alpha/C_\beta)]$. Nothing is re-derived;
+the substitution $a_m \to \bm{w}^{\mathsf T}\bm{a}$ is the whole of it. The
+result holds for any non-negative linear functional of the fast-state vector,
+of which a shell sum and an $A$-weighted line are two instances.
+
+\paragraph{Checked, not asserted.} Evaluating
+Eq.~\eqref{eq:emissivity_two_channel} at all $400$ grid points with the
+pipeline's own resolved $A$-values, $H_\alpha$ from $3s\to2p$, $3p\to2s$ and
+$3d\to2p$ and $H_\beta$ from $4s\to2p$, $4p\to2s$ and $4d\to2p$
+(\texttt{verify\_emissivity\_generalisation.py}): all four coefficients are
+strictly positive everywhere, and maximising $|F_\alpha - F_\beta|$ over $u$
+numerically reproduces $\tanh(|\Delta_j|/4)$ to $9\times10^{-16}$, so the bound
+is found rather than imposed.
+
+One check is worth more than the others. A constant factor on either weight
+vector cancels out of $\Delta_j$, so a photon-counting detector and an
+energy-weighted one must return the \emph{same} $\Delta_j$ even though their
+emissivities differ by $h\nu$. Measured, the two agree to
+$7\times10^{-16}$. \textbf{The displacement that sets the bound is a property of
+the atomic network and not of the detector.}
+
+\paragraph{How far the shell ratio was from the observable.} Over the grid
+$\Delta_j$ runs from $0.673$ to $2.196$ against $0.711$ to $2.199$ for the shell
+$\Delta$, a median disagreement of \SI{0.134}{\percent} and a worst case of
+\SI{5.4}{\percent}; the caps differ by \SI{0.116}{\percent} at the median and
+\SI{5.3}{\percent} at worst. At the benchmark, $\Delta_j = 1.9444$ against
+$1.9456$, and the cap is $0.4511$ against $0.4514$. The worst case sits at
+$\Te = \SI{10}{\electronvolt}$, $\nel = \SI{e12}{\per\cubic\centi\metre}$, the
+low-density corner, for the reason Section~\ref{sec:balmer_equivalence} gives:
+$4f$ holds \SI{43.75}{\percent} of the $n=4$ shell and contributes exactly zero
+to $H_\beta$, and $\ell$-mixing is weakest there, so the shell and the line
+disagree most about what $n=4$ contains.
+
+The shell ratio was therefore a good proxy, and this subsection means the thesis
+no longer needs it to be one. \textbf{Section~\ref{sec:balmer_equivalence}'s
+measurement of the substitution cost becomes a consistency check on two routes
+to the same answer rather than a caveat carried by the analytic results.}
 
 It is worth being precise about what this does and does not bound. It bounds the
 error in the \emph{observable}. A diagnostician does not suffer an error in

@@ -1136,7 +1136,7 @@ def main():
 %   \end{figure}
 
 \newcommand{\CapFigEpsMap}{%
-  \textbf{Where the quasi-steady-state closure fails.}
+  \textbf{Where the equilibrium-reservoir closure costs most.}
   Fractional error $\varepsilon_{\rm plateau}$ in the $n=3/n=4$ shell
   population ratio committed while the excited manifold has reached partial
   equilibrium but the ground state has not yet responded, after a
@@ -1185,7 +1185,7 @@ def main():
   there at all.}
 
 \newcommand{\CapFigMvsEps}{%
-  \textbf{Timescale separation does not predict closure error.}
+  \textbf{Timescale separation does not predict the reservoir-closure error.}
   Each point is one (grid point, step direction) pair with a
   timescale-separated plateau window (@NWIN@ of @NPAIR@); $M$ is
   $\tau_{\rm slow}/\tau_{\rm relax}$ of the post-step operator, colour is $T_e$,

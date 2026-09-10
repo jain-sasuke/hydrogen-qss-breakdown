@@ -599,6 +599,26 @@ each event carries away between two and ten per cent of the energy stored in the
 plasma edge \cite{Eich2017}. So the conditions in the divertor are reset over a
 few hundred microseconds, repeatedly.
 
+There is a second and independent extrapolation of that duration, and it is
+worth having because it rests on a physical mechanism rather than on a fit.
+Measuring the ELM power pulse at the target by the rise time of the surface
+temperature, $\tau^{\rm ELM}_{\rm IR}$, across ASDEX Upgrade, JET and JT-60U,
+Loarte \emph{et al.} found it correlates with the time an ion takes to travel
+from the pedestal to the target along the field,
+$\tau^{\rm Front}_\parallel = 2\pi R q_{95}/c_{s,\rm ped}$, and \emph{not} with
+the duration of the ELM magnetohydrodynamic event itself
+\cite[Sec.~4]{Loarte2003}. The measured scaling is
+$\tau^{\rm ELM}_{\rm IR}\,[\si{\micro\second}]
+= 0.29\,[\tau^{\rm Front}_\parallel\,(\si{\micro\second})]^{1.38}$, and at the
+expected ITER pedestal, $n_{\rm ped} = \SI{8e19}{\per\cubic\metre}$ and
+$T_{\rm ped} = \SI{3.5}{\kilo\electronvolt}$, it gives
+$\tau^{\rm ELM}_{\rm IR} = \SI{506}{\micro\second}$
+\cite[Sec.~5]{Loarte2003}. \textbf{The divertor is therefore disturbed for
+several hundred microseconds, and the figure has a mechanism behind it: it is
+set by parallel ion transport, so it lengthens as the pedestal cools.}
+Chapter~\ref{ch:results} uses \SI{100}{\micro\second} for its maps and reports
+what changes at \SI{506}{\micro\second}, which is not nothing.
+
 How often they are reset is a more delicate question, and the usual figure is
 weaker than it looks. The expected natural
 ELM frequency in ITER is of order \SI{1}{\hertz} at the full plasma current of
@@ -607,9 +627,13 @@ roughly as the inverse square of the current \cite{Kirk2013}; present-day
 machines, being smaller, run at tens to hundreds of hertz. The frequently quoted
 range of one to two hertz for ITER traces, as far as could be established for
 this chapter, only to a conference paper that was not peer reviewed, and it is
-not repeated here for that reason. \todo{If a refereed derivation of the ITER
-natural ELM frequency exists, cite it here in place of Kirk \emph{et al.} (2013),
-whose statement of the number sits in an introduction rather than in a result.}
+not repeated here for that reason. Loarte \emph{et al.}~\cite{Loarte2003},
+which is the refereed extrapolation of ELM properties to ITER used above,
+extrapolates the ELM energy loss and the pulse duration and does not state a
+frequency at all; the word hertz does not appear in it. \textbf{Nothing in this
+thesis depends on the frequency.} What matters is the duration of one event
+against the plasma's own recovery time, and that is the comparison the next
+paragraph makes.
 
 The distinction matters for the argument. An ELM is not a gentle modulation that
 the plasma tracks quasi-statically; it is a step change delivered in a few

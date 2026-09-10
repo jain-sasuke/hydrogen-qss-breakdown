@@ -1273,8 +1273,12 @@ Section~\ref{sec:scope} excludes, and $105$ of them have a
 Lyman-$\alpha$ optical depth above unity over a \SI{5}{\centi\metre} slab. The
 defensible statement is $45$ of $448$ pairs above \SI{2}{\electronvolt}, worst
 \SI{17.5}{\percent} at $\Te = \SI{2.02}{\electronvolt}$,
-$\nel = \SI{1.93e13}{\per\cubic\centi\metre}$; and at citable divertor
-densities, zero breakdowns, with the worst case \SI{7.2}{\percent}. The
+$\nel = \SI{1.93e13}{\per\cubic\centi\metre}$, at the
+\SI{100}{\micro\second} event duration these maps use; at the duration
+extrapolated to the ITER pedestal it is $24$ of $448$, worst
+\SI{15.3}{\percent}, at the same point (Table~\ref{tab:duration_sensitivity}).
+At citable divertor densities there are zero breakdowns at either duration, with
+the worst case \SI{7.2}{\percent}. The
 benchmark point does not break down: its ELM-averaged error is
 \SI{1.2}{\percent}.
 
@@ -1286,11 +1290,53 @@ which reads the file and raises if any count in this table disagrees with it).
 The $201$ was a transcription slip. Nothing in the defensible scope depended on
 it either way.
 
-Two sensitivities belong with the census. The count depends strongly on the
-threshold: at $5$, $10$ and \SI{20}{\percent} it is $348$, $202$ and $61$ over
-the same $680$ pairs, so the count should always be quoted with the threshold
-that produced it. The worst case does not reference the threshold at all and is
-unaffected by it. And the $104$ points excluded for having no plateau window
+\paragraph{The event duration was assumed and should not have been.}
+$\taudrive = \SI{100}{\micro\second}$ was fixed at the start of this work as a
+representative ELM time, with no source. It has one now, and it is longer.
+Section~\ref{sec:transients} gives the refereed extrapolation to ITER: the ELM
+power pulse at the target is set by parallel ion transport from the pedestal,
+and at the expected ITER pedestal it lasts
+$\tau^{\rm ELM}_{\rm IR} = \SI{506}{\micro\second}$
+\cite[Sec.~5]{Loarte2003}. Since the bound of Eq.~\eqref{eq:elm_bound} averages
+a decaying error over the window, a longer window gives a smaller average, and
+\SI{100}{\micro\second} is therefore the aggressive end rather than a neutral
+choice.
+
+\begin{table}[htbp]
+\centering
+\caption{Duration sensitivity of the census, over the $448$ pairs above
+\SI{2}{\electronvolt} at a one-interval step. The maps throughout this chapter
+are computed at \SI{100}{\micro\second}; \SI{506}{\micro\second} is the
+extrapolation to the ITER pedestal.}
+\label{tab:duration_sensitivity}
+\begin{tabular}{lrl}
+  \toprule
+  $\taudrive$ & bound $>\SI{10}{\percent}$ & worst \\
+  \midrule
+  \SI{100}{\micro\second} & 45 & $0.1748$ \\
+  \SI{250}{\micro\second} & 33 & $0.1664$ \\
+  \SI{506}{\micro\second}, ITER & 24 & $0.1533$ \\
+  \SI{750}{\micro\second} & 20 & $0.1435$ \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The count nearly halves and the worst case barely moves.} Over a
+factor $7.5$ in event duration the count falls from $45$ to $20$ while the worst
+case falls from \SI{17.5}{\percent} to \SI{14.4}{\percent}, a relative change of
+\SI{18}{\percent}. At the ITER-extrapolated duration the defensible count is
+\textbf{$24$ of $448$, worst \SI{15.3}{\percent}}, and that is the figure an
+ITER-relevant statement should use. The maps and every derived quantity in this
+chapter are computed at \SI{100}{\micro\second} and are labelled with it; the
+$506$-microsecond census is a strict subset of the $100$-microsecond one,
+because the bound falls monotonically with the window at every point, so no
+conclusion drawn about the $45$ fails to apply to the $24$.
+
+Two further sensitivities belong with the census. The count depends strongly on
+the threshold: at $5$, $10$ and \SI{20}{\percent} it is $348$, $202$ and $61$
+over the same $680$ pairs, so the count should always be quoted with the
+threshold that produced it. The worst case does not reference the threshold at
+all and is unaffected by it. And the $104$ points excluded for having no plateau window
 contain no breakdowns whatever, all sitting at $\Te\ge\SI{3.24}{\electronvolt}$
 with a maximum bound of $0.0011$, so the exclusion does not hide anything;
 including them changes $202/680$ to $202/784$.
@@ -1744,7 +1790,9 @@ series'.
 
 Inside the defensible scope, $\Te\ge\SI{2}{\electronvolt}$, $45$ of $448$
 point-and-direction pairs commit an ELM-averaged error above \SI{10}{\percent}
-at $\taudrive = \SI{100}{\micro\second}$, the worst being \SI{17.5}{\percent};
+at $\taudrive = \SI{100}{\micro\second}$, the worst being \SI{17.5}{\percent},
+falling to $24$ of $448$ and \SI{15.3}{\percent} at the
+\SI{506}{\micro\second} extrapolated to the ITER pedestal;
 at citable divertor densities none do, the worst being \SI{7.2}{\percent}. That
 census is unchanged across a twentyfold range in the one neglected process,
 Lyman trapping, most likely to have invalidated it.

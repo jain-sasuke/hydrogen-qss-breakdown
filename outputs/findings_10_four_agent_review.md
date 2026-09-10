@@ -1346,3 +1346,105 @@ seven errors caught earlier are genuinely fixed. Two new items:
 random midpoint pairs. That constrains its classification: an exact elementary
 identity is far more likely to exist somewhere in print than a physical result
 would be, which is why the novelty claim should rest on the application.
+
+---
+
+# ADDENDUM F — Gate 9, and the most damaging finding of the session
+
+**10 September 2026.** Full report at `outputs/defence_questions.md`: seventeen
+supervisor questions answered with attack, grade, the answer to give and what
+must change, plus eight new attacks.
+
+## F.1 The transport assumption fails at exactly the points that generate the result
+
+**Verified independently here before recording it.** Neutral escape time for a
+slab of half-width L, with charge exchange limiting the mean free path
+(k_CX = 1.1×10⁻⁸ cm³/s, T_n = Te, free-streaming when λ ≥ L, otherwise the
+fundamental diffusive mode L²/π²D):
+
+| scale length | breakdown pairs, Te ≥ 2 eV | all other window_ok pairs |
+|---|---|---|
+| L = 10 cm | n = 45, median τ_esc/τ_QSS **0.0039**, **0%** satisfy | n = 635, median 0.0266, **16.7%** satisfy |
+| L = 20 cm | n = 45, median **0.0104**, **0%** satisfy | n = 635, median 0.0725, **26.5%** satisfy |
+
+**Not one of the 45 defended breakdown points satisfies the closed-parcel
+assumption used to compute it, at either scale length.** A substantial fraction
+of the points that do *not* break down satisfy it comfortably.
+
+**The selection is structural, not incidental.** A point enters the census
+because τ_QSS is long, since the ELM lower bound rises with τ_QSS. A long τ_QSS
+means slow ionisation, and slow ionisation is exactly the condition under which
+neutral transport, which does not care about τ_QSS at all, dominates the
+reservoir. The census selects for the regime in which its own assumption fails.
+
+Chapter 6 tested transport only at the cold corner, where it survived by a
+factor 2.8. That was the wrong place to test it. The defended range fails worse
+than the corner that was checked.
+
+## F.2 What this kills, and what it does not
+
+This does not touch the mathematics. The partition is clean and it is worth
+stating in the thesis in exactly these terms.
+
+**Unconditional, and untouched:** the two-channel split (exact to 3.075×10⁻¹⁴);
+the unit-width logistic; **max|f₃−f₄| = tanh(|Δ|/4)** and its corollary
+|d ln R/d ln b₁| < 1; the sensitivity map S̄, which is a property of the operator
+at fixed (Te, ne) and does not care how the reservoir reached its value; and the
+exactness of the QSS closure, 6.73×10⁻⁹ at the worst point. These are theorems
+and operator properties. Transport cannot reach them.
+
+**Conditional on the closed parcel:** the reservoir gain G, which assumes the
+ground state responds only through CR balance; ε_plateau; the census; and every
+ELM-averaged magnitude.
+
+**This is what `pivot_decision.md` already argued for on other grounds.** The
+thesis's strongest claims are the unconditional ones. Gate 9 has now made the
+conditional ones conditional in a way that cannot be argued away, which raises
+the cost of leading with a magnitude and lowers the cost of leading with
+structure and a bound.
+
+The honest formulation: *if* the ground-state reservoir is frozen for the
+duration of the event, the error is as computed; the model cannot establish that
+it is, and at every point in the defended census neutral transport is two orders
+of magnitude faster than τ_QSS.
+
+## F.3 The inversion is not unique, and nobody had checked
+
+R(Te) is **two-valued on 5 of 8 density columns**. At ne = 7.2×10¹² the same
+line ratio is produced by **3.31 eV and by 10.0 eV**. This was never examined.
+
+It cuts both ways and the thesis must say so. It weakens the criticism, because
+a diagnostic that is already non-invertible in steady state has a problem
+independent of transients. It also strengthens it, because a transient
+excursion can carry the ratio across the fold.
+
+Two further items from the same pass: the error expressed in **Te** rather than
+in R is **2.3× larger** (18% in R reads as −40% in temperature), and **25 of the
+45 cases masquerade as legitimate steady plasmas** with no signature that would
+warn the observer. And Hα/Hβ is the one Balmer pair detachment spectroscopy
+deliberately avoids, which needs saying in Chapter 1 rather than discovered by
+an examiner.
+
+## F.4 An attack withdrawn, which is why the report is trustworthy
+
+Gate 9's first draft attacked the atomic data using the 29.0% aggregate RMPS
+error as though the thesis had buried the decomposition. It has not:
+`chapter2.tex` gives it explicitly and it *defends* the model, with 82.1% of
+transitions within 20% and a 12.7% mean error for those that drive the kinetics,
+the disagreement being confined to n=5. The attack would have collapsed on the
+candidate's first reply, so it was withdrawn and replaced with the narrower one
+that survives: Chapter 2 names a test to bound the n=5 effect and says it was
+not performed.
+
+## F.5 A correction in the wrong direction, worth recording as a pattern
+
+Gate 9's first draft had the reservoir-gain stability at **6.74%**, which is
+right. It then "corrected" it to **6.3%** to match `chapter7.tex:142`, which is
+wrong. Settled from the artifact: over all 736 triples the maximum |G| spread is
+1.0674, so **6.74%**; heating only gives 6.52%.
+
+An agent applying this project's own verification discipline deferred to a
+document over an artifact, which is the ground-truth hierarchy exactly
+inverted. `chapter7.tex` corrected to 6.74%. The lesson is the one CLAUDE.md
+already states and which is easy to lose under time pressure: **documents are
+consistency checks, never authorities.**

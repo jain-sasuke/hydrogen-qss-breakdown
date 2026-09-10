@@ -552,7 +552,7 @@ def main():
             f"ADDENDUM D.1's census was taken over {REC_QN_TOTAL}. The grid "
             f"has changed shape and no recorded count applies")
     dlnTe_all = np.array([s.dlnTe for s in steps.values()])
-    if dlnTe_all.ptp() / dlnTe_all.mean() > 1e-9:
+    if np.ptp(dlnTe_all) / dlnTe_all.mean() > 1e-9:
         raise RuntimeError("the temperature grid is not geometric: one grid "
                            "index is not a constant fractional step, so a "
                            "single step size cannot label these figures")
@@ -743,8 +743,11 @@ def main():
     ax.set_xticklabels(["1", "2", "3", "5", "7", "10"])
     ax.set_title(rf"(a) both errors, all {len(ne)} density columns",
                  loc="left", fontsize=8.5)
-    ax.text(0.97, 0.94, "CRE distance\n(the lookup table's assumption)",
-            transform=ax.transAxes, ha="right", va="top", fontsize=7,
+    # headroom above the upper band so the direct label does not sit on data
+    ylo, yhi = ax.get_ylim()
+    ax.set_ylim(ylo, yhi * 12.0)
+    ax.text(0.03, 0.97, "CRE distance\n(the lookup table's assumption)",
+            transform=ax.transAxes, ha="left", va="top", fontsize=7,
             color=C_VERM, linespacing=1.25)
     ax.text(0.97, 0.06, "QSS closure residual\n(the approximation that is doubted)",
             transform=ax.transAxes, ha="right", va="bottom", fontsize=7,
@@ -794,18 +797,161 @@ def main():
           f"{n_nowin} hatched (no plateau window)")
 
     tok.update({
-        "@CLO_B@": f"{clo[ib,jb]:.2e}".replace("e-0", r"\times10^{-") + "}",
-        "@CRE_B@": f"{cre[ib,jb]*100:.2f}",
-        "@CLO_W@": f"{clo[kw]:.2e}".replace("e-0", r"\times10^{-") + "}",
-        "@CRE_W@": f"{cre[kw]*100:.1f}",
-        "@CLO_MIN@": f"{np.nanmin(clo):.1e}".replace("e-0", r"\times10^{-") + "}",
-        "@CLO_MAX@": f"{np.nanmax(clo):.1e}".replace("e-0", r"\times10^{-") + "}",
+        "@CLO_B@": sci(clo[ib, jb], 3), "@CRE_B@": f"{cre[ib,jb]*100:.2f}",
+        "@CLO_W@": sci(clo[kw], 3), "@CRE_W@": f"{cre[kw]*100:.1f}",
+        "@CLO_MIN@": sci(np.nanmin(clo), 2), "@CLO_MAX@": sci(np.nanmax(clo), 2),
         "@CRE_MIN@": f"{np.nanmin(cre)*100:.2f}",
         "@CRE_MAX@": f"{np.nanmax(cre)*100:.1f}",
         "@GAP_LO@": f"{lo_o:.1f}", "@GAP_HI@": f"{hi_o:.1f}",
         "@GAP_B@": f"{np.log10(ratio[ib,jb]):.1f}",
         "@GAP_W@": f"{np.log10(ratio[kw]):.1f}",
-        "@NT@": str(args.nt), "@PROPCHK@": f"{prop_worst:.0e}".replace(
-            "e-0", r"\times10^{-") + "}",
+        "@NT@": str(args.nt), "@PROPCHK@": sci(prop_worst, 1),
         "@NNOWIN@": str(n_nowin),
     })
+
+
+    # =======================================================================
+    # FIGURE 2 -- fig5_6_trajectory
+    #   R(t) after a one-index temperature step, at the benchmark and at the
+    #   coldest, worst point.  Three phases on one logarithmic time axis:
+    #   the rise on tau_relax, the plateau at partial equilibrium, the decay
+    #   on tau_QSS.  This is the picture behind "the excited states keep up
+    #   but the reservoir does not".
+    # =======================================================================
+    print()
+    print("=" * 78)
+    print("FIG 5.6  THE TRAJECTORY")
+    print("=" * 78)
+    traj_pts = [((ib, jb), "benchmark"), (kw, "coldest grid point")]
+    fig, axes = plt.subplots(1, 2, figsize=(7.4, 3.5),
+                             gridspec_kw=dict(wspace=0.30))
+    traj_tok = {}
+    for panel, ((key, lab), axt) in enumerate(zip(traj_pts, axes)):
+        st = steps[key]
+
+        # The partial-equilibrium ratio, recomputed here by ONE linear solve
+        # against the same operator, independently of the n0 + n1 split the
+        # rest of the script uses.  The two must agree to machine precision;
+        # if they do not, the PE line on this figure means nothing.
+        n_pe = np.linalg.solve(st.LEE, -(st.SE + st.LEg * st.n_old[g]))
+        R_pe_direct = float(n_pe[[posE[s] for s in N3]].sum()
+                            / n_pe[[posE[s] for s in N4]].sum())
+        d_pe = abs(R_pe_direct / st.R_pe - 1.0)
+        if d_pe > 1e-12:
+            raise RuntimeError(
+                f"the partial-equilibrium ratio at {key} depends on how it is "
+                f"computed: one solve gives {R_pe_direct:.12e}, the two-channel "
+                f"split gives {st.R_pe:.12e} ({d_pe:.2e} apart). Linearity is "
+                f"broken and the plateau line cannot be drawn")
+
+        ts = np.geomspace(st.tau_relax / 300.0, st.tau_QSS * 60.0, 500)
+        chk = st.check_propagator(np.geomspace(ts[0], ts[-1], 12))
+        n_t = st.n_at(ts)
+        R_t = st.R_of(n_t)
+        if np.any(n_t < 0):
+            raise RuntimeError(
+                f"the propagated populations go negative at {key}; a shell "
+                f"ratio built from them is not a population ratio")
+
+        wlo, whi = WIN_LO * st.tau_relax, st.tau_QSS / WIN_HI
+        inwin = (ts >= wlo) & (ts <= whi)
+        if not inwin.any():
+            raise RuntimeError(f"the plateau window at {key} contains none of "
+                               f"the sampled times")
+        flat = float(np.ptp(R_t[inwin]) / np.mean(R_t[inwin]))
+
+        axt.axvspan(wlo, whi, color="0.90", zorder=0, lw=0)
+        axt.axhline(st.R_cre_old, color=C_BLUE, ls=(0, (5, 2)), lw=1.0, zorder=2)
+        axt.axhline(st.R_cre_new, color=C_VERM, ls=(0, (5, 2)), lw=1.0, zorder=2)
+        axt.axhline(st.R_pe, color=C_GREEN, ls=(0, (1, 1.4)), lw=1.4, zorder=2)
+        axt.plot(ts, R_t, "-", color=C_INK, lw=1.5, zorder=4)
+        for tv, tlab in ((st.tau_relax, r"$\tau_{\rm relax}$"),
+                         (st.tau_QSS, r"$\tau_{\rm QSS}$")):
+            axt.axvline(tv, color="0.45", ls="-", lw=0.7, zorder=1)
+            axt.text(tv, 0.015, " " + tlab, transform=axt.get_xaxis_transform(),
+                     fontsize=7, color="0.35", ha="left", va="bottom",
+                     rotation=90)
+        axt.set_xscale("log")
+        axt.set_xlim(ts[0], ts[-1])
+        span = max(abs(st.R_pe - st.R_cre_new), abs(st.R_cre_old - st.R_cre_new))
+        axt.set_ylim(min(st.R_cre_new, st.R_cre_old, st.R_pe) - 0.42 * span,
+                     max(st.R_cre_new, st.R_cre_old, st.R_pe) + 0.30 * span)
+        axt.set_xlabel(r"time after the step  [s]")
+        axt.set_ylabel(r"$R(t) = n_3 / n_4$")
+        axt.set_title(rf"({'ab'[panel]}) {lab}: $T_e$ "
+                      rf"{st.Te_old:.2f}$\rightarrow${st.Te_new:.2f} eV, "
+                      rf"$n_e = {sci(st.ne)}$ cm$^{{-3}}$",
+                      loc="left", fontsize=8)
+
+        # the three phases, named on the axes rather than only in the caption
+        axt.annotate("rise on\n" + r"$\tau_{\rm relax}$", xy=(0.055, 0.62),
+                     xycoords="axes fraction", fontsize=6.8, color="0.30",
+                     ha="left", va="center", linespacing=1.2)
+        axt.annotate("plateau: excited states at partial\n"
+                     "equilibrium, ground state not yet moved",
+                     xy=(np.sqrt(wlo * whi), st.R_pe),
+                     xytext=(0.30, 0.86), textcoords="axes fraction",
+                     fontsize=6.6, color="0.30", ha="left", va="center",
+                     linespacing=1.2,
+                     arrowprops=dict(arrowstyle="-", lw=0.6, color="0.55",
+                                     shrinkB=2))
+        axt.annotate("decay on\n" + r"$\tau_{\rm QSS}$", xy=(0.90, 0.45),
+                     xycoords="axes fraction", fontsize=6.8, color="0.30",
+                     ha="center", va="center", linespacing=1.2)
+
+        print(f"panel ({'ab'[panel]}) {lab}  grid [{key[0]},{key[1]}]  "
+              f"Te {st.Te_old:.4f} -> {st.Te_new:.4f} eV, "
+              f"ne {st.ne:.4e} cm^-3")
+        print(f"   post-step operator L[{st.k},{st.j}]:  "
+              f"tau_relax {st.tau_relax:.4e} s   tau_QSS {st.tau_QSS:.4e} s   "
+              f"M {st.M:.4g}")
+        print(f"   R(CRE, before) {st.R_cre_old:.6f}   R(PE) {st.R_pe:.6f}   "
+              f"R(CRE, after) {st.R_cre_new:.6f}   eps {st.eps*100:.3f}%")
+        print(f"   PE by one linear solve {R_pe_direct:.10f}, by the "
+              f"two-channel split {st.R_pe:.10f}  ({d_pe:.1e} apart)")
+        print(f"   plateau flatness over the window "
+              f"{flat*100:.4f}% peak-to-peak;  eigen vs expm {chk:.2e}")
+        traj_tok[panel] = dict(st=st, flat=flat, chk=chk)
+
+    axes[0].legend(handles=[
+        Line2D([], [], color=C_INK, lw=1.5, label=r"$R(t)$, 43-state solution"),
+        Line2D([], [], color=C_GREEN, ls=(0, (1, 1.4)), lw=1.4,
+               label=r"$R^{\rm PE}$, partial equilibrium (one linear solve)"),
+        Line2D([], [], color=C_BLUE, ls=(0, (5, 2)), lw=1.0,
+               label=r"$R^{\rm CRE}$ at $T_e$ before the step"),
+        Line2D([], [], color=C_VERM, ls=(0, (5, 2)), lw=1.0,
+               label=r"$R^{\rm CRE}$ at $T_e$ after the step"),
+        Patch(facecolor="0.90", edgecolor="none",
+              label=r"plateau window, $30\tau_{\rm relax}$ to "
+                    r"$\tau_{\rm QSS}/30$")],
+        loc="upper left", bbox_to_anchor=(0.0, -0.22), ncol=2, frameon=False,
+        fontsize=6.4, handletextpad=0.7, labelspacing=0.4, columnspacing=1.1)
+    provenance(fig, y=-0.235)
+    save(fig, "fig5_6_trajectory")
+
+    sb, sc = traj_tok[0]["st"], traj_tok[1]["st"]
+    tok.update({
+        "@TB_TR@": sci(sb.tau_relax, 3), "@TB_TQ@": sci(sb.tau_QSS, 3),
+        "@TB_M@": f"{sb.M:.0f}", "@TB_ROLD@": f"{sb.R_cre_old:.4f}",
+        "@TB_RPE@": f"{sb.R_pe:.4f}", "@TB_RNEW@": f"{sb.R_cre_new:.4f}",
+        "@TB_EPS@": f"{sb.eps*100:.2f}", "@TB_K@": str(sb.k),
+        "@TB_FLAT@": f"{traj_tok[0]['flat']*100:.2f}",
+        "@TC_TR@": sci(sc.tau_relax, 3), "@TC_TQ@": sci(sc.tau_QSS, 3),
+        "@TC_M@": sci(sc.M, 3), "@TC_ROLD@": f"{sc.R_cre_old:.4f}",
+        "@TC_RPE@": f"{sc.R_pe:.4f}", "@TC_RNEW@": f"{sc.R_cre_new:.4f}",
+        "@TC_EPS@": f"{sc.eps*100:.1f}", "@TC_K@": str(sc.k),
+        "@TC_TE@": f"{sc.Te_old:.2f}", "@TC_TENEW@": f"{sc.Te_new:.2f}",
+        "@TC_NE@": sci(sc.ne), "@TB_TENEW@": f"{sb.Te_new:.2f}",
+        "@TRAJCHK@": sci(max(traj_tok[0]["chk"], traj_tok[1]["chk"]), 1),
+    })
+
+    # === TAIL MARKER: new figures are inserted above this line ===
+    print("\nwrote:")
+    for name, how in written:
+        print(f"  {outdir / name}   [{how}]")
+    leftover = sorted({k for k in tok})
+    print(f"caption tokens ready: {len(leftover)}")
+
+
+if __name__ == "__main__":
+    main()

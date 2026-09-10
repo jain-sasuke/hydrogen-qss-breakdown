@@ -132,7 +132,16 @@ linear solves per point.
 
 **Thesis home:** Ch. 3 (derivation), Ch. 5 (result).
 
-### A5. May/August cross-validation ✅ — the strongest single check
+### A5. May/August cross-validation ▶️ — not self-verified
+
+**Demoted 10 Sep 2026.** This entry was marked verified and described as "the
+strongest single check". `derivation_04_two_timescales.md:375-381` says the
+opposite about the same numbers: *"This is a reported result, not independently
+re-run in this session ... Treat it as strong documented evidence, not as
+self-verified."* The May run has never been reproduced on the current matrix.
+A cross-validation whose earlier half cannot be re-executed is documented
+evidence, not a check. Either re-run the May analysis against the canonical
+`L_grid.npy` or stop calling it the strongest check.
 
 Two runs, four months apart, different matrices, different observables,
 different numerical methods:
@@ -457,7 +466,7 @@ and bounded at <0.85% on τ_relax anywhere.
 | B5 | **Title and abstract** | Gated on B1 and on the skeptic pass for A10/A11 |
 | B6 | **`eps_step` name collision** | At least six structurally distinct definitions share the name across the repo, including a hardcoded fit in `verify_partition.py:134` that depends on no data. Must be resolved in Ch. 3 notation before any number is written |
 | B7 | **Two writers, one path** | `qss_analysis.py` and `validate_gates.py` both write `M_grid.npy`, `tau_QSS_grid.npy`, `tau_relax_grid.npy`. Last runner wins; six downstream readers cannot tell whose numbers they hold |
-| B8 | **Units mislabel** | `assemble_cr_matrix.py:58,217,347` and `solve_cr.py:131` label `S_grid` as cm³/s. It is **s⁻¹**: S = ne(α_RR + ne·α_3BR), verified numerically, and b = S·n_ion |
+| B8 | ~~**Units mislabel**~~ **RESOLVED 10 Sep 2026** | The cm³/s label on `S_grid` is gone; `assemble_cr_matrix.py:58,217` now read `source per unit n_ion [s^-1]`. Fixed by commit `ffe1768`, whose message was otherwise inaccurate about `solve_cr.py`. Confirmed by grep: no surviving cm³/s label on `S_grid` anywhere |
 
 ---
 

@@ -961,3 +961,74 @@ quasi-steady-state solution of coupled rate equations"* **in its title** — the
 thesis's exact question, 32 years earlier. It is now cited in Chapter 1 but
 with an open `\todo` demanding the precise statement of what it established.
 **That `\todo` is the single largest unresolved publication risk in Chapter 1.**
+
+---
+
+# ADDENDUM C — Gate 1 architecture pass, and three register corrections
+
+**10 September 2026.** The Gate 1 architect pass produced
+`outputs/claim_hierarchy.md` (thesis claim, claims A–F, a seven-chapter map with
+per-chapter forbidden claims, four-step chains for thirteen results, a ten-rung
+validation ladder, and fifteen approximations each with its expected failure
+mode). Three items from that pass are settled here.
+
+## C.1 The condition-number claim is correct, and now has provenance
+
+`chapter3.tex:719-721` states that cond(L_EE) lies between 1.48×10³ and
+1.74×10⁵ across the grid. No script computed it, which made it the most
+quotable unsupported number in written LaTeX. Computed directly from the
+canonical matrix over all 400 points:
+
+| | measured | claimed | agreement |
+|---|---|---|---|
+| minimum | **1.4821×10³** at [0,0], Te = 1.000 eV | 1.48×10³ | +0.1% |
+| maximum | **1.7436×10⁵** at [33,7], Te = 4.715 eV | 1.74×10⁵ | +0.2% |
+| median | 2.1044×10⁴ | — | — |
+
+**The claim was never wrong; it was unsupported.** It now needs a producing
+script so the number is reproducible rather than merely correct.
+
+## C.2 B8 is resolved and should leave PART B
+
+The `S_grid` units mislabel is gone. `assemble_cr_matrix.py:58,217` now read
+`source per unit n_ion [s^-1]`, and no cm³/s label on `S_grid` survives
+anywhere. Fixed by commit `ffe1768` — the same commit whose message was found
+to be inaccurate about `solve_cr.py`. A commit can carry a wrong message and a
+right diff.
+
+## C.3 A5 was marked verified on evidence that says it is not
+
+`thesis_ready.md` A5 was marked ✅ and called "the strongest single check".
+`derivation_04_two_timescales.md:375-381` says of the same numbers: *"This is a
+reported result, not independently re-run in this session ... Treat it as
+strong documented evidence, not as self-verified."* The May run has never been
+reproduced against the canonical matrix. **Demoted to ▶️.** A cross-validation
+whose earlier half cannot be re-executed is documented evidence, not a check.
+
+## C.4 The structural finding: one result was never falsifiable
+
+Of thirteen major results audited for the four-step chain (physical picture →
+mathematics → prediction → numerical test), twelve have all four. Two are
+exemplary: the Griem shell-pair test predicted 6.7 and measured 7.2, and the
+LTE prediction was falsified in a way that improved the claim.
+
+**R6, the magnitude, is the only result with no prediction step.** Nothing was
+ever written down saying how large the error should be, or what size would
+refute the picture. That is precisely why it turned out to be linear in an
+arbitrary grid step: a number produced with no prior expectation can only be
+rationalised, never falsified. The repair is the one in
+`outputs/pivot_decision.md`: headline dε/d ln Te, predicted as |f₃−f₄| times
+the CRE gain d ln n_g/d ln Te, both independently measurable. That converts the
+weakest chain into one of the strongest.
+
+## C.5 Two further items to act on
+
+- **Rung 6 of the validation ladder, state-space convergence, is NOT DONE.**
+- **`verify_bundling_psm20.py` is not the one-command win it is billed as.** It
+  synthesises grids silently when files are missing and may read zeros for the
+  bundled indices, returning a false verdict from missing data. Fix the silent
+  fallback before running it.
+- Three checks currently printed as validation are theorems or true by
+  construction: the tanh gate, Gate A's detailed balance, and Gate C's Saha
+  limit whose `approaching` column is computed and then excluded (populations
+  reach only 1.5% of Saha).

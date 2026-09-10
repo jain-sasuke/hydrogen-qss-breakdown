@@ -267,18 +267,38 @@ defensible statement is that it has not previously been stated in this form in
 the collisional--radiative literature. It is not a new function and it is not a
 new result about hydrogen.
 
-\paragraph{The bound is elementary; its application is the claim.} That $\max|\ffrac{3}-\ffrac{4}| = \tanh(|\Delta|/4) < 1$ follows in a
-few steps from two displaced logistics, and no prior statement of it was found.
-That absence is weak evidence. The literature search behind it reached Crossref
-and OpenAlex, which index journal metadata well and equations buried inside
-textbook chapters poorly, and this identity is exactly the kind of relation that
-would sit unlabelled in a monograph. What this work claims is the
-\emph{application}: that the inequality bounds the diagnostic error of
-a hydrogen line ratio with respect to its ground-state reservoir, uniformly over
-every atomic dataset, and that the bound is near-tight where the error is
-largest. The novelty of the inequality itself is left open.
-\emph{[UNVERIFIED: two bodies of work must be read before the novelty question
-can be settled, and neither has been read against it. Fujimoto's \emph{Plasma
+\paragraph{The bound is elementary, it is in print, and only its application is
+claimed.} That $\max|\ffrac{3}-\ffrac{4}| = \tanh(|\Delta|/4) < 1$ follows in a
+few steps from two displaced logistics. \textbf{The identity is published.}
+Foieri and co-workers, treating conduction through a disordered wire at finite
+bias, write the difference of two Fermi functions displaced by $eV$ and
+approximate it by a rectangle of height $\tanh(eV/4kT)$ and width
+$eV/\tanh(eV/4kT)$~\cite{Foieri2006}. A Fermi function is a unit-width logistic
+in $E/kT$ and $eV/kT$ plays the part of $\Delta$, so both of this chapter's
+statements are there: the peak height, and the area $\Delta$ of
+Eq.~\eqref{eq:sensitivity_area}. They state it without derivation or citation,
+which suggests it was already regarded as known in that field.
+
+The corollary $|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ is likewise not new
+in substance. Each $\ffrac{p}$ is the elasticity of a function affine in the
+reservoir, and that an elasticity is bounded by the Hill coefficient, here
+unity, is standard in metabolic control analysis~\cite{HeinrichRapoport1974}.
+The $\tanh$ sharpens that bound from $1$ to $\tanh(|\Delta|/4)$; it does not
+establish it.
+
+What this work claims is therefore only the \emph{application}: that the
+inequality bounds the diagnostic error of a hydrogen line ratio with respect to
+its ground-state reservoir, uniformly over every atomic dataset, and that the
+bound is near-tight where the error is largest. No prior statement of a
+data-independent ceiling on a collisional--radiative line ratio's response to
+the neutral reservoir was located, in this literature or in divertor
+spectroscopy. That claim is written so that finding an older statement of the
+mathematics costs it nothing.
+\emph{[UNVERIFIED: the mathematical priority question is now closed by
+\cite{Foieri2006}. What remains open is whether the switching point
+$c_m/a_m$, or a closed form for the ratio of two population coefficients,
+already appears in the plasma-spectroscopy literature. Two bodies of work must
+be read, and neither has been. Fujimoto's \emph{Plasma
 Spectroscopy} Chapter~4 \cite{Fujimoto2004}, which develops the population
 coefficients in the normalised form this work uses; and Fujimoto's series on
 the kinetics of ionisation and recombination in the Journal of the Physical

@@ -899,7 +899,17 @@ would move ≲ 10% in that one cell and nowhere else.
 
 ## I. OPEN, RANKED BY DAMAGE
 
-1. **The Fujimoto benchmark target is unverified.** The thesis publishes an 8.3× model failure on the two shells the mechanism is built from. The model reproduces analytically and passes three external checks; the tabulated asymptote demands C(1s→n=2) fifteen times the accepted value; a single-row density offset takes the p=2..7 ratios from a factor-50 spread to flat within ±10%. `verify_fujimoto_table41.py`'s own docstring instructed a re-check against the book that was never done. **One sentence from Fujimoto (2004) Ch. 4 settles it: is Table 4.1(b) bundled-n with statistical ℓ, or ℓ-resolved?**
+1. ~~**The Fujimoto benchmark target is unverified.**~~ **CLOSED 10 Sep 2026.**
+   The printed table was read. The question was "is Table 4.1(b) bundled-n or
+   ℓ-resolved?" and the answer is **bundled**: the columns are p = 2, 3, 4, 5,
+   7, 10, 15, principal quantum numbers, with no ℓ label anywhere. The
+   transcription is exact and the row labels are log₁₀(n_e/m⁻³), which the
+   table establishes internally. The one-decade offset speculation is
+   withdrawn. The r₁ deficit measures this model's ℓ-closure against a bundled
+   tabulation, not a model defect: removing proton ℓ-mixing moves r₁(2) by
+   118× at that density. **Chapters 4 and 6 rewritten to withdraw the
+   self-indictment and report the r₀ agreement as the pass it is.** See
+   `findings_10` ADDENDUM I.
 2. **The conservation gate is tautological.** Three injected faults (a tenfold rate error, all de-excitation deleted, the whole input array transposed) left the residual unchanged. It detects only an A/γ inconsistency. `chapter3.tex:222-225` claims otherwise.
 3. **Chapters 3 and 6 contradict each other about the same operator.** Chapter 3 says the split and the tanh bound hold for a trapped matrix; Chapter 6 correctly says Θ_P depends on n(1s).
 4. **Gate D fails at 100% of points**, ACD half unimplemented.

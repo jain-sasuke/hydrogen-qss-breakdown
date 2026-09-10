@@ -1,151 +1,109 @@
 # What is left
 
-**Compiled 10 September 2026** by scanning the chapters, not from memory. Every
-"still live" below was confirmed present in the current text.
+Updated 10 September 2026, after the session that closed the seven items listed
+in the previous version of this file. **175 pages, no LaTeX errors, no undefined
+references or citations, zero em dashes.**
 
-Thesis state: seven chapters, 150 pages, clean build, zero em dashes, 62
-verified references, ten of the ten review gates run.
-
----
-
-## A. Wrong statements still in the thesis — 17, all confirmed live
-
-These are the highest priority. Each was found by an audit, and **none has been
-applied to the text.** An examiner can catch any of them.
-
-### Chapter 3 — 7
-
-| where | says | should say |
-|---|---|---|
-| `:222-225` | an error in one off-diagonal, a transposed index, or a missing back-reaction "all break this immediately" | **None of the three do.** All were injected and the residual did not move. Only an A/γ inconsistency is caught. The chapter's own line 286 supplies the standard |
-| `:1026` | the split and the tanh bound "hold for a trapped-line rate matrix exactly as they do for an optically thin one" | **False, and Chapter 6 says the opposite about the same operator.** Trapping makes A depend on n(1s), which breaks the affine structure and the unit width |
-| `:190-193` | three-body supplies "under 10%" of the feed into any level at 10¹² | **30 of 36 levels exceed 10%** at 1.00 and 2.95 eV |
-| `:444-446` | v₁ is "distributed across the excited manifold" | **PR(v₁) = 2.64**, a vector on two or three components. Also name the norm: v₁'s ground weight is 1.0000 raw and 1.9×10⁻⁴ population-scaled |
-| `:817` | M_eff floor 77.6 | **77.3.** 77.6 multiplies two extrema from different grid points |
-| `:1538` | "nine orders of magnitude" | **4.8.** Line 632 says five for the same two numbers |
-| `:276, :721` | "eight orders of magnitude spanned by the entries" | **~12 decades** at the benchmark, 11.9 to 15.0 grid-wide |
-
-### Chapter 2 — 3
-
-| where | says | should say |
-|---|---|---|
-| `:924` | the frozen Debye density varies F "by about 30%" | **×3.7 for n=2 and ×50 for n=8.** Keep the result: f₃−f₄ moves ≤0.42%, so ℓ-mixing is saturated |
-| `:940` | 2s "cannot radiate" | Two-photon at **8.229 s⁻¹**. Line 192 concedes it. Saying it *strengthens* the argument by supplying the n_e-independent floor |
-| `:554-555` | α_RR "peaks near Te ~ I_n" | **Monotonically decreasing** over the whole 1–10 eV grid for every level |
-
-### Chapter 6 — 5
-
-| where | says | should say |
-|---|---|---|
-| `sec:molecules` ×2 | "no bound can be constructed" | One can, from references cited in the same paragraph: **factor 3 to 5** on cold-corner ε_plateau |
-| `:143` | σ₀ = 7.74×10⁻¹⁴ cm² | **5.47374×10⁻¹⁴.** High by exactly √2 (Doppler width built from √(kT/m)) |
-| `:150-166` | τ = 114 per cm, and 7900 over 5 cm | **80.4 per cm.** 114×5 = 570, so the two are inconsistent by 13.9×, and neither appears in the cited artifact |
-| `sec:transport` | free-streaming transit "6 to 10 µs" | **72 µs** with CX trapping the neutrals, against a 26 µs threshold. **This correction is in the thesis's favour** |
-
-### Chapter 1 — 2
-
-| where | says | should say |
-|---|---|---|
-| `:441-443` | a divertor "passes from the first into the second as it detaches" | Chapter 6 withdraws this and Chapter 3 refuses it. Chapter 1 still asserts it |
-| `:124` | `\cite{Stangeby2023, Stangeby2023}` | The same key twice. Part A (Nucl. Fusion 63, 016016) has a `% VERIFIED` comment but **no entry** |
+Every claim below is stated with the artifact that would settle it. Anything
+marked CLOSED is closed in the thesis text, not only in this file.
 
 ---
 
-## B. The transport finding is not in the thesis at all
+## A. Closed this session
 
-Gate 9's headline, verified independently: **not one of the 45 breakdown points
-above 2 eV satisfies the closed-parcel assumption used to compute it** (median
-τ_esc/τ_QSS = 0.0104 at 20 cm), while 26.5% of the other 635 window_ok pairs do.
-The selection is structural: a point enters the census because τ_QSS is long,
-and a long τ_QSS is exactly when neutral transport dominates.
+| item | how it closed |
+|---|---|
+| Six built figures not in any chapter | inserted with their generated captions; `figures/story_captions.tex` and `fig5_captions.tex` now load from the preamble |
+| Transport selection effect not in the thesis | `verify_transport_selection.py`; Ch6 §transport_selection and §transport_partition |
+| Ch7's Sawada and Fujimoto passage | rewritten from the source: they hold n(1) constant, write Eq. (4) and do not solve it, Eq. (23) bounds the fast states only |
+| Abstract and front matter unwritten | certificate, declaration, abstract, acknowledgements, nomenclature |
+| τ_QSS rename | τ_slow, 102 sites plus the figure scripts. Ch3 carries the reason |
+| Gate D fails 400/400, ACD half unimplemented | `diagnose_gate_d.py`. Cause demonstrated; ACD built and agrees at 400/400 |
+| `verify_bundling_psm20.py` silent fallback, never run | fallback removed, two more defects found, script run, result in Ch6 |
+| Joint (Te, ne) ELM step map not run | `verify_joint_step_map.py`, 4968 cases; Ch5 §joint_step |
+| The 202-versus-201 census count | 202, as 105 heating + 97 cooling, counted from `divertor_map.csv` |
+| The crest vertex had no producing script | `verify_crest_subgrid.py`; 1.65e13 is the median of 49 rows, spread a factor 2.6 |
+| Whether the eps_step zero locus exists at other densities | 6 of 8 density columns, 5.18 to 8.69 eV |
+| The reservoir-gain aggregations had no script | `reservoir_gain_summary.csv`, one row per filter |
+| Ch7 claimed Ch6 and Ch7 contradict on the molecular bound | Ch6 constructs the bound; Ch6's own contradicting sentence fixed |
+| Ch3's promise to test the two recombination datasets separately | withdrawn where it was made; Ch4 states the gap is real |
+| Ch2's F(U_m) density spread | 3.7 and 50 were different l channels; now stated with scope, and the n=8 spread runs 50 to 687 at 1 eV |
 
-Chapter 6 tested transport only at the cold corner, where it survived by 2.8×.
-That was the wrong place to test it.
+Three findings came out of that work that were not on the list:
 
-**The partition to write:** unconditional are the two-channel split, the
-logistic, tanh(|Δ|/4), |d ln R/d ln b₁| < 1, the S̄ map and the exactness of the
-QSS closure. Conditional on the closed parcel are G, ε_plateau, the census and
-every ELM magnitude.
-
----
-
-## C. Markers: 29
-
-| kind | count | where |
-|---|---|---|
-| `\todo` | 15 | ch1 ×3, ch2 ×1, ch4 ×4, ch6 ×7 |
-| `UNVERIFIED` | 9 | ch4 ×1, ch5 ×6, ch7 ×2 |
-| `SOURCE REQUIRED` | 3 | |
-| `MECHANISM NOT ESTABLISHED` | 1 | why \|G\| falls with temperature |
-| `\needcite` | 1 | ch4, Janev ionisation coefficient |
-
-Several are correct behaviour and should survive to submission. The ones that
-should not: the Janev citation, and Chapter 5's remaining UNVERIFIED items that
-now have artifacts.
-
----
-
-## D. Three decisions only you can make
-
-1. **PE versus PEA.** Chapter 5 coins "partial equilibrium". In chemical
-   kinetics *partial equilibrium approximation* means eliminating a fast
-   reaction **extent**, not a fast **species**. Your examiners are chemical
-   engineers. Recommendation: keep the term, distinguish it in one sentence at
-   first use.
-2. **The molecular bound.** Chapter 6 says none can be constructed;
-   `findings_10` D.4 constructs one. One of the two must change.
-3. **The duplicate Stangeby citation.** Add Part A's entry, or delete the
-   duplicate key.
+1. **The eps_step zero locus is in 6 of 8 density columns.** Where it sits, the
+   diagnostic is blind to temperature in steady state, which is a worse failure
+   for a practitioner than the transient one this thesis maps. Reported, not
+   pursued.
+2. **The joint-step correction goes the wrong way in the worst case.** The
+   benchmark spot check showed the ELM-averaged bound falling by a factor 4 with
+   a density rise. Over the defended scope the count barely moves, 10.0 to 11.3
+   percent, and the worst case *rises* 26 percent, 0.1748 to 0.2206. The
+   fixed-density map understates rather than overstates.
+3. **ACD agrees with ADAS at every point**, median 0.943 and 0.907 at the
+   benchmark. That is the strongest external check in the thesis and it was
+   available all along, hidden behind the half of Gate D that was never written.
 
 ---
 
-## E. Not written
+## B. Open, and needs a decision only the author can make
 
-- **The abstract.** `thesis_main.tex:123-132` has the six-sentence skeleton, and
-  its sentence 5 still says "at least 39% at 1 eV", which the pivot retires.
-- **Front matter** beyond the title block.
-- **Chapter 5 does not yet include the six new figures.** `fig5_5_reversal`,
-  `fig5_6_trajectory`, `fig5_7_structural_maps` and `fig6_1_scope` exist with
-  captions in `figures/story_captions.tex` and are not `\includegraphics`'d
-  anywhere.
+1. **PE versus a chemical-kinetics name.** The reviewer objects that partial
+   equilibrium, partial LTE and partial Saha equilibrium already have meanings
+   in plasma spectroscopy, and suggests frozen-reservoir QSS or conditional QSS.
+   The τ_slow rename removed the worse of the two collisions; this one is still
+   open. Cost of changing: one macro plus prose, smaller than the τ_slow change.
 
----
+2. **Stangeby Part A entry.** Whether to cite it, and where.
 
-## F. Computation not done
-
-1. **Gate D.** Fails at 400 of 400 points; the ACD half is unimplemented
-   (`acd_adas` is loaded and never used). Validation ladder rung 9.
-2. **`verify_bundling_psm20.py`** has never been run, and it synthesises grids
-   silently when files are missing, violating CLAUDE.md rule 2. **Fix the
-   fallback before running it.**
-3. **The joint (Te, n_e) ELM step map.** Costs the same as the existing one and
-   closes the "±5% is not an ELM" objection.
-4. **The eight existing Chapter 3 and 5 figures fail a colour-blind check.**
-   `#2e7d32` and `#c0392b` separate by ΔE 4.2 under deuteranopia, below the ΔE 6
-   floor. The six new figures use Okabe-Ito and pass.
-5. **`eigs[eigs < -1.0]`** survives at `solve_cr.py:269` and `check_mz.py:10`.
-   Imported by nothing, which is luck rather than design.
+3. **Chapter 4's register.** The reviewer calls it a forensic software report:
+   filenames, line numbers, git history and repository archaeology in the main
+   narrative. The scientific consequences of the bugs must stay. Whether the
+   provenance detail moves to an appendix is an authorial choice about what kind
+   of thesis this is.
 
 ---
 
-## G. Two library trips, neither doable remotely
+## C. Open, and needs work
 
-1. **Sawada & Fujimoto (1994), Phys. Rev. E 49, 5565, the body.** Its abstract
-   says "the overall response of excited level populations to ionization and
-   recombination rates was also examined". If that section treats a *changing*
-   ground-state balance, `chapter7.tex:316-317` ("neither contains the other")
-   is at risk, and so is part of Claim 6. **The single largest publication
-   risk.**
-2. **Fujimoto, *Plasma Spectroscopy* (2004), Chapter 4.** Not in any scanned
-   corpus reachable from here. If a closed form for the ratio of two population
-   coefficients appears there, the remaining novelty weakens further.
+1. **The reviewer's first and most serious demand is unmet.** One concrete
+   published diagnostic procedure showing equations, inputs, what is tabulated,
+   and exactly where n_1s/n_i is eliminated. Without it the thesis is a good
+   analysis of a closure that may be reframed as the cost of an
+   equilibrium-reservoir closure rather than a failure of a procedure in use.
+   Chapter 1 cites Pigarov 1998 and ADAS, and neither is worked through in that
+   detail.
+
+2. **The observable is n_3/n_4, not a ratio of line integrals.** The reviewer's
+   structural point: reformulate the derivation on the A-weighted emissivity
+   ratio, which the affine decomposition should survive almost unchanged because
+   line emissivities are linear functionals of the state vector. Chapter 4
+   reports the shell-versus-line discrepancy as small but does not reformulate.
+
+3. **Colour-blind check.** Eight existing Ch3 and Ch5 figures use `#2e7d32`
+   against `#c0392b`, ΔE 4.2 under deuteranopia. The six new figures were built
+   after this was known; the eight older ones were not.
+
+4. **The appendices are empty stubs.** State ordering, atomic data sources,
+   numerical methods and convergence: three `\chapter` headings with no body.
+
+5. **Fujimoto, *Plasma Spectroscopy* (2004), Chapter 4.** Needs a physical copy.
+   Not in any scanned corpus reachable from here.
+
+6. **The crest position's sensitivity to n_max.** Needs the rate pipeline rerun
+   at n_max = 12 and 20, not a validation script.
 
 ---
 
-## H. What is closed, so nobody reopens it
+## D. Remaining markers, 20
 
-The Fujimoto benchmark (bundled-n, transcription exact, ℓ-closure is the whole
-explanation). The 2s partition (worst-case separation 86.5). Detailed balance
-(7.31×10⁻⁹ and 0.999997). State-space convergence, ladder rung 6. The tanh
-novelty question as mathematics (Yule 1912). Backlog C1, C2, C6. B8. The
-condition-number provenance. All 261 em dashes.
+11 `\todo`, 3 `[UNVERIFIED]`, 3 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT
+ESTABLISHED]`, 1 `\needcite` in the text and 1 in the macro definition.
+
+Most of the `\todo`s are citations the author must supply: the ITER divertor
+heat-flux figure, the lower end of the density range, the ITER neutral-pressure
+range, the separatrix band. Those cannot be closed from inside the repository.
+
+The rest name work that is genuinely outstanding: the SOLPS-coupled calculation,
+the molecular matrix, the n=15 ground-fed provenance, and the fault-injection
+grid point.

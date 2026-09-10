@@ -109,8 +109,9 @@ Section~\ref{sec:transport} cannot test.
 Both structural factors are dimensionless. The mean sensitivity $\overline{S}$
 is the average of $\ffrac{3}-\ffrac{4}$ over the interval the reservoir
 traverses, and it says how strongly the observed ratio answers to the
-ground-state reservoir. The reservoir gain $G = \partial\ln u^{\mathrm{CRE}}/\partial\ln\Te$
-says how far equilibrium ionisation balance would move that reservoir for a
+ground-state reservoir. The reservoir gain $G = \Delta\ln u/\Delta\ln\Te$,
+the secant along the CRE curve over the step taken, says how far equilibrium
+ionisation balance would move that reservoir for a
 given fractional change in temperature; it is negative everywhere on the grid,
 because heating ionises the ground state away.
 
@@ -198,7 +199,12 @@ of $448$ point-and-direction pairs above \SI{2}{\electronvolt} exceed
 $\Te = \SI{2.02}{\electronvolt}$ and $\nel = \SI{1.93e13}{\per\cubic\centi\metre}$.
 At the \SI{506}{\micro\second} extrapolated to the ITER pedestal
 \cite[Sec.~5]{Loarte2003} the count falls to $24$ and the worst case to
-\SI{15.3}{\percent}, the $24$ being a strict subset of the $45$.
+\SI{15.3}{\percent}, the $24$ being a strict subset of the $45$. Both are
+fixed-density counts, and Section~\ref{sec:joint_step} steps the density too:
+the count barely moves, at $10$ to \SI{11}{\percent} of the pairs available
+whichever way the density goes, while the worst case rises to
+\SI{22.1}{\percent} when the density steps up with the temperature. The
+fixed-density map understates the worst case rather than overstating it.
 At densities where the Balmer inversion is ordinarily applied,
 $\nel\ge\SI{e14}{\per\cubic\centi\metre}$, none of $108$ pairs exceed
 \SI{10}{\percent} and the worst is \SI{7.2}{\percent}. The conditions to
@@ -490,26 +496,22 @@ Balmer series' (Section~\ref{sec:ridge_conditional}).
 % QUESTION: which unfinished calculations would change what may be claimed?
 %=============================================================================
 
-Four calculations would change the standing of a result in this thesis. The
-first two cost days. The last two are different projects.
+Three calculations would change the standing of a result in this thesis. The
+first costs days. The other two are different projects.
 
-\paragraph{A joint $(\Te,\nel)$ step map.} The maps in
-Chapter~\ref{ch:results} step temperature at fixed density, and an edge-localised
-mode (ELM) raises both. Joint steps give a comparable plateau error but a
-time-averaged bound that can fall by a factor of $4$, because the higher density
-shortens $\tauslow$; at the benchmark the bound falls from $0.0117$ to $0.0030$
-(Section~\ref{sec:persistence}). The census of Chapter~\ref{ch:results} is a fixed-density
-census, and an examiner who knows ELM physics will ask for the other one. It
-costs the same as the map that already exists.
-
-\paragraph{Reading Fujimoto's Table~4.1(b) from the book.} Chapter~\ref{ch:limits}
-publishes an unexplained factor-$8$ disagreement with the tabulated ground-fed
-population coefficient at $p=3$, which is one of the two coefficients the whole
-mechanism runs on (Section~\ref{sec:r1_deficit}). One sentence from the
-monograph settles whether that table's level structure is bundled in $n$ with
-statistical $\ell$ populations or resolved in $\ell$, and therefore whether the
-comparison tests this model or tests the $\ell$-closure inside it. Until that is
-read, the benchmark adjudicates nothing.
+\paragraph{A density grid fine enough to name an ELM.} The joint map of
+Section~\ref{sec:joint_step} crosses temperature steps with density steps of one
+grid index, and one density index is a factor $2.683$, that is
+$+\SI{168}{\percent}$, against $+\SI{4.81}{\percent}$ for one temperature index.
+The reservoir is roughly fifty times less sensitive to density than to
+temperature in logarithmic terms, so the two contributions end up comparable in
+that sweep only because the density grid is that coarse. The coarseness belongs
+to the tabulation and not to ELMs, which is why
+Table~\ref{tab:joint_census} is quoted per density step rather than as one
+number. Regenerating $\Lmat$ on a density grid spaced like the temperature grid
+would let the joint census be quoted at a realistic ELM density excursion, and
+it is the one remaining calculation that would move a number this thesis
+reports. It costs the same as the map that already exists.
 
 \paragraph{A two-region or transport-coupled calculation.} The single conditional
 on which all of Section~\ref{sec:criterion} rests is that $\ngs$ is frozen for

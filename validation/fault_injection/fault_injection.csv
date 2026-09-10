@@ -1,0 +1,6 @@
+i,j,Te_eV,ne_cm3,fault,max_abs_dL,residual
+23,5,2.94705,1.3895e+14,none (baseline),0.00000000e+00,2.23816495e-12
+23,5,2.94705,1.3895e+14,K_exc(1s->2p) x ten,6.91746150e+05,2.23816495e-12
+23,5,2.94705,1.3895e+14,all de-excitation deleted,1.90871951e+11,2.17088814e-12
+23,5,2.94705,1.3895e+14,excitation array transposed,2.74393830e+11,1.83692605e-12
+23,5,2.94705,1.3895e+14,"A_pq halved, gamma_p left alone",3.13420000e+08,3.62812931e+01

@@ -216,9 +216,10 @@ ground-to-ion ratio, the error in the $n=3$ to $n=4$ population ratio on the
 plateau between the two clocks is
 $\epsplat = |\exp(\overline{S}\,G\,\Delta\ln\Te)-1|$, where $\overline{S}$ is
 the sensitivity of the line ratio to the reservoir and
-$G = \mathrm{d}\ln u/\mathrm{d}\ln\Te$ is a property of the operating point
-rather than of the disturbance. Across a fourfold change in step size $G$ moves
-by at most \SI{6.74}{\percent} while $\epsplat$ moves by a factor $8.44$, so the
+$G = \Delta\ln u/\Delta\ln\Te$ is very nearly a property of the operating
+point rather than of the disturbance. Across a fourfold change in step size $G$
+moves by at most \SI{6.74}{\percent}, a drift that is itself the secant closing
+on its tangent, while $\epsplat$ moves by a factor $8.44$; so the
 two coefficients rather than a percentage are the reportable object. The
 sensitivity obeys a ceiling that no atomic dataset can raise,
 $\max|f_3-f_4| = \tanh(|\Delta|/4) < 1$, which follows from the structure of the
@@ -229,7 +230,11 @@ Averaged over an event of the duration extrapolated to the ITER pedestal,
 \SI{2}{\electronvolt} carry an error above \SI{10}{\percent}, the worst
 \SI{15.3}{\percent}; over the \SI{100}{\micro\second} the maps use it is $45$
 and \SI{17.5}{\percent}. The count is sensitive to the event duration and the
-worst case is not, falling by \SI{18}{\percent} across a factor $7.5$ in it. At
+worst case is not, falling by \SI{18}{\percent} across a factor $7.5$ in it.
+Those are fixed-density figures. Stepping density up with temperature, which is
+what an edge-localised mode does, leaves the count near a tenth of the pairs
+available and raises the worst case to \SI{22.1}{\percent}, so the
+fixed-density map understates it. At
 citable detached-divertor densities nothing breaks down at either duration, and
 the worst case is \SI{7.2}{\percent}. Timescale
 separation does not predict any of it: the ratio of the two clocks is $9982$ at
@@ -300,7 +305,7 @@ Chapter~\ref{ch:atoms}, whose work this thesis rearranges rather than replaces.
   $\ffrac{n}$ & ground-fed fraction of shell $n$ & \\
   $\Delta$ & logistic displacement between shells 3 and 4 & \\
   $\overline{S}$ & mean sensitivity of $\Robs$ to the reservoir & \\
-  $G$ & reservoir gain, $\mathrm{d}\ln u/\mathrm{d}\ln\Te$ & \\
+  $G$ & reservoir gain, secant $\Delta\ln u/\Delta\ln\Te$ & \\
   $\xscale$ & ground-density scale factor across a step & \\
   \addlinespace
   \multicolumn{3}{@{}l}{\emph{Timescales}}\\

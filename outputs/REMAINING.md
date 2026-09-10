@@ -117,7 +117,21 @@ Three findings came out of that work that were not on the list:
 
 ---
 
-## D. Remaining markers, 20
+## D. Remaining markers, 6
+
+Closed 11 Sep 2026, on top of section A above:
+- the fault-injection grid point, **recovered** rather than replaced. Sweeping
+  all 400 points and matching on the three recorded max|dL| values identifies
+  [23,5], the benchmark, to 1.63 percent, which is the printed table's rounding.
+  `verify_fault_injection.py` rebuilds L through the pipeline's own assembly,
+  checks the rebuild reproduces L_grid exactly, and reproduces every residual.
+- the controlled-correlation sweep. The unspecified "eight combinations" are
+  replaced by a named 4 scopes x 4 bases sweep stamped in
+  `validation/partial_correlation/`. The partial is **negative in 12 of 12**
+  combinations under quadratic control or richer, range -0.272 to -0.769.
+- three source-required markers, all closed by producing scripts.
+
+## D-old. Remaining markers, 20
 
 11 `\todo`, 3 `[UNVERIFIED]`, 3 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT
 ESTABLISHED]`, 1 `\needcite` in the text and 1 in the macro definition.

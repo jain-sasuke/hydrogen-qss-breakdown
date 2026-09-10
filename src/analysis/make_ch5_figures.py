@@ -59,7 +59,10 @@ WHAT THESE FIGURES MUST NOT BE READ AS SAYING
 
 Report only: writes figures/fig5_*.{pdf,png} and figures/fig5_captions.tex,
 and refuses to overwrite an existing file whose content differs unless --force
-is passed.  Reads validation/ and data/; writes to neither.
+is passed.  Reads validation/ and data/.  The only thing it writes outside
+figures/ is validation/partial_correlation/partial_correlation_sweep.csv, the
+scope-and-basis sweep of the controlled correlation, which is stamped there
+because chapter5.tex cites its range.
 """
 from __future__ import annotations
 
@@ -817,6 +820,76 @@ def main():
     print(f"    corr(13.6/Te, log eps), no dynamics    {r_arr:+.3f}   "
           f"(findings_09 §3.1: +0.71)")
     print(f"    log M is {100*r2_M:.0f}% explained by (log Te, log ne) alone")
+
+    # -- the scope-and-basis sweep -------------------------------------------
+    # chapter5.tex used to carry an [UNVERIFIED] recording that the quadratic
+    # partial "ran -0.22 to -0.70 over eight scope and basis combinations",
+    # from a note that did not say WHICH eight. An unspecified sweep cannot be
+    # reproduced or refuted, so a specified one is run here instead and its
+    # output stamped. The claim the chapter makes is about the SIGN, and the
+    # test of it is that adding richer control does not flip the sign back.
+    scopes = {
+        "all window_ok":      np.ones(len(lm), dtype=bool),
+        "heating only":       is_h,
+        "cooling only":       ~is_h,
+        "Te >= 2 eV":         tv >= 2.0,
+    }
+
+    def basis_cols(m, name):
+        a, b, T = lt[m], ln_[m], tv[m]
+        if name == "linear":
+            return [a, b]
+        if name == "quadratic":
+            return [a, b, a * a, b * b, a * b]
+        if name == "quadratic + 1/Te":
+            return [a, b, a * a, b * b, a * b, 1.0 / T]
+        if name == "cubic":
+            return [a, b, a * a, b * b, a * b,
+                    a ** 3, b ** 3, a * a * b, a * b * b]
+        raise RuntimeError(f"unknown basis {name!r}")
+
+    bases = ["linear", "quadratic", "quadratic + 1/Te", "cubic"]
+    sweep = []
+    print()
+    print("    scope-and-basis sweep of the controlled partial:")
+    print(f"      {'scope':<16}" + "".join(f"{b:>19}" for b in bases))
+    for sname, m in scopes.items():
+        if m.sum() < 40:
+            raise RuntimeError(
+                f"scope {sname!r} holds only {int(m.sum())} pairs; a partial "
+                f"correlation on a nine-term basis needs more than that")
+        row = []
+        for bname in bases:
+            r = partial(basis_cols(m, bname), lm[m], le[m])
+            row.append(r)
+            sweep.append(dict(scope=sname, basis=bname, n=int(m.sum()),
+                              partial=r))
+        print(f"      {sname:<16}" + "".join(f"{v:>+19.3f}" for v in row))
+    ctrl = [s for s in sweep if s["basis"] != "linear"]
+    vals = np.array([s["partial"] for s in ctrl])
+    n_neg = int((vals < 0).sum())
+    print()
+    print(f"    over the {len(ctrl)} combinations with quadratic control or "
+          f"richer:")
+    print(f"      range {vals.min():+.3f} to {vals.max():+.3f}, median "
+          f"{np.median(vals):+.3f}, negative in {n_neg} of {len(ctrl)}")
+    print(f"    the {len(scopes)} linear-control values are "
+          + ", ".join(f"{s['partial']:+.3f}" for s in sweep
+                      if s["basis"] == "linear"))
+    print("    Linear control is too weak to remove the shared temperature")
+    print("    trend, which is why it leaves a positive partial. The sign the")
+    print("    chapter reports is the one under adequate control.")
+    swp = root / "validation" / "partial_correlation" / "partial_correlation_sweep.csv"
+    swp.parent.mkdir(parents=True, exist_ok=True)
+    import csv as _csv
+    with swp.open("w", newline="") as fh:
+        w = _csv.DictWriter(fh, fieldnames=["scope", "basis", "n", "partial"])
+        w.writeheader()
+        for s in sweep:
+            w.writerow({**s, "partial": f"{s['partial']:.6f}"})
+    print(f"    wrote {swp}")
+    print()
+
     if r_quad >= 0:
         raise RuntimeError(
             f"the controlled correlation did not change sign: quadratic "

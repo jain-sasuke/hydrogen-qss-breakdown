@@ -16,11 +16,12 @@
 %       chapter6.tex:828-888  sec:r1_deficit    vs  Section~\ref{sec:fujimoto}
 %       chapter6.tex:889-948  sec:nmax          vs  Section~\ref{sec:convergence}
 %     The Chapter 6 versions carry the SCOPE consequence; the Chapter 4
-%     versions carry the EVIDENTIAL standing. sec:r1_deficit additionally now
-%     CONTRADICTS Section~\ref{sec:fujimoto}: it publishes the r_1 deficit as a
-%     model failure, which findings_10 ADDENDUM D.3 shows is very probably a
-%     defect in the benchmark target. It must be withdrawn or rewritten to
-%     match.
+%     versions carry the EVIDENTIAL standing. The sec:r1_deficit contradiction
+%     is now CLOSED: backlog I.1 (10 Sep 2026) and findings_10 ADDENDUM I
+%     settle the table as bundled-n, and the section title, its 6.10 summary,
+%     the Ch.4 ladder row and its caption, and the sec:further_work item have
+%     all been brought into line. The r_1 deficit is reported as an l-closure
+%     difference, not a model defect. Do not reintroduce the self-indictment.
 %
 %     sec:nmax needs LESS work than it looks. Its sentence that a check
 %     "has never been executed" refers to verify_bundling_psm20.py, the
@@ -251,10 +252,24 @@ reached only by Section~\ref{sec:atomic_uncertainty}'s comparison against RMPS
 and by the external comparisons of Section~\ref{sec:fujimoto}, and by nothing
 internal.
 
-\todo{The grid point at which the fault-injection residuals of
-Table~\ref{tab:faultinject} were evaluated is not recorded in
-\texttt{CHANGE\_REPORT.md}~\S4.2. Stamp it, or re-run at the benchmark point
-and stamp that. \textbf{[UNVERIFIED: grid point of Table~\ref{tab:faultinject}]}}
+\paragraph{The point the table belongs to, recovered.} An earlier draft
+carried Table~\ref{tab:faultinject} without recording which grid point the
+residuals were evaluated at, which is a real defect: a residual is a property of
+the model \emph{at a point}, and three of the four $\max|\Delta\Lmat|$ values
+scale with $\nel$, so without the point the table cannot be reproduced. Rather
+than re-run somewhere convenient and relabel it, the point was recovered.
+Sweeping all $400$ grid points and matching on those three values identifies
+$[23,5]$, the benchmark, with a worst disagreement of \SI{1.63}{\percent}, which
+is the rounding of the printed table to two significant figures. At that point
+every residual in Table~\ref{tab:faultinject} reproduces to the digits shown
+(\texttt{verify\_fault\_injection.py}, stamped in
+\texttt{validation/fault\_injection/}).
+
+The script rebuilds $\Lmat$ through the pipeline's own assembly rather than
+patching the stored matrix, and it checks that the rebuild reproduces
+\texttt{L\_grid} before injecting anything: the relative maximum difference is
+exactly zero. That check is what makes the injected faults faults in the model
+rather than in a re-implementation of it.
 
 %-----------------------------------------------------------------------------
 \section{The gate suite, read one gate at a time}
@@ -1645,7 +1660,7 @@ them, with the grade of Section~\ref{sec:gate_philosophy} attached to each.
   plausible one; \emph{severe} means a plausible wrong version of this model
   fails it. Of the fifteen internal checks, nine are severe, four are
   tautological and two are weak; of the four external comparisons, two pass,
-  one is open with an unverified target, and one fails.}
+  one measures the $\ell$~closure rather than this model, and one fails.}
   \label{tab:ladder}
   \small
   \begin{tabular}{p{4.3cm}p{2.0cm}p{5.6cm}}
@@ -1670,7 +1685,7 @@ them, with the grade of Section~\ref{sec:gate_philosophy} attached to each.
     \midrule
     Fujimoto App.~4B timescales & external, passes & $0.34\times$ and $1.77\times$ at a grid point his example lands on \\
     Fujimoto Table~4.1, $r_0$ & external, passes & \SIrange{0.1}{1}{\percent} for $n\ge4$; $r_0(2) = 0.7392$ against $0.730$ \\
-    Fujimoto Table~4.1(b), $r_1$ & \textbf{open} & $8.3\times$ low at $p=3$; target unverified, five lines of evidence in \S\ref{sec:fujimoto} \\
+    Fujimoto Table~4.1(b), $r_1$ & external, tests the $\ell$~closure & $8.3\times$ low at $p=3$; transcription verified against the printed table, which is bundled in $n$ (\S\ref{sec:fujimoto}) \\
     Gate~D against ADAS & \textbf{FAIL} & $\eta \in [5.73,\ 8346]$, $0$ of $400$ within a factor $2$ \\
     \bottomrule
   \end{tabular}

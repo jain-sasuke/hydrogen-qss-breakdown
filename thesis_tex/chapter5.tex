@@ -18,8 +18,12 @@
 %  [CONTINGENT: ... the 2s metastable partition is under audit] on
 %  sec:exact_decomposition, sec:bound and sec:mechanism.  The CR-physics audit
 %  completed and cleared 2s; the markers are removed and the argument is written
-%  as settled in sec:slow_subspace.  That subsection carries a [SOURCE REQUIRED]
-%  because the audit's script and artifact are not yet named in validation/.
+%  as settled in sec:slow_subspace.  That subsection used to carry a
+%  source-required marker because the audit's script and artifact were unnamed.
+%  CLOSED 11 Sep 2026: src/validation/verify_2s_not_slow.py produces all four
+%  of its measurements and stamps validation/slow_subspace/.  Running it also
+%  found that the subsection stated only one of two norms for the slow
+%  eigenvector's 2s content; both are now given.
 %
 %  chapter5_C5D.tex has been folded into Sections sec:eps_definitions,
 %  sec:exact_decomposition and sec:mechanism below and the file deleted.  Its
@@ -602,24 +606,28 @@ and how far the reservoir moved. Nothing in
 Eq.~\eqref{eq:exact_decomposition} says which of them varies across the
 operating map, and Section~\ref{sec:mechanism} determines that.
 
-\subsection{The reservoir gain, and why it is the step-independent object}
+\subsection{The reservoir gain, and why it is the object to report}
 \label{sec:gain}
 
 The second factor still contains the step. Splitting it,
 \begin{equation}
   \Delta\ln u \;=\; G\,\Delta\ln\Te ,
   \qquad
-  G \;\equiv\; \frac{\mathrm{d}\ln u}{\mathrm{d}\ln\Te}
-  \;=\; \frac{\partial \ln u^{\mathrm{CRE}}}{\partial\ln\Te}\bigg|_{\nel},
+  G \;\equiv\; \frac{\Delta\ln u}{\Delta\ln\Te}
+  \;\xrightarrow[\;\Delta\ln\Te\to0\;]{}\;
+  \frac{\partial \ln u^{\mathrm{CRE}}}{\partial\ln\Te}\bigg|_{\nel},
   \label{eq:gain_def}
 \end{equation}
 
 \noindent defines the \emph{reservoir gain} $G$: the factor by which a
 fractional change in electron temperature is amplified into a fractional change
-in the equilibrium ground-state population. It is dimensionless, it is negative
-throughout the grid because heating ionises the ground state away, and unlike
-$\epsplat$ it is a property of the operating point rather than of the
-experiment done to it. Substituting into
+in the equilibrium ground-state population. It is a \emph{secant}, taken along
+the CRE curve between the two endpoints of the step, and it is defined that way
+deliberately, so that Eq.~\eqref{eq:eps_of_step} below is exact rather than
+first-order; it tends to the partial derivative on the right as the step
+closes. It is dimensionless, it is negative throughout the grid because heating
+ionises the ground state away, and unlike $\epsplat$ it is very nearly a
+property of the operating point rather than of the experiment done to it. Substituting into
 Eq.~\eqref{eq:eps_plateau_exact},
 \begin{equation}
   \boxed{\ \epsplat = \Big|\exp\!\big(\overline{S}\,G\,\Delta\ln\Te\big)-1\Big|\ },
@@ -640,8 +648,9 @@ inversion about \SI{3.5}{\percent} in the line ratio.
 \begin{table}[htbp]
 \centering
 \caption{The reservoir gain $G$ at three grid points, for steps of one, two and
-four grid intervals. $G$ is stable to $5$ to \SI{6}{\percent} across a fourfold
-change in step size, while $\epsplat$ itself changes by a factor $4.9$ over the
+four grid intervals. $G$ moves by $5$ to \SI{6}{\percent} across a fourfold
+change in step size --- the secant closing on its tangent, quantified below ---
+while $\epsplat$ itself changes by a factor $4.9$ over the
 same range (Table~\ref{tab:step_dependence}). Values from
 \texttt{pivot\_decision.md}~\S4; see the provenance note below, which is not
 optional reading.}
@@ -670,11 +679,29 @@ $\epsplat$ and $\overline{S}$ at the benchmark), $0.3649$
 \texttt{CH5\_EVIDENCE.md}~\S4.4) and $0.6783$
 (\texttt{plateau\_gridmap.txt}, line 41). Table~\ref{tab:gain}'s nine values are reproduced to four significant figures by \texttt{verify\_reservoir\_gain.py}, whose output is stamped in \texttt{validation/reservoir\_gain/reservoir\_gain.csv}.
 
+\textbf{The residual step-dependence is the secant closing on its tangent, and
+it is not scatter.} If $G$ were a derivative it could not take three values at
+one point, and the three values are not noise around one: $|G|$ falls
+\emph{linearly} in the number of grid intervals $k$. Fitting $|G| = A - Bk$
+through the $k=1$ and $k=4$ entries and predicting the withheld $k=2$ entry
+gives $5.637$, $7.622$ and $14.140$ at the three points of
+Table~\ref{tab:gain}, against measured $5.634$, $7.617$ and $14.131$. Carried
+across every heating point that carries all three step sizes, the withheld
+prediction is right to a median of \SI{0.057}{\percent} and a worst case of
+\SI{0.066}{\percent} at $314$ of $314$ points
+(\texttt{verify\_secant\_linearity.py}, reducing the stamped
+\texttt{validation/reservoir\_gain/reservoir\_gain.csv}). The intercepts
+$A = 5.835$, $7.910$ and $14.729$ are then estimates of the derivative itself.
+\textbf{So the $5$ to \SI{6}{\percent} is a systematic and understood
+interval effect, not an instability in the coefficient}, and it is one to two
+orders of magnitude smaller than the factor $8.44$ by which $\epsplat$ moves
+over the same range.
+
 Figure~\ref{fig:structural_maps} maps both coefficients and their product over
 the grid. The two carry different information and different scopes:
 $|\overline{S}|$ belongs to the line pair and would change if a different
 $\alpha/\beta$ ratio were chosen, while $|G|$ belongs to the plasma and would
-not. Panel (c) is the product, the step-independent quantity this chapter
+not. Panel (c) is the product, the near-step-independent quantity this chapter
 reports in place of a percentage. Across step sizes of one, two and four grid
 intervals at the 736 points that carry all three, $|G|$ varies by at most
 \SI{6.74}{\percent}, with median $1.0555$, while $\epsplat$ over the same
@@ -1515,12 +1542,41 @@ negative).
 
 \textbf{Report the sign, not the magnitude.} The magnitude of the controlled
 partial depends on the basis chosen for the control, which is a modelling
-choice and not a measurement. \emph{[UNVERIFIED:
-\texttt{thesis\_ready}~A11 records that the quadratic partial ran $-0.22$ to
-$-0.70$ over eight scope and basis combinations. \texttt{make\_ch5\_figures.py}
-computes four partials, not eight, and neither the eight combinations nor the
-range appears in any script or artifact. What would close this: put the sweep
-in the script and stamp its output.]}
+choice and not a measurement. The sign does not, and that claim is now tested
+rather than asserted. Sweeping four scopes, all analysed pairs, heating only,
+cooling only, and the defended range $\Te\ge\SI{2}{\electronvolt}$, against four
+control bases of increasing richness, linear, full quadratic, quadratic plus an
+Arrhenius term $1/\Te$, and full cubic, gives Table~\ref{tab:partial_sweep}.
+
+\begin{table}[htbp]
+\centering
+\caption{Partial correlation of $\log\Msep$ with $\log\epsplat$ after
+residualising both on a basis in $(\log\Te,\log\nel)$. Linear control is too
+weak to remove the shared temperature trend. Under quadratic control or richer
+the partial is negative in every one of the twelve combinations.
+Stamped in \texttt{validation/partial\_correlation/}.}
+\label{tab:partial_sweep}
+\begin{tabular}{lrrrr}
+  \toprule
+  scope & linear & quadratic & quadratic $+\,1/\Te$ & cubic \\
+  \midrule
+  all analysed pairs & $+0.274$ & $-0.442$ & $-0.503$ & $-0.510$ \\
+  heating only       & $+0.326$ & $-0.272$ & $-0.705$ & $-0.592$ \\
+  cooling only       & $+0.338$ & $-0.329$ & $-0.769$ & $-0.607$ \\
+  $\Te\ge\SI{2}{\electronvolt}$ & $+0.417$ & $-0.531$ & $-0.549$ & $-0.533$ \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The partial is negative in all twelve combinations with quadratic
+control or richer}, ranging from $-0.272$ to $-0.769$ with median $-0.532$, and
+it is negative in the defended range on every basis. Adding richer control does
+not bring the sign back, which is the test that matters: if the reversal were an
+artifact of over-fitting the control, enriching the basis would have made it
+worse rather than steadier. An earlier note recorded a range of $-0.22$ to
+$-0.70$ over eight unspecified combinations; that range is approximately right
+and could not be reproduced as stated, because the eight were never named. The
+twelve above are named.
 
 The negative result itself is not new as a general statement.
 Greenland concluded, for arbitrary collisional--radiative systems, that

@@ -1,0 +1,17 @@
+scope,basis,n,partial
+all window_ok,linear,680,0.274465
+all window_ok,quadratic,680,-0.441803
+all window_ok,quadratic + 1/Te,680,-0.503263
+all window_ok,cubic,680,-0.509940
+heating only,linear,338,0.325612
+heating only,quadratic,338,-0.272200
+heating only,quadratic + 1/Te,338,-0.705437
+heating only,cubic,338,-0.591782
+cooling only,linear,342,0.337600
+cooling only,quadratic,342,-0.328748
+cooling only,quadratic + 1/Te,342,-0.769175
+cooling only,cubic,342,-0.606850
+Te >= 2 eV,linear,448,0.416720
+Te >= 2 eV,quadratic,448,-0.531359
+Te >= 2 eV,quadratic + 1/Te,448,-0.549047
+Te >= 2 eV,cubic,448,-0.532557

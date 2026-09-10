@@ -1,0 +1,11 @@
+L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+2s index 1 (2S)
+|L_2s,2s| at [0,0] = 1.256417e+09 1/s
+|lambda_0| at [0,0] = 1.487357e-02 1/s
+separation = 8.447313e+10
+two-photon A = 8.229 1/s, A/|lambda_0| = 553.263
+crossover density 6.549953e+03 to 1.056926e+04 cm^-3, median 7.873511e+03
+min |Re lambda(L_FF)|/|lambda_0| = 86.467448 at Te=10 eV, ne=1e+15 cm^-3
+max RAW 2s weight in a slow eigenvector = 2.053564e-03
+max POPULATION-SCALED 2s weight = 0.995649
+largest raw component is the ground state at all 400 points

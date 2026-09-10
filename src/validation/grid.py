@@ -26,8 +26,13 @@ DOI 10.1016/j.fusengdes.2011.07.008, Sec. 4 first paragraph:
   -> Caveat: these SOLPS runs are the CFC/carbon-impurity era; the all-W
      baseline had not been simulated to the same level of detail.
 
-Stangeby, Lore, Pitts, Canik & Bonnin (2022), Nucl. Fusion 62,
-DOI 10.1088/1741-4326/ac9917 (part B; part A is ac9916):
+Stangeby, Lore, Pitts, Canik & Bonnin, Nucl. Fusion 63(1), 016017,
+DOI 10.1088/1741-4326/ac9917 (part B; part A is 63(1), 016016, ac9916).
+Published online 13 Dec 2022, print issue January 2023. This block previously
+read "(2022), Nucl. Fusion 62", which is the wrong volume and the wrong year;
+the DOI was right throughout. Verified against the Crossref/Semantic Scholar
+record 11 Sep 2026. Note that Lore et al. below IS volume 62, which is where
+the confusion came from:
     upstream separatrix density for the ITER Q=10 baseline SOLPS-4.3 database
     peaks at ne,sep ~ 6e19 m^-3, which is 0.5 n_GW for the 15 MA baseline, and
     the JET/AUG H-mode operational boundary is ne,sep/n_GW < 0.4-0.5.
@@ -66,7 +71,7 @@ REGIONS = [
      "Guillemaut 2011 Sec.4  DOI 10.1016/j.fusengdes.2011.07.008"),
     ("upstream separatrix",
      None, None, 3.0e19, 6.0e19,
-     "Stangeby 2022 B        DOI 10.1088/1741-4326/ac9917"),
+     "Stangeby NF 63 016017  DOI 10.1088/1741-4326/ac9917"),
 ]
 
 TE_FLOOR_OPTICAL = 2.0      # Sec 3.5.3

@@ -1285,13 +1285,16 @@ atomic hydrogen: 43 levels, six elementary processes, and a rate coefficient for
 every pair of levels at every point of a $50\times8$ grid in temperature and
 density. Table~\ref{tab:data_sources} is the provenance record for all of it.
 
-\todo{Provenance item outstanding. The merged excitation arrays
-\texttt{K\_exc\_full.npy} and \texttt{K\_deexc\_full.npy} carry a modification
-date earlier than the CCC rate tables they are assembled from, which would mean
-\texttt{assemble\_K\_exc.py} has not been re-run since those tables were last
-regenerated. The array shapes are compatible, so nothing would have raised.
-Re-run the merge, byte-compare against the stored arrays, and either delete this
-note or record the outcome here.}
+One provenance item on that table was resolved by test rather than by
+inspection, and the outcome is recorded here because the suspicion was
+reasonable and wrong. The merged excitation arrays appeared to predate a CCC
+file they are assembled from, which would have meant
+\texttt{assemble\_K\_exc.py} had not been re-run since. Re-running the merge
+into a scratch directory and comparing byte for byte returns all five arrays
+\emph{identical} by SHA-256, with a maximum absolute difference of zero. The
+file whose date raised the question is \texttt{K\_CCC\_metadata.csv}, which
+carries no rate data; the rate tables themselves predate the merge. The stored
+arrays are current.
 
 \begin{table}[tbp]
   \centering

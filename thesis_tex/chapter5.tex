@@ -486,17 +486,34 @@ That argument leans on a proton-impact rate coefficient, so it is worth having
 one that does not. Delete the $\ell$-mixing entirely and leave $2s$ with
 nothing but two-photon emission: $8.229\,\si{\per\second}$ is still $553$
 times faster than $|\lambda_0|$ at the same corner. \textbf{On this grid $2s$
-cannot be slow under any assumption about $\ell$-mixing whatever.} The density
-at which it would become a second reservoir is near
-$\SI{7e3}{\per\cubic\centi\metre}$, $8.2$ decades below the bottom of the
-operating range.
+cannot be slow under any assumption about $\ell$-mixing whatever.} The density at which
+proton $\ell$-mixing out of $2s$ falls to the two-photon rate, so that the
+collisional route stops dominating, solves
+$\nel\sum_i K^{\ell\text{-mix}}_{i,2s} = \SI{8.229}{\per\second}$ and lies
+between $6.6\times10^{3}$ and \SI{1.06e4}{\per\cubic\centi\metre} over the
+temperature grid, median \SI{7.9e3}{\per\cubic\centi\metre}. That is $8.10$
+decades below the bottom of the operating range.
 
 The direct spectral test agrees and supplies the number to quote. Over all
 $400$ grid points the smallest ratio of $|\mathrm{Re}\,\lambda|$ over the
 excited block $\Lmat_{FF}$ to $|\lambda_0|$ is $86.5$, at
 $\Te = \SI{10}{\electronvolt}$, $\nel = \SI{e15}{\per\cubic\centi\metre}$,
-and no slow eigenvector anywhere on the grid carries dominant $2s$ weight.
-There is no near-degenerate second slow mode. That point and that value are the
+and the slow eigenvector is the ground state's at every point.
+
+That last statement needs its norm, because the two norms of
+Section~\ref{sec:two_clocks} disagree about it more sharply than
+anywhere else in this thesis. In the \emph{raw} eigenvector the largest
+component is the ground state at all $400$ grid points, with the $2s$ component
+at most $2.05\times10^{-3}$ of it and typically $10^{-5}$: the population the
+slow mode moves sits in $1s$ and nowhere else. In the
+\emph{population-scaled} eigenvector $2s$ reaches $0.996$ of the ground state's
+entry at the coldest, thinnest corner. \textbf{That second figure is not
+evidence of a second reservoir; it is the opposite.} It says the fractional
+response of $2s$ tracks the ground state's to within
+\SI{0.4}{\percent}, which is what being slaved to a single reservoir means. An
+independent reservoir would move on its own timescale and show up as a
+\emph{difference}, not as agreement. There is no near-degenerate second slow
+mode. That point and that value are the
 same stress point and essentially the same quantity as the timescale-separation
 minimum $\Msep = 86.8$ of Eq.~\eqref{eq:M_range}, computed from the excited
 block rather than from the full matrix, so the two are a consistency check on
@@ -505,11 +522,14 @@ and that is the figure that describes the grid}; the benchmark value
 $\Msep = 9982$ describes one point and overstates the margin by two orders of
 magnitude.
 
-\emph{[SOURCE REQUIRED: the four measurements in this subsection come from the
-collisional--radiative audit completed 10 September 2026. The script that
-produced them and
-its stamped artifact under \texttt{validation/} must be named here before
-submission; no other statement in this chapter depends on them.]}
+All four measurements in this subsection are produced by
+\texttt{src/validation/verify\_2s\_not\_slow.py} and stamped in
+\texttt{validation/slow\_subspace/}, which carries one row per grid point and
+raises if the largest raw component of the slow eigenvector is ever anything
+but the ground state. The two-photon rate is the one number there not read from
+the pipeline: the radiative array holds $A(2s\to1s) = 0$ exactly, because
+two-photon decay is not an E1 transition and was never entered, so the matrix
+this thesis solves is more pessimistic about $2s$ than the atom is.
 
 \subsection{A better variable than the departure coefficient}
 
@@ -1555,17 +1575,39 @@ cold edge needs one of them.}
 
 The cold corner also fails a cruder test: it is not a divertor state. The
 model's own steady solution at $[0,4]$ gives
-$\ngs = \SI{1.47e15}{\per\cubic\centi\metre}$, which at a neutral temperature
-of \SI{1}{\electronvolt} is a neutral pressure of \SI{235}{\pascal}, twelve
-times the upper end of the ITER divertor design range of roughly $1$ to
-\SI{20}{\pascal}; at $[0,7]$ it is \SI{3280}{\pascal}, $164$ times over. These
-are fixed points of a zero-dimensional box with no transport and no pumping, and
-they should be read as such. \emph{[SOURCE REQUIRED: the $1$ to
-\SI{20}{\pascal} ITER divertor neutral-pressure range needs a citation to the
-ITER divertor physics basis; the two computed pressures and the nuclei-balance
-table above come from the collisional--radiative audit completed 10 September
-2026 and need
-their script and stamped artifact named.]}
+$\ngs = \SI{1.4669e15}{\per\cubic\centi\metre}$, which at a neutral temperature
+equal to the electron temperature is a neutral pressure of \SI{235}{\pascal};
+at $[0,7]$ it is \SI{3280}{\pascal}
+(\texttt{verify\_cold\_corner\_pressure.py},
+\texttt{validation/cold\_corner/}). For contrast the benchmark gives
+\SI{0.058}{\pascal}.
+
+Those want a comparison, and the comparison has to be one that was read rather
+than repeated. An earlier draft set them against ``the ITER divertor design
+range of roughly $1$ to \SI{20}{\pascal}'', which could not be traced to any
+source consulted for this thesis and is withdrawn. What can be cited is the
+upper end of a simulation database: new SOLPS-ITER runs extend the ITER
+$Q_{\mathrm{DT}} = 10$ baseline to a divertor-averaged neutral pressure
+$\langle p_{\mathrm{div}}\rangle > \SI{25}{\pascal}$ \cite{Stangeby2023a,
+Lore2022}. That is the top of a modelled database and not a design limit, and it
+is used here only as an order of magnitude. Against it, $[0,4]$ sits a factor
+$9.4$ over and $[0,7]$ a factor $131$ over, while the benchmark sits a factor
+$433$ under.
+
+\textbf{This is a third boundary, and it falls where the other two do.} Of the
+$400$ grid points, $32$ imply a neutral pressure above \SI{25}{\pascal} and
+\emph{none of them lies at $\Te\ge\SI{2}{\electronvolt}$}; the implied pressure
+drops below \SI{25}{\pascal} at every density once
+$\Te > \SI{1.6}{\electronvolt}$. Particle conservation, radiation transport and
+now the implied gas pressure are three unrelated pieces of physics, and all
+three put the floor between $1.1$ and \SI{2.4}{\electronvolt}.
+
+These are fixed points of a zero-dimensional box with no transport and no
+pumping. A real divertor's neutral density is set by recycling and pumping
+rather than by local ionisation balance, which is the objection
+Chapter~\ref{ch:limits} raises against the closed parcel, so the pressure is
+evidence that the cold corner is outside the modelled regime rather than a
+prediction of a pressure.
 
 \subsection{The plasma is not optically thin at the cold edge}
 \label{sec:optical_depth}

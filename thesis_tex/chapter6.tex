@@ -840,13 +840,16 @@ outboard midplane and the density at the X-point differ by roughly
 not turn on either subtlety, since the ridge is below both, but the factor
 $1.6$ should not be quoted more precisely than the band it is measured
 against.
-\todo{The separatrix band: confirm which quantity (outboard midplane or
-X-point) the factor $1.6$ was computed against, and cite \cite{Pitts2019} as
-the primary source. Note also that this repository records the
-\cite{Stangeby2023} reference as ``Stangeby 2022, Nucl.\ Fusion 62'' in
-\texttt{src/validation/grid.py} and in three \texttt{outputs/} documents; the
-DOI recorded there is right and the volume and year are wrong. Reported, not
-repaired.}
+The citation defect that accompanied this number is repaired. This repository
+recorded \cite{Stangeby2023} as ``Stangeby 2022, Nucl.\ Fusion 62'' in
+\texttt{src/validation/grid.py}; the DOI was right and the volume and year were
+wrong. Checked against the publisher record, it is Nuclear Fusion \textbf{63}(1)
+016017, published online December 2022 and in the January 2023 print issue, with
+companion part A at 63(1) 016016 \cite{Stangeby2023a}. The confusion came from
+\cite{Lore2022} in the same block of that file, which genuinely is volume 62.
+\todo{The separatrix band: confirm which quantity, outboard midplane or
+X-point, the factor $1.6$ was computed against, and cite \cite{Pitts2019} as
+the primary source once its full text is available.}
 
 \subsection{What that leaves}
 
@@ -957,10 +960,18 @@ no transport whatever. It is a test of the boundary condition on the atomic
 manifold, and nothing more. Section~\ref{sec:transport} is the objection this
 test does not answer, and no amount of closing the atomic system will answer it.
 
-\todo{The source record labels the worst-case operator as grid index $[1,4]$ in
-the closure table and $[0,4]$ elsewhere for the same
-$\tauslow = \SI{0.23324}{\second}$. Resolve the index label before the final
-draft; the value itself is not in dispute.}
+The two index labels the source record carries for this point,
+$[1,4]$ in the closure table and $[0,4]$ elsewhere, are both correct and refer
+to different operators. Diagonalising each directly gives
+$\tauslow = \SI{0.421012}{\second}$ at $\Lmat[0,4]$ and
+$\SI{0.233239}{\second}$ at $\Lmat[1,4]$, so the quoted
+\SI{0.23324}{\second} belongs to $\Lmat[1,4]$. That is the \emph{post-step}
+operator of the one-interval heating step whose \emph{pre-step} index is
+$[0,4]$, and the census rows are labelled by the pre-step index throughout. The
+convention is the one stated in Chapter~\ref{ch:results}: every timescale quoted
+belongs to the operator that governs the relaxation, which is the post-step one,
+and the two must not be interchanged. There was no inconsistency to repair, only
+a convention to state.
 
 %-----------------------------------------------------------------------------
 \section{An external benchmark this model fails, and has not explained}

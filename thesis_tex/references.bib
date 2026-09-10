@@ -933,13 +933,22 @@
 % characteristic is a difference of two shifted logistic ogives; p. 34,
 % eqs 5-40 to 5-42, states it is unimodal and symmetric with the modal point at
 % the midpoint. The peak HEIGHT is not given; "tanh" does not appear.
-@article{Samejima1969,
-  author  = {Samejima, Fumiko},
-  title   = {Estimation of Latent Ability Using a Response Pattern of Graded
-             Scores},
-  journal = {Psychometrika Monograph Supplement},
-  number  = {17},
-  year    = {1969}
+% Entry type changed from article to book, 11 Sep 2026. This is a monograph
+% supplement: it carries a number and no volume, which is exactly what BibTeX
+% warned about under the article type. No bibliographic field was invented to
+% silence the warning; only the entry type was corrected.
+% NOTE TO ANYONE EDITING THIS FILE: BibTeX scans for the at-sign even inside
+% comment text, so writing an entry type with its at-sign here makes BibTeX
+% try to parse the comment as an entry. That is what happened when this note
+% was first written, and it produced three parse errors.
+@book{Samejima1969,
+  author    = {Samejima, Fumiko},
+  title     = {Estimation of Latent Ability Using a Response Pattern of Graded
+               Scores},
+  series    = {Psychometrika Monograph Supplement},
+  number    = {17},
+  publisher = {Psychometric Society},
+  year      = {1969}
 }
 
 % VERIFIED Crossref 10.1090/S0002-9939-1955-0069229-1 -- Proc. AMS 6(2),
@@ -1002,3 +1011,27 @@
   year    = {1988},
   doi     = {10.1007/BF02294403}
 }
+
+% VERIFIED against the publisher record 11 Sep 2026 via Crossref/Semantic
+% Scholar: Nuclear Fusion volume 63, issue 1, art. 016016. Accepted manuscript
+% read in full via OSTI purl 1969837 (42 pp). Same 2022-online / 2023-print
+% citation trap as part B; see the note on Stangeby2023.
+@article{Stangeby2023a,
+  author  = {Stangeby, P. C. and Lore, J. D. and Pitts, R. A. and
+             Canik, J. M. and Bonnin, X.},
+  title   = {A reduced model for the {ITER} divertor based on {SOLPS} solutions
+             for {ITER} $Q = 10$ baseline conditions: {A}. {I}dentifying
+             options for the control parameters},
+  journal = {Nuclear Fusion},
+  volume  = {63},
+  number  = {1},
+  pages   = {016016},
+  year    = {2023},
+  doi     = {10.1088/1741-4326/ac9916},
+  note    = {Companion part A to \cite{Stangeby2023}. Table 1 gives spans, not
+             values: the divertor-averaged neutral pressure spans a factor
+             5.36 over this dataset. Sec.~6 records the extended database
+             reaching $\langle p_{\rm div}\rangle > 25$~Pa, citing
+             \cite{Lore2022}.}
+}
+

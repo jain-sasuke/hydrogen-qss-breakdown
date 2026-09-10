@@ -62,6 +62,9 @@ shell-ratio form is used here because it is the observable Chapter 5 reports.
 
 WHICH OPERATOR, ALWAYS
 ----------------------
+The rendered symbol for the slow clock is tau_slow, matching thesis_main.tex.
+The Python attribute and the divertor_map.csv column stay tau_QSS: those are
+the pipeline's own names and renaming them would break every reader of the file.
 tau_QSS, tau_relax and M are properties of an operator, not of a grid point,
 and this project has three live values of M at the benchmark for that reason
 (9982 on L[23,5], 8243 on the post-step L[24,5], 4856 on a +0.6 eV step).
@@ -965,7 +968,7 @@ def main():
         axt.axhline(st.R_pe, color=C_GREEN, ls=(0, (1, 1.4)), lw=1.4, zorder=2)
         axt.plot(ts, R_t, "-", color=C_INK, lw=1.5, zorder=4)
         for tv, tlab in ((st.tau_relax, r"$\tau_{\rm relax}$"),
-                         (st.tau_QSS, r"$\tau_{\rm QSS}$")):
+                         (st.tau_QSS, r"$\tau_{\rm slow}$")):
             axt.axvline(tv, color="0.45", ls="-", lw=0.7, zorder=1)
             axt.text(tv, 0.015, " " + tlab, transform=axt.get_xaxis_transform(),
                      fontsize=7, color="0.35", ha="left", va="bottom",
@@ -990,7 +993,7 @@ def main():
                      xy=(np.sqrt(wlo * whi), st.R_pe),
                      xytext=(0, 13), textcoords="offset points",
                      fontsize=6.8, color="0.30", ha="center", va="bottom")
-        axt.annotate("decay on\n" + r"$\tau_{\rm QSS}$", xy=(0.87, 0.74),
+        axt.annotate("decay on\n" + r"$\tau_{\rm slow}$", xy=(0.87, 0.74),
                      xycoords="axes fraction", fontsize=6.8, color="0.30",
                      ha="center", va="center", linespacing=1.2)
 
@@ -1023,7 +1026,7 @@ def main():
                label=r"$R^{\rm CRE}$ at $T_e$ after the step"),
         Patch(facecolor="0.90", edgecolor="none",
               label=r"plateau window, $30\tau_{\rm relax}$ to "
-                    r"$\tau_{\rm QSS}/30$")],
+                    r"$\tau_{\rm slow}/30$")],
         loc="upper left", bbox_to_anchor=(0.0, -0.22), ncol=2, frameon=False,
         fontsize=6.4, handletextpad=0.7, labelspacing=0.4, columnspacing=1.1)
     provenance(fig, y=-0.235)
@@ -1868,7 +1871,7 @@ def main():
   Two errors in the same observable, the shell ratio $R = n_3/n_4$, measured
   along the same trajectory after a $+@FRAC@\%$ step in $T_e$ at fixed $n_e$,
   and reported as the maximum over the timescale-separated plateau window
-  $30\tau_{\rm relax} < t < \tau_{\rm QSS}/30$.
+  $30\tau_{\rm relax} < t < \tau_{\rm slow}/30$.
   The \emph{quasi-steady-state closure residual} is
   $|R(t)/R^{\rm QSS}(n_g(t)) - 1|$, where $R^{\rm QSS}$ is rebuilt at each
   instant from the excited-state block alone,
@@ -1909,18 +1912,18 @@ def main():
   Three phases are visible. $R$ rises on $\tau_{\rm relax}$ as the excited
   manifold re-equilibrates against a ground state that has not yet moved; it
   sits at the partial-equilibrium value $R^{\rm PE}$; then it decays on
-  $\tau_{\rm QSS}$ as the ground state, and with it the ionisation balance,
+  $\tau_{\rm slow}$ as the ground state, and with it the ionisation balance,
   finally responds. The excited states are fast enough to track the new
   temperature within nanoseconds. The reservoir that feeds them is not.
   (a) The benchmark, $T_e = @BENCH_TE@ \rightarrow @TB_TENEW@$~eV at
   $n_e = @BENCH_NE@$~cm$^{-3}$: $R$ moves from $@TB_ROLD@$ through
   $@TB_RPE@$ to $@TB_RNEW@$, a plateau error of @TB_EPS@\%, with
-  $\tau_{\rm relax} = @TB_TR@$~s and $\tau_{\rm QSS} = @TB_TQ@$~s
+  $\tau_{\rm relax} = @TB_TR@$~s and $\tau_{\rm slow} = @TB_TQ@$~s
   ($M = @TB_M@$).
   (b) The coldest grid point, $T_e = @TC_TE@ \rightarrow @TC_TENEW@$~eV at
   $n_e = @TC_NE@$~cm$^{-3}$: $@TC_ROLD@$ through $@TC_RPE@$ to $@TC_RNEW@$,
   @TC_EPS@\%, with $\tau_{\rm relax} = @TC_TR@$~s and
-  $\tau_{\rm QSS} = @TC_TQ@$~s ($M = @TC_M@$), five orders of magnitude of
+  $\tau_{\rm slow} = @TC_TQ@$~s ($M = @TC_M@$), five orders of magnitude of
   separation between the two clocks.
   Every timescale quoted belongs to the \emph{post-step} operator, the one
   that governs the relaxation; the same grid point read from its unstepped

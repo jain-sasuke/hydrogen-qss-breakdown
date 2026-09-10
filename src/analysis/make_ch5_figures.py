@@ -878,7 +878,7 @@ def main():
             transform=ax.transAxes, fontsize=7, color="0.2", va="bottom",
             bbox=dict(boxstyle="round,pad=0.3", fc="w", ec="0.8", lw=0.5),
             zorder=6)
-    ax.set_xlabel(r"$M = \tau_{\rm QSS}/\tau_{\rm relax}$   "
+    ax.set_xlabel(r"$M = \tau_{\rm slow}/\tau_{\rm relax}$   "
                   r"(post-step operator)")
     ax.set_ylabel(r"$\varepsilon_{\rm plateau}$")
     ax.grid(alpha=0.25, lw=0.4, which="major")
@@ -1115,7 +1115,7 @@ def main():
   \textbf{Timescale separation does not predict closure error.}
   Each point is one (grid point, step direction) pair with a
   timescale-separated plateau window (@NWIN@ of @NPAIR@); $M$ is
-  $\tau_{\rm QSS}/\tau_{\rm relax}$ of the post-step operator, colour is $T_e$,
+  $\tau_{\rm slow}/\tau_{\rm relax}$ of the post-step operator, colour is $T_e$,
   circles heating and triangles cooling. The raw association is strong,
   $\mathrm{corr}(\log M, \log\varepsilon) = @RRAW@$, and it is a temperature
   proxy rather than a dynamical statement: $\log M$ is @R2M@\% explained by

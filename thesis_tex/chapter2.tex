@@ -171,7 +171,9 @@ must also decide how finely to describe each level it keeps. Too few levels and
 the cascade feeding the Balmer lines is cut short; too much detail at high $n$
 and the matrix grows without the extra states carrying independent information.
 
-This model tracks \textbf{43 states}. Levels $n=1$--$8$ are resolved in $\ell$
+This model tracks \textbf{43 states}, drawn in Figure~\ref{fig:state_space}
+together with the five processes that connect them.
+Levels $n=1$--$8$ are resolved in $\ell$
 (indices 0--35, ordered $1S$, $2S$, $2P$, $3S$, \dots, $8J$); levels $n=9$--$15$
 are \emph{bundled}, one state per shell carrying the full shell weight
 $g_n = 2n^{2}$ (indices 36--42). The ordering is fixed by
@@ -179,6 +181,13 @@ $g_n = 2n^{2}$ (indices 36--42). The ordering is fixed by
 in the pipeline is indexed in it. The ion H$^{+}$ is deliberately \emph{not} a
 44th state: it is an external reservoir, a choice whose consequences are listed
 in Section~\ref{sec:atoms_scope}.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{fig2_1_state_space}
+  \caption{\CapFigStateSpace}
+  \label{fig:state_space}
+\end{figure}
 
 \paragraph{Why $\ell$ must be resolved at low $n$.} The obvious guess is that
 $\ell$ is a refinement, nice to have, not load-bearing. At $n=2$ it is wrong,

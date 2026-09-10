@@ -376,7 +376,7 @@ There is one gap and then a continuum.
   \includegraphics[width=0.95\textwidth]{fig3_1_spectrum}
   \caption[Relaxation timescales of the 43 collisional--radiative modes]{%
   Relaxation timescales at the benchmark point. (a) All 43 modes. The slowest,
-  $\tauqss$, is the relaxation of the ground-state population; the next,
+  $\tauslow$, is the relaxation of the ground-state population; the next,
   $\taurel$, is the slowest-decaying mode of the excited manifold, the
   bottleneck of the fast set, and their ratio is the separation $\Msep$. (b) The ratio of consecutive
   timescales, which shows that the first gap is exceptional: the largest of the
@@ -448,8 +448,26 @@ $1.16$, and at $\Te = \SI{1}{\electronvolt}$,
 $\nel = \SI{e15}{\per\cubic\centi\metre}$ it is $29.5$; almost all ionisation
 there proceeds stepwise. We write
 \begin{equation}
-  \tauqss \equiv \frac{1}{|\lambda_0|} = \SI{22.73}{\micro\second}.
+  \tauslow \equiv \frac{1}{|\lambda_0|} = \SI{22.73}{\micro\second}.
+  \label{eq:tau_slow_def}
 \end{equation}
+
+\paragraph{A note on the name.} Earlier drafts of this work called
+Eq.~\eqref{eq:tau_slow_def} $\tau_{\mathrm{QSS}}$, and that name was a mistake
+worth explaining rather than quietly correcting. In this thesis QSS names the
+elimination of the \emph{fast} excited manifold, the approximation of
+Section~\ref{sec:qss}. The timescale above belongs to the \emph{slow} reservoir,
+at the opposite end of the same spectrum. A reader met the sentence ``the QSS
+approximation holds because $\tau_{\mathrm{QSS}}$ is long'' and had to work out
+that the two occurrences of QSS referred to different subsystems. The symbol is
+therefore $\tauslow$ throughout.
+
+The obvious alternative, $\tau_{\mathrm{res}}$ for the reservoir, was rejected
+for a specific reason: Sawada and Fujimoto use $\tau_{\mathrm{res}}$ for the
+\emph{response} time of the excited levels \cite{SawadaFujimoto1994}, which is
+this thesis's $\taurel$ and not its $\tauslow$. Chapter~\ref{ch:conclusions}
+compares the two works directly, and reusing their symbol for the opposite
+quantity would have made that comparison unreadable.
 
 The next mode $\bm{v}_1$ is the excited states rearranging among themselves.
 Its participation ratio is $2.64$, so it lives on two or three levels rather
@@ -464,7 +482,7 @@ populations, and it is the reason this mode is not a ground-state mode:
 
 Their ratio is the \emph{separation}
 \begin{equation}
-  \boxed{\ \Msep \equiv \frac{\tauqss}{\taurel} = 9982
+  \boxed{\ \Msep \equiv \frac{\tauslow}{\taurel} = 9982
   \quad\text{at the benchmark point.}\ }
   \label{eq:M_benchmark}
 \end{equation}
@@ -482,7 +500,7 @@ $\Msep$ is a property of an \emph{operator}, not of an experiment. Nothing in
 $|\lambda_1|/|\lambda_0|$ refers to a disturbance, an initial condition, or a
 history. Written with its argument exposed,
 \begin{equation}
-  \Msep[\Lmat] \equiv \frac{\tauqss[\Lmat]}{\taurel[\Lmat]}
+  \Msep[\Lmat] \equiv \frac{\tauslow[\Lmat]}{\taurel[\Lmat]}
   = \frac{|\lambda_1[\Lmat]|}{|\lambda_0[\Lmat]|},
   \qquad
   \Msep(\Te,\nel) \equiv \Msep[\Lmat(\Te,\nel)],
@@ -533,13 +551,13 @@ Table~\ref{tab:spectrum} is one grid point. Across all 400,
 \begin{equation}
   \SI{0.87}{\nano\second} \le \taurel \le \SI{38.9}{\nano\second},
   \qquad
-  \SI{75.4}{\nano\second} \le \tauqss \le \SI{67.2}{\second},
+  \SI{75.4}{\nano\second} \le \tauslow \le \SI{67.2}{\second},
   \qquad
   86.8 \le \Msep \le 1.73\times10^{9}.
   \label{eq:M_range}
 \end{equation}
 
-\noindent $\taurel$ varies by a factor of 45; $\tauqss$ by seven orders of
+\noindent $\taurel$ varies by a factor of 45; $\tauslow$ by seven orders of
 magnitude. The separation is never small: in the hottest, densest corner of the
 grid, where it is weakest, the excited states are almost ninety times faster
 than the ionisation balance.
@@ -550,9 +568,9 @@ and the point carrying it is excluded from the transient analysis of
 Chapter~\ref{ch:results} by the plateau-window criterion, which requires
 $\Msep > 900$ for a window to exist at all. The floor over the \emph{analysed}
 set is therefore $\Msep \ge 902$, and that floor is imposed by the criterion
-rather than measured. The same distinction applies to $\tauqss$, and an earlier
+rather than measured. The same distinction applies to $\tauslow$, and an earlier
 draft of Eq.~\eqref{eq:M_range} did not observe it: the floor
-$\tauqss \ge \SI{1.18}{\micro\second}$ is the minimum over the 346 points that
+$\tauslow \ge \SI{1.18}{\micro\second}$ is the minimum over the 346 points that
 satisfy $\Msep > 900$, not over the 400. Over all 400 it is
 \SI{75.4}{\nano\second}, at the same $[49,7]$ corner, and that is the value
 Eq.~\eqref{eq:M_range} now reports, so that all three ranges in it share one
@@ -575,7 +593,7 @@ Figure~\ref{fig:spectrum} displays, and the benchmark value must not be quoted a
 though it described the grid.
 
 That corner is worth naming, because it is where every part of this argument is
-weakest at once: the minimum $\taurel$, the minimum $\tauqss$, the minimum
+weakest at once: the minimum $\taurel$, the minimum $\tauslow$, the minimum
 $\Msep$ and the minimum isolation all occur at the same grid point, $[49,7]$.
 It is the single stress point of the two-clock picture. It is also, by the
 plateau-window criterion, outside the set analysed in
@@ -792,9 +810,9 @@ $\|\bm{\delta}\| \sim \taurel\|\nF^{\mathrm{QSS}}\|/\taudrive$, that is
 
 \noindent so the approximation is accurate whenever $\taudrive \gg \taurel$. For
 the self-consistent problem, where the only thing driving the excited states is
-the slow subsystem itself, $\taudrive \to \tauqss$ and the condition becomes
+the slow subsystem itself, $\taudrive \to \tauslow$ and the condition becomes
 \begin{equation}
-  \Msep = \frac{\tauqss}{\taurel} \gg 1 .
+  \Msep = \frac{\tauslow}{\taurel} \gg 1 .
   \label{eq:qss_condition}
 \end{equation}
 
@@ -826,7 +844,7 @@ one. Measured across the grid, the ratio
 $\|\Lmat_{FF}^{-1}\|_2\,|\lambda_{\min}(\Lmat_{FF})|$ lies between $1.118$ and
 $1.526$, with median $1.151$: the spectral estimate understates the rigorous
 timescale by at most \SI{53}{\percent}. Defining the corresponding bounded
-separation $\Msep^{\rm eff} = \tauqss/\|\Lmat_{FF}^{-1}\|_2$,
+separation $\Msep^{\rm eff} = \tauslow/\|\Lmat_{FF}^{-1}\|_2$,
 \begin{equation}
   \Msep^{\rm eff} = 8659 \ \text{at the benchmark},
   \qquad
@@ -1079,7 +1097,7 @@ for the temperature-step experiment of Chapter~\ref{ch:results}. At the instant
 of a step, $\ngs$ is continuous but $\Te$ is not, so $\Zsb{1}(\Te)$ jumps and
 $\bdep$ changes discontinuously purely because its reference has changed. Once
 $\Te$ and $\nel$ are again held fixed, $\bdep \propto \ngs$ and its subsequent
-relaxation is that of the ground-state population, on $\tauqss$.
+relaxation is that of the ground-state population, on $\tauslow$.
 
 Either way, $\bdep(t)$ is not determined by the instantaneous $(\Te, \nel)$;
 it carries the plasma's history. Nothing in the QSS derivation fixes it.
@@ -1489,7 +1507,7 @@ $\bdep^{\mathrm{CRE}}$ denotes the steady state of the collisional--radiative
 system, which is a different and much weaker condition; in an optically thin
 ionising plasma $\bdep^{\mathrm{CRE}}$ is very much larger than unity. Second,
 this model holds the ion density fixed (Section~\ref{sec:rate_equation}), so
-the quantity relaxing on $\tauqss$ is the ground-state population against a
+the quantity relaxing on $\tauslow$ is the ground-state population against a
 prescribed reservoir, not a self-consistent ionisation balance. What that
 restriction costs is assessed in Chapter~\ref{ch:limits}.
 
@@ -1623,11 +1641,11 @@ and checked the assembly against particle conservation, which holds to
 $3.6\times10^{-11}$ across the operating range.
 
 Diagonalising $\Lmat$ revealed a spectrum with one gap and then a continuum: a
-single slow mode at $\tauqss = \SI{22.7}{\micro\second}$, the relaxation of the
+single slow mode at $\tauslow = \SI{22.7}{\micro\second}$, the relaxation of the
 ground-state population, sitting four orders of magnitude above a dense band of
 fast modes whose slowest member is $\taurel = \SI{2.28}{\nano\second}$, the
 rearrangement of the excited manifold. The separation
-$\Msep = \tauqss/\taurel$ is 9982 at the benchmark point and does not fall below
+$\Msep = \tauslow/\taurel$ is 9982 at the benchmark point and does not fall below
 $86.8$ at any of the 400 grid points, though, as
 Section~\ref{sec:two_clocks} records, that floor sits at a point the transient
 analysis excludes, and the four-orders figure quoted above is the benchmark
@@ -1655,7 +1673,7 @@ QSS ratio
 
 \noindent is a function of \emph{three} arguments, not two. The third is the
 ground-state departure coefficient $\bdep$, which is dynamical: it carries the
-plasma's history and takes a time $\tauqss$ to settle. Its logarithmic
+plasma's history and takes a time $\tauslow$ to settle. Its logarithmic
 sensitivity is exactly
 \begin{equation*}
   \frac{\mathrm{d}\ln\Robs}{\mathrm{d}\ln\bdep} = \ffrac{3} - \ffrac{4},

@@ -388,7 +388,16 @@ $\Robs$ on that map. One ratio is one constraint on two unknowns, so practice
 supplies a second: another line ratio, the Stark broadening of a line by the
 plasma's own microscopic electric fields, continuum emission, or an independent
 estimate of one of the two parameters. The intersection of two contours fixes the
-point.
+point. Figure~\ref{fig:diagnostic_chain} draws the chain end to end, from the
+recorded spectrum to the reported $(\Te,\nel)$, and marks the step at which the
+table's own assumption enters.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{fig1_1_diagnostic_chain}
+  \caption{\CapFigDiagnosticChain}
+  \label{fig:diagnostic_chain}
+\end{figure}
 
 This is not a hypothetical procedure. Balmer-spectrum analysis against a CR
 model has been used to infer divertor conditions since at least the Alcator
@@ -661,14 +670,28 @@ boundary level.
 
 That is a result about the excited levels, and it is the reason this thesis does
 not claim to have discovered that the excited manifold responds on a finite
-timescale. The difference is in what is being asked. Sawada and Fujimoto asked
-when the excited-level solution is valid, and answered it with a timescale
-internal to that manifold. The question here is what a \emph{diagnostic
+timescale. The difference is in what is being asked, and it is visible in how
+the calculation is set up: under ionising conditions they keep $n(1)$ constant
+and set the ion density to zero \cite[p.~5566]{SawadaFujimoto1994}. The
+reservoir is an input to their problem, not a variable of it. Sawada and
+Fujimoto asked when the excited-level solution is valid, and answered it with a
+timescale internal to that manifold. The question here is what a \emph{diagnostic
 inversion} costs when the ground-state reservoir underneath that solution has not
 settled. That is a different quantity, controlled by a different and far slower
 clock, and one that can be wrong even when the excited-level solution is
 perfectly accurate. Chapter~\ref{ch:results} returns to Griem's boundary
 level, which the present model locates independently, and uses it as a check.
+
+The separation of timescales that both papers rest on is older than either, and
+Sawada and Fujimoto quote it in its original form: a quasi-equilibrium
+population of the excited system is established almost instantaneously
+\enquote{without the number densities of free electrons and bare nuclei being
+appreciably altered}, because \enquote{the relaxation times for the excited
+levels are very much shorter than the relaxation time for the ground levels or
+for the free electrons} \cite[p.~5566]{SawadaFujimoto1994}. Chapter~\ref{ch:theory}
+measures that ratio as $\Msep$ and Chapter~\ref{ch:results} shows that it does
+not predict the diagnostic error, which is the point at which this thesis
+departs from the tradition it is quoting.
 
 \paragraph{The general validity question was settled, as a matter of principle,
 twenty-five years ago.} Greenland analysed the reduction of CR systems in general

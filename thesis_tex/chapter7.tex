@@ -56,7 +56,7 @@ What fails is the other assumption, the one Section~\ref{sec:the_assumption}
 separated out and then left standing. A table with two axes has to dispose of a
 third argument, the neutral-to-ion ratio $u = \ngs/\nion$, and the rule it uses
 to dispose of it is equilibrium ionisation balance. That rule asserts that the
-plasma has finished changing. For the whole of $\tauqss$ after a disturbance it
+plasma has finished changing. For the whole of $\tauslow$ after a disturbance it
 is false, and the excited manifold, having re-equilibrated in nanoseconds onto a
 reservoir that has not moved, reports the partial-equilibrium state faithfully.
 The ratio is measured correctly and the table then assigns it to the wrong
@@ -180,10 +180,10 @@ largest: at $[23,3]$, one column into the crest, the measured sensitivity
 already sits at \SI{97}{\percent} of the ceiling (Section~\ref{sec:bound}), so
 no refinement of the rate coefficients can move it far in either direction.
 
-\paragraph{The clock is $\tauqss$, and it is far too slow to average away.} The
+\paragraph{The clock is $\tauslow$, and it is far too slow to average away.} The
 temptation is to assume that an error introduced by a fast disturbance decays
 with the fast timescale. It does not. The error decays as a single exponential
-on $\tauqss$, with a half-life of \SI{12.95}{\micro\second} at the benchmark and
+on $\tauslow$, with a half-life of \SI{12.95}{\micro\second} at the benchmark and
 \SI{1.10}{\milli\second} at $[15,3]$ (Section~\ref{sec:persistence}), against
 the \SI{2.28}{\nano\second} on which the excited manifold responds. A
 \SI{100}{\micro\second} exposure does not integrate the error away.
@@ -199,7 +199,7 @@ distrust are the tenuous and cool ones, and the error grows toward low density
 and low temperature together.
 
 \paragraph{Timescale separation gives no warning.} A modeller deciding whether
-to trust a QSS-based inversion reaches for $\Msep = \tauqss/\taurel$, which is
+to trust a QSS-based inversion reaches for $\Msep = \tauslow/\taurel$, which is
 the ratio that licenses eliminating the fast variables in the first place. It
 carries no information about the diagnostic error once the operating point is
 controlled for (Section~\ref{sec:M_does_not_predict}). The two maxima are
@@ -342,8 +342,46 @@ Their answer is a clock internal to the excited manifold. The question here is
 what a diagnostic inversion costs while the reservoir underneath that manifold
 has not settled, which is a different quantity governed by a clock four orders
 of magnitude slower, and which can be large at the very moment the excited-level
-solution is exact. The two results are compatible and neither contains the
-other.
+solution is exact.
+
+The separation between the two papers is structural rather than a matter of
+emphasis, and the paper states it itself. Setting out their method, they write
+that \enquote{under the ionizing plasma condition $n(1)$ is kept constant and
+$n_z$ is set equal to zero, and vice versa under the recombining plasma
+condition} \cite[p.~5566]{SawadaFujimoto1994}, having already assumed that the
+electron density, the ion density and the electron temperature
+\enquote{are given} \cite[p.~5565]{SawadaFujimoto1994}. \textbf{The reservoir is
+a fixed parameter in their calculation.} It cannot be stale, because it never
+moves, and the question this thesis asks cannot arise inside their framework.
+
+The two-channel decomposition this thesis is built on is their Eq.~(3),
+$n(p) = R_0(p)\,n_z n_e + R_1(p)\,n(1)\,n_e$, and the ground-state equation
+whose eigenvalue is the slow clock of Chapter~\ref{ch:theory} is their Eq.~(4),
+$\mathrm{d}n(1)/\mathrm{d}t = -S_{\mathrm{CR}} n(1) n_e
++ \alpha_{\mathrm{CR}} n_z n_e$. They write Eq.~(4) and, having fixed $n(1)$,
+do not solve it. This thesis solves it and reads the diagnostic consequence off
+the solution. That is the whole of the gap, and it is now a matter of record
+rather than an inference from their emphasis.
+
+Their validity criterion for a temporal change in $\Te$, their Eq.~(23),
+$|(\tau_{\mathrm{res}}/T)\,E(1,p_G)/k\Te| \ll 1$ with $T$ the time constant of
+the change, bounds whether the excited levels keep up. No companion condition on
+the reservoir appears anywhere in the paper, and none is needed there, because
+the reservoir is held fixed.
+
+One apparent conflict is worth resolving before an examiner raises it. For a
+true step $T \to 0$, so Eq.~(23) is violated, while
+Section~\ref{sec:qss_is_exact} reports $\epsQSS = 8.66\times10^{-6}$ for exactly
+such a step. The two statements are about different intervals. Equation~(23)
+governs the settling itself, and during the first few nanoseconds after a step
+the excited-state closure genuinely does fail. $\epsQSS$ is evaluated on the
+plateau, after the manifold has settled, where it holds to a part in $10^{5}$ to
+$10^{8}$. Read that way the two results are complementary rather than merely
+compatible, and they partition the transient between them.
+
+Their worked case, $\nel = \SI{e12}{\per\cubic\centi\metre}$ and
+$\Te = \SI{10}{\electronvolt}$, sits on this thesis's own grid, which is what
+makes the comparison a comparison rather than an analogy.
 
 \paragraph{What is claimable.} The cost of the ionisation-balance
 closure hidden inside a two-parameter Balmer table is now a computable number at
@@ -362,17 +400,28 @@ smaller than the question Chapter~\ref{ch:intro} asked.
 These are carried forward from Chapter~\ref{ch:limits} without re-argument, and
 they bound every statement in Section~\ref{sec:criterion}.
 
-\paragraph{Everything is conditional on a frozen reservoir.} If neutral
-transport and recycling renew $\ngs$ faster than the local atomic physics does,
-the ground state is not stale and the error mechanism does not operate. The
-model measures the atomic clock and assumes the transport one does not interfere
-(Section~\ref{sec:transport}).
+\paragraph{Everything quantitative is conditional on a frozen reservoir, and the
+condition is measured to fail.} If neutral transport and recycling renew $\ngs$
+faster than the local atomic physics does, the ground state is not stale and the
+error mechanism does not operate. Comparing a charge-exchange-limited neutral
+escape time with $\tauslow$ pair by pair, not one of the $45$ breakdown pairs
+above \SI{2}{\electronvolt} satisfies $\tauesc > \tauslow$, at either
+\SI{10}{\centi\metre} or \SI{20}{\centi\metre} to the boundary, while $27$ to
+\SI{36}{\percent} of the other $635$ analysed pairs do
+(Section~\ref{sec:transport_selection}). The selection is structural: a pair
+enters the census because $\tauslow$ is long, and a long $\tauslow$ is exactly the
+condition under which transport rather than ionisation sets $\ngs$. The
+magnitudes of Chapter~\ref{ch:results} are therefore upper estimates conditional
+on an assumption this model cannot satisfy at the points that carry them. The
+structural results of Section~\ref{sec:criterion}, being properties of
+$\Lmat(\Te,\nel)$ at fixed conditions, are untouched by it
+(Section~\ref{sec:transport_partition}).
 
 \paragraph{It is not a divertor result below two electron-volts, and the
 restriction is not a hedge.} Holding $\nel$ fixed while the ground-state
 population changes is self-consistent only where the plasma is largely ionised.
 Above \SI{2}{\electronvolt} conservation of nuclei across one temperature step
-demands $|\delta\nel/\nel| < 10^{-3}$. Below it, $68$ of $392$ one-step
+demands $|\delta\nel/\nel| < 5.4\times10^{-3}$. Below it, $68$ of $392$ one-step
 operators require $|\delta\nel/\nel| > \SI{10}{\percent}$ and $36$ require more
 than \SI{100}{\percent} (Section~\ref{sec:quasineutrality}).
 $\Te\ge\SI{2}{\electronvolt}$ is the only self-consistent region of the grid,
@@ -417,7 +466,7 @@ first two cost days. The last two are different projects.
 Chapter~\ref{ch:results} step temperature at fixed density, and an edge-localised
 mode (ELM) raises both. Joint steps give a comparable plateau error but a
 time-averaged bound that can fall by a factor of $4$, because the higher density
-shortens $\tauqss$; at the benchmark the bound falls from $0.0117$ to $0.0030$
+shortens $\tauslow$; at the benchmark the bound falls from $0.0117$ to $0.0030$
 (Section~\ref{sec:persistence}). The census of Chapter~\ref{ch:results} is a fixed-density
 census, and an examiner who knows ELM physics will ask for the other one. It
 costs the same as the map that already exists.
@@ -461,6 +510,6 @@ What she gains is a test she can apply before she trusts the answer: evaluate
 $\overline{S}$ and $G$ at the operating point she is looking at, multiply by the
 fractional temperature excursion her plasma has just undergone, and compare the
 result with the precision she needs. If the plasma has been quiet for several
-times $\tauqss$, the table is telling her about the plasma. If it has not, the
+times $\tauslow$, the table is telling her about the plasma. If it has not, the
 table is telling her about a plasma that no longer exists, and
 Eq.~\eqref{eq:recipe} says by how much.

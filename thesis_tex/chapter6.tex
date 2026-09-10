@@ -325,7 +325,7 @@ thin map through the sweep.
   \small
   \begin{tabular}{lrrrrrrr}
     \toprule
-    $D$ (cm) & $\epsplat$ & ELM bound & $\tauqss$ (s) & $\Msep$ &
+    $D$ (cm) & $\epsplat$ & ELM bound & $\tauslow$ (s) & $\Msep$ &
     $\ffrac{3}$ & $\ffrac{4}$ & $|\ffrac{3}-\ffrac{4}|$ \\
     \midrule
     $0$ (thin) & $0.38690$ & $0.38682$ & $2.3324\times10^{-1}$ & $3.74\times10^{7}$ & $0.7728$ & $0.2862$ & $0.4866$ \\
@@ -355,7 +355,7 @@ factor: the displacement.
 
 The chain is the one set out at the start of this section, now with numbers on
 it. Trapping lengthens the $n=2$ lifetime; the longer lifetime raises stepwise
-ionisation; the ground-state population falls; and the slow clock $\tauqss$
+ionisation; the ground-state population falls; and the slow clock $\tauslow$
 shortens by a factor $8$ at the worst point. At $\Te = \SI{1.0}{\electronvolt}$,
 $\nel = 1.93\times10^{13}\,\si{\per\cubic\centi\metre}$, $\ngs$ drops from
 $2.99\times10^{14}$ to $7.26\times10^{13}\,\si{\per\cubic\centi\metre}$ between
@@ -435,7 +435,7 @@ Section~\ref{sec:opacity}. It is also the simplest to state.
 
 The model of Chapter~\ref{ch:theory} is a batch reactor. A fixed parcel of gas
 is given a temperature, and its composition evolves until it stops changing. The
-slow eigenvalue of that system, $\tauqss$, is how long the ground-state
+slow eigenvalue of that system, $\tauslow$, is how long the ground-state
 population takes to reach its new value, and it is long, because ionising an
 atom out of the ground state is slow.
 
@@ -446,7 +446,7 @@ surface when ions strike it and recombine there, which is \emph{recycling},
 and they fly back into the plasma. They do not wait around to be ionised
 locally; the ones that do not ionise leave, and fresh ones arrive continuously.
 
-The comparison is not close. At the worst point of the map $\tauqss$ is
+The comparison is not close. At the worst point of the map $\tauslow$ is
 \SI{233}{\milli\second}: nearly a quarter of a second for a stationary atom to
 be ionised. A deuterium atom at \SIrange{1}{3}{\electronvolt} would cross a
 \SI{10}{\centi\metre} plasma ballistically in \SIrange{6}{10}{\micro\second}, but
@@ -458,6 +458,10 @@ would fall below \SI{10}{\percent} is a ground-state renewal time of about
 \SI{26}{\micro\second}, so the result survives by a factor of $2.8$ rather than
 failing outright. It survives only because charge exchange traps the neutrals,
 which is a thin margin to rest on and is stated as one.
+That is one grid point, and it is one this thesis does not defend:
+$[0,4]$ lies below the \SI{2}{\electronvolt} scope boundary.
+Section~\ref{sec:transport_selection} asks the same question at the points that
+do carry the result, and gets a worse answer.
 
 \begin{quote}
 \textbf{In a divertor, the ground-state neutral density at a given point is not
@@ -474,12 +478,122 @@ reservoir finished settling, reads the wrong answer. Everything hangs on the
 reservoir not being refreshed.
 
 Neutral transport refreshes it. Any process that replaces the ground-state
-population on a timescale shorter than $\tauqss$ resets the staleness, and this
+population on a timescale shorter than $\tauslow$ resets the staleness, and this
 model contains no such process. The threshold is computable from the map itself:
 for the ELM-averaged lower bound at the worst point to fall below the
 \SI{10}{\percent} breakdown threshold, an effective ground-state renewal time of
 about \SI{26}{\micro\second} would suffice. Neutral transit across the plasma is
 faster than that.
+
+\subsection{The assumption fails hardest where the result is generated}
+\label{sec:transport_selection}
+
+The paragraph above tests transport at one place, the worst point of the map,
+and reports that it survives. That was the wrong place to test it. The point
+$[0,4]$ sits at \SI{1}{\electronvolt}, below the scope boundary of
+Section~\ref{sec:scope}, and no quantitative claim in this thesis rests on it.
+The pairs that carry the defended claim are the $45$ above
+\SI{2}{\electronvolt} whose ELM-averaged lower bound exceeds \SI{10}{\percent}
+(Table~\ref{tab:elm_census}). Whether the closed parcel holds \emph{there} is a
+different question, and it has a different answer.
+
+Comparing the neutral escape time with $\tauslow$ pair by pair over the grid
+gives Table~\ref{tab:transport_selection}. The escape model is the one used
+above, stated as a formula: the atom moves at $v=\sqrt{2k\Tn/m_{\mathrm D}}$
+with $\Tn=\Te$, resonant charge exchange with the ambient ions randomises its
+direction after $\lambda = v/(\nel\langle\sigma v\rangle_{\mathrm{CX}})$ with
+$\langle\sigma v\rangle_{\mathrm{CX}} = \SI{1.1e-8}{\cubic\centi\metre\per\second}$,
+and escape from a boundary a distance $L$ away takes $L/v$ when
+$\lambda \ge L$ and $4L^{2}/\pi^{2}D$ with $D = v\lambda/3$ otherwise. At
+$[0,4]$ that formula returns $\lambda = \SI{1.72}{\centi\metre}$ and
+$\tauesc = \SI{72.3}{\micro\second}$, which are the two numbers quoted above, so
+the table below is the same calculation carried across the grid rather than a
+second one (\texttt{verify\_transport\_selection.py}).
+
+\begin{table}[htbp]
+\centering
+\caption{Ratio of neutral escape time to $\tauslow$, over the $45$ defended
+breakdown pairs and over the other $635$ analysed pairs. $L$ is the distance
+from the emitting parcel to the plasma boundary. ``Satisfies'' means
+$\tauesc > \tauslow$, that is, the atom is ionised before it leaves, which is
+what the closed parcel assumes.}
+\label{tab:transport_selection}
+\begin{tabular}{llrrr}
+  \toprule
+  $L$ & set & median $\tauesc/\tauslow$ & largest & satisfies \\
+  \midrule
+  \SI{10}{\centi\metre} & the 45 breakdown pairs & $0.0079$ & $0.159$ & $0/45$ \\
+  \SI{10}{\centi\metre} & the other 635 & $0.0471$ & $384$ & $168/635$ \\
+  \SI{20}{\centi\metre} & the 45 breakdown pairs & $0.0192$ & $0.636$ & $0/45$ \\
+  \SI{20}{\centi\metre} & the other 635 & $0.129$ & $1535$ & $227/635$ \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Not one of the $45$ pairs that carry the defended result satisfies the
+assumption used to compute it, at either scale length, while a quarter to a
+third of the pairs that do not break down satisfy it comfortably.}
+
+A count of zero is worth little if the $45$ sit just under the line, so the
+distance matters. The closest of them is $[18,4]$ heating,
+$\Te = \SI{2.33}{\electronvolt}$, $\nel = \SI{5.18e13}{\per\cubic\centi\metre}$,
+at $\tauesc/\tauslow = 0.636$ for $L = \SI{20}{\centi\metre}$: its escape time
+would have to rise by a factor $1.57$ for the parcel to close. The median of the
+$45$ would have to rise by a factor $52$. One pair is marginal and the rest are
+not.
+
+Three things were varied to see whether the conclusion depends on a choice.
+Tripling $\langle\sigma v\rangle_{\mathrm{CX}}$, which lengthens every diffusive
+escape time in proportion, moves the count from $0$ to $3$ of $45$; dividing it
+by three leaves it at $0$. Replacing $\sqrt{2k\Tn/m}$ by the Maxwellian mean
+speed $\sqrt{8k\Tn/\pi m}$ shortens every escape time and leaves the count at
+$0$. Doubling $L$ from $10$ to \SI{20}{\centi\metre} leaves it at $0$. The
+finding is not an artifact of any of the three.
+
+\paragraph{The selection is structural, not incidental.} A pair enters the
+census because $\tauslow$ is long, since the ELM-averaged bound of
+Eq.~\eqref{eq:elm_bound} rises with $\tauslow$ at fixed $\taudrive$. A long
+$\tauslow$ means slow ionisation out of the ground state. Slow ionisation is
+exactly the condition under which neutral transport, whose timescale does not
+depend on $\tauslow$ at all, sets the ground-state density instead of the local
+atomic physics. The census therefore selects for the regime in which its own
+assumption is weakest, and it does so by construction rather than by accident.
+That is why testing the assumption at the cold corner gave the reassuring answer
+and testing it inside the defended scope does not.
+
+\subsection{What this reaches, and what it does not}
+\label{sec:transport_partition}
+
+The finding above is about magnitudes. It does not touch the algebra, and the
+division is worth stating precisely, because a reader who takes
+Section~\ref{sec:transport_selection} as a refutation of the whole chapter has
+read it too broadly.
+
+\textbf{Untouched by transport.} The two-channel split of
+Eq.~\eqref{eq:two_supplies}, exact to a relative residual of
+$3.075\times10^{-14}$; the unit-width logistic form of the ground-fed fraction;
+the bound $\max|f_3-f_4| = \tanh(|\Delta|/4)$ and its corollary
+$|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$; the sensitivity map
+$\overline{S}$; and the accuracy of the excited-state closure,
+$6.73\times10^{-9}$ at the worst point. These are properties of the operator
+$\Lmat(\Te,\nel)$ at a fixed operating point, or theorems about its structure.
+$\overline{S}$ says how the line ratio responds to whatever the reservoir does;
+it is silent on what made the reservoir do it. Transport changes the reservoir's
+history and cannot reach any of them.
+
+\textbf{Conditional on the closed parcel.} The reservoir gain $G$, which is
+$\partial\ln u^{\mathrm{CRE}}/\partial\ln\Te$ and therefore assumes the ground
+state responds through collisional--radiative balance alone; $\epsplat$, which
+is built from it; the breakdown census; and every ELM-averaged magnitude in
+Chapter~\ref{ch:results}. If recycling renews $\ngs$ on a timescale shorter than
+$\tauslow$, $G$ is not the gain the plasma has, and these numbers are upper
+estimates of an error whose true size this model cannot compute.
+
+The thesis therefore leads with the structure and the bound, which survive, and
+reports the magnitudes as conditional, which is what Chapter~\ref{ch:results}
+already does for other reasons. What Section~\ref{sec:transport_selection} adds
+is that the condition is not merely unproven at the points that matter. It is
+measured to fail there, by one to two orders of magnitude.
 
 \subsection{The claim, restated as the conditional it is}
 
@@ -771,12 +885,12 @@ Atomic Data and Analysis Structure).
 \subsection{What we expected}
 
 The obvious attack writes itself. A reactor that lets its product disappear
-relaxes differently from one that does not. If the long $\tauqss$ values are an
+relaxes differently from one that does not. If the long $\tauslow$ values are an
 artifact of the open boundary, then so is the claim that the error outlasts an
 ELM, and Chapter~\ref{ch:results} collapses. The expectation was that closing
-the system would shorten $\tauqss$ substantially, and there was a specific
+the system would shorten $\tauslow$ substantially, and there was a specific
 reason to fear it, because a factor of order
-$\tauqss/\taudrive \approx 2300$ at the worst point would bring the slow clock
+$\tauslow/\taudrive \approx 2300$ at the worst point would bring the slow clock
 down to the ELM duration and remove the persistence entirely.
 
 \textbf{That factor, $2300$, is the falsifier.} It was named before the test was
@@ -802,7 +916,7 @@ digits, confirming it is the same closure and not a new one.
 \begin{center}
 \begin{tabular}{lrrr}
   \toprule
-  point & $\tauqss$ open & $\tauqss$ closed & factor \\
+  point & $\tauslow$ open & $\tauslow$ closed & factor \\
   \midrule
   cold corner, \SI{1.0}{\electronvolt}, $10^{12}\,\si{\per\cubic\centi\metre}$ & \SI{67.23}{\second} & \SI{1.6226}{\second} & $41.4$ \\
   worst-case operator & \SI{0.23324}{\second} & \SI{0.015173}{\second} & $15.4$ \\
@@ -814,14 +928,14 @@ digits, confirming it is the same closure and not a new one.
 
 Over the whole grid the closure factor has minimum $1.00$, median $1.00$ and
 maximum $41.4$. The shape of that distribution is the answer to the attack, and
-it is worth reading carefully. \textbf{The factor is large only where $\tauqss$
+it is worth reading carefully. \textbf{The factor is large only where $\tauslow$
 already exceeds the event duration by three orders of magnitude, and it is unity
-everywhere $\tauqss$ approaches $\taudrive$.} Where the boundary condition
+everywhere $\tauslow$ approaches $\taudrive$.} Where the boundary condition
 matters, the outcome does not depend on it, because the error has already
-saturated; where the outcome depends on $\tauqss$, the boundary condition does
+saturated; where the outcome depends on $\tauslow$, the boundary condition does
 not matter.
 
-Recomputing the entire ELM census with closed-system $\tauqss$ moves the
+Recomputing the entire ELM census with closed-system $\tauslow$ moves the
 breakdown count from $202$ to $200$ out of $680$, and the worst case from
 $0.38682$ to $0.38563$, about one part in $325$. Restricted to
 $\Te \ge \SI{2}{\electronvolt}$ the count is $45$ before and $45$ after.
@@ -841,7 +955,7 @@ test does not answer, and no amount of closing the atomic system will answer it.
 
 \todo{The source record labels the worst-case operator as grid index $[1,4]$ in
 the closure table and $[0,4]$ elsewhere for the same
-$\tauqss = \SI{0.23324}{\second}$. Resolve the index label before the final
+$\tauslow = \SI{0.23324}{\second}$. Resolve the index label before the final
 draft; the value itself is not in dispute.}
 
 %-----------------------------------------------------------------------------
@@ -1032,9 +1146,9 @@ idealisation is safe by five orders of magnitude. \textbf{That ratio is about
 the wrong quantity.} It describes the suppression of the fast
 \emph{excited-manifold} step error, which is not what the maps report. The
 plateau error is governed by the slow ground-state response, for which the
-relevant ratio at the worst point is $\tauqss/\taudrive = 2332$, an
+relevant ratio at the worst point is $\tauslow/\taudrive = 2332$, an
 unambiguous step by a wide margin. Any finite ramp with
-$\taurel \ll t_{\rm ramp} \ll \tauqss$ reaches the same plateau, so the
+$\taurel \ll t_{\rm ramp} \ll \tauslow$ reaches the same plateau, so the
 idealisation \emph{is} safe; it is safe because of the slow ratio, and the fast
 ratio must never be quoted for or against this result.
 
@@ -1043,7 +1157,7 @@ A real ELM raises the electron density as well as the temperature, while the
 maps step $\Te$ at fixed $\nel$. Joint steps in both were spot-checked. They
 give a comparable instantaneous $\epsplat$ but a \emph{time-averaged} bound that
 can fall by a factor of $4$ at the benchmark point, from $0.0117$ to $0.0030$,
-because a higher $\nel$ shortens $\tauqss$ and so shortens the window over which
+because a higher $\nel$ shortens $\tauslow$ and so shortens the window over which
 the error survives. A full joint-step map has not been run and would cost the
 same as the existing one.
 \todo{Joint $(\Te,\nel)$ ELM step map. Not run. An examiner familiar with ELM

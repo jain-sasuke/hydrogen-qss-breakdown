@@ -405,14 +405,14 @@ comes near.
 % grid, and how demanding is the test that says so?
 
 Gate~E diagonalises $\Lmat$ at every grid point, orders the negative
-eigenvalues, and forms $\Msep = \tauqss/\taurel = |\lambda_1|/|\lambda_0|$. It
+eigenvalues, and forms $\Msep = \tauslow/\taurel = |\lambda_1|/|\lambda_0|$. It
 passes if $\Msep > 1$ at \SI{95}{\percent} of points
 (\texttt{validate\_gates.py}:409--412).
 
 Measured over all $400$ points: $\Msep$ ranges from $86.77$ at
 $[49,7]$ ($\Te = \SI{10}{\electronvolt}$,
 $\nel = \SI{e15}{\per\cubic\centi\metre}$) to $1.72928\times10^{9}$ at the cold
-corner; $\tauqss$ spans \SI{75.4}{\nano\second} to \SI{67.2}{\second} and
+corner; $\tauslow$ spans \SI{75.4}{\nano\second} to \SI{67.2}{\second} and
 $\taurel$ spans \SI{0.87}{\nano\second} to \SI{38.9}{\nano\second}
 (\texttt{thesis\_ready.md} A1). The gate asks for $\Msep>1$. The smallest value
 anywhere is $86.8$.
@@ -431,12 +431,12 @@ eigenvalue-filter error of Section~\ref{sec:errors_found}, and a check that has
 actually fired is worth more than a threshold nothing approaches.
 
 Two properties of these numbers must travel with them, and both come from
-Chapter~\ref{ch:theory}. $\tauqss$ is boundary-dependent, which
+Chapter~\ref{ch:theory}. $\tauslow$ is boundary-dependent, which
 Section~\ref{sec:attacks} quantifies. And the slow eigenvalue is not an
 equilibration rate: measured against the ground-state ionisation rate
 coefficient $K_{\rm ion}(1s)$, in \si{\cubic\centi\metre\per\second}, it
 satisfies $|\lambda_0| = 2.286\,K_{\rm ion}(1s)\,\nel$ across the grid
-(\texttt{thesis\_ready.md} A1), so $\tauqss$ is the collisional--radiative
+(\texttt{thesis\_ready.md} A1), so $\tauslow$ is the collisional--radiative
 ionisation lifetime of the ground-state reservoir and not the time for anything
 to come to equilibrium.
 
@@ -797,17 +797,17 @@ $\Lmat$ describes an open system. Atoms that ionise leave the accounting, and
 the recombination feed $\Svec\nion$ enters as a constant source rather than as a
 matrix element, so there is no forty-fourth state for ions to accumulate in.
 A reactor whose product is allowed to disappear relaxes differently from one
-whose product stays in the vessel. Since $\tauqss$ is the lifetime of the
+whose product stays in the vessel. Since $\tauslow$ is the lifetime of the
 ground-state reservoir, and since the persistence claim of
-Section~\ref{sec:persistence} rests entirely on $\tauqss$ exceeding the duration
-of the disturbance, the obvious attack is that $\tauqss$ is an artifact of the
+Section~\ref{sec:persistence} rests entirely on $\tauslow$ exceeding the duration
+of the disturbance, the obvious attack is that $\tauslow$ is an artifact of the
 open boundary.
 
 \textbf{The falsifier, named first.} Write $\taudrive$ for the duration of the
 disturbance, fixed at \SI{100}{\micro\second} throughout this thesis as a
 representative edge-localised-mode (ELM) time
 (Section~\ref{sec:persistence}). At $[0,4]$, the worst point on the grid,
-$\tauqss/\taudrive \approx 2300$. If closing the system shortened $\tauqss$ by
+$\tauslow/\taudrive \approx 2300$. If closing the system shortened $\tauslow$ by
 that factor, the slow clock would fall to $\taudrive$ itself and the persistence
 would vanish. A factor of $2300$ refutes the claim.
 
@@ -837,16 +837,16 @@ Table~\ref{tab:closure}.
 \begin{table}[tbp]
   \centering
   \caption[Effect of closing the ion boundary on the slow timescale]{The slow
-  timescale $\tauqss$ computed with the ion treated as an external reservoir
+  timescale $\tauslow$ computed with the ion treated as an external reservoir
   (open) and with a forty-fourth ion state appended (closed), at four grid
   points. Over the whole grid the ratio has minimum $1.00$, median $1.00$ and
-  maximum $41.4$: the boundary condition matters only where $\tauqss$ already
+  maximum $41.4$: the boundary condition matters only where $\tauslow$ already
   exceeds the disturbance duration by three orders of magnitude. Source:
   \texttt{findings\_10}~\S3.1.}
   \label{tab:closure}
   \begin{tabular}{lrrr}
     \toprule
-    point & $\tauqss$ open & $\tauqss$ closed & factor \\
+    point & $\tauslow$ open & $\tauslow$ closed & factor \\
     \midrule
     cold corner $[0,0]$ & \SI{67.23}{\second} & \SI{1.6226}{\second} & $41.4$ \\
     post-step operator $\Lmat[1,4]$ & \SI{0.23324}{\second} & \SI{0.015173}{\second} & $15.4$ \\
@@ -857,11 +857,11 @@ Table~\ref{tab:closure}.
 \end{table}
 
 The distribution is the answer, and its shape carries the argument. The factor
-is large only where $\tauqss$ already exceeds the disturbance duration by about
-a thousand, and it is unity everywhere $\tauqss$ approaches $\taudrive$. Where
+is large only where $\tauslow$ already exceeds the disturbance duration by about
+a thousand, and it is unity everywhere $\tauslow$ approaches $\taudrive$. Where
 the boundary matters, the outcome does not depend on it, because the error has
-already saturated; where the outcome depends on $\tauqss$, the boundary does not
-matter. Recomputing the entire persistence census with closed-system $\tauqss$
+already saturated; where the outcome depends on $\tauslow$, the boundary does not
+matter. Recomputing the entire persistence census with closed-system $\tauslow$
 moves the breakdown count from $202$ to $200$ of $680$ and the worst case from
 $0.38682$ to $0.38563$, about one part in $325$. Restricted to
 $\Te \ge \SI{2}{\electronvolt}$, the region where Chapter~\ref{ch:results} makes
@@ -883,7 +883,7 @@ that this test makes sharper rather than softer.
 Chapter~\ref{ch:results} evaluates the error at the partial-equilibrium plateau
 and builds from it the lower bound of Eq.~\eqref{eq:elm_bound}, which multiplies
 the plateau error $\epsplat$ of Section~\ref{sec:eps_definitions} by the
-fraction of $\taudrive$ over which an exponential decay on $\tauqss$ keeps it
+fraction of $\taudrive$ over which an exponential decay on $\tauslow$ keeps it
 alive. The bound assumes the observable cannot decay faster than the slowest
 mode. That assumption is testable, and a bound quoted as though it were the
 answer is a claim about tightness that has to be measured.
@@ -928,11 +928,11 @@ eigenvalue and then a band, with nothing between: at $\Lmat[1,4]$ the three
 slowest eigenvalues are $-4.29$, $-1.60\times10^{8}$ and
 $-3.44\times10^{8}\,\si{\per\second}$, a gap of $3.7\times10^{7}$. An observable
 that depends on the excited populations only through their ratio cannot decay
-faster than $\tauqss$, because there is no intermediate mode for it to decay
+faster than $\tauslow$, because there is no intermediate mode for it to decay
 on. That was the failure mode being hunted, and it does occur for the
 ground-normalised error measure, which does not cancel the reservoir and whose
 $1/\mathrm{e}$ time is
-\SI{2.58}{\second} against $\tauqss = \SI{67.2}{\second}$ at the cold corner.
+\SI{2.58}{\second} against $\tauslow = \SI{67.2}{\second}$ at the cold corner.
 The bound is tight for this observable and not for that one, and the spectrum
 says which is which.
 
@@ -1159,7 +1159,7 @@ ion as a fixed external reservoir with no forty-fourth state
 (Section~\ref{sec:two_references}). A stage-to-stage coefficient extracted from
 an open system need not equal one extracted from a closed one, and
 Section~\ref{sec:attacks} has already shown that the boundary condition moves
-$\tauqss$ by up to a factor of $41$.
+$\tauslow$ by up to a factor of $41$.
 
 \subsection{Three further defects in the gate itself}
 
@@ -1249,7 +1249,7 @@ The error was found by reading Badnell's published equation directly rather than
 the docstring, and it was traced to a single line. Its effect was then measured
 by rescaling every intra-$n$ adjacent-$\ell$ off-diagonal of the actual matrix by
 the correct per-transition $F$, restoring the exact column sums, and
-recomputing the spectrum: $\tauqss$ moved \SI{+0.07}{\percent} and $\taurel$
+recomputing the spectrum: $\tauslow$ moved \SI{+0.07}{\percent} and $\taurel$
 moved \SI{-0.12}{\percent} at the benchmark point, bounded below
 \SI{0.85}{\percent} anywhere on the grid.
 
@@ -1292,7 +1292,7 @@ The spectrum of $\Lmat$ was extracted by a routine containing the line
 magnitude than $1\,\si{\per\second}$. Where the slow eigenvalue is smaller than
 that, and at the cold end of the grid it is, the filter deletes it and promotes
 the whole ladder by one step. The routine then reports $\lambda_1$ as
-$\lambda_0$, so $\tauqss$, $\taurel$ and $\Msep$ are all wrong together, and all
+$\lambda_0$, so $\tauslow$, $\taurel$ and $\Msep$ are all wrong together, and all
 three remain finite, negative and correctly ordered. Nothing looks broken.
 
 It was found by recomputing the spectrum unconditionally and comparing
@@ -1303,7 +1303,7 @@ agreement of Section~\ref{sec:gate_e}. The damage is exactly localised:
 \item $19$ of $400$ grid points, all with $\Te \le \SI{1.389}{\electronvolt}$
 and $\nel \in [10^{12},\ 1.93\times10^{13}]\,\si{\per\cubic\centi\metre}$.
 \item At every one of the $19$, the corrected $\taurel$ equals the filtered
-$\tauqss$ \emph{exactly}, which is the ladder shift confirming the mechanism
+$\tauslow$ \emph{exactly}, which is the ladder shift confirming the mechanism
 rather than merely fitting it.
 \item $\Msep$ over the grid changed from $1.341$--$1.01\times10^{8}$ to
 $86.77$--$1.72928\times10^{9}$. At the cold corner the filter turned
@@ -1428,7 +1428,7 @@ assume.
 \end{tabular}
 \end{center}
 
-The timescales reproduce to four digits, $\tauqss = \SI{22.73}{\micro\second}$,
+The timescales reproduce to four digits, $\tauslow = \SI{22.73}{\micro\second}$,
 $\taurel = \SI{2.277}{\nano\second}$, $\Msep = 9981.9$.
 
 Two further invariances were measured in the same pass and belong with the
@@ -1472,7 +1472,7 @@ the top of the density grid.
 A cross-validation between two runs four months apart, on different matrices,
 with different observables and different numerical methods, was recorded in this
 project's register as verified and described as the strongest single check it
-had. The agreement is close: $\tauqss$ to \SI{0.064}{\percent}, $\taurel$ to
+had. The agreement is close: $\tauslow$ to \SI{0.064}{\percent}, $\taurel$ to
 \SI{0.200}{\percent}, $\Msep$ to \SI{0.264}{\percent}, $\epsstep$ to
 \SI{0.014}{\percent}. Predicting how long the error stays above
 \SI{10}{\percent} from the plateau-then-decay picture gives
@@ -1500,7 +1500,7 @@ currently rests.
 
 \subsection{Two provenance defects that are not repaired}
 
-Two arrays of timescales, $\Msep$, $\tauqss$ and $\taurel$, are written to the
+Two arrays of timescales, $\Msep$, $\tauslow$ and $\taurel$, are written to the
 same three file paths by two different scripts. Whichever ran last wins, and six
 downstream readers cannot tell whose numbers they are holding. This is exactly
 the condition under which the eigenvalue filter propagated, since the filtered

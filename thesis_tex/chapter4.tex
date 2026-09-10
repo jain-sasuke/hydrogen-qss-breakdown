@@ -251,17 +251,22 @@ Section~\ref{sec:gate_d} to itself.
 \subsection{Gate A: detailed balance, and where its physics content actually
 lives}
 
-Gate~A takes every excitation coefficient $K_{\rm exc}(i\to j)$ in the dataset,
-predicts the reverse coefficient from the Boltzmann relation
+Gate~A takes every excitation rate coefficient $K_{\rm exc}(i\to j)$ in the
+dataset, in \si{\cubic\centi\metre\per\second}, and predicts the reverse
+coefficient from the Boltzmann relation between forward and reverse rates in a
+Maxwellian electron distribution at temperature $\Te$,
 \begin{equation}
   K_{\rm deexc}(j\to i)
   = K_{\rm exc}(i\to j)\,\frac{g_i}{g_j}\,
     \exp\!\left(\frac{E_j - E_i}{k_B\Te}\right),
   \label{eq:gateA}
 \end{equation}
-and compares the prediction against the stored reverse coefficient at three
-temperatures spanning the grid. Here $g_i$ is the statistical weight of level
-$i$ and $E_j-E_i$ its excitation energy in \si{\electronvolt}. The gate passes
+then compares the prediction against the stored reverse coefficient at three
+temperatures spanning the grid. Here $g_i$ is the dimensionless statistical
+weight of level $i$, $E_j-E_i$ is the excitation energy in
+\si{\electronvolt}, and $k_B$ is Boltzmann's constant. The relation holds only
+for a Maxwellian distribution, which Section~\ref{sec:maxwellian} established
+and which is assumed throughout. The gate passes
 if the maximum relative error is below \SI{0.01}{\percent}
 (\texttt{validate\_gates.py}:118). Measured: below \SI{0.01}{\percent} over all
 $819$ pairs at all three temperatures.
@@ -362,7 +367,7 @@ not vanish at high density.
 density and a Saha ceiling. Both would fail on a sign error in the recombination
 source, which is worth something. Neither tests the limit the gate is named for.
 The gate should be called what it is, and the \SI{1.5}{\percent} approach
-fraction reported rather than suppressed.
+fraction should appear in the line it prints.
 
 %-----------------------------------------------------------------------------
 \section{Gate E: the timescale hierarchy}
@@ -394,8 +399,8 @@ Gate~E itself, and an unconditional recomputation stored in
 eigenvalue-filter error of Section~\ref{sec:errors_found}, and a check that has
 actually fired is worth more than a threshold nothing approaches.
 
-Two properties of these numbers must travel with them, and both are
-established in Chapter~\ref{ch:theory} rather than here. $\tauqss$ is
+Two properties of these numbers must travel with them, and both come from
+Chapter~\ref{ch:theory}. $\tauqss$ is
 boundary-dependent, which Section~\ref{sec:attacks} quantifies. And
 $\lambda_0 = 2.286\,K_{\rm ion}(1s)\,\nel$ is the collisional--radiative
 ionisation rate of ground-state hydrogen, not an equilibration rate, so
@@ -411,7 +416,7 @@ normally. \textbf{The script returns exit code zero whether or not Gate~D
 fails.} A pipeline that checked only the exit status would never learn that the
 one external gate in the suite disagrees with published data at every point on
 the grid. The residual gates elsewhere in the project do raise; this one does
-not, and that asymmetry is a defect rather than a subtlety.
+not, and that asymmetry is a defect.
 
 %-----------------------------------------------------------------------------
 \section{The checks that could have failed}
@@ -584,13 +589,14 @@ confirmed the range asserted at \texttt{chapter3.tex}:719--721 to
 site in \texttt{src/}, inside \texttt{verify\_fujimoto\_table41.py}:334, and
 covers four point-variants at $\Te = \SI{10}{\electronvolt}$ only. The number is
 correct and not yet reproducible from the repository.
-\todo{Commit the producing script for the grid-wide $\kappa(\Lmat_{FF})$, then
-delete this bracket.}
+\todo{Commit the script that produces the grid-wide condition number of
+$\Lmat_{FF}$, then delete this bracket.}
 
 Three further measurements bound the arithmetic. The eigenvalue condition
 numbers of the two eigenvalues the thesis uses are of order unity
 ($1.71$ and $1.98$ at the benchmark point, $3.26$ and $2.59$ at the cold
-corner), despite $\|\Lmat\|_1 = 2.0\times10^{14}$; the large norm is a
+corner), despite a largest absolute column sum of
+$2.0\times10^{14}\,\si{\per\second}$; that large norm is a
 statement about the fast radiative modes and does not propagate into
 $\lambda_0$ or $\lambda_1$. Recomputing the two supply channels in single
 precision moves them by $1.3\times10^{-5}$, so double precision is nowhere near
@@ -944,9 +950,10 @@ The solve is doing what the hand calculation says it should.
 radiative recombination coefficient into the ground state is within
 \SI{2}{\percent} of the scaled standard value; the sum over excited states,
 $\SI{2.08e-13}{\cubic\centi\metre\per\second}$, sits \SI{10}{\percent} below the
-case-B recombination coefficient $\alpha_B \approx
-\SI{2.31e-13}{\cubic\centi\metre\per\second}$, which is exactly the $n>15$
-truncation of Section~\ref{sec:convergence}; and the ground-state ionisation
+standard case-B coefficient $\alpha_B \approx
+\SI{2.31e-13}{\cubic\centi\metre\per\second}$, the accepted total for capture
+into every excited level, and that \SI{10}{\percent} shortfall is exactly the
+$n>15$ truncation of Section~\ref{sec:convergence}; and the ground-state ionisation
 coefficient, $\SI{4.864e-9}{\cubic\centi\metre\per\second}$, agrees with the
 accepted value of about \SI{5e-9}{\cubic\centi\metre\per\second}\needcite.
 
@@ -964,12 +971,11 @@ it and drives $r_0(2)$ to $8.2$, a population above Saha equilibrium and
 therefore unphysical.
 
 \item \textbf{A single-row density offset reconciles the whole column.} The
-table's density rows run at $\lg\nel = 12, 14, 16, 17, 18$, non-uniformly
+table's density rows run at $\log_{10}\nel = 12, 14, 16, 17, 18$, non-uniformly
 spaced, which is the standard setup for an off-by-one read. Comparing this model
 at $\SI{e13}{\per\cubic\centi\metre}$ instead of $\SI{e12}{\per\cubic\centi\metre}$
-gives ratios of $0.817$, $0.888$, $0.836$, $0.819$ and $0.977$ for $p = 2$
-through $7$: flat to within \SI{10}{\percent}, against a factor-$50$ spread as
-published.
+gives ratios in the range $0.817$ to $0.977$ across $p = 2$ to $7$: flat to
+within \SI{10}{\percent}, against a factor-$50$ spread as published.
 \end{enumerate}
 
 The producing script's own docstring instructs that the table values be
@@ -982,7 +988,7 @@ evidence that the model is wrong, and it is not evidence that the model is
 right. What would settle it is one afternoon with the printed table and the
 density-row labels. Until that is done, no conclusion rests on it, and the
 $r_0$ agreement above is unaffected because it was read from the same rows.
-\todo{Re-read Fujimoto Table 4.1(b) directly, with the $\lg\nel$ row labels
+\todo{Re-read Fujimoto Table 4.1(b) directly, with the $\log_{10}\nel$ row labels
 verified against the caption, and record the outcome. This supersedes
 \texttt{chapter6.tex} \S\ref{sec:r1_deficit}, which still publishes the
 discrepancy as a model failure.}
@@ -1000,9 +1006,10 @@ These are the coefficients a transport code uses when it does not resolve
 excited states, and they are the most widely used external reference this model
 could be compared against.
 
-Gate~D forms the model's counterpart by taking the steady-state populations at
-each grid point, weighting each level by its ionisation rate coefficient, and
-dividing by the total neutral population:
+Gate~D forms the model's counterpart by taking the steady-state population
+$n_p^{\rm ss}$ of each level at each grid point, weighting it by that level's
+ionisation rate coefficient $Q_p$ of Eq.~\eqref{eq:level_balance}, and dividing
+by the total neutral population:
 \begin{equation}
   {\rm SCD}_{\rm model}
   = \frac{\sum_p Q_p\,n_p^{\rm ss}}{\sum_p n_p^{\rm ss}},
@@ -1113,9 +1120,11 @@ formulation~\cite{Badnell2021}, whose Eq.~9 carries a factor
            - \frac{\mathrm{e}^{-U_m}}{U_m} + E_1(U_m),
   \label{eq:FUm}
 \end{equation}
-with $U_m = E_{\min}/k_B\Te$ set by the Debye cutoff. $F(U_m)$ is the Coulomb
-logarithm of the interaction: for small $U_m$ it behaves as
-$\ln(R_c/R_1)$ and diverges logarithmically.
+in which $\operatorname{erf}$ is the error function, $E_1$ the exponential
+integral, and $U_m$ the dimensionless ratio of the smallest energy transfer the
+Debye cutoff permits to $k_B\Te$. $F(U_m)$ is the Coulomb logarithm of the
+interaction: the logarithm of the ratio of the outer to the inner
+impact-parameter cutoff, which diverges as $U_m \to 0$.
 
 The implementation set $F = 1$, justified in its docstring as the low-density
 limit $U_m \to 0$. \textbf{The limit was inverted.} $U_m$ is indeed small on
@@ -1149,7 +1158,7 @@ every $\ell$-mixing rate in the matrix over a range of $\times0.1$ to $\times10$
 moves $\ffrac{3}-\ffrac{4}$ by less than \SI{0.3}{\percent} at the benchmark
 point and at the ridge, and by less than \SI{5}{\percent} at the cold corner.
 Only switching $\ell$-mixing off entirely changes anything. Rebuilding the
-matrix with a density-consistent Debye cutoff rather than a frozen one moves
+matrix with a density-consistent Debye cutoff in place of a frozen one moves
 $\ffrac{3}-\ffrac{4}$ by at most \SI{0.42}{\percent}.
 
 This also corrects a statement in Chapter~\ref{ch:atoms}. The claim at
@@ -1266,8 +1275,8 @@ construct a test that genuinely separates the two datasets.}
 
 Every quantitative result in Chapters~\ref{ch:theory} and~\ref{ch:results} was
 regenerated from $\Lmat$ and compared against the stored output. The timescale
-and step-error grids reproduce bit-identically, including the values obtained by
-numerical integration rather than by linear algebra. The plateau and persistence
+and step-error grids reproduce bit-identically, including the values that come
+from numerical integration and not from linear algebra. The plateau and persistence
 tables reproduce byte for byte, $680$ of $680$ rows, with $784$ superposition
 residuals at exactly zero difference. The nineteen points corrected by the
 eigenvalue filter reproduce exactly, including the ladder-shift identity.
@@ -1441,7 +1450,8 @@ many orders of magnitude finer than any quantity the thesis reports.
 lives.} The rates feeding $n \le 4$, which is where $H_\alpha$ and $H_\beta$
 originate, agree with an independent R-matrix calculation at a mean absolute
 error of \SI{12.7}{\percent}, and the two transitions this thesis leans on
-hardest agree better than that. Above $n=4$ the atomic data are less certain and
+hardest, $1s\to2p$ and $2p\to3d$, agree to between \SI{0.7}{\percent} and
+\SI{14.5}{\percent} across the temperature range. Above $n=4$ the atomic data are less certain and
 the truncation is measurable, and Section~\ref{sec:convergence} bounds what that
 costs the observable at about \SI{1}{\percent}.
 

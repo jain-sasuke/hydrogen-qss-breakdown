@@ -47,8 +47,8 @@ Where an objection could be turned into a calculation, it was, and the
 calculation is reported here with the number that would have refuted the
 result. Two objections were expected to be fatal and were not; they are given
 the same space as the ones that bite. Where an objection cannot be computed
-inside a model with no spatial dimension, it is stated as a \emph{conditional} ---
-``\emph{if} this holds, the error is as computed'' --- and not softened into a
+inside a model with no spatial dimension, it is stated as a \emph{conditional},
+``\emph{if} this holds, the error is as computed'', and not softened into a
 caveat sentence. Where a check has simply not been run, this chapter says so.
 
 The order is by severity. Radiation trapping and neutral transport bear
@@ -63,7 +63,7 @@ Chapter~\ref{ch:theory}; \emph{QSS} for quasi-steady-state, the Bodenstein-style
 approximation that eliminates the fast excited levels; and \emph{CRE} for
 collisional--radiative equilibrium, the fully settled steady state that the
 diagnostic lookup table assumes and that this thesis measures the cost of
-assuming. An \emph{ELM} --- edge-localised mode --- is the repetitive burst of
+assuming. An \emph{ELM} (edge-localised mode) is the repetitive burst of
 heat and particles that a tokamak edge throws at the divertor every few
 milliseconds, and it is the transient every ``event duration'' below refers to;
 $\taudrive = \SI{100}{\micro\second}$ throughout, the duration used in
@@ -81,15 +81,15 @@ Chapter~\ref{ch:results}.
 Chapter~\ref{ch:atoms} gave every downward transition an Einstein $A$
 coefficient: the probability per second that an excited atom drops to a lower
 level and emits a photon. Those coefficients entered the CR matrix $\Lmat$
-bare. Entering bare means one specific physical assumption --- that every photon
+bare. Entering bare means one specific physical assumption: that every photon
 emitted anywhere in the plasma leaves it and never comes back. A plasma for
 which this is true is called \emph{optically thin}.
 
 A chemical engineer has met the failure of this assumption in another costume.
 Consider a reaction whose product is removed by desorption from a catalyst
 surface. If the product leaves the reactor, the desorption step runs at its
-intrinsic rate. If the product cannot leave --- if it re-adsorbs somewhere else
-in the bed and is put back onto a site --- then the \emph{effective} desorption
+intrinsic rate. If the product cannot leave, if it re-adsorbs somewhere else
+in the bed and is put back onto a site, then the \emph{effective} desorption
 rate is smaller than the intrinsic one, and the whole network downstream of that
 step shifts. Radiation trapping is that, with photons.
 
@@ -111,8 +111,8 @@ lives longer, atoms pile up in $n=2$. Atoms in $n=2$ are only
 \SI{10.2}{\electronvolt} from the ground state but only
 \SI{3.4}{\electronvolt} from the continuum, so they are far easier to ionise
 than ground-state atoms. A longer $n=2$ lifetime therefore means more
-\emph{stepwise} ionisation --- ionisation via an excited level rather than
-directly out of the ground state --- which means fewer neutrals and a faster
+\emph{stepwise} ionisation, ionisation via an excited level rather than
+directly out of the ground state, which means fewer neutrals and a faster
 turnover of the ground-state reservoir. The ground-state reservoir is the whole
 mechanism of this thesis. Trapping is not a cosmetic correction to a line
 intensity; it acts on the slow clock.
@@ -132,11 +132,11 @@ the absorbing atoms. $\tau \ll 1$ is transparent; $\tau \gg 1$ is opaque.
 
 The number that matters is $\ngs$, not $\nel$, and Chapter~\ref{ch:theory}
 already established the awkward fact that these two run in opposite directions:
-the plasma is most neutral where it is coldest. At the worst point of the error
-map --- $\Te = \SI{1.0}{\electronvolt}$,
-$\nel = 5.18\times10^{13}\,\si{\per\cubic\centi\metre}$, which is the maximum of
+the plasma is most neutral where it is coldest. The worst point of the error map
+is $\Te = \SI{1.0}{\electronvolt}$,
+$\nel = 5.18\times10^{13}\,\si{\per\cubic\centi\metre}$, the maximum of
 $\epsplat$ over all $680$ window-resolvable points of the map, cold edge
-included --- the model's own CR solution gives $\ngs/\nion = 28.3$, so
+included. There the model's own CR solution gives $\ngs/\nion = 28.3$, so
 quasi-neutrality fixes
 $\ngs = 1.47\times10^{15}\,\si{\per\cubic\centi\metre}$. At
 \SI{1}{\electronvolt} that gives
@@ -162,7 +162,7 @@ optical depth per centimetre of path is
 the figure is otherwise abstract: it means a Lyman-$\alpha$ photon at that point
 travels under a tenth of a millimetre before it is reabsorbed. It is not
 travelling anywhere. Over \SI{5}{\centi\metre} of plasma the accumulated depth
-is $7900$ and the escape factor is $2.7\times10^{-5}$ --- roughly one photon in
+is $7900$ and the escape factor is $2.7\times10^{-5}$; roughly one photon in
 forty thousand gets out. That figure is an independent reproduction of the
 $3\times10^{-5}$ quoted in Chapter~\ref{ch:theory}: it was recomputed here from
 the model's own solution rather than copied from that chapter, and the two agree.
@@ -182,8 +182,8 @@ $\Te \gtrsim \SI{2}{\electronvolt}$ in the first place
 (Section~\ref{sec:two_references}). It is also, uncomfortably, where the
 headline was living. Recounting the ELM breakdown census against optical depth
 rather than against temperature: of the $202$ points at which the ELM-averaged
-lower bound on the error exceeds \SI{10}{\percent} --- an extremum count over
-the $680$ window-resolvable points of the full grid --- $157$ lie below
+lower bound on the error exceeds \SI{10}{\percent}, an extremum count over
+the $680$ window-resolvable points of the full grid, $157$ lie below
 \SI{2}{\electronvolt}, $105$ have
 $\tau_{\rm Ly\alpha}(\SI{5}{\centi\metre}) > 1$, and $26$ have it above $100$.
 
@@ -194,7 +194,7 @@ demolish the map. The reasoning was straightforward and it was wrong: an
 effective $A$ coefficient wrong by five orders of magnitude at the worst point
 ought to invalidate everything computed there and, by continuity, a good deal of
 what was computed nearby. The project's own records contained a matching
-warning --- that under strong trapping the fast relaxation time $\taurel$ rises
+warning, that under strong trapping the fast relaxation time $\taurel$ rises
 to \SI{2.05}{\micro\second} and the timescale separation $\Msep$ falls by a
 factor $158$.
 
@@ -204,8 +204,8 @@ here: $\Theta_P$ depends on $\ngs$, and $\ngs$ depends on $\Theta_P$ through the
 CR balance, so the two were iterated to a fixed point rather than evaluated once.
 The fixed point converged at all $400$ grid points for every slab thickness
 tested, and non-convergence was made to raise an error rather than silently
-return the last iterate. All $14$ Lyman channels were trapped --- the seven
-resolved $n\mathrm{P}\to1\mathrm{S}$ transitions and the seven bundled ones ---
+return the last iterate. All $14$ Lyman channels were trapped, the seven
+resolved $n\mathrm{P}\to1\mathrm{S}$ transitions and the seven bundled ones,
 not Lyman-$\alpha$ alone.
 
 Three gates were passed before any result was looked at, and the third is what
@@ -215,7 +215,7 @@ makes the comparison mean anything.
 \item The oscillator strengths were \emph{derived} from this repository's own
 $A$ coefficients by inverting the Einstein relation, rather than imported from a
 table. They come out as $f = 0.4162$, $0.0791$, $0.0290$, $0.0139$ for
-Lyman-$\alpha$ through Lyman-$\delta$ --- the accepted literature values to four
+Lyman-$\alpha$ through Lyman-$\delta$, the accepted literature values to four
 figures. Nothing was assumed that the model did not already contain.
 \item The derived Lyman-$\alpha$ $\sigma_0$ was cross-checked against an
 independent implementation elsewhere in the repository and agrees to
@@ -232,7 +232,7 @@ of it.
 
 \textbf{One new quantity had to be invented to do this at all, and it is not in
 the model.} The escape factor depends on how far a photon must travel to get
-out, so it depends on the size of the plasma --- the slab thickness $D$. A model
+out, so it depends on the size of the plasma, the slab thickness $D$. A model
 with no spatial dimension has no $D$. It was therefore swept, from
 \SI{1}{\centi\metre} to \SI{20}{\centi\metre}, and never fixed; every trapped
 number below carries the $D$ it was computed at. Reporting a single trapped
@@ -274,8 +274,8 @@ number without its $D$ would be reporting an assumption as a measurement.
 Table~\ref{tab:trapping_census} contains the strongest robustness statement in
 this thesis, and it is the opposite of what was expected.
 
-\textbf{Above \SI{2}{\electronvolt} the breakdown count does not change at all
---- $45$ of $448$ points in every run --- and the worst case within that set
+\textbf{Above \SI{2}{\electronvolt} the breakdown count does not change at all,
+$45$ of $448$ points in every run, and the worst case within that set
 moves by \SI{0.5}{\percent}, from $0.1748$ to $0.1740$, across a twentyfold
 range in assumed slab thickness.} The escape factor at the benchmark point
 (\benchTe, \benchne) runs from $0.9999$ at $D = \SI{1}{\centi\metre}$ to
@@ -289,11 +289,12 @@ $\Te \gtrsim \SI{2}{\electronvolt}$ restriction was chosen on an escape-factor
 argument \emph{before} any of this was recomputed, and it turns out to sit almost
 exactly at the temperature above which trapping stops mattering. The restriction
 was a guess that has now been checked, and it survived. The defensible claim of
-Chapter~\ref{ch:results} --- $45$ of $448$ points above \SI{2}{\electronvolt},
+Chapter~\ref{ch:results} is $45$ of $448$ points above \SI{2}{\electronvolt},
 worst case \SI{17.5}{\percent} at $\Te = \SI{2.02}{\electronvolt}$, and no
 breakdown whatever at citable divertor densities, where the worst lower bound
-over $108$ points is \SI{7.2}{\percent} --- is now known to be \emph{invariant}
-under the one physical process most likely to have invalidated it. That is a
+over $108$ points is \SI{7.2}{\percent}. That claim is now known to be
+\emph{invariant} under the one physical process most likely to have invalidated
+it. That is a
 stronger statement than a restriction and should be read as one.
 
 \subsection{Below two electron-volts, the cold-edge number is inflated
@@ -307,10 +308,10 @@ thin map through the sweep.
 \begin{table}[tbp]
   \centering
   \caption[Lyman trapping at the cold-edge worst point]{The cold-edge worst
-  point of the optically thin error map --- $\Te = \SI{1.0}{\electronvolt}$,
-  $\nel = 5.18\times10^{13}\,\si{\per\cubic\centi\metre}$, heating step; the
-  maximum of $\epsplat$ over all $680$ window-resolvable grid points --- traced
-  as a function of the assumed slab thickness $D$. $\epsplat$ is the plateau
+  point of the optically thin error map, at $\Te = \SI{1.0}{\electronvolt}$ and
+  $\nel = 5.18\times10^{13}\,\si{\per\cubic\centi\metre}$ under a heating step,
+  is the maximum of $\epsplat$ over all $680$ window-resolvable grid points; it
+  is traced here as a function of the assumed slab thickness $D$. $\epsplat$ is the plateau
   error, the fractional error a lookup table makes while the ground state is
   stale; the ELM bound is its average over an event of
   $\taudrive = \SI{100}{\micro\second}$. The plateau error falls by a factor
@@ -333,8 +334,8 @@ thin map through the sweep.
   \end{tabular}
 \end{table}
 
-\textbf{The \SI{38.7}{\percent} becomes \SIrange{11.6}{15.7}{\percent}} --- a
-factor of $2.5$ to $3.3$ --- and which value inside that range it takes is set
+\textbf{The \SI{38.7}{\percent} becomes \SIrange{11.6}{15.7}{\percent}}, a
+factor of $2.5$ to $3.3$, and which value inside that range it takes is set
 by a slab thickness the model does not contain. The point still exceeds the
 \SI{10}{\percent} threshold at every thickness tested, so the qualitative
 statement that the cold corner breaks down survives intact; the \emph{number}
@@ -342,8 +343,8 @@ does not, and it must never appear without its trapped range and without the
 optical depth that produced it.
 
 The route by which the number falls is itself a result, and it is not the
-obvious route. The obvious guess is that trapping desensitises the diagnostic
---- that a trapped plasma simply responds less. It does not. The sensitivity
+obvious route. The obvious guess is that trapping desensitises the diagnostic,
+that a trapped plasma simply responds less. It does not. The sensitivity
 $|\ffrac{3}-\ffrac{4}|$, which is the factor in the exact decomposition of
 Section~\ref{sec:mechanism} measuring how strongly the line ratio answers to its
 reservoir, moves by only \SI{6}{\percent} at $D = \SI{1}{\centi\metre}$ and
@@ -352,12 +353,11 @@ factor: the displacement.
 
 The chain is the one set out at the start of this section, now with numbers on
 it. Trapping lengthens the $n=2$ lifetime; the longer lifetime raises stepwise
-ionisation; the ground-state population falls --- at
-$\Te = \SI{1.0}{\electronvolt}$,
+ionisation; the ground-state population falls; and the slow clock $\tauqss$
+shortens by a factor $8$ at the worst point. At $\Te = \SI{1.0}{\electronvolt}$,
 $\nel = 1.93\times10^{13}\,\si{\per\cubic\centi\metre}$, $\ngs$ drops from
 $2.99\times10^{14}$ to $7.26\times10^{13}\,\si{\per\cubic\centi\metre}$ between
-$D = 1$ and \SI{20}{\centi\metre} --- and the slow clock $\tauqss$ shortens by a
-factor $8$ at the worst point. A reservoir that turns over faster is a less
+$D = 1$ and \SI{20}{\centi\metre}. A reservoir that turns over faster is a less
 stale reservoir, so $|\Delta\ln\xscale|$ roughly halves. This is exactly the
 two-axis attribution of Section~\ref{sec:temperature_mechanism} arriving from a
 third direction: trapping acts on the displacement, not on the sensitivity.
@@ -368,7 +368,7 @@ One more thing moves at the cold edge, and it is a location rather than a
 magnitude. Taking the density at which $\epsplat$ is maximal, row by row: at
 $\Te \ge \SI{1.6}{\electronvolt}$ that maximum falls on
 $\nel = 1.93\times10^{13}\,\si{\per\cubic\centi\metre}$ in every run, optically
-thin and trapped alike, and the values themselves barely register the change ---
+thin and trapped alike, and the values themselves barely register the change:
 at the benchmark temperature $\epsplat = 0.12166$, $0.12166$, $0.12165$,
 $0.12163$ for $D = 0, 1, 5$ and \SI{20}{\centi\metre}, with
 $|\ffrac{3}-\ffrac{4}|$ changing in the fifth decimal place. Below
@@ -381,7 +381,7 @@ because it is easy to miss. The ridge attribution of
 Section~\ref{sec:mechanism} was verified over $\Te \ge \SI{2}{\electronvolt}$,
 and $\Te \ge \SI{2}{\electronvolt}$ is precisely the range in which trapping has
 now been shown to be irrelevant. The agreement with Griem's boundary criterion
-is therefore not an artifact of neglected opacity --- it was established where
+is therefore not an artifact of neglected opacity; it was established where
 opacity does not act.
 
 \subsection{A contradiction resolved, and what is still open}
@@ -406,14 +406,13 @@ What this calculation does not settle should be as clear as what it does. The
 geometry is assumed, not derived: a homogeneous slab, uniform emission, an
 isotropic radiation field, a Doppler line profile, evaluated at the plasma
 centre. A $0$-D model cannot check any of those. One assumption inside it
-\emph{was} checked and is not load-bearing --- the temperature of the absorbing
+\emph{was} checked and is not load-bearing: the temperature of the absorbing
 atoms, which sets the Doppler width. Fixing it at \SI{3}{\electronvolt}, the
 value a molecule dissociating by the Franck--Condon process would give, instead
 of at $\Te$, changes the census at $D = \SI{5}{\centi\metre}$ from $170/680$ and
-a worst case of $0.2550$ to $173/680$ and $0.2653$. Continuum lowering, and
-opacity in the Balmer lines themselves --- which would act on the observed
-ratio directly rather than through the level populations --- are untouched here
-and remain open.
+a worst case of $0.2550$ to $173/680$ and $0.2653$. Continuum lowering is untouched here, and so is
+opacity in the Balmer lines themselves, which would act on the observed
+ratio directly rather than through the level populations. Both remain open.
 
 Trapping, then, is an objection that has been converted into a boundary. The
 next one cannot be.
@@ -435,13 +434,13 @@ Section~\ref{sec:opacity}. It is also the simplest to state.
 The model of Chapter~\ref{ch:theory} is a batch reactor. A fixed parcel of gas
 is given a temperature, and its composition evolves until it stops changing. The
 slow eigenvalue of that system, $\tauqss$, is how long the ground-state
-population takes to reach its new value --- and it is long, because ionising an
+population takes to reach its new value, and it is long, because ionising an
 atom out of the ground state is slow.
 
 A divertor is not a batch reactor. It is closer to a continuous-flow reactor
 with an enormous throughput, in which the residence time of a molecule is far
 shorter than the time it needs to react. Neutral atoms are born at the target
-surface when ions strike it and recombine there --- this is \emph{recycling} ---
+surface when ions strike it and recombine there, which is \emph{recycling},
 and they fly back into the plasma. They do not wait around to be ionised
 locally; the ones that do not ionise leave, and fresh ones arrive continuously.
 
@@ -462,8 +461,8 @@ set by local ionisation balance. It is set by recycling.}
 The error of Chapter~\ref{ch:results} exists for one reason: after a temperature
 step, the ground-state reservoir is \emph{stale}. Its population has not moved
 while the temperature has, the excited levels equilibrate against a reservoir
-that belongs to the old conditions, and the lookup table --- which assumes the
-reservoir finished settling --- reads the wrong answer. Everything hangs on the
+that belongs to the old conditions, and the lookup table, which assumes the
+reservoir finished settling, reads the wrong answer. Everything hangs on the
 reservoir not being refreshed.
 
 Neutral transport refreshes it. Any process that replaces the ground-state
@@ -488,13 +487,13 @@ That conditional is not empty, and it is worth being precise about how much it
 concedes. It is close to exactly true for the excited manifold, which
 equilibrates in nanoseconds and cannot be transported anywhere in that time. It
 is also the standard implicit assumption of every $0$-D collisional--radiative
-table in use --- which is, after all, the object this thesis set out to test, so
+table in use, which is, after all, the object this thesis set out to test, so
 testing it under its own assumption is legitimate. But it is an assumption about
 the plasma, not about the atoms, and no amount of eigenvalue analysis inside a
 $0$-D matrix can validate it. Measured: the timescales differ by four orders of
 magnitude. Assumed: that they do not interact.
 
-What would settle it is a two-region or transport-coupled calculation --- an
+What would settle it is a two-region or transport-coupled calculation, an
 edge code such as SOLPS (Scrape-Off Layer Plasma Simulation) supplying $\ngs$
 from a recycling influx, instead of $\ngs$ being solved for from
 $\Lmat\nvec + \Svec\nion = 0$. That is outside the scope of this thesis and is
@@ -519,8 +518,8 @@ assembly for any of these returns nothing at all.
 \subsection{The picture: a third feed stream}
 
 Chapter~\ref{ch:theory} showed that excited levels are fed from exactly two
-directions --- up from the ground state by electron collisions, and down from
-the ion continuum by recombination --- and that the whole error mechanism is the
+directions, up from the ground state by electron collisions and down from
+the ion continuum by recombination, and that the whole error mechanism is the
 difference in how the $n=3$ and $n=4$ shells split their supply between those
 two feeds. In reactor terms, two feed streams into one vessel, mixed in
 shell-dependent proportion.
@@ -529,7 +528,7 @@ Molecules open a third stream. In a cold, dense, mostly neutral gas, hydrogen
 atoms form $\mathrm{H}_2$; the molecules are ionised to $\mathrm{H}_2^+$, or
 exchange charge, and the resulting molecular ions recombine with electrons and
 break apart, leaving one of the fragments in an \emph{excited} atomic level. The
-whole family of such routes is called MAR --- molecular activated recombination.
+whole family of such routes is called MAR, molecular activated recombination.
 The important feature for this thesis is not that MAR exists but where it
 delivers: it populates $n=3$ directly, without the atom ever having passed
 through the ground-state reservoir whose staleness is the entire mechanism here.
@@ -545,11 +544,11 @@ $\nel = 5.18\times10^{13}\,\si{\per\cubic\centi\metre}$. A hydrogen gas at
 molecules form readily. The atomic description is not being applied at the edge
 of its validity there; it is being applied outside it.
 
-The size of what is being left out is documented experimentally. In
-spectroscopic inversions of divertor Balmer emission at the onset of
-\emph{detachment} --- the operating regime in which the plasma cools enough that
+The size of what is being left out is documented experimentally.
+\emph{Detachment} is the operating regime in which the plasma cools enough that
 the ion flux to the target collapses, and the regime this diagnostic is chiefly
-used to identify --- molecularly-induced emission is found to account for up to
+used to identify. In spectroscopic inversions of divertor Balmer emission at its
+onset, molecularly-induced emission is found to account for up to
 \SIrange{60}{70}{\percent} of the $D_\alpha$ light and
 \SIrange{10}{20}{\percent} of $D_\gamma$~\cite{Wijkamp2023,Verhaegh2021}. An
 $H_\alpha/H_\beta$ ratio computed from atomic processes alone is not the ratio
@@ -590,7 +589,7 @@ Stated as a conditional.}
 
 \subsection{The question}
 
-Section~\ref{sec:mechanism} found an interior maximum --- a ridge --- in the
+Section~\ref{sec:mechanism} found an interior maximum, a ridge, in the
 error map at $\nel \approx 2\times10^{13}\,\si{\per\cubic\centi\metre}$, and
 showed that it moves with the shell pair as Griem's criterion for local
 thermodynamic equilibrium (LTE) predicts. The mechanism is robust; three
@@ -602,7 +601,7 @@ and only the first of them has been established.
 The ridge exists because the $n=3$ and $n=4$ shells switch from
 recombination-fed to ground-fed at different reservoir strengths, so their
 difference vanishes when either feed dominates and peaks in between. The
-controlling variable is therefore not the electron density directly --- it is
+controlling variable is therefore not the electron density directly; it is
 \emph{how much neutral gas there is to feed from}. The electron density enters
 only because, in this model, it determines the neutral density through the CR
 ionisation balance.
@@ -638,8 +637,8 @@ roughly one decade in electron density.} The response is close to
 proportional, and the whole three-decade span of the density grid is traversed
 by a two-decade change in $\ngs$.
 
-The agreement with Griem's criterion at unit scaling --- $1.93\times10^{13}$
-measured against $2.05\times10^{13}\,\si{\per\cubic\centi\metre}$ predicted --- is
+The agreement with Griem's criterion at unit scaling, $1.93\times10^{13}$
+measured against $2.05\times10^{13}\,\si{\per\cubic\centi\metre}$ predicted, is
 therefore an agreement evaluated at \emph{this model's} collisional--radiative
 ionisation balance, which contains no transport and no recycling. In a real
 divertor the neutral density is set by recycling, which is
@@ -653,7 +652,7 @@ condition attached or not quoted.
 
 There is a second conditionality in the same result, and this one is a matter of
 naming rather than of physics. The ridge belongs to the $(3,4)$ shell pair. That
-is why it moves when the pair is changed --- and it moves a long way: an
+is why it moves when the pair is changed, and it moves a long way: an
 $H_\alpha/H_\gamma$ diagnostic, built on the $(3,5)$ pair, has its worst density
 at $7.2\times10^{12}\,\si{\per\cubic\centi\metre}$, a factor $2.68$ lower.
 
@@ -699,7 +698,7 @@ from the ITER divertor physics basis~\cite{Pitts2019}; and ``upstream
 separatrix density'' is not a single quantity, since the density at the
 outboard midplane and the density at the X-point differ by roughly
 \SI{50}{\percent} on the same flux tube. The conclusion of this section does
-not turn on either subtlety --- the ridge is below both --- but the factor
+not turn on either subtlety, since the ridge is below both, but the factor
 $1.6$ should not be quoted more precisely than the band it is measured
 against.
 \todo{The separatrix band: confirm which quantity (outboard midplane or
@@ -739,7 +738,7 @@ diagnostic is most used, this model says the transient error is real but modest.
 
 Section~\ref{sec:rate_equation} was explicit that the ion density $\nion$ is
 held fixed: the recombination feed $\Svec\nion$ enters as a constant source term
---- a feed stream into a CSTR, in the reactor picture --- rather than as a
+a feed stream into a CSTR in the reactor picture, rather than as a
 matrix element, and the $43$-state system has no $44$th state for ionised atoms
 to accumulate in. Atoms ionise and vanish from the accounting. The slow
 eigenvalue $\lambda_0$ is therefore the CR ionisation rate of ground-state
@@ -754,7 +753,7 @@ The obvious attack writes itself. A reactor that lets its product disappear
 relaxes differently from one that does not. If the long $\tauqss$ values are an
 artifact of the open boundary, then so is the claim that the error outlasts an
 ELM, and Chapter~\ref{ch:results} collapses. The expectation was that closing
-the system would shorten $\tauqss$ substantially --- and there was a specific
+the system would shorten $\tauqss$ substantially, and there was a specific
 reason to fear it, because a factor of order
 $\tauqss/\taudrive \approx 2300$ at the worst point would bring the slow clock
 down to the ELM duration and remove the persistence entirely.
@@ -803,7 +802,7 @@ not matter.
 
 Recomputing the entire ELM census with closed-system $\tauqss$ moves the
 breakdown count from $202$ to $200$ out of $680$, and the worst case from
-$0.38682$ to $0.38563$ --- about one part in $325$. Restricted to
+$0.38682$ to $0.38563$, about one part in $325$. Restricted to
 $\Te \ge \SI{2}{\electronvolt}$ the count is $45$ before and $45$ after.
 
 \textbf{The falsifier did not appear.} A factor of $2300$ was needed at the
@@ -814,7 +813,7 @@ in a list of caveats.
 \subsection{The caveat that must not be softened}
 
 The closure adds an ion reservoir. It does \emph{not} close the electron
-balance --- $\nel$ is held fixed while the ion population moves --- and it adds
+balance, since $\nel$ is held fixed while the ion population moves, and it adds
 no transport whatever. It is a test of the boundary condition on the atomic
 manifold, and nothing more. Section~\ref{sec:transport} is the objection this
 test does not answer, and no amount of closing the atomic system will answer it.
@@ -834,7 +833,7 @@ draft; the value itself is not in dispute.}
 
 Chapter~\ref{ch:validation} presented the comparison against Fujimoto's
 published population coefficients as the strongest external check this model
-passes. It is --- for one of the two coefficients. This section reports the
+passes. It is, for one of the two coefficients. This section reports the
 other, which fails, and does not repair it.
 
 \subsection{The picture: two coefficients, one for each feed}
@@ -873,11 +872,11 @@ The consequence is bounded in one direction only, and the bound comes from
 Section~\ref{sec:ridge_conditional}: since the ridge location responds roughly
 decade-for-decade to the strength of the ground-fed supply, a factor-$8$ error
 in $r_1(3)$ is not obviously harmless to where the ridge is. The ridge
-\emph{mechanism} --- that the two shells switch supply channels at different
+\emph{mechanism} is that the two shells switch supply channels at different
 reservoir strengths, and that the switching point moves with the shell pair as
-Griem's criterion predicts --- depends on the \emph{ratio} of the two shells'
-responses and on how it scales, not on the absolute normalisation, and survives
-either way.
+Griem's criterion predicts. That mechanism depends on the \emph{ratio} of the two
+shells' responses and on how it scales, not on the absolute normalisation, and
+survives either way.
 
 This is reported open because it is open.
 \todo{Report $\partial(\text{ridge location})/\partial(r_1\ \text{scaling})$
@@ -904,7 +903,7 @@ statistically. Both are choices, and this section states what they cost.
 
 \paragraph{The terminal shell is over-populated.} The top of any truncated
 ladder is fed from below and from the continuum but has nothing above it to
-cascade in from --- and, more importantly, nothing above it to cascade
+cascade in from, and, more importantly, nothing above it to cascade
 \emph{out} to that is still being tracked. The effect is measurable rather than
 hypothetical: against published values, this model's ground-fed coefficient at
 $n = 15$ is high by a factor of $4.9$ to $6.2$, while at $n = 10$ it agrees to
@@ -934,7 +933,7 @@ $\ell$-mixing rate array is identically zero above that. Within the bundled
 shells the $\ell$-distribution is assumed statistical rather than computed. At
 high $n$ that assumption is far more defensible than it would be at low $n$,
 because the sublevels are nearly degenerate and every collisional process mixes
-them --- but it is assumed, not measured, and this thesis has not measured it.
+them, but it is assumed, not measured, and this thesis has not measured it.
 
 \subsection{The check that would close this}
 
@@ -954,7 +953,7 @@ the outstanding check named in Section~\ref{sec:ridge_alternatives}.}
 Four assumptions remain. Each is stated with what is known about it, rather than
 listed as a disclaimer, and two of the four have been tested.
 
-\paragraph{Maxwellian electrons --- untested.} Every rate coefficient in
+\paragraph{Maxwellian electrons: untested.} Every rate coefficient in
 Chapter~\ref{ch:atoms} is an average of a cross section over a Maxwell--Boltzmann
 electron energy distribution. Ionisation and excitation are driven by the
 high-energy tail of that distribution, which holds a small minority of the
@@ -962,12 +961,12 @@ electrons. A \SI{1}{\electronvolt} plasma next to a recycling surface has no
 guarantee of a Maxwellian tail, and a depleted or enhanced tail would change the
 rates that set both clocks. Not tested here.
 
-\paragraph{$T_i = \Te$ in the $\ell$-mixing rates --- untested.} The
+\paragraph{$T_i = \Te$ in the $\ell$-mixing rates: untested.} The
 proton-impact $\ell$-mixing rates of Section~\ref{sec:lmixing} are evaluated at
 an ion temperature equal to the electron temperature. In a detaching divertor
 the ions are frequently colder than the electrons. Not tested here.
 
-\paragraph{The step is instantaneous --- tested, and safe for a reason that is
+\paragraph{The step is instantaneous: tested, and safe for a reason that is
 easy to get wrong.} The error maps impose a sudden temperature step, whereas a
 real ELM has a finite rise time. The tempting comparison is
 $\taurel/\taudrive \approx 10^{-5}$, which appears to say that the step
@@ -975,13 +974,13 @@ idealisation is safe by five orders of magnitude. \textbf{That ratio is about
 the wrong quantity.} It describes the suppression of the fast
 \emph{excited-manifold} step error, which is not what the maps report. The
 plateau error is governed by the slow ground-state response, for which the
-relevant ratio at the worst point is $\tauqss/\taudrive = 2332$ --- an
+relevant ratio at the worst point is $\tauqss/\taudrive = 2332$, an
 unambiguous step by a wide margin. Any finite ramp with
 $\taurel \ll t_{\rm ramp} \ll \tauqss$ reaches the same plateau, so the
 idealisation \emph{is} safe; it is safe because of the slow ratio, and the fast
 ratio must never be quoted for or against this result.
 
-\paragraph{The step is in temperature only --- partially tested, and it matters.}
+\paragraph{The step is in temperature only: partially tested, and it matters.}
 A real ELM raises the electron density as well as the temperature, while the
 maps step $\Te$ at fixed $\nel$. Joint steps in both were spot-checked. They
 give a comparable instantaneous $\epsplat$ but a \emph{time-averaged} bound that
@@ -1037,8 +1036,8 @@ The ridge falls between the modelled upstream separatrix and the detached
 divertor band, and belongs to neither.
 
 And it carries an unresolved factor-$8$ disagreement with the standard
-tabulation of the ground-fed population coefficient at $p = 3$ --- the
-coefficient the mechanism runs on --- for which no explanation has been found.
+tabulation of the ground-fed population coefficient at $p = 3$, the
+coefficient the mechanism runs on, for which no explanation has been found.
 
 \subsection{What this model can say, with the objections computed}
 
@@ -1048,8 +1047,8 @@ points in every run, worst case moving by \SI{0.5}{\percent}. The restriction
 that produced that scope was a guess when it was written and is a measurement
 now.
 
-Closing the open boundary --- the objection most naturally assumed to be fatal
---- moves the census by two points out of $680$ and the worst case by one part
+Closing the open boundary, the objection most naturally assumed to be fatal,
+moves the census by two points out of $680$ and the worst case by one part
 in $325$. A factor of $2300$ would have been required to refute the result. The
 measured factor at that point is $15$.
 
@@ -1058,8 +1057,8 @@ exactly the range in which trapping has now been shown to be irrelevant, so the
 agreement with Griem's boundary criterion is not an artifact of neglected
 opacity.
 
-And at citable divertor densities above \SI{2}{\electronvolt} --- the conditions
-where the diagnostic is actually used --- the ELM-averaged error never reaches
+And at citable divertor densities above \SI{2}{\electronvolt}, the conditions
+where the diagnostic is actually used, the ELM-averaged error never reaches
 \SI{10}{\percent} at all, over $108$ points, with a worst case of
 \SI{7.2}{\percent}.
 
@@ -1068,7 +1067,7 @@ where the diagnostic is actually used --- the ELM-averaged error never reaches
 The pattern is consistent, and it is why this chapter is not an apology. Every
 objection that could be computed inside a $0$-D atomic model was computed, and
 the defensible claim came through all of them with its numbers unchanged. The
-objections that remain --- neutral transport and molecular chemistry --- are the
+objections that remain, neutral transport and molecular chemistry, are the
 ones that cannot be computed inside a $0$-D atomic model at all, and they have
 been stated as conditionals rather than dissolved into caveats.
 

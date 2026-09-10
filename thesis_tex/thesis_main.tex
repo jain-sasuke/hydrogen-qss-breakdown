@@ -151,57 +151,8 @@ Indian Institute of Technology Kanpur\par}
 \input{chapter3}
 
 %=============================================================================
-\chapter{Does the Model Work?}
-\label{ch:validation}
-% BEAT: credibility -- including the three errors found by our own audit.
-%=============================================================================
-
-\section{What a validation gate can and cannot show}
-\label{sec:gate_philosophy}
-% QUESTION: what would a wrong model fail?
-% Severity, not just consistency: a check a wrong result would also pass
-% tells you nothing.
-
-\section{Internal consistency: detailed balance, coronal and Saha limits}
-\label{sec:gates_abc}
-% QUESTION: does the model obey the physics it was built from?
-
-\section{Timescale hierarchy}
-\label{sec:gate_e}
-% QUESTION: is the two-clock structure present everywhere?
-% M from 86.8 to 1.73e9 over 400 points, three independent implementations
-% agreeing bit-for-bit.
-
-\section{External benchmark: Fujimoto's population coefficients}
-\label{sec:fujimoto}
-% QUESTION: does an independent calculation agree?
-% THE STRONGEST GATE. r_0 to 0.1-1% for n>=4 at high density; r_0(2) = 0.7392
-% vs 0.730 at low density -- the discriminating case. Appendix 4B timescales
-% within a factor of three at a grid point his example lands on exactly.
-% r_1(15) high by 4.9-6.2x: terminal-shell artifact, see ch:limits.
-
-\section{The Balmer ratio and the shell ratio}
-\label{sec:balmer_equivalence}
-% QUESTION: is the computational shortcut safe?
-% 0.386683 vs 0.386903 (0.06%). l-populations move as a rigid body.
-
-\section{Errors found and corrected}
-\label{sec:errors_found}
-% QUESTION: what did we get wrong, and how did we find it?
-% NOT AN APOLOGY -- EVIDENCE OF METHOD.
-%   1. l-mixing F(U_m) error (Badnell 2021 Eq. 9): rates wrong by 3-7x,
-%      tau_relax moved <0.85% anywhere -- and the insensitivity is itself a
-%      result about timescale separation.
-%   2. Eigenvalue filter eigs < -1.0: corrupted 19 of 400 grid points by
-%      promoting the eigenvalue ladder one step. Found by recomputing the
-%      spectrum unconditionally and comparing bit-for-bit.
-%   3. The metric misnaming: what was called a QSS error was a CRE error.
-%      Found by integrating the full system and measuring both along the same
-%      trajectory: 1e-8 vs 1e-1.
-
-\section{Summary}
-\label{sec:validation_summary}
-
+% chapter{Does the Model Work?}  -- full text lives in chapter4.tex
+\input{chapter4}
 %=============================================================================
 % chapter{What the Model Says}  -- full text lives in chapter5.tex
 \input{chapter5}
@@ -209,30 +160,8 @@ Indian Institute of Technology Kanpur\par}
 % chapter{What This Model Cannot Say}  -- full text lives in chapter6.tex
 \input{chapter6}
 %=============================================================================
-\chapter{Conclusions}
-\label{ch:conclusions}
-% BEAT: hand over something usable.
-%=============================================================================
-
-\section{What was found}
-\label{sec:what_found}
-
-\section{A criterion others can apply}
-\label{sec:criterion}
-% QUESTION: what should a modeller do differently tomorrow?
-% The criterion in a form applicable to any CR matrix, with its stated
-% validity range.
-
-\section{What it means for divertor spectroscopy}
-\label{sec:implications}
-% Where in the operating space to distrust a (Te,ne) inversion, and what a
-% time-dependent inversion would require.
-
-\section{Further work}
-\label{sec:further_work}
-% Non-normality and pseudospectra; the Mori-Zwanzig memory kernel; opacity;
-% molecular channels; the low-p r_1 deficit against Fujimoto, still open.
-
+% chapter{Conclusions}  -- full text lives in chapter7.tex
+\input{chapter7}
 %=============================================================================
 \appendix
 \chapter{State Ordering}

@@ -934,9 +934,17 @@ $\nion = \nel$ by quasi-neutrality, and $\Delta\ell = \pm1$ only. A fourth is
 easy to miss on reading the code. The Debye length inside $U_m$ is evaluated at
 a fixed reference density \SI{e14}{\per\cubic\centi\metre} rather than at each
 grid density, on the stated grounds that $F$ depends on density only
-logarithmically. That stated ground is wrong: evaluating the module's own
-expression gives a factor $3.7$ variation for $n=2$ and a factor $50$ for $n=8$
-across the density grid. The practice survives for a different reason, measured
+logarithmically. That stated ground is wrong, and quoting one number per shell
+understates by how much. Evaluating the module's own expression across the eight
+density columns at \SI{1}{\electronvolt}, $F$ varies by a factor $3.7$ for
+$n=2$, which has only the $\ell=1$ channel, and by between $50$ and $687$ across
+the seven $\ell$ channels of $n=8$, the largest belonging to $\ell=1$ and the
+smallest to $\ell=7$. An earlier draft quoted $50$ for $n=8$ beside $3.7$ for
+$n=2$, which are correct measurements of different $\ell$ channels and should
+not have been set side by side. Over the whole $(\Te,\nel)$ grid the $n=8$,
+$\ell=1$ spread reaches $1564$
+(\texttt{compute\_lmix.py}, functions \texttt{\_psm20\_Um} and
+\texttt{\_psm20\_F}). The practice survives for a different reason, measured
 rather than assumed. Rebuilding $\Lmat$ with a density-consistent cutoff at every
 grid point moves $\ffrac{3}-\ffrac{4}$ by at most \SI{0.42}{\percent}, and
 scaling every $\ell$-mixing rate over a range of $\times0.1$ to $\times10$ moves

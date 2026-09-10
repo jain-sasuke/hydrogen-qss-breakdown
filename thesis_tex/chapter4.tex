@@ -1370,8 +1370,6 @@ functions gives a span of $\times3.7$ for $n=2$ and $\times50$ for $n=8$. The
 statement about the input is wrong by a wide margin and the conclusion drawn
 from it survives, because the observable does not depend on the input over that
 range.
-\todo{Correct \texttt{chapter2.tex}:924. The \SI{30}{\percent} figure is not
-what the module computes.}
 
 \subsection{The eigenvalue magnitude filter}
 
@@ -1450,12 +1448,12 @@ code. It is the reason this thesis states the argument of every error measure
 explicitly and why Section~\ref{sec:eps_definitions} defines four of them
 separately.
 
-\subsection{A statement in Chapter~\ref{ch:theory} that measurement contradicts}
+\subsection{A statement in Chapter~\ref{ch:theory} that measurement contradicted}
+\label{sec:promise_broken}
 
-One further item belongs here because it is unrepaired.
-Section~\ref{sec:ion_recomb} states that at
+An earlier draft of Section~\ref{sec:source_quadratic} stated that at
 $\nel = \SI{e12}{\per\cubic\centi\metre}$ three-body recombination supplies
-under \SI{10}{\percent} of the feed into any level, and uses that to propose
+under \SI{10}{\percent} of the feed into any level, and used that to propose
 testing the radiative and three-body datasets separately at the two ends of the
 density grid. Measured against the matrix, $30$ of $36$ levels exceed
 \SI{10}{\percent} three-body feed at both \SI{1.00}{\electronvolt} and
@@ -1463,10 +1461,14 @@ density grid. Measured against the matrix, $30$ of $36$ levels exceed
 bundled shells it is essentially the whole feed.
 
 The consequence is that the density grid does not separate the two recombination
-datasets, and \textbf{no such separate test was run}. The sentence in
-Chapter~\ref{ch:theory} promises a check this chapter does not deliver.
-\todo{Correct \texttt{chapter3.tex}:190--195. Either drop the promise or
-construct a test that genuinely separates the two datasets.}
+datasets, and \textbf{no such separate test was run or can be}. Both halves have
+been repaired: Section~\ref{sec:source_quadratic} now states the measured fractions,
+and the promise built on the wrong one is withdrawn there rather than left for a
+reader to trip over. What remains unrepaired is the underlying gap. The radiative
+and three-body recombination datasets enter this model only in combination, and
+nothing in this thesis tests them apart. A test that could would need a density
+below the bottom of this grid, where the three-body channel is genuinely
+negligible, and that region is outside the conditions the thesis is about.
 
 %-----------------------------------------------------------------------------
 \section{Reproduction, and what a document cannot certify}

@@ -576,6 +576,7 @@ Eq.~\eqref{eq:exact_decomposition} says which of them varies across the
 operating map, and Section~\ref{sec:mechanism} determines that.
 
 \subsection{The reservoir gain, and why it is the step-independent object}
+\label{sec:gain}
 
 The second factor still contains the step. Splitting it,
 \begin{equation}
@@ -1274,12 +1275,101 @@ $\taurel/\taudrive \approx 10^{-5}$, which describes the suppression of the fast
 excited-manifold error and has nothing to say about the plateau. The step
 idealisation is safe, and it is safe for the second reason and not the first.
 
-\emph{[UNVERIFIED: the map steps $\Te$ at fixed $\nel$, whereas an ELM raises
-both. Joint steps in $(\Te,\nel)$ give comparable $\epsplat$ but a
-time-averaged bound that can fall by a factor $4$, because a higher $\nel$
-shortens $\tauslow$; at the benchmark the bound falls from $0.0117$ to $0.0030$.
-A joint-step map has not been run, and an examiner who knows ELM physics will
-ask for one (\texttt{findings\_10}~\S8.3).]}
+\subsection{Stepping both parameters, which is what an ELM does}
+\label{sec:joint_step}
+
+Every map above steps $\Te$ at fixed $\nel$, and an ELM raises both. A
+spot check at the benchmark had suggested this runs in the model's favour, the
+time-averaged bound falling from $0.0117$ to $0.0030$ when the density steps up
+with the temperature, because a higher $\nel$ shortens $\tauslow$. That spot
+check is reproduced exactly by the full map, and it is not representative.
+
+\paragraph{The framework extends without amendment, and that is the first
+result.} Nothing in the derivation of Eq.~\eqref{eq:eps_plateau_exact} refers to
+\emph{what} displaced the reservoir. Running $4968$ cases over steps of $0$,
+$\pm1$ and $\pm2$ temperature indices crossed with $0$ and $\pm1$ density
+indices, the two-channel superposition holds to a worst relative residual of
+$3.075\times10^{-14}$, the same figure the temperature-only map reports, and
+$\epsplat = |\exp(\overline{S}\,\Delta\ln u)-1|$ holds to
+$3.7\times10^{-16}$ (\texttt{verify\_joint\_step\_map.py}). The sensitivity is a
+property of the observable and the displacement is a property of the plasma,
+whichever axis moved.
+
+\paragraph{The gain becomes a gradient, and it is additive.} What does not
+survive unchanged is the second factorisation, $\Delta\ln u = G\,\Delta\ln\Te$,
+which has one axis in it. Measuring the two partial gains at each starting point
+from the single-axis steps,
+\begin{equation}
+  G_T = \frac{\partial\ln u}{\partial\ln\Te}\bigg|_{\nel},
+  \qquad
+  G_n = \frac{\partial\ln u}{\partial\ln\nel}\bigg|_{\Te},
+  \qquad
+  \Delta\ln u \simeq G_T\,\Delta\ln\Te + G_n\,\Delta\ln\nel ,
+  \label{eq:gain_gradient}
+\end{equation}
+
+\noindent the additive prediction reproduces the measured $\Delta\ln u$ to a
+median of \SI{0.20}{\percent} and \SI{0.54}{\percent} at the 90th percentile
+over $2716$ joint steps. Only $26$ of them exceed \SI{5}{\percent}, and those
+sit where the two contributions cancel: heating empties the reservoir while a
+density rise refills it, so $\Delta\ln u$ passes through zero and a relative
+error on a vanishing quantity is meaningless. Their median $|\Delta\ln u|$ is
+$0.0057$ against $0.398$ elsewhere.
+
+The two gains are very different in size. $|G_T|$ runs $2.64$ to $14.52$,
+which is the same range Section~\ref{sec:gain} reports, while $|G_n|$ runs
+$0.044$ to $0.164$. \textbf{The reservoir is roughly fifty times less sensitive
+to density than to temperature in logarithmic terms.} It matters at all only
+because the density grid is coarse: one density index is
+$+\SI{168}{\percent}$ against $+\SI{4.81}{\percent}$ for one temperature index,
+a factor $35$ in logarithmic step, so the two contributions end up comparable in
+this particular sweep. That coarseness is a limitation of the tabulation, not a
+statement about ELMs, and it is why the census below is quoted per step rather
+than as one number.
+
+\paragraph{A density change alone never breaks the diagnostic.} Of the $320$
+window-passing cases at $\Delta\nel = -1$ index and the $296$ at $+1$, with the
+temperature held fixed, \emph{none} exceeds the \SI{10}{\percent} threshold. The
+median $\epsplat$ is \SI{2.7}{\percent} and \SI{2.6}{\percent} respectively. The
+error this thesis is about is driven by temperature.
+
+\paragraph{The census, and why the benchmark spot check misled.} Counting as
+Table~\ref{tab:elm_census} does, over both temperature directions at one index
+and $\Te\ge\SI{2}{\electronvolt}$:
+
+\begin{table}[htbp]
+\centering
+\caption{The breakdown census under a joint step, at
+$\taudrive = \SI{100}{\micro\second}$. The middle row is
+Table~\ref{tab:elm_census}'s middle row, recomputed by an independent script and
+reproducing it exactly.}
+\label{tab:joint_census}
+\begin{tabular}{lrrl}
+  \toprule
+  density step & pairs & bound $>\SI{10}{\percent}$ & worst \\
+  \midrule
+  $-1$ index, $\times0.373$ & 426 & 44 & $0.1863$ at \SI{2.02}{\electronvolt}, \SI{5.18e13}{\per\cubic\centi\metre} \\
+  $0$, fixed $\nel$ & 448 & 45 & $0.1748$ at \SI{2.02}{\electronvolt}, \SI{1.93e13}{\per\cubic\centi\metre} \\
+  $+1$ index, $\times2.68$ & 379 & 43 & $0.2206$ at \SI{2.02}{\electronvolt}, \SI{7.2e12}{\per\cubic\centi\metre} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+The count barely moves, at $10.3$, $10.0$ and \SI{11.3}{\percent} of the pairs
+available. \textbf{The worst case moves the other way from the spot check: it
+rises by \SI{26}{\percent}, from $0.1748$ to $0.2206$, when the density steps
+up.} The benchmark and the worst point respond differently because they sit on
+opposite sides of the density crest of Section~\ref{sec:mechanism}. Stepping up
+from $\nel = \SI{1.39e14}{\per\cubic\centi\metre}$ moves away from the crest and
+collapses $\tauslow$ from $18.5$ to \SI{5.23}{\micro\second}, so the
+time-average wins; stepping up from $\SI{7.2e12}{\per\cubic\centi\metre}$ moves
+\emph{toward} it, and $\epsplat$ rises faster than $\tauslow$ falls.
+
+\textbf{One spot check at one point was not enough to settle the sign of this,
+and it gave the wrong sign for the quantity that is reported.} The defensible
+statement is that the census is insensitive to a density step of this size while
+the worst case is not, and that the worst case is understated by the
+fixed-density map rather than overstated.
 
 %-----------------------------------------------------------------------------
 \section{Timescale separation does not predict it}

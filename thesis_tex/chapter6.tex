@@ -1214,16 +1214,20 @@ $\taurel \ll t_{\rm ramp} \ll \tauslow$ reaches the same plateau, so the
 idealisation \emph{is} safe; it is safe because of the slow ratio, and the fast
 ratio must never be quoted for or against this result.
 
-\paragraph{The step is in temperature only: partially tested, and it matters.}
-A real ELM raises the electron density as well as the temperature, while the
-maps step $\Te$ at fixed $\nel$. Joint steps in both were spot-checked. They
-give a comparable instantaneous $\epsplat$ but a \emph{time-averaged} bound that
-can fall by a factor of $4$ at the benchmark point, from $0.0117$ to $0.0030$,
-because a higher $\nel$ shortens $\tauslow$ and so shortens the window over which
-the error survives. A full joint-step map has not been run and would cost the
-same as the existing one.
-\todo{Joint $(\Te,\nel)$ ELM step map. Not run. An examiner familiar with ELM
-physics will ask for it.}
+\paragraph{The step is in temperature only: tested, and the correction goes the
+wrong way.} A real ELM raises the electron density as well as the temperature,
+while the maps step $\Te$ at fixed $\nel$. The joint map has now been run over
+$4968$ cases (Section~\ref{sec:joint_step}). The exact decomposition survives
+unchanged, because it never referred to which axis moved the reservoir, and the
+gain generalises to an additive gradient accurate to \SI{0.2}{\percent} at the
+median. The quantitative correction is small in the count and adverse in the
+worst case: over $\Te\ge\SI{2}{\electronvolt}$ the breakdown fraction moves from
+$10.0$ to \SI{11.3}{\percent} when the density steps up one index, while the
+worst case rises from $0.1748$ to $0.2206$. \textbf{The earlier spot check at
+the benchmark, which showed the bound falling by a factor $4$, had the right
+number and the wrong sign for the grid}, because the benchmark and the worst
+point lie on opposite sides of the density crest. The fixed-density map
+understates the worst case rather than overstating it.
 
 \medskip
 Two sensitivities of the reported census belong in the same place, because both

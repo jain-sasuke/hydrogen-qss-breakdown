@@ -347,3 +347,12 @@ __pycache__/
 !.claude/skills/thesis-verification/
 !.claude/skills/scientific-prose-audit/
 !.claude/skills/thesis-writing/
+
+# Downloaded papers. NEVER commit these: origin is a PUBLIC repository and most
+# of these PDFs are under publisher copyright. Sawada & Fujimoto (1994) is
+# Physical Review E and is not open access; redistributing it here would be
+# republishing APS material. Pitts et al. (2019) is CC BY-NC-ND, which permits
+# redistribution but not derivatives, and is excluded too rather than making a
+# per-file judgement in a directory people will drop things into.
+# The rule below overrides the "!*.pdf" un-ignore earlier in this file.
+refs/

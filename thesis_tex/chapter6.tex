@@ -830,16 +830,20 @@ with a detached ITER divertor~\cite{Guillemaut2011}, and a factor $1.6$
 density~\cite{Stangeby2023,Pitts2019}. It falls between the two, in a range
 neither source characterises.
 
-Both comparison bands deserve a word of caution, because a factor of $1.6$ is
-not a large margin to be arguing over. The separatrix figure is quoted here
-from a reduced ITER divertor model~\cite{Stangeby2023}, which itself quotes it
-from the ITER divertor physics basis~\cite{Pitts2019}; and ``upstream
-separatrix density'' is not a single quantity, since the density at the
-outboard midplane and the density at the X-point differ by roughly
-\SI{50}{\percent} on the same flux tube. The conclusion of this section does
-not turn on either subtlety, since the ridge is below both, but the factor
-$1.6$ should not be quoted more precisely than the band it is measured
-against.
+The comparison band deserves a word, because a factor of $1.6$ is not a large
+margin to be arguing over. Read from the primary source, the band is
+\SIrange{3e19}{6e19}{\per\cubic\metre} across the $53$ ITER SOLPS-4.3 cases
+\cite[Sec.~3.1.1]{Pitts2019}, and it is the density \emph{at the outer
+midplane}, which that paper states explicitly where it plots the dependence
+\cite[Sec.~3.2.2]{Pitts2019}. So the quantity is settled: outer midplane, not
+X-point. What is not settled by a single factor is where in the band to
+measure from. The ridge sits $1.6$ times below the \emph{bottom} of it and
+$3.1$ times below the top, and the honest statement is the range rather than
+either end. On the same flux tube the outboard-midplane and X-point densities
+differ by roughly \SI{50}{\percent}, which is comparable to the width of the
+band itself. The conclusion does not turn on any of this, since the ridge is
+below the band on every reading, but the factor should not be quoted more
+precisely than the band it is measured against.
 The citation defect that accompanied this number is repaired. This repository
 recorded \cite{Stangeby2023} as ``Stangeby 2022, Nucl.\ Fusion 62'' in
 \texttt{src/validation/grid.py}; the DOI was right and the volume and year were

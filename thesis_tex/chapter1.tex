@@ -90,21 +90,36 @@ destroyed by the duty.
 
 Being destroyed by the duty is the entire difficulty. The exhaust power does not
 spread itself over the plate; it arrives concentrated in a narrow strip where the
-field lines land, and the resulting surface heat flux would be far above what any
-solid can survive. The tolerable steady-state load on the target sets the whole
-design: the ITER divertor physics basis records
-$\sim\SI{10}{\mega\watt\per\square\metre}$ as the previously accepted limit, and
-a revised criterion based on avoiding tungsten recrystallisation puts the upper
-limit potentially \SI{50}{\percent} higher \cite{Pitts2019}. What arrives, if
-nothing is done to spread or dissipate it, is very much larger, and the
-business of the divertor is to close that gap.
-\todo{The unmitigated parallel heat flux is still unsourced and is therefore
-not stated above. Pitts \emph{et al.} (2019) \cite{Pitts2019} is the reference;
-only its abstract could be read for this draft, which is where the
-\SI{10}{\mega\watt\per\square\metre} and the recrystallisation revision come
-from. Pull the full text through the institutional subscription and either add
-the parallel-flux figure with a section reference or leave the sentence
-qualitative as it now is.}
+field lines land.
+
+How concentrated, and what the target can take, are two different questions, and
+the ITER divertor physics basis is careful to separate them in a way worth
+repeating. The engineering standard is
+\SI{10}{\mega\watt\per\square\metre}: it has long been asserted, in that
+document's words, that this ``is a value which must be managed by the actively
+cooled divertor technology'', and it is the qualification standard for
+laboratory testing of the components \cite[Sec.~1]{Pitts2019}. \textbf{That
+figure is not a prediction of what arrives.} The same section states plainly
+that ``the value of target loading in ITER is not therefore a prediction of
+SOLPS modelling, but rather the constraint imposed to restrict the acceptable
+range of core plasma performance''. It is a budget, and the modelling is run so
+as to stay inside it.
+
+What arrives when the divertor is not held inside it is larger. At the lowest
+divertor neutral pressure in the ITER SOLPS-4.3 database, about \SI{2}{\pascal},
+the peak load on a shaped target is about
+\SI{25}{\mega\watt\per\square\metre}, rising to about
+\SI{40}{\mega\watt\per\square\metre} if the heat flux channel turns out to be as
+narrow as \SI{1}{\milli\metre} \cite[Sec.~4]{Pitts2019}. Against those, a
+criterion based on avoiding tungsten recrystallisation over the roughly $2000$
+hours of high-performance exposure expected of the first divertor gives
+$16\pm\SI{2.5}{\mega\watt\per\square\metre}$, and
+critical-heat-flux tests scaled to the final monoblock design put the ceiling on
+the top surface at about \SI{20}{\mega\watt\per\square\metre}
+\cite[Sec.~4]{Pitts2019}. The distance between what arrives and what the surface
+tolerates is the reason a divertor is a research problem and not a plumbing
+one, and closing it means removing the power before it reaches the surface at
+all.
 
 The way out is not a better plate material. It is to stop the plasma before it
 arrives. If enough neutral hydrogen gas is allowed to build up in front of the
@@ -149,14 +164,18 @@ is where the atomic physics of neutral hydrogen governs the emission. It does no
 cover the hotter attached cases, and it is a modelling choice rather than a
 prediction: it should be read as the range over which the model was exercised,
 not as a claim about what any particular machine will do.
-\todo{The lower end of the density range is not sourced. Every
-\SI{e13}{\per\cubic\centi\metre}-scale figure that could be verified is an
-\emph{upstream} separatrix or X-point density, not a divertor or near-target
-density, and no source read for this chapter states a divertor density that low
-in prose. Either pull Pitts \emph{et al.} (2019) \cite{Pitts2019} or Loarte
-\emph{et al.} (2007) \cite{Loarte2007} through the institutional subscription
-and read the number directly, or narrow the claim. Do not assert the lower bound
-without doing one or the other.}
+The lower end deserves a sharper statement than that, because it is below
+anything the sources read for this chapter describe. Across the $53$ ITER
+SOLPS-4.3 cases spanning a wide range of fuel and impurity throughput, the
+upstream separatrix density is
+\SIrange{3e19}{6e19}{\per\cubic\metre} \cite[Sec.~3.1.1]{Pitts2019}, that is
+\SIrange{3e13}{6e13}{\per\cubic\centi\metre}, and a divertor density is higher
+than an upstream one rather than lower. \textbf{The bottom of this grid,
+\SI{e12}{\per\cubic\centi\metre}, is therefore an extension below the modelled
+range and is not defended as an ITER divertor condition.} It is kept because the
+coronal limit is approached there and the atomic physics is at its cleanest,
+which makes it useful for testing the model even where it is not useful for
+predicting a machine. Results at that edge are labelled throughout.
 
 It would be simpler to put an instrument into the plasma, and ITER will do
 exactly that. A Langmuir probe is a small electrode exposed to the plasma and

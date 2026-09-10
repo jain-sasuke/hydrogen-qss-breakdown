@@ -1,0 +1,1478 @@
+%=============================================================================
+%  chapter4.tex -- Does the Model Work?
+%  Uses macros from thesis_main.tex Part 2. Defines no notation of its own.
+%
+%  COORDINATOR NOTES (delete before submission):
+%
+%  1. thesis_main.tex carries an inline skeleton for this chapter at the
+%     \chapter{Does the Model Work?} block. This file reproduces the labels
+%     ch:validation, sec:gate_philosophy, sec:gates_abc, sec:gate_e,
+%     sec:fujimoto, sec:balmer_equivalence, sec:errors_found and
+%     sec:validation_summary, so replacing the skeleton with \input{chapter4}
+%     breaks no existing cross-reference.
+%
+%  2. OVERLAP TO RESOLVE. Three passages now exist twice:
+%       chapter6.tex:733-827  sec:open_system   vs  Section~\ref{sec:attacks}
+%       chapter6.tex:828-888  sec:r1_deficit    vs  Section~\ref{sec:fujimoto}
+%       chapter6.tex:889-948  sec:nmax          vs  Section~\ref{sec:convergence}
+%     The Chapter 6 versions carry the SCOPE consequence; the Chapter 4
+%     versions carry the EVIDENTIAL standing. sec:r1_deficit additionally now
+%     CONTRADICTS Section~\ref{sec:fujimoto}: it publishes the r_1 deficit as a
+%     model failure, which findings_10 ADDENDUM D.3 shows is very probably a
+%     defect in the benchmark target. It must be withdrawn or rewritten to
+%     match. sec:nmax states the n_max convergence check has never been run;
+%     it has now been run (ADDENDUM D.8) and only the SEPARATE bundled-shell
+%     l-distribution check remains unrun. Fix that sentence.
+%
+%  3. chapter3.tex:222-225 asserts a severity for the conservation check that
+%     Section~\ref{sec:conservation_severity} measures and refutes. Either
+%     soften line 224 or let this chapter carry the correction; do not leave
+%     both standing as written.
+%=============================================================================
+
+\chapter{Does the Model Work?}
+\label{ch:validation}
+
+Chapter~\ref{ch:theory} built a $43\times43$ rate matrix, eliminated the fast
+variables, and extracted from the result a closed-form statement about how a
+line ratio responds to its reservoir. Chapter~\ref{ch:results} will use that
+machinery to make quantitative claims about a diagnostic in use on real
+machines. Between the two sits a question that no amount of further algebra
+answers: why should anyone believe a number this model produces?
+
+The honest answer is not a single verdict. It is a graded one, because the
+checks that have been run on this model are not of equal worth, and several of
+the ones that look most impressive are worth almost nothing. This chapter sorts
+them.
+
+\medskip
+\noindent\textbf{What this chapter takes as given.} The state space, the atomic
+data and their sources, and the benchmark of the excitation rates against an
+independent R-matrix-with-pseudostates (RMPS) calculation are established in
+Chapter~\ref{ch:atoms}, Sections~\ref{sec:atomic_uncertainty}
+and~\ref{sec:atoms_corrections}, and are not repeated. The construction of
+$\Lmat$, the conservation identity, the quasi-steady-state (QSS) elimination,
+and the two-channel decomposition of the excited populations come from
+Chapter~\ref{ch:theory}. This chapter asks only what the checks run on that
+construction are entitled to establish.
+
+\medskip
+\noindent\textbf{What this chapter does not do.} It reports no result about
+divertor plasmas. Every number below is about the instrument, not about the
+physics the instrument is pointed at. Keeping those separate matters here more
+than anywhere else in the thesis: a model that predicts something interesting
+is not thereby a correct model, and a check that uses the interesting
+prediction as its evidence has verified nothing.
+
+%-----------------------------------------------------------------------------
+\section{What a check can and cannot show}
+\label{sec:gate_philosophy}
+% QUESTION: what distinguishes a check that could have failed from one that
+% could not, and how is that distinction measured rather than asserted?
+
+\subsection{Three things that get called validation}
+
+Three activities are routinely reported under one heading, and they license
+different conclusions.
+
+\emph{Verification} asks whether the equations that were intended got solved
+correctly. Conservation residuals, detailed balance, matrix identities,
+convergence with tolerance, agreement between two independent code paths: all
+of these compare the model against itself or against arithmetic. They can
+detect a transposed index. They cannot detect a rate coefficient that is wrong
+by a factor of three, because a uniformly wrong dataset satisfies every one of
+them.
+
+\emph{Validation} asks whether the model reproduces something established
+independently of it. Published coefficients from another group's code, measured
+cross sections, a tabulated limit. Only this class of check can reach the
+atomic physics.
+
+\emph{Analysis} asks what the model then says. That is Chapter~\ref{ch:results},
+and none of it appears here.
+
+\subsection{Severity, and how to measure it}
+
+The useful property of a check is not whether it passes. It is the size of the
+set of wrong models it would reject. Call that its severity.
+
+A chemical engineer already owns the failure mode. Close a mass balance on a
+continuous stirred-tank reactor by computing the outlet stream as inlet minus
+consumption, then verify that the balance closes. It closes to machine
+precision, always, for any rate constant whatever, because the outlet was
+constructed from the balance being tested. The check is real arithmetic and it
+is entirely uninformative about the kinetics. A model can be wired correctly
+and be wrong.
+
+Severity is measurable, and two operations measure it.
+
+\begin{enumerate}
+\item \textbf{Provenance inspection.} Ask whether the quantity under test was
+derived from the quantity doing the testing. If the de-excitation coefficients
+were computed from the excitation coefficients through detailed balance, then a
+detailed-balance check on them is arithmetic, not physics. Chapter~\ref{ch:atoms}
+already states this for the rate dataset (Section~\ref{sec:two_energies}); this
+chapter carries it through to the matrix.
+
+\item \textbf{Fault injection.} Break the model deliberately, in a way that a
+real mistake could plausibly break it, and see whether the check notices. A
+check that survives a tenfold error in a rate coefficient has told you that a
+tenfold error in that coefficient is invisible to it.
+\end{enumerate}
+
+Fault injection is the sharper of the two, because it produces a number rather
+than an argument. It is used in Section~\ref{sec:conservation_severity} on the
+conservation check, and its result is the least comfortable finding in this
+chapter.
+
+\subsection{The three grades used below}
+
+Every check in this chapter is placed in one of three grades, and the grade is
+stated wherever the check is reported.
+
+\begin{description}
+\item[Tautological.] Cannot fail except on an arithmetic bug, because the
+quantity tested was constructed from the relation being tested. It confirms
+that the code implements the construction. It is not evidence about the
+physics, and reporting it as though it were makes the validation weaker, not
+stronger, by displacing the checks that carry information.
+
+\item[Weak.] Could fail in principle, but the tolerance is so much looser than
+the measured value that only a gross error would trip it. A gate that passes
+with a factor of $150$ in hand has told you the answer is not absurd.
+
+\item[Severe.] A plausible wrong version of this model fails it. Either the
+check has actually fired at some point in the project's history, or a specific
+corruption is known to trip it.
+\end{description}
+
+Three quantities currently printed by this project's own scripts as validation
+are tautological, and Sections~\ref{sec:conservation_severity}
+and~\ref{sec:gates_abc} say so with the measurements that establish it. Naming
+them is not a concession. A validation section that presents theorems as
+evidence is doing the opposite of its job, and an examiner who spots one stops
+believing the rest.
+
+%-----------------------------------------------------------------------------
+\section{The conservation check is exact by construction}
+\label{sec:conservation_severity}
+% QUESTION: does the column-sum identity detect a wrong rate coefficient?
+
+Section~\ref{sec:conservation} established that each column of $\Lmat$ must sum
+to the ionisation leak from the level that column represents, and reported the
+measured residual, Eq.~\eqref{eq:conservation_measured}, as
+$3.61\times10^{-11}$. The claim attached to it there is that ``an error in a
+single off-diagonal element, a transposed index, or a missing back-reaction all
+break this immediately.''
+
+That claim is testable, and it is false.
+
+\subsection{Four injected faults}
+
+Four faults were introduced into the assembly, one at a time, and the residual
+recomputed after each. The first three are the exact failure modes the claim
+names. Table~\ref{tab:faultinject} gives the outcome.
+
+\begin{table}[tbp]
+  \centering
+  \caption[Fault injection into the conservation check]{Four deliberate faults
+  injected into the assembly of $\Lmat$, with the resulting change in the
+  matrix and the conservation residual of
+  Eq.~\eqref{eq:conservation_measured} recomputed after each. Three faults
+  large enough to move individual matrix elements by up to
+  $2.7\times10^{11}\,\si{\per\second}$ leave the residual unchanged at the
+  baseline value; only an inconsistency between the Einstein coefficients $A$
+  and the total radiative loss rates $\gamma$ is detected. Source:
+  \texttt{outputs/CHANGE\_REPORT.md}~\S4.2.}
+  \label{tab:faultinject}
+  \begin{tabular}{lrl}
+    \toprule
+    injected fault & $\max|\Delta \Lmat|$ (\si{\per\second}) & residual \\
+    \midrule
+    none (baseline)                     & $0$                  & $2.238\times10^{-12}$ \\
+    $C(1s\to2p)$ multiplied by ten      & $6.9\times10^{5}$    & $2.238\times10^{-12}$ \\
+    all de-excitation deleted           & $1.9\times10^{11}$   & $2.171\times10^{-12}$ \\
+    excitation array transposed         & $2.7\times10^{11}$   & $1.837\times10^{-12}$ \\
+    $A$ halved, $\gamma$ left alone     & $3.1\times10^{8}$    & $3.63\times10^{1}$ \textbf{caught} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+A tenfold error in the single most important excitation coefficient in the
+model, the one that supplies the entire ground-fed channel of
+Section~\ref{sec:R_depends_on_b}, changes the residual in no digit. Deleting
+every de-excitation process in the matrix, which is not a subtle mistake,
+changes it in the third digit and leaves it three orders of magnitude below any
+tolerance. Transposing the whole excitation input array, the classic
+index-order mistake, does the same.
+
+\subsection{Why, and what the check is actually worth}
+
+The reason is in the assembly, not in the physics. The diagonal of $\Lmat$ is
+built as minus the column sum of the same off-diagonal array that the check
+then sums. Whatever numbers are in that array, correct or corrupted, the column
+sum returns the ionisation leak. The identity of Eq.~\eqref{eq:conservation} is
+imposed by the construction rather than tested by it. This is the reactor mass
+balance of Section~\ref{sec:gate_philosophy} exactly.
+
+The one fault that was caught is the one that breaks the construction. The
+radiative loss rates $\gamma_p = \sum_{q<p} A_{pq}$ enter the diagonal, while
+the individual $A_{pq}$ enter the off-diagonals; halving one without the other
+makes the two inconsistent, and the residual jumps by thirteen orders of
+magnitude to $36.3$. \textbf{The conservation check tests one thing: that $A$
+and $\gamma$ were built from the same table.} It is worth running, it raises
+rather than warns, and it is exactly that narrow.
+
+Section~\ref{sec:conservation} closes with the sentence ``a test that a wrong
+result would also have passed is not a test.'' Table~\ref{tab:faultinject} is
+that sentence applied to the paragraph three above it. The rate magnitudes are
+reached only by Section~\ref{sec:atomic_uncertainty}'s comparison against RMPS
+and by the external comparisons of Section~\ref{sec:fujimoto}, and by nothing
+internal.
+
+\todo{The grid point at which the fault-injection residuals of
+Table~\ref{tab:faultinject} were evaluated is not recorded in
+\texttt{CHANGE\_REPORT.md}~\S4.2. Stamp it, or re-run at the benchmark point
+and stamp that. \textbf{[UNVERIFIED: grid point of Table~\ref{tab:faultinject}]}}
+
+%-----------------------------------------------------------------------------
+\section{The gate suite, read one gate at a time}
+\label{sec:gates_abc}
+% QUESTION: for each automated gate, what quantity does it compare, against
+% what tolerance, and what would have to be wrong for it to fail?
+
+Five automated gates run over the grid in \texttt{src/validation/validate\_gates.py}
+and write \texttt{validation/gate\_summary.txt}. Their headline outcome is four
+passes and one failure. Read as a headline it says little, because the five
+differ in severity by a wide margin and two of them cannot fail. This section
+takes them one at a time; Gate~D, the failure, gets
+Section~\ref{sec:gate_d} to itself.
+
+\subsection{Gate A: detailed balance, and where its physics content actually
+lives}
+
+Gate~A takes every excitation coefficient $K_{\rm exc}(i\to j)$ in the dataset,
+predicts the reverse coefficient from the Boltzmann relation
+\begin{equation}
+  K_{\rm deexc}(j\to i)
+  = K_{\rm exc}(i\to j)\,\frac{g_i}{g_j}\,
+    \exp\!\left(\frac{E_j - E_i}{k_B\Te}\right),
+  \label{eq:gateA}
+\end{equation}
+and compares the prediction against the stored reverse coefficient at three
+temperatures spanning the grid. Here $g_i$ is the statistical weight of level
+$i$ and $E_j-E_i$ its excitation energy in \si{\electronvolt}. The gate passes
+if the maximum relative error is below \SI{0.01}{\percent}
+(\texttt{validate\_gates.py}:118). Measured: below \SI{0.01}{\percent} over all
+$819$ pairs at all three temperatures.
+
+\textbf{Grade: tautological.} The stored de-excitation coefficients were
+produced from the excitation coefficients through Eq.~\eqref{eq:gateA} in the
+first place (\texttt{compute\_K\_CCC.py}, function \texttt{detailed\_balance}),
+as Section~\ref{sec:two_energies} states. Gate~A confirms that the same formula
+was applied twice with the same energies and weights. That is a wiring check,
+and Chapter~\ref{ch:atoms} already flagged it as one.
+
+The physics content of detailed balance in this project sits somewhere else and
+is currently invisible in the outputs. \texttt{src/parsers/qc\_ccc.py}:87--168
+tests whether Bray's \emph{raw} convergent-close-coupling (CCC) cross sections,
+which this project did not produce, satisfy microscopic reversibility on their
+own. The ratio of the two directions has mean $0.9995$ with standard deviation
+$0.0032$, and \SI{98.7}{\percent} of comparisons fall within \SI{1}{\percent}
+(\texttt{ccc\_qc\_report.png}). A \SI{0.05}{\percent} mean bias with
+\SI{0.32}{\percent} scatter on external data is a genuine external check, and it
+is the one to lead with.
+
+\subsection{One energy ladder on both sides, which is severe}
+
+There is a second detailed-balance result, and unlike Gate~A it could have
+failed.
+
+A model of this kind carries energies twice: once in the Boltzmann factors that
+relate forward and reverse collisional rates, and once in the Saha factors that
+relate ionisation to three-body recombination. If two different energy tables
+were used, or one table were indexed differently from the other, the model would
+still conserve particles, still satisfy Gate~A, and still produce plausible
+populations. Nothing internal would notice.
+
+Testing ionisation against three-body recombination through the Saha relation
+at every level gives a ratio of $0.999997$ for every one of the $43$ states, at
+every temperature, \emph{to the same eight digits}
+(\texttt{findings\_10} ADDENDUM~D.6). The point is not the closeness to unity,
+which detailed balance imposes. It is the identity of the residual across
+levels whose Boltzmann factors span $\mathrm{e}^{13.6\,\mathrm{eV}/k_B\Te}$
+down to $\mathrm{e}^{0.06\,\mathrm{eV}/k_B\Te}$. A ratio that is
+state-independent across thirteen decades of exponential cannot be produced by
+two energy ladders that differ; the common residual is the eight-figure
+rounding of the stored state table. \textbf{Grade: severe.} Two energy tables
+would have shown up as a drift across the ladder, and there is none.
+
+The same audit gives the collisional side over $2457$ excitation-pair
+comparisons spanning three temperatures: maximum deviation $7.31\times10^{-9}$,
+median $7.5\times10^{-10}$, again consistent with the state table's rounding.
+% 819 pairs x 3 temperatures = 2457. ADDENDUM D.6 writes "2457 pairs x 3
+% temperatures", which would be 7371 comparisons. The phrasing above is true
+% under either reading; resolve the count before submission.
+
+\subsection{Gate B: the coronal limit}
+
+At low enough density an excited level is populated by electron impact from the
+ground state and empties radiatively before a second collision reaches it, so
+its population per unit ground-state density and per unit electron density
+becomes independent of $\nel$. Gate~B tests that plateau: it computes
+$n_{2p}/(\ngs\nel)$ and $n_{3d}/(\ngs\nel)$ at the two lowest densities on the
+grid and asks whether they have converged.
+
+The tolerance is \SI{50}{\percent} per temperature
+(\texttt{validate\_gates.py}:175) and the gate passes if \SI{70}{\percent} of
+temperatures pass (line 181). Measured: all $50$ temperatures pass, worst
+convergence $0.0034$.
+
+\textbf{Grade: weak.} Passing with a factor of $150$ between the measured
+convergence and the tolerance means the gate rejects only a gross error. It
+does establish that the low-density end of the grid is in the coronal regime,
+which Chapter~\ref{ch:results} relies on when it reads the low-density column
+as ionising, and that is worth having. It is not evidence about rate
+magnitudes.
+
+\subsection{Gate C: what the Saha gate tests, which is not the Saha limit}
+
+Gate~C is named for the high-density limit in which collisions dominate
+radiation and populations approach their Saha--Boltzmann values. It computes
+three quantities per temperature: whether $n_{2p}/\ngs$ increases monotonically
+with density, whether it stays below the Saha value (with \SI{5}{\percent}
+slack), and whether it approaches that value, defined as reaching $10^{-4}$ of
+it.
+
+The pass flag uses the first two and \textbf{excludes the third}
+(\texttt{validate\_gates.py}:250; the \texttt{approaching} column is computed at
+line 239, stored, printed at line 261, and never consulted). Measured, the
+excluded column is the informative one: the approach fraction runs
+$0.0123$ to $0.0155$, so at $\nel = 10^{15}\,\si{\per\cubic\centi\metre}$, the
+top of the grid, populations reach about \SI{1.5}{\percent} of Saha.
+
+Local thermodynamic equilibrium (LTE) is therefore never approached anywhere on
+this grid. That is the correct physics for an optically thin plasma whose ion
+population is an externally imposed reservoir rather than a Saha partner, and
+Chapter~\ref{ch:results} depends on it: it is why the two supply channels of
+Section~\ref{sec:R_depends_on_b} never merge, and why $\ffrac{3}-\ffrac{4}$ does
+not vanish at high density.
+
+\textbf{Grade: weak, and mis-named.} What Gate~C tests is monotonicity in
+density and a Saha ceiling. Both would fail on a sign error in the recombination
+source, which is worth something. Neither tests the limit the gate is named for.
+The gate should be called what it is, and the \SI{1.5}{\percent} approach
+fraction reported rather than suppressed.
+
+%-----------------------------------------------------------------------------
+\section{Gate E: the timescale hierarchy}
+\label{sec:gate_e}
+% QUESTION: is the two-clock structure of Chapter 3 present everywhere on the
+% grid, and how demanding is the test that says so?
+
+Gate~E diagonalises $\Lmat$ at every grid point, orders the negative
+eigenvalues, and forms $\Msep = \tauqss/\taurel = |\lambda_1|/|\lambda_0|$. It
+passes if $\Msep > 1$ at \SI{95}{\percent} of points
+(\texttt{validate\_gates.py}:409--412).
+
+Measured over all $400$ points: $\Msep$ ranges from $86.77$ at
+$[49,7]$ ($\Te = \SI{10}{\electronvolt}$,
+$\nel = \SI{e15}{\per\cubic\centi\metre}$) to $1.72928\times10^{9}$ at the cold
+corner; $\tauqss$ spans \SI{75.4}{\nano\second} to \SI{67.2}{\second} and
+$\taurel$ spans \SI{0.87}{\nano\second} to \SI{38.9}{\nano\second}
+(\texttt{thesis\_ready.md} A1). The gate asks for $\Msep>1$. The smallest value
+anywhere is $86.8$.
+
+\textbf{Grade: tautological as posed, and the real content is elsewhere.} A
+$43$-state stiff system with radiative rates of order $10^{8}\,\si{\per\second}$
+and an ionisation rate of order $10^{4}\,\si{\per\second}$ cannot have
+$\Msep \le 1$; the gate cannot fail on any matrix this construction produces.
+The reportable quantity is the range, not the pass, together with the fact that
+three independent implementations produce it bit-for-bit: \texttt{qss\_analysis.py},
+Gate~E itself, and an unconditional recomputation stored in
+\texttt{timescales\_unfiltered\_CHECK.npz}. That agreement is what caught the
+eigenvalue-filter error of Section~\ref{sec:errors_found}, and a check that has
+actually fired is worth more than a threshold nothing approaches.
+
+Two properties of these numbers must travel with them, and both are
+established in Chapter~\ref{ch:theory} rather than here. $\tauqss$ is
+boundary-dependent, which Section~\ref{sec:attacks} quantifies. And
+$\lambda_0 = 2.286\,K_{\rm ion}(1s)\,\nel$ is the collisional--radiative
+ionisation rate of ground-state hydrogen, not an equilibration rate, so
+$\tauqss$ is the lifetime of the reservoir and not the time for anything to come
+to equilibrium.
+
+\subsection{The gates do not stop anything}
+
+One property of the gate suite belongs in this chapter and nowhere else. No
+gate raises on failure. Each prints \texttt{PASS} or \texttt{FAIL} and returns a
+flag; \texttt{main} sets \texttt{all\_pass = False}, prints a warning, and exits
+normally. \textbf{The script returns exit code zero whether or not Gate~D
+fails.} A pipeline that checked only the exit status would never learn that the
+one external gate in the suite disagrees with published data at every point on
+the grid. The residual gates elsewhere in the project do raise; this one does
+not, and that asymmetry is a defect rather than a subtlety.
+
+%-----------------------------------------------------------------------------
+\section{The checks that could have failed}
+\label{sec:severe_checks}
+% QUESTION: which checks in this project would a plausible wrong model fail?
+
+Everything so far has been a demotion. This section is the other half, and it
+is short by design: a small number of severe checks is worth more than a long
+list of consistency tests, and these are the ones the thesis leans on.
+
+\subsection{The superposition residual}
+
+The entire mechanism of Chapter~\ref{ch:results} rests on one structural claim:
+that the excited populations split exactly into a ground-fed and a
+recombination-fed part,
+$\nF = \bm{a}\,\ngs + \bm{c}\,\nion$, with $\bm{a}$ and $\bm{c}$ independent of
+the reservoir densities. If that split is not exact, the ground-fed fractions
+$\ffrac{p}$ are not well defined and the closed form for the diagnostic error
+does not exist.
+
+The check solves the full system three times at each grid point and each step
+direction, once with each reservoir alone and once with both, and measures the
+relative residual of the sum against the joint solve. Over all $784$
+grid-point/direction pairs the largest residual is $3.075\times10^{-14}$
+(\texttt{plateau\_gridmap.txt}, line 19).
+
+\textbf{Grade: severe}, for a specific reason. Feeding the check a corrupted
+input in which the $n=3$ and $n=4$ entries are swapped, which is the mistake
+that would most easily go unnoticed in a two-shell observable, changes the
+residual and trips the gate. It is one of only two checks in the project known
+to catch that swap.
+
+\subsection{The reduced-versus-full ratio test}
+
+The second is its companion. The observable $\Robs = n_3/n_4$ can be computed
+two ways: from the full $43$-state steady-state solve, and from the reduced
+two-channel form of Eq.~\eqref{eq:R_of_b} with the ground-fed fractions
+substituted in. The two routes share no code path beyond the matrix itself. At
+the benchmark point $\Te = \benchTe$, $\nel = \benchne$, an independent
+re-implementation obtained $\Robs = 0.777768$ by three routes against
+\texttt{chapter3.tex}'s recorded $0.7778$
+(\texttt{findings\_10} ADDENDUM~B.1). A $3\leftrightarrow4$ swap breaks the
+agreement.
+
+\subsection{Pinned hashes on the inputs}
+
+The most common way for a computation like this to become wrong is not an
+algebra error. It is a stale array: a matrix regenerated after a correction,
+combined with an analysis output produced before it. This project has three
+retractions in its history and at least one of them had that shape.
+
+\texttt{src/validation/preflight.py} pins the SHA-256 hashes of the two
+canonical inputs and compares them byte for byte before any verification script
+runs. Recomputed for this chapter:
+\begin{center}
+\begin{tabular}{ll}
+  \toprule
+  file & SHA-256 (first 16 hex digits) \\
+  \midrule
+  \texttt{data/processed/cr\_matrix/L\_grid.npy} & \texttt{2d92b58e1693107d} \\
+  \texttt{data/processed/cr\_matrix/S\_grid.npy} & \texttt{7822f536590c76ba} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+Both match the pinned baselines at \texttt{preflight.py}:37--38 exactly. Every
+number in this thesis that traces to $\Lmat$ traces to that first hash.
+
+\textbf{Grade: severe on the data, incomplete on the scripts.} The same
+preflight names six scripts it claims to check. Two of them,
+\texttt{verify\_ch3\_groupB.py} and \texttt{verify\_grid\_coverage.py}, do not
+exist on disk under those names, and a missing script is downgraded to a
+non-blocking advisory (\texttt{preflight.py}:258--262) while the summary still
+prints ``All checks passed''. The hash check is sound; the sentence printed
+after it overstates what ran.
+
+\subsection{Guards that recompute rather than trust}
+
+\texttt{src/analysis/make\_ch5\_figures.py} does not plot the stored results. It
+rebuilds every plotted quantity from $\Lmat$ and $\Svec$ and compares against
+the stored comma-separated tables at a relative tolerance of $10^{-9}$, raising
+with the offending grid point, column, and matrix hash if any row disagrees
+(lines 393--432). It reads the temperature step size out of the file header
+rather than redeclaring it, so a figure cannot be drawn against a step
+convention different from the one that produced the data. It also verifies that
+the untrapped run of the radiation-trapping sweep reproduces the canonical
+matrix exactly, without which no trapped number in Chapter~\ref{ch:limits} would
+be interpretable as a difference.
+
+The same script carries a genuine negative control, which is unusual enough to
+name: it computes the correlation between $\Msep$ and the diagnostic error both
+raw and after controlling for temperature and density, and refuses to draw the
+figure if the controlled correlation fails to change sign. A quantity containing
+no dynamics at all reproduces most of the raw correlation.
+Section~\ref{sec:M_does_not_predict} draws the physical conclusion; what belongs
+here is that the control exists and can stop the figure.
+
+\subsection{Two checks that fired, and one that was withdrawn}
+
+Three episodes say more than the pass/fail table, because in each the check did
+something.
+
+The Lyman-$\alpha$ line-centre cross-section gate compares a value derived from
+the project's own Einstein coefficients against an independent implementation in
+\texttt{escape\_factor.py}. On its first run it disagreed by
+\SI{1156}{\percent} and located a $4\pi$ factor from a centimetre-gram-second to
+SI conversion. After the repair the two agree to \SI{0.059}{\percent} against a
+\SI{1}{\percent} tolerance that raises.
+
+\texttt{verify\_fujimoto\_table41.py} carries a deliberately broken variant with
+proton-impact $\ell$-mixing removed. It returns a recombination-fed population
+coefficient $r_0(2) = 104.5$, and the script flags it itself as unphysical on
+the ground that a level cannot exceed Saha equilibrium. Production gives
+$0.7392$. A check that fires on a known-bad input is the definition of a severe
+one.
+
+Third, a semigroup propagator identity was written, run, found to return
+$0.000\times10^{0}$ by construction, and \emph{withdrawn by the author}. It
+tested that $\exp(\Lmat t_1)\exp(\Lmat t_2) = \exp(\Lmat(t_1+t_2))$ for a
+matrix exponential computed by the same routine, which is a property of the
+routine. Withdrawing one's own check is the same judgement this chapter applies
+to Gate~A, applied earlier and unprompted.
+
+\subsection{The bound that is a theorem}
+
+Section~\ref{sec:bound} derives an upper bound on the diagnostic error of the
+form $\tanh(\Delta/4)$, where $\Delta$ is the separation between the two shells'
+switching points. A script reports that the bound is honoured at all $248$
+points tested, and that line reads as validation.
+
+It is not. Given $\bm{a},\bm{c}\ge0$, which
+Section~\ref{sec:R_depends_on_b} proves from the M-matrix structure of
+$-\Lmat_{FF}$, the bound is a theorem: it cannot fail except on an arithmetic
+bug. Fed corrupted input it still passes. Swapping shells $3\leftrightarrow4$
+leaves both $|\Delta|$ and the logarithmic ratio unchanged; swapping
+$c_3\leftrightarrow c_4$ likewise (\texttt{findings\_10} ADDENDUM~B.3).
+\textbf{Grade: tautological.} The script's own docstring calls it a wiring
+check; the line it prints does not, and the printed line is what a reader sees.
+
+The bound is a result, and a useful one, because it holds for any atomic dataset
+whatever. It is not evidence that this atomic dataset is right.
+
+%-----------------------------------------------------------------------------
+\section{Conditioning, precision, and state-space convergence}
+\label{sec:conditioning}
+% QUESTION: could the answers be artifacts of finite-precision arithmetic or of
+% where the level ladder was cut off?
+
+Two numerical questions sit underneath every result in this thesis. The
+elimination of Section~\ref{sec:qss} inverts a $42\times42$ matrix whose entries
+span many orders of magnitude, which invites the question of whether the inverse
+means anything. And the level ladder was cut at $n_{\max}=15$, which invites the
+question of what the discarded levels would have changed.
+
+\subsection{The inverse is well behaved, and here is how well}
+
+The relevant quantity is the condition number of $\Lmat_{FF}$, the factor by
+which a relative perturbation of the matrix can be amplified in the solution.
+Computed directly from the canonical $\Lmat$ at all $400$ grid points:
+minimum $1.4821\times10^{3}$ at $[0,0]$ ($\Te = \SI{1.000}{\electronvolt}$),
+maximum $1.7436\times10^{5}$ at $[33,7]$ ($\Te = \SI{4.715}{\electronvolt}$),
+median $2.1044\times10^{4}$. In double precision, which carries about sixteen
+significant digits, a condition number of $10^{5}$ costs five of them. Eleven
+remain, and every conclusion in this thesis turns on the first three.
+
+\textbf{[UNVERIFIED: no committed script produces the grid-wide condition
+number.]} The values above are from \texttt{findings\_10} ADDENDUM~C.1
+(10 September 2026), which computed them directly from the canonical matrix and
+confirmed the range asserted at \texttt{chapter3.tex}:719--721 to
+\SI{0.1}{\percent} and \SI{0.2}{\percent}. \texttt{np.linalg.cond} appears at one
+site in \texttt{src/}, inside \texttt{verify\_fujimoto\_table41.py}:334, and
+covers four point-variants at $\Te = \SI{10}{\electronvolt}$ only. The number is
+correct and not yet reproducible from the repository.
+\todo{Commit the producing script for the grid-wide $\kappa(\Lmat_{FF})$, then
+delete this bracket.}
+
+Three further measurements bound the arithmetic. The eigenvalue condition
+numbers of the two eigenvalues the thesis uses are of order unity
+($1.71$ and $1.98$ at the benchmark point, $3.26$ and $2.59$ at the cold
+corner), despite $\|\Lmat\|_1 = 2.0\times10^{14}$; the large norm is a
+statement about the fast radiative modes and does not propagate into
+$\lambda_0$ or $\lambda_1$. Recomputing the two supply channels in single
+precision moves them by $1.3\times10^{-5}$, so double precision is nowhere near
+a cliff. And tightening the integrator changes nothing that matters: a relative
+tolerance of $10^{-9}$ against $10^{-12}$ shifts the result by
+$1.20\times10^{-8}$, and computing the propagator by a dense matrix exponential
+against a Krylov action differs by $1.13\times10^{-10}$.
+
+The eigenvalue condition numbers and the single-precision test come from
+ADDENDUM~B of \texttt{findings\_10} and cover three of $400$ points; the
+tolerance comparisons cover two. They are point measurements, not grid scans,
+and are quoted as such.
+
+\subsection{Where the ladder was cut}
+\label{sec:convergence}
+
+The quantity that has to converge is not a population but the difference in
+ground-fed fraction between the two Balmer shells, $\ffrac{3}-\ffrac{4}$, since
+Chapter~\ref{ch:results} shows the diagnostic error to be proportional to it.
+
+Rebuilding $\Lmat$ with successively lower $n_{\max}$ and recomputing
+$\ffrac{3}-\ffrac{4}$ gives increments that decay geometrically with ratio
+about $0.75$. Summing the remaining geometric tail gives an extrapolated
+truncation error of \SI{+0.9}{\percent} at the benchmark point,
+\SI{-1.4}{\percent} at the cold corner and \SI{-0.55}{\percent} at the ridge
+(\texttt{findings\_10} ADDENDUM~D.8). The sign changes across the grid:
+truncation makes $\ffrac{3}-\ffrac{4}$ slightly too large at cold points and
+slightly too small at the benchmark, so it is not a bias that can be corrected
+by a single factor, and it is smaller than the spread between the two step
+conventions of Section~\ref{sec:step_convention} everywhere it was measured.
+
+\paragraph{A trap in this test, recorded because it nearly became a finding.}
+The first attempt at the truncation scan dropped the top shells from the state
+vector without removing their loss channels from the diagonal of the surviving
+states. The remaining levels then lost population to states that no longer
+existed, and $\ffrac{3}-\ffrac{4}$ jumped by \SIrange{22}{37}{\percent}. That
+looked like a strong dependence on $n_{\max}$ and it was an artifact of the
+truncation procedure. Removing state $k$ requires adding
+$\sum_{k\ \rm dropped} L_{ki}$ back to $L_{ii}$ for every surviving $i$;
+the production matrix is truncated self-consistently in exactly that way.
+Anyone repeating this test will reproduce the spurious number first.
+
+\paragraph{The terminal shell is over-populated, and by a measured amount.}
+The top of a truncated ladder has nothing above it to cascade out to, so it
+accumulates. Comparing each shell's population when it is terminal against its
+population when interior levels sit above it gives excesses of $9.4$ at $p=8$,
+$10.7$ at $p=9$ and $6.3$ at $p=10$. The externally measured excess at the
+terminal shell, a factor $4.9$ to $6.2$ against published values, falls inside
+that internally measured band, so the discrepancy at $n=15$ is accounted for by
+truncation rather than by the atomic data. No result in this thesis rests on the
+top shell: the observable is built from $n=3$ and $n=4$, both fully resolved in
+orbital angular momentum $\ell$ and seven shells below the cut.
+
+\paragraph{What has not been checked.} Above $n=8$ the shells are bundled and
+their internal $\ell$-distribution is assumed statistical rather than computed.
+A script to test that assumption, \texttt{verify\_bundling\_psm20.py}, exists
+and has never been executed. It is reported here as not run rather than omitted.
+Two defects must be understood before it is: it synthesises grids silently when
+its input files are missing (lines 160--166), which violates the project's own
+fail-loudly rule and would produce a confident answer from no data; and if the
+$\ell$-mixing rate array is zero for the bundled indices, as
+\texttt{compute\_lmix.py}:465 suggests, it will read those zeros and return a
+verdict of ``bundling invalid'' that is a statement about missing data rather
+than about physics.
+\todo{Run \texttt{verify\_bundling\_psm20.py} after fixing the silent grid
+fallback, or state the bundled $\ell$-distribution as a scope limitation in
+Chapter~\ref{ch:limits}. Not both, and not silence.}
+
+%-----------------------------------------------------------------------------
+\section{Is the shell ratio the line ratio?}
+\label{sec:balmer_equivalence}
+% QUESTION: the analysis computes n_3/n_4, but a spectrometer measures
+% Halpha/Hbeta. What does the substitution cost?
+
+Every analytic result in Chapter~\ref{ch:theory} is written for the shell ratio
+$\Robs = n_3/n_4$, because the two-channel decomposition applies to shell
+populations. A spectrometer does not measure shell populations. It measures the
+$H_\alpha$ and $H_\beta$ line intensities, each of which is a sum over the
+electric-dipole-allowed sublevel transitions, weighted by their Einstein
+coefficients. Section~\ref{sec:radiative} established that these are not
+proportional: $4f$ holds \SI{43.75}{\percent} of the $n=4$ shell by statistical
+weight and contributes nothing to $H_\beta$, since $4f\to2p$ would change $\ell$
+by two and is forbidden.
+
+The substitution therefore has to be measured, not assumed.
+
+The line intensities are built as $A$-weighted sums over resolved channels,
+$H_\alpha$ from $3s\to2p$, $3p\to2s$ and $3d\to2p$, and $H_\beta$ from
+$4s\to2p$, $4p\to2s$ and $4d\to2p$, with populations taken from the solve.
+Nothing statistical is assumed anywhere in that construction: searching the two
+producing scripts for statistical-weight expressions returns no matches, and the
+$A$-value lookup raises unless exactly one row matches each transition.
+
+Two measurements follow. The $4f$ fraction of the $n=4$ shell runs from
+$0.4361$ to $0.4375$ across the grid, against the statistical value
+$14/32 = 0.4375$; proton-impact $\ell$-mixing drives the shell to a statistical
+distribution to better than \SI{0.3}{\percent} everywhere, with the departure
+concentrated at $\nel = \SI{e12}{\per\cubic\centi\metre}$ where $\ell$-mixing
+weakens and radiative decay competes. And the ratio of the transient error
+computed on the line ratio to the same error computed on the shell ratio runs
+from $0.978$ to $0.9999$ over the grid: \textbf{worst case
+\SI{2.2}{\percent}, at the lowest density} (\texttt{thesis\_ready.md} A6). At
+$[0,4]$, the point carrying the largest error anywhere, the two agree to
+\SI{0.06}{\percent} ($0.386683$ against $0.386903$).
+
+That \SI{0.06}{\percent} is a single-point figure and must not be quoted as a
+grid-wide one. The grid-wide statement is the \SI{2.2}{\percent}.
+
+\subsection{And is the plasma transparent to its own Balmer light?}
+
+The shell-to-line substitution assumes the emitted photons escape. For the
+Lyman series that assumption fails at the cold edge and
+Chapter~\ref{ch:limits} treats it at length. For the Balmer lines themselves it
+closes here, because it bears on the observable rather than on the matrix.
+
+The optical depth of $H_\alpha$ across a \SI{10}{\centi\metre} slab is
+$6.3\times10^{-7}$ at the cold corner, $1.0\times10^{-3}$ at $[0,4]$, and
+$0.263$ at $[0,7]$, the single worst cell on the grid. Even there the escape
+factor stays above $0.85$, which moves the observed ratio by at most about
+\SI{10}{\percent} in that one cell and by a negligible amount everywhere else
+(\texttt{findings\_10} ADDENDUM~D.8). The Balmer lines are optically thin over
+the region where this thesis makes quantitative claims.
+
+%-----------------------------------------------------------------------------
+\section{Two attacks, and what they were expected to do}
+\label{sec:attacks}
+% QUESTION: the two objections most likely to destroy the result were tested;
+% what was the falsifier in each case, and did it appear?
+
+The checks so far ask whether the model computes what it intends. This section
+asks something harder: whether two specific structural choices manufacture the
+result. In each case the size of effect that would have destroyed the claim was
+written down before the test was run, which is what makes the outcome
+informative rather than reassuring.
+
+\subsection{Does the open boundary manufacture the slow clock?}
+
+$\Lmat$ describes an open system. Atoms that ionise leave the accounting, and
+the recombination feed $\Svec\nion$ enters as a constant source rather than as a
+matrix element, so there is no forty-fourth state for ions to accumulate in.
+A reactor whose product is allowed to disappear relaxes differently from one
+whose product stays in the vessel. Since $\tauqss$ is the lifetime of the
+ground-state reservoir, and since the persistence claim of
+Section~\ref{sec:persistence} rests entirely on $\tauqss$ exceeding the duration
+of the disturbance, the obvious attack is that $\tauqss$ is an artifact of the
+open boundary.
+
+\textbf{The falsifier, named first.} At $[0,4]$, the worst point,
+$\tauqss/\taudrive \approx 2300$. If closing the system shortened $\tauqss$ by
+that factor, the slow clock would fall to the duration of the disturbance and
+the persistence would vanish. A factor of $2300$ refutes the claim.
+
+The manifold was closed by appending an ion state,
+\begin{equation}
+  \Lmat_c =
+  \begin{pmatrix}
+    \Lmat & \Svec \\
+    -\operatorname{colsum}(\Lmat) & -\textstyle\sum\Svec
+  \end{pmatrix},
+  \label{eq:closure_ch4}
+\end{equation}
+so that every ionising atom lands in the new state instead of being deleted.
+Each column of $\Lmat_c$ sums to zero to machine precision, and the construction
+reproduces this project's own previously recorded closed-system value at the
+cold corner, \SI{1.6226}{\second}, to five digits, which confirms it is the same
+closure rather than a new one. The measured factors are given in
+Table~\ref{tab:closure}.
+
+\begin{table}[tbp]
+  \centering
+  \caption[Effect of closing the ion boundary on the slow timescale]{The slow
+  timescale $\tauqss$ computed with the ion treated as an external reservoir
+  (open) and with a forty-fourth ion state appended (closed), at four grid
+  points. Over the whole grid the ratio has minimum $1.00$, median $1.00$ and
+  maximum $41.4$: the boundary condition matters only where $\tauqss$ already
+  exceeds the disturbance duration by three orders of magnitude. Source:
+  \texttt{findings\_10}~\S3.1.}
+  \label{tab:closure}
+  \begin{tabular}{lrrr}
+    \toprule
+    point & $\tauqss$ open & $\tauqss$ closed & factor \\
+    \midrule
+    cold corner $[0,0]$ & \SI{67.23}{\second} & \SI{1.6226}{\second} & $41.4$ \\
+    post-step operator $\Lmat[1,4]$ & \SI{0.23324}{\second} & \SI{0.015173}{\second} & $15.4$ \\
+    ridge $[15,3]$ & \SI{2.027}{\milli\second} & \SI{1.999}{\milli\second} & $1.01$ \\
+    benchmark $[23,5]$ & \SI{22.728}{\micro\second} & \SI{22.708}{\micro\second} & $1.00$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The distribution is the answer, and its shape carries the argument. The factor
+is large only where $\tauqss$ already exceeds the disturbance duration by about
+a thousand, and it is unity everywhere $\tauqss$ approaches $\taudrive$. Where
+the boundary matters, the outcome does not depend on it, because the error has
+already saturated; where the outcome depends on $\tauqss$, the boundary does not
+matter. Recomputing the entire persistence census with closed-system $\tauqss$
+moves the breakdown count from $202$ to $200$ of $680$ and the worst case from
+$0.38682$ to $0.38563$, about one part in $325$. Restricted to
+$\Te \ge \SI{2}{\electronvolt}$, the region where Chapter~\ref{ch:results} makes
+quantitative claims, the count is $45$ before and $45$ after.
+
+The falsifier did not appear. A factor of $2300$ was needed; the measured factor
+at that operator is $15$.
+
+\textbf{The caveat, which must not be softened.} This closure adds an ion
+reservoir. It does not close the electron balance, since $\nel$ is held fixed
+while the ion population moves, and it adds no transport whatever. It answers
+the boundary condition on the atomic manifold and nothing else.
+Section~\ref{sec:transport} states the objection that no amount of closing the
+atomic system can answer, and Section~\ref{sec:quasineutrality} states the one
+that this test makes sharper rather than softer.
+
+\subsection{Is the time-averaged error really bounded below by the plateau?}
+
+Chapter~\ref{ch:results} evaluates the error at the partial-equilibrium plateau
+and treats it as a lower bound on the error averaged over a disturbance of
+finite duration, on the argument that the observable decays from the plateau on
+$\tauqss$. A bound is only useful if it is not absurdly loose, and a bound
+quoted as though it were the answer is a claim about tightness that has to be
+measured.
+
+Propagating the full $43$-state system through the step by direct
+eigen-decomposition and integrating the error over \SIrange{0}{100}{\micro\second}
+gives the comparison in Table~\ref{tab:lowerbound}.
+
+\begin{table}[tbp]
+  \centering
+  \caption[Tightness of the plateau lower bound]{The plateau error, the true
+  error averaged over \SIrange{0}{100}{\micro\second} from direct
+  eigen-propagation of the full $43$-state system, and the claimed lower bound,
+  at five grid points. The bound reproduces the true average to better than
+  \SI{0.7}{\percent} everywhere tested. The value below unity at $[0,4]$ is a
+  trapezoid artifact: the nanosecond-scale rise is under-resolved on a uniform
+  \SI{25}{\nano\second} mesh, which under-weights it. Source:
+  \texttt{findings\_10}~\S3.2.}
+  \label{tab:lowerbound}
+  \begin{tabular}{lrrrr}
+    \toprule
+    point & $\epsplat$ & true \SI{100}{\micro\second} average & lower bound & true/bound \\
+    \midrule
+    $[0,4]$ worst case & $0.386903$ & $0.386785$ & $0.386820$ & $0.9999$ \\
+    $[15,3]$ ridge     & $0.180728$ & $0.175272$ & $0.174812$ & $1.0026$ \\
+    $[15,5]$           & $0.103550$ & $0.072175$ & $0.071722$ & $1.0063$ \\
+    $[23,5]$ benchmark & $0.063612$ & $0.011790$ & $0.011712$ & $1.0066$ \\
+    $[0,0]$            & $0.083004$ & $0.083065$ & $0.083004$ & $1.0007$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The bound is the answer to better than \SI{0.7}{\percent} at every point
+tested, which is a stronger statement than the one the thesis makes and should
+replace it.
+
+The reason is structural, and it is the property that a different observable in
+this same project does not have. The spectrum of
+$\Lmat$ has one slow eigenvalue and then a band, with nothing between: at
+$\Lmat[1,4]$ the three slowest eigenvalues are $-4.29$, $-1.60\times10^{8}$ and
+$-3.44\times10^{8}\,\si{\per\second}$, a gap of $3.7\times10^{7}$. An observable
+built from the excited populations cannot decay faster than $\tauqss$, because
+there is no intermediate mode for it to decay on. That was the failure mode
+being hunted, and it does occur for the ground-normalised error measure of
+Section~\ref{sec:eps_definitions}, whose $1/\mathrm{e}$ time is
+\SI{2.58}{\second} against $\tauqss = \SI{67.2}{\second}$ at the cold corner.
+The bound is tight for this observable and not for that one, and the spectrum
+says which is which.
+
+%-----------------------------------------------------------------------------
+\section{External comparison: Fujimoto's population coefficients}
+\label{sec:fujimoto}
+% QUESTION: does an independently computed collisional-radiative model, built
+% decades earlier from different atomic data, agree with this one?
+
+Everything to this point compares the model against itself or against
+arithmetic. Only comparison against an independent calculation reaches the
+atomic physics, and this project has one such comparison in depth: against
+Fujimoto's collisional--radiative treatment of atomic
+hydrogen~\cite{Fujimoto2004}, computed decades earlier, with different atomic
+data, by a different method.
+
+\subsection{Timescales, at a point that lies exactly on this grid}
+
+Fujimoto works a numerical example at $\Te = \SI{10}{\electronvolt}$ and
+$\nel = \SI{e18}{\per\cubic\metre}$, which is
+$\SI{e12}{\per\cubic\centi\metre}$ and lands exactly on grid point $[49,0]$. No
+interpolation is involved.
+
+\begin{center}
+\begin{tabular}{lrrr}
+  \toprule
+  quantity & Fujimoto App.~4B & this model, $[49,0]$ & ratio \\
+  \midrule
+  excited-state response & ${\sim}\SI{1e-7}{\second}$ & \SI{3.4057e-8}{\second} & $0.34$ \\
+  ground-state depletion & ${\sim}\SI{1e-4}{\second}$ & \SI{1.7657e-4}{\second} & $1.77$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The two-clock structure appears in both, separated by three orders of
+magnitude in both, with the fast time short and the slow time long in the same
+sense.
+
+\textbf{What this comparison is not.} Fujimoto's response time is
+$\max_p t_{\rm tr}(p)$, the \SI{63}{\percent} rise time of the slowest-responding
+level, which is not $1/|\lambda_1|$. The two are different functionals of the
+same spectrum, so agreement to a factor of a few is the meaningful comparison
+and exact agreement would be suspicious. Quoting these ratios as though they
+were a precision test would overstate them.
+
+A second, independent route corroborates the same physics. Fujimoto's boundary
+level, the principal quantum number above which collisions dominate radiative
+decay, sits at $p_G \approx 4$--$5$ at this density. Tracing the boundary
+descent in this model puts it at $5g$ at the low-density end of the grid, which
+is the crossing Chapter~\ref{ch:atoms} deferred to this chapter
+(Section~\ref{sec:radiative}). Two independently computed models place the same
+structural feature in the same shell.
+
+\subsection{The recombining coefficients agree}
+
+Fujimoto's Table~4.1 tabulates the two population coefficients of the
+decomposition that Section~\ref{sec:R_depends_on_b} derives: $r_0(p)$, how
+strongly level $p$ is fed from the ion continuum, and $r_1(p)$, how strongly it
+is fed from the ground state.
+
+The recombining coefficients agree to \SIrange{0.1}{1}{\percent} for $n \ge 4$.
+The discriminating case is $r_0(2)$, where cascade and $\ell$-mixing structure
+matter most and a hydrogenic approximation would go wrong: this model gives
+$0.7392$ against the tabulated $0.730$. That is a severe test passed, and it is
+the same quantity that the deliberately broken variant of
+Section~\ref{sec:severe_checks} drives to $104.5$.
+
+\subsection{The ionising coefficients at low $p$ disagree, and the target is
+not verified}
+
+At $\nel = \SI{e12}{\per\cubic\centi\metre}$ this model's $r_1$ sits a factor
+$8.3$ low at $p=3$ and $4.4$ low at $p=4$ against Fujimoto's Table~4.1(b).
+Those are precisely the two shells whose difference is the mechanism of
+Chapter~\ref{ch:results}, so the discrepancy cannot be dismissed as peripheral,
+and it was for some time carried in this thesis as a failure of the model.
+
+That reading is no longer supportable, for five reasons, and the honest status
+is now an open comparison whose \emph{target} is unverified.
+
+\begin{enumerate}
+\item \textbf{The model's $r_1$ reproduces analytically.} In the coronal limit
+$r_1(2)$ follows from the single excitation coefficient
+$C(1s\to n{=}2) = \SI{9.2796e-9}{\cubic\centi\metre\per\second}$ and gives
+$1.37\times10^{-5}$, against the full $43$-state solve's $1.66\times10^{-5}$.
+The solve is doing what the hand calculation says it should.
+
+\item \textbf{The atomic stack passes three independent external checks.} The
+radiative recombination coefficient into the ground state is within
+\SI{2}{\percent} of the scaled standard value; the sum over excited states,
+$\SI{2.08e-13}{\cubic\centi\metre\per\second}$, sits \SI{10}{\percent} below the
+case-B recombination coefficient $\alpha_B \approx
+\SI{2.31e-13}{\cubic\centi\metre\per\second}$, which is exactly the $n>15$
+truncation of Section~\ref{sec:convergence}; and the ground-state ionisation
+coefficient, $\SI{4.864e-9}{\cubic\centi\metre\per\second}$, agrees with the
+accepted value of about \SI{5e-9}{\cubic\centi\metre\per\second}\needcite.
+
+\item \textbf{The tabulated asymptote demands impossible atomic data.}
+Reproducing Fujimoto's quoted coronal asymptote requires
+$C(1s\to n{=}2) = \SI{1.44e-7}{\cubic\centi\metre\per\second}$ at
+\SI{11.03}{\electronvolt}, fifteen times the accepted value. No error in this
+model's implementation produces that number; only a different input does.
+
+\item \textbf{The two obvious explanations are eliminated quantitatively.}
+Truncation moves $r_1(3)$ by \SI{1.2}{\percent} between $n_{\max}=10$ and
+$n_{\max}=15$, which is a factor $8$ short. Lyman trapping at an escape factor
+of $0.1$ brings $r_1(2)$ to $0.92$ of the table but leaves $r_1(3)$ at $0.26$ of
+it and drives $r_0(2)$ to $8.2$, a population above Saha equilibrium and
+therefore unphysical.
+
+\item \textbf{A single-row density offset reconciles the whole column.} The
+table's density rows run at $\lg\nel = 12, 14, 16, 17, 18$, non-uniformly
+spaced, which is the standard setup for an off-by-one read. Comparing this model
+at $\SI{e13}{\per\cubic\centi\metre}$ instead of $\SI{e12}{\per\cubic\centi\metre}$
+gives ratios of $0.817$, $0.888$, $0.836$, $0.819$ and $0.977$ for $p = 2$
+through $7$: flat to within \SI{10}{\percent}, against a factor-$50$ spread as
+published.
+\end{enumerate}
+
+The producing script's own docstring instructs that the table values be
+re-checked against the book before anything enters the thesis. That re-check was
+never performed, and the number entered the thesis anyway.
+
+\textbf{Status.} The $r_1$ comparison at low $p$ is withdrawn as a statement
+about this model and reported as an unresolved external comparison. It is not
+evidence that the model is wrong, and it is not evidence that the model is
+right. What would settle it is one afternoon with the printed table and the
+density-row labels. Until that is done, no conclusion rests on it, and the
+$r_0$ agreement above is unaffected because it was read from the same rows.
+\todo{Re-read Fujimoto Table 4.1(b) directly, with the $\lg\nel$ row labels
+verified against the caption, and record the outcome. This supersedes
+\texttt{chapter6.tex} \S\ref{sec:r1_deficit}, which still publishes the
+discrepancy as a model failure.}
+
+%-----------------------------------------------------------------------------
+\section{Gate D fails}
+\label{sec:gate_d}
+% QUESTION: the one gate that compares against an external atomic database
+% disagrees at every point. What does that mean, and what does it not mean?
+
+The Atomic Data and Analysis Structure (ADAS) distributes effective
+stage-to-stage rate coefficients for hydrogen: SCD, the effective ionisation
+coefficient, and ACD, the effective recombination coefficient~\cite{Summers2006}.
+These are the coefficients a transport code uses when it does not resolve
+excited states, and they are the most widely used external reference this model
+could be compared against.
+
+Gate~D forms the model's counterpart by taking the steady-state populations at
+each grid point, weighting each level by its ionisation rate coefficient, and
+dividing by the total neutral population:
+\begin{equation}
+  {\rm SCD}_{\rm model}
+  = \frac{\sum_p Q_p\,n_p^{\rm ss}}{\sum_p n_p^{\rm ss}},
+  \label{eq:scd_model}
+\end{equation}
+then compares against ADAS interpolated to the same temperature within a
+factor-of-two density band. The gate passes a point if the ratio
+$\eta = {\rm SCD}_{\rm model}/{\rm SCD}_{\rm ADAS}$ lies between $0.5$ and $2.0$.
+
+\begin{center}
+\texttt{Gate D: FAIL  (0\% of points)} \hfill \texttt{validation/gate\_summary.txt}
+\end{center}
+
+Measured, $\eta$ ranges from $5.73$ to $8346$ and no point on the $400$-point
+grid agrees within a factor of two. The disagreement is systematic rather than
+scattered: a factor between $9$ and $65$, peaking near
+$\Te \approx \SI{2}{\electronvolt}$.
+
+\subsection{The diagnosis}
+
+Two readings are open, and neither has been demonstrated.
+
+The first is that Eq.~\eqref{eq:scd_model} is not the quantity ADAS tabulates.
+ADAS defines SCD as the \emph{ionising} coefficient, the ionisation flux
+attributable to the ground-state population. The sum in
+Eq.~\eqref{eq:scd_model} runs over the full steady state, which includes the
+recombination-fed Rydberg levels of the $\nzero$ channel. Ionisation out of
+those levels is a recombination-driven flux and belongs under ACD, not SCD.
+Since the high levels have small ionisation potentials and large ionisation
+coefficients, moving them to the wrong side of the ledger inflates the model's
+SCD by a large factor, and inflation is what is measured. The test that would
+settle it is to recompute Eq.~\eqref{eq:scd_model} over the ground-fed channel
+$\none$ alone, and it has not been run.
+
+The second is that the two quantities are not defined on the same system at all.
+ADAS coefficients describe a closed atom-plus-ion system; this model holds the
+ion as a fixed external reservoir with no forty-fourth state
+(Section~\ref{sec:two_references}). A stage-to-stage coefficient extracted from
+an open system need not equal one extracted from a closed one, and
+Section~\ref{sec:attacks} has already shown that the boundary condition moves
+$\tauqss$ by up to a factor of $41$.
+
+\subsection{Three further defects in the gate itself}
+
+The gate is also incompletely implemented, and this must be said alongside the
+failure rather than instead of it.
+
+The recombination half does not exist. The ACD table is loaded once, at line
+299 of \texttt{validate\_gates.py}, and the variable holding it is never read
+again anywhere in the file. Only the ionisation comparison runs, despite a docstring
+that describes both.
+
+The interpolation is wrapped in a catch-all exception handler that sets the
+comparison value to not-a-number and continues, so a failure to find the right
+density band is indistinguishable from a point that was legitimately skipped.
+
+And the gate's status is recorded three incompatible ways in the repository.
+Line 119 of \texttt{README.md} calls it documented; the script's own docstring,
+at line 47, predicts a pass above
+$\Te = \SI{5}{\electronvolt}$, and \texttt{gate\_summary.txt} reports failure at
+\SI{0}{\percent} of points. Two files describing the same quantity, neither
+stamped, is the condition under which this project's earlier retracted numbers
+propagated. The correct entry is the measured one: Gate~D fails.
+
+\subsection{What is claimed, and what is not}
+
+\textbf{No agreement with ADAS is claimed anywhere in this thesis.} Gate~D is
+reported as failing, with the two candidate diagnoses stated and neither
+demonstrated. It is not repaired, no tolerance is widened, and the
+$\eta$ range is not restricted to a subset that would pass.
+
+What this costs is less than it first appears and more than nothing, and the
+difference should be stated precisely. It costs the thesis its only comparison of
+absolute effective coefficients against an external database, which is a real
+loss and an examiner will ask about it. It does not touch the structural results
+of Chapter~\ref{ch:theory}, which are statements about whatever $\Lmat$ is
+supplied and would hold for the ADAS-consistent matrix equally. It does not
+touch the level-resolved comparison of Section~\ref{sec:fujimoto}, which
+compares the same decomposition against tabulated coefficients rather than
+against a contraction of $42$ coefficients into one. And the contraction is the
+reason the two comparisons carry different weight: many incorrect $\bm{a}$ would
+contract to the correct SCD, so a passing Gate~D would have been weak evidence
+even had it passed.
+
+%-----------------------------------------------------------------------------
+\section{Errors found by our own audit}
+\label{sec:errors_found}
+% QUESTION: what did this project get wrong, how was each error found, and how
+% large was it?
+
+Chapter~\ref{ch:atoms} introduced two implementation errors that this project
+found in itself, and observed that both were invisible to every consistency test
+the pipeline ran. This section gives their sizes, adds two more, and states what
+each one changes.
+
+They are here rather than in an appendix on purpose. A model whose authors found
+and bounded four of its own errors is a better-characterised model than one
+reporting none, and in three of the four cases the bound is itself a result.
+
+\subsection{The $\ell$-mixing Coulomb logarithm}
+
+Proton-impact $\ell$-mixing redistributes population between sublevels of the
+same $n$ and, as Section~\ref{sec:lmixing} showed, is the dominant loss channel
+for the metastable $2s$ level. The rate coefficient follows Badnell's
+formulation~\cite{Badnell2021}, whose Eq.~9 carries a factor
+\begin{equation}
+  F(U_m) = \frac{\sqrt{\pi}}{2}U_m^{-3/2}\operatorname{erf}(\sqrt{U_m})
+           - \frac{\mathrm{e}^{-U_m}}{U_m} + E_1(U_m),
+  \label{eq:FUm}
+\end{equation}
+with $U_m = E_{\min}/k_B\Te$ set by the Debye cutoff. $F(U_m)$ is the Coulomb
+logarithm of the interaction: for small $U_m$ it behaves as
+$\ln(R_c/R_1)$ and diverges logarithmically.
+
+The implementation set $F = 1$, justified in its docstring as the low-density
+limit $U_m \to 0$. \textbf{The limit was inverted.} $U_m$ is indeed small on
+this grid, between $10^{-3}$ and $10^{-1}$, but $F(U_m\to0)$ grows without bound
+rather than tending to unity. Evaluated properly at the benchmark point,
+$F = 6.65$ for $2p$--$2s$, $5.73$ for $3d$--$3p$, $4.29$ for $5g$--$5f$ and
+$2.92$ for $8k$--$8i$. The $\ell$-mixing rates were low by a factor of three to
+seven, more at low $n$.
+
+The error was found by reading Badnell's published equation directly rather than
+the docstring, and it was traced to a single line. Its effect was then measured
+by rescaling every intra-$n$ adjacent-$\ell$ off-diagonal of the actual matrix by
+the correct per-transition $F$, restoring the exact column sums, and
+recomputing the spectrum: $\tauqss$ moved \SI{+0.07}{\percent} and $\taurel$
+moved \SI{-0.12}{\percent} at the benchmark point, bounded below
+\SI{0.85}{\percent} anywhere on the grid.
+
+The insensitivity is not luck, and it is the more interesting half of the
+finding. $\ell$-mixing is already the fastest process in the matrix, running on
+picoseconds. Multiplying the fastest rates by three to seven leaves the
+nanosecond relaxation eigenvalue where it was, because the sublevels are fully
+equilibrated on that timescale either way. \textbf{Timescale separation protects
+the slow eigenvalues from errors in the fast rates}, which is the same structure
+that Chapter~\ref{ch:theory} exploits to eliminate the fast variables in the
+first place, seen from the direction of error propagation.
+
+\subsection{And $\ell$-mixing is saturated}
+
+The same insensitivity was then tested directly rather than argued. Scaling
+every $\ell$-mixing rate in the matrix over a range of $\times0.1$ to $\times10$
+moves $\ffrac{3}-\ffrac{4}$ by less than \SI{0.3}{\percent} at the benchmark
+point and at the ridge, and by less than \SI{5}{\percent} at the cold corner.
+Only switching $\ell$-mixing off entirely changes anything. Rebuilding the
+matrix with a density-consistent Debye cutoff rather than a frozen one moves
+$\ffrac{3}-\ffrac{4}$ by at most \SI{0.42}{\percent}.
+
+This also corrects a statement in Chapter~\ref{ch:atoms}. The claim at
+\texttt{chapter2.tex}:924 that the frozen Debye density varies the cutoff factor
+by about \SI{30}{\percent} across the grid is wrong: evaluating the module's own
+functions gives a span of $\times3.7$ for $n=2$ and $\times50$ for $n=8$. The
+statement about the input is wrong by a wide margin and the conclusion drawn
+from it survives, because the observable does not depend on the input over that
+range.
+\todo{Correct \texttt{chapter2.tex}:924. The \SI{30}{\percent} figure is not
+what the module computes.}
+
+\subsection{The eigenvalue magnitude filter}
+
+The spectrum of $\Lmat$ was extracted by a routine containing the line
+\texttt{eigs = eigs[eigs < -1.0]}, which discards every eigenvalue smaller in
+magnitude than $1\,\si{\per\second}$. Where the slow eigenvalue is smaller than
+that, and at the cold end of the grid it is, the filter deletes it and promotes
+the whole ladder by one step. The routine then reports $\lambda_1$ as
+$\lambda_0$, so $\tauqss$, $\taurel$ and $\Msep$ are all wrong together, and all
+three remain finite, negative and correctly ordered. Nothing looks broken.
+
+It was found by recomputing the spectrum unconditionally and comparing
+bit-for-bit against the stored arrays, which is the three-implementation
+agreement of Section~\ref{sec:gate_e}. The damage is exactly localised:
+
+\begin{itemize}
+\item $19$ of $400$ grid points, all with $\Te \le \SI{1.389}{\electronvolt}$
+and $\nel \in [10^{12},\ 1.93\times10^{13}]\,\si{\per\cubic\centi\metre}$.
+\item At every one of the $19$, the corrected $\taurel$ equals the filtered
+$\tauqss$ \emph{exactly}, which is the ladder shift confirming the mechanism
+rather than merely fitting it.
+\item $\Msep$ over the grid changed from $1.341$--$1.01\times10^{8}$ to
+$86.77$--$1.72928\times10^{9}$. At the cold corner the filter turned
+$\Msep = 1.729\times10^{9}$ into $\Msep = 1.467$, a wrong answer that reads as a
+physics finding: near-breakdown of timescale separation in the coldest, thinnest
+plasma is exactly what a reader would expect to see.
+\item The step-error maps were unaffected. $\epsstep$ is bit-identical at all
+$400$ points, because it is computed from steady states rather than from the
+spectrum, and the benchmark point is bit-identical too.
+\end{itemize}
+
+The filtered outputs were preserved rather than overwritten, as
+\texttt{*\_FILTERED\_20260721}.
+
+\textbf{The literal survives in two files.} It is still present at
+\texttt{src/rates/solve\_cr.py}:269 and \texttt{src/rates/check\_mz.py}:10. Both
+were confirmed to be imported by nothing, so no number in this thesis passes
+through them. That is luck rather than design, and it is recorded here because a
+commit message claiming the filter had been removed is part of the same history.
+
+\subsection{The central quantity was misnamed}
+
+The largest of the four errors changed no number and inverted a sentence.
+
+The quantity reported throughout an earlier draft as the quasi-steady-state
+error was defined as the difference between the tabulated ratio and the true
+one, with the tabulated ratio evaluated from a two-argument function of $\Te$
+and $\nel$. Section~\ref{sec:two_references} shows that the excited-state ratio
+is a function of three arguments, not two, the third being the state of the
+ground-state reservoir. Fixing the first two therefore silently imposes
+equilibrium ionisation balance, so what was measured was the distance to the
+equilibrium answer, not the error of the quasi-steady-state closure.
+
+Integrating the full system and evaluating both errors along the same trajectory
+separates them:
+
+\begin{center}
+\begin{tabular}{lrr}
+  \toprule
+  point & error against equilibrium & error of the QSS closure \\
+  \midrule
+  benchmark $[23,5]$ & $6.34\times10^{-2}$ & $8.66\times10^{-6}$ \\
+  worst case $[0,4]$ & $3.869\times10^{-1}$ & $6.73\times10^{-9}$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+They differ by four to eight orders of magnitude, and they differ most at the
+point carrying the largest error. The physics was intact throughout and every
+number reproduced; what was wrong was the name attached to it and the sentence
+built on the name. Chapter~\ref{ch:results} states the consequence, which is
+that the approximation everyone worries about is not the one that fails.
+
+The error was found by a hostile read of the thesis text itself, not of the
+code. It is the reason this thesis states the argument of every error measure
+explicitly and why Section~\ref{sec:eps_definitions} defines four of them
+separately.
+
+\subsection{A statement in Chapter~\ref{ch:theory} that measurement contradicts}
+
+One further item belongs here because it is unrepaired.
+Section~\ref{sec:ion_recomb} states that at
+$\nel = \SI{e12}{\per\cubic\centi\metre}$ three-body recombination supplies
+under \SI{10}{\percent} of the feed into any level, and uses that to propose
+testing the radiative and three-body datasets separately at the two ends of the
+density grid. Measured against the matrix, $30$ of $36$ levels exceed
+\SI{10}{\percent} three-body feed at both \SI{1.00}{\electronvolt} and
+\SI{2.95}{\electronvolt}, and $26$ of $36$ at \SI{10}{\electronvolt}. Into the
+bundled shells it is essentially the whole feed.
+
+The consequence is that the density grid does not separate the two recombination
+datasets, and \textbf{no such separate test was run}. The sentence in
+Chapter~\ref{ch:theory} promises a check this chapter does not deliver.
+\todo{Correct \texttt{chapter3.tex}:190--195. Either drop the promise or
+construct a test that genuinely separates the two datasets.}
+
+%-----------------------------------------------------------------------------
+\section{Reproduction, and what a document cannot certify}
+\label{sec:reproducibility}
+% QUESTION: can the numbers in this thesis be regenerated, and by whom?
+
+\subsection{Regeneration from the canonical matrix}
+
+Every quantitative result in Chapters~\ref{ch:theory} and~\ref{ch:results} was
+regenerated from $\Lmat$ and compared against the stored output. The timescale
+and step-error grids reproduce bit-identically, including the values obtained by
+numerical integration rather than by linear algebra. The plateau and persistence
+tables reproduce byte for byte, $680$ of $680$ rows, with $784$ superposition
+residuals at exactly zero difference. The nineteen points corrected by the
+eigenvalue filter reproduce exactly, including the ladder-shift identity.
+
+This is reproduction in the narrow sense: the same code, run again, on the same
+inputs, gives the same answers. It excludes a stale array and it excludes a
+non-deterministic solver. It says nothing about whether the algebra is right.
+
+\subsection{Independent re-derivation}
+
+The stronger check is re-derivation. All six central results of
+Chapter~\ref{ch:theory} were derived from the linear collisional--radiative
+system alone by a party working from the physical statement of the problem,
+implemented from scratch, with the predicted values written down before any
+project file was opened.
+
+\begin{center}
+\begin{tabular}{lrr}
+  \toprule
+  quantity & \texttt{chapter3.tex} & independent re-derivation \\
+  \midrule
+  $\bdep^{\rm CRE}$ at the benchmark        & $956$                        & $956.509$ \\
+  switching points $c_m/a_m$                & $2.73\times10^{3}$, $1.91\times10^{4}$ & $2727.3$, $19085.5$ \\
+  peak $\bdep$                              & $7.2\times10^{3}$            & $7214.7$ \\
+  $\ffrac{3}$, $\ffrac{4}$, difference       & $0.260$, $0.048$, $0.212$    & $0.259652$, $0.047725$, $0.211927$ \\
+  maximum of $\ffrac{3}-\ffrac{4}$          & $0.4514$                     & $0.451357$ \\
+  $\Robs$ at the benchmark                  & $0.7778$                     & $0.777768$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The timescales reproduce to four digits, $\tauqss = \SI{22.73}{\micro\second}$,
+$\taurel = \SI{2.277}{\nano\second}$, $\Msep = 9981.9$.
+
+Two further invariances were measured in the same pass and belong with the
+result they protect. The shell separation $\Delta$ that sets the bound of
+Section~\ref{sec:bound} is invariant under rescaling the ground-to-ion
+normalisation, verified exactly under factors of $10^{10}$ and $10^{-7}$, while
+the individual channel fractions are not; and $\Delta$ varies by
+\SI{0.07}{\percent} across five different $\ell$-weightings of the shell sum, so
+the bound is not an artifact of how sublevels were weighted.
+
+\subsection{A prediction that was falsified, and improved the claim}
+
+The same re-derivation made one prediction that turned out to be wrong, and it
+is more informative than the six that were right.
+
+The prediction was that $\ffrac{3}-\ffrac{4}$ must vanish at high density, on
+the reasoning that in local thermodynamic equilibrium both supply channels
+produce the same Boltzmann distribution, so the two shells would draw
+identically and the difference would close. It does not happen. $\Delta$ is
+nearly flat: $0.979$ at $\SI{e12}{\per\cubic\centi\metre}$, $1.945$ at
+$\SI{1.4e14}{\per\cubic\centi\metre}$, $1.939$ at
+$\SI{e15}{\per\cubic\centi\metre}$.
+
+The reason is the open boundary again, and this time it works in the model's
+favour. The recombination source is imposed externally rather than tied to the
+ion density by a Saha relation, so the two channels cannot merge by
+construction, and Gate~C's measurement that populations reach only
+\SI{1.5}{\percent} of Saha says the grid never comes close to the limit in which
+they would. \textbf{The consequence sharpens Chapter~\ref{ch:results}}: because
+the span of $\Delta$ is nearly constant while the operating point sweeps, the
+density maximum in the diagnostic error is a position effect rather than a span
+effect, and the error does not vanish at the top of the density grid.
+
+\subsection{One item demoted: the May/August cross-validation}
+
+A cross-validation between two runs four months apart, on different matrices,
+with different observables and different numerical methods, was recorded in this
+project's register as verified and described as the strongest single check it
+had. The agreement is close: $\tauqss$ to \SI{0.064}{\percent}, $\taurel$ to
+\SI{0.200}{\percent}, $\Msep$ to \SI{0.264}{\percent}, $\epsstep$ to
+\SI{0.014}{\percent}. Predicting how long the error stays above
+\SI{10}{\percent} from the plateau-then-decay picture gives
+\SI{12.478}{\micro\second} against the earlier run's full integration,
+\SI{12.4794}{\micro\second}.
+
+Two corrections apply, and both weaken it.
+
+The apparent agreement to eight parts in $10^{5}$ on the duration is
+cancellation. The inputs agree only to \SIrange{0.06}{0.6}{\percent}, and
+carrying the earlier run's own internal numbers through gives
+\SI{12.406}{\micro\second}, off by \SI{0.59}{\percent}. \textbf{The honest figure
+is agreement at the \SI{0.6}{\percent} level}, which is still strong.
+
+More seriously, \textbf{the earlier run has never been reproduced against the
+canonical matrix}. This project's own derivation record says of these same
+numbers that they are a reported result, not independently re-run, and should be
+treated as strong documented evidence rather than as self-verified. A
+cross-validation whose earlier half cannot be re-executed is a citation, not a
+check. It is reported here as documented evidence and is not counted on the
+ladder of Section~\ref{sec:validation_summary}. Under the ground-truth ordering
+this thesis works to, physics over mathematics over code over documents,
+a document is the weakest of the four, and it is where this particular claim
+currently rests.
+
+\subsection{Two provenance defects that are not repaired}
+
+Two arrays of timescales, $\Msep$, $\tauqss$ and $\taurel$, are written to the
+same three file paths by two different scripts. Whichever ran last wins, and six
+downstream readers cannot tell whose numbers they are holding. This is exactly
+the condition under which the eigenvalue filter propagated, since the filtered
+and unfiltered versions of the same array have the same name.
+
+An audit script exists to detect single-writer violations, and it reports an
+unfixed failure of this kind. It is also incomplete: four live writers of
+comma-separated output are invisible to it, including the producer of the
+plateau map that three of this thesis's results read from. It should not be
+cited as evidence that the single-writer property holds.
+
+%-----------------------------------------------------------------------------
+\section{What this chapter establishes}
+\label{sec:validation_summary}
+% QUESTION: after grading every check, what is the model licensed to be used
+% for, and where?
+
+Table~\ref{tab:ladder} collects the checks in the order a reader should weight
+them, with the grade of Section~\ref{sec:gate_philosophy} attached to each.
+
+\begin{table}[tbp]
+  \centering
+  \caption[The validation ladder, graded by severity]{Every check run on this
+  model, with what it tests, its severity grade, and the measured outcome.
+  \emph{Tautological} means the check cannot fail except on an arithmetic bug
+  because the quantity tested was constructed from the relation being tested;
+  \emph{weak} means it can fail but only for an error far larger than any
+  plausible one; \emph{severe} means a plausible wrong version of this model
+  fails it. Four of the fourteen entries are severe, one external gate fails,
+  and one external comparison is open with an unverified target.}
+  \label{tab:ladder}
+  \small
+  \begin{tabular}{p{4.3cm}p{2.0cm}p{5.6cm}}
+    \toprule
+    check & grade & measured \\
+    \midrule
+    Atomic-data provenance (Ch.~\ref{ch:atoms})  & severe & every coefficient traces to a named dated source; tallies exact \\
+    Excitation rates against RMPS (Ch.~\ref{ch:atoms}) & severe & \SI{82.1}{\percent} within \SI{20}{\percent} for $n_{\rm upper}\le4$; $n=5$ disagrees and the direction is not established \\
+    Raw cross sections, microscopic reversibility & severe & ratio $0.9995 \pm 0.0032$, \SI{98.7}{\percent} within \SI{1}{\percent} \\
+    One energy ladder on both sides & severe & Saha ratio $0.999997$ for all $43$ states to eight identical digits \\
+    Superposition of the two channels & severe & $3.075\times10^{-14}$ over $784$ pairs; catches a $3\leftrightarrow4$ swap \\
+    Reduced against full $\Robs$ & severe & $0.777768$ by three routes; catches the same swap \\
+    Pinned input hashes & severe & both SHA-256 match byte for byte \\
+    Recomputation guards on the figures & severe & every plotted row rebuilt from $\Lmat$ at $10^{-9}$, raises \\
+    Gate~A, detailed balance & tautological & $<\SI{0.01}{\percent}$, but $K_{\rm deexc}$ was derived from $K_{\rm exc}$ \\
+    Column-sum conservation & tautological & $3.61\times10^{-11}$; three of four injected faults undetected \\
+    The $\tanh$ bound & tautological & holds at all $248$ points, and holds on corrupted input \\
+    Gate~E, timescale hierarchy & tautological & $\Msep \ge 86.8$ against a threshold of $1$ \\
+    Gate~B, coronal limit & weak & worst convergence $0.0034$ against a tolerance of $0.5$ \\
+    Gate~C, Saha ceiling & weak & monotone and below Saha; approach fraction \SI{1.5}{\percent}, excluded from the flag \\
+    \midrule
+    Fujimoto App.~4B timescales & external, passes & $0.34\times$ and $1.77\times$ at a grid point his example lands on \\
+    Fujimoto Table~4.1, $r_0$ & external, passes & \SIrange{0.1}{1}{\percent} for $n\ge4$; $r_0(2) = 0.7392$ against $0.730$ \\
+    Fujimoto Table~4.1(b), $r_1$ & \textbf{open} & $8.3\times$ low at $p=3$; target unverified, five lines of evidence in \S\ref{sec:fujimoto} \\
+    Gate~D against ADAS & \textbf{FAIL} & $\eta \in [5.73,\ 8346]$, $0$ of $400$ within a factor $2$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{What the model may be used for}
+
+Three statements are supported by the evidence above, and they are the ones
+Chapter~\ref{ch:results} relies on.
+
+\textbf{The equations are solved correctly.} The superposition residual, the
+independent re-derivation of all six central results, the bit-for-bit
+regeneration, and the conditioning measurements together establish that the
+linear algebra does what Chapter~\ref{ch:theory} says it does, to a precision
+many orders of magnitude finer than any quantity the thesis reports.
+
+\textbf{The atomic data are traceable and benchmarked where the observable
+lives.} The rates feeding $n \le 4$, which is where $H_\alpha$ and $H_\beta$
+originate, agree with an independent R-matrix calculation at a mean absolute
+error of \SI{12.7}{\percent}, and the two transitions this thesis leans on
+hardest agree better than that. Above $n=4$ the atomic data are less certain and
+the truncation is measurable, and Section~\ref{sec:convergence} bounds what that
+costs the observable at about \SI{1}{\percent}.
+
+\textbf{The structural results are robust to the choices that could have
+manufactured them.} Closing the ion boundary changes the persistence census by
+one part in $325$. Scaling $\ell$-mixing over two decades moves the observable
+by under \SI{0.3}{\percent} where the thesis makes claims. The plateau lower
+bound is the true time-averaged answer to better than \SI{0.7}{\percent}.
+
+\subsection{What it may not be used for}
+
+\textbf{No absolute effective coefficient from this model should be compared
+against a database.} Gate~D fails at every point on the grid and the reason is
+not established. Until the ground-fed recomputation is run, the model's SCD is
+not the quantity ADAS tabulates and no agreement is claimed.
+
+\textbf{No claim rests on the terminal shell}, whose population is high by a
+factor consistent with truncation, or on the $\ell$-distribution inside the
+bundled shells, which is assumed rather than measured and whose test has not
+been run.
+
+\textbf{Nothing here validates the physics that is absent.} Every check in this
+chapter tests a $43$-state atomic hydrogen model against itself, against
+arithmetic, and against other atomic hydrogen models. None of them tests
+transport, molecular channels, or radiation trapping, because none of those
+appears in $\Lmat$ at all. A model can pass every check in
+Table~\ref{tab:ladder} and still be the wrong model for a divertor.
+Chapter~\ref{ch:limits} is where that question is asked, and it is asked with
+numbers rather than with hedges.
+
+\medskip
+The instrument is now characterised: what it computes, how precisely, on which
+region of the grid, and where the evidence for it runs out. What it says is the
+subject of Chapter~\ref{ch:results}.

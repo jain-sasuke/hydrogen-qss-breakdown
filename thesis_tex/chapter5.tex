@@ -614,13 +614,7 @@ the three points, against measured values of $0.2694$ (recovered below from
 $\epsplat$ and $\overline{S}$ at the benchmark), $0.3649$
 (\texttt{verify\_ridge\_mechanism.py}, quoted in
 \texttt{CH5\_EVIDENCE.md}~\S4.4) and $0.6783$
-(\texttt{plateau\_gridmap.txt}, line 41). \emph{[UNVERIFIED: the $k=2$ and
-$k=4$ columns, which are the entire basis of the step-independence claim, have
-no artifact behind them. What would close this: a script that recomputes
-$u^{\mathrm{CRE}}$ at $[i,j]$ and $[i{+}k,j]$ for $k=1,2,4$ across the grid and
-stamps $G$ to \texttt{validation/}, which would also supply the grid-wide $G$
-map that Eq.~\eqref{eq:eps_of_step} needs in order to be usable by a reader at
-an arbitrary operating point.]}
+(\texttt{plateau\_gridmap.txt}, line 41). Table~\ref{tab:gain}'s nine values are reproduced to four significant figures by \texttt{verify\_reservoir\_gain.py}, whose output is stamped in \texttt{validation/reservoir\_gain/reservoir\_gain.csv}.
 
 \subsection{A worked number at the benchmark}
 
@@ -1302,10 +1296,10 @@ range appears in any script or artifact. What would close this: put the sweep
 in the script and stamp its output.]}
 
 The negative result itself is not new as a general statement.
-Greenland~\cite{Greenland2001a} concluded, for arbitrary
-collisional--radiative systems, that validity criteria ``are not related to the
-equilibrium time-scales'' and that ``the eigenvalues have secondary
-importance''. What this work adds is a quantification for one diagnostic and a
+Greenland concluded, for arbitrary collisional--radiative systems, that
+validity criteria ``are not related to the equilibrium
+time-scales''~\cite{Greenland2001b} and that ``the eigenvalues have secondary
+importance''~\cite{Greenland2001a}. What this work adds is a quantification for one diagnostic and a
 map of where the criterion misleads, which is a smaller claim than discovery and
 a more useful one than assertion.
 

@@ -76,12 +76,36 @@ $$\varepsilon = \left|\exp\left(\bar S \cdot G \cdot \Delta\ln T_e\right) - 1\ri
 
 | point | G at k=1 | k=2 | k=4 | spread over a 4× step range |
 |---|---|---|---|---|
-| benchmark [23,5] | −5.736 | −5.634 | −5.439 | **5%** |
-| ridge [15,3] | −7.766 | −7.617 | −7.333 | **6%** |
-| worst [0,4] | −14.434 | −14.131 | −13.551 | **6%** |
+| benchmark [23,5] | −5.736 | −5.634 | −5.439 | 5.5% |
+| ridge [15,3] | −7.766 | −7.617 | −7.333 | 5.9% |
+| worst [0,4] | −14.434 | −14.131 | −13.551 | 6.5% |
 
-G is stable to ~6% while ε itself varies by a factor 5 over the same range.
-The small-step limit is **dε/d ln Te = |S̄ · G|**.
+**Corrected and scoped, 10 Sep 2026**, against
+`validation/reservoir_gain/reservoir_gain.csv` (2288 rows). An earlier version
+of this document quoted the three points above and generalised from them, then
+gave |S̄| and |G| ranges without saying what set they were extrema over. That
+is the same defect this document criticises elsewhere, and it happened here.
+
+Over all **736** (direction, point) triples carrying k = 1, 2 and 4:
+
+| | median spread across k | maximum |
+|---|---|---|
+| \|G\| | 1.0555 | **1.0674**, i.e. **6.74%** |
+| ε | 3.73 | **8.44** |
+
+Ranges, each with its scope stated:
+
+| quantity | over all 2288 rows | over window_ok heating at k=1 (338 rows) |
+|---|---|---|
+| \|S̄\| | **0.0355 to 0.4963** | 0.0649 to 0.4822 |
+| \|G\| | **2.6396 to 14.5192** | same |
+
+The earlier "0.065 to 0.482" for |S̄| was the restricted set quoted as though it
+were global. |G|'s range does hold over all rows.
+
+G is stable to **6.74%** while ε varies by up to a factor **8.44** over the same
+step range. The small-step limit is **dε/d ln Te = |S̄ · G|**. Quote 6.74%, and
+say G is *stable*, not invariant.
 
 So the thesis reports **two structural maps** — the sensitivity S̄ = f₃ − f₄
 (bounded above by tanh(|Δ|/4) < 1, data-independent) and the reservoir gain G

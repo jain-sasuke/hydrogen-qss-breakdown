@@ -93,7 +93,7 @@ the size of the transient, leaving
 \begin{equation}
   \epsplat \;=\; \Big|\exp\!\big(\overline{S}\,G\,\Delta\ln\Te\big)-1\Big| ,
   \qquad
-  \lim_{\Delta\ln\Te\to0}\frac{\mathrm{d}\,\epsplat}{\mathrm{d}\ln\Te}
+  \lim_{\Delta\ln\Te\to0}\frac{\epsplat}{\big|\Delta\ln\Te\big|}
   \;=\; \big|\overline{S}\,G\big| .
   \label{eq:recipe}
 \end{equation}
@@ -112,8 +112,13 @@ traverses, and it says how strongly the observed ratio answers to the
 ground-state reservoir. The reservoir gain $G = \Delta\ln u/\Delta\ln\Te$,
 the secant along the CRE curve over the step taken, says how far equilibrium
 ionisation balance would move that reservoir for a
-given fractional change in temperature; it is negative everywhere on the grid,
-because heating ionises the ground state away.
+given fractional change in temperature. Both $\overline{S}$ and $G$ are
+negative everywhere on the grid, in both step directions: heating depletes the
+ground state and cooling refills it, so $\Delta\ln u$ and $\Delta\ln\Te$ always
+carry opposite signs, and the ground-fed fraction of $n=3$ exceeds that of
+$n=4$ at every point. Their product is positive for heating and negative for
+cooling, and $\epsplat$ is positive in both because
+Eq.~\eqref{eq:recipe} takes a modulus.
 
 \paragraph{The procedure.} For a CR matrix of one's own, at one's own operating
 point:

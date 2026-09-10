@@ -1156,10 +1156,10 @@ def main():
     panels = [
         (Sb, r"$|\bar{S}| = |f_3 - f_4|$", "viridis",
          "(a) sensitivity of the observable"),
-        (Gv, r"$|G| = |\mathrm{d}\ln u\,/\,\mathrm{d}\ln T_e|$", "viridis",
+        (Gv, r"$|G| = |\Delta\ln u\,/\,\Delta\ln T_e|$", "viridis",
          "(b) reservoir gain"),
-        (Pr, r"$|\bar{S}G| = \mathrm{d}\varepsilon\,/\,\mathrm{d}\ln T_e$",
-         "magma", "(c) their product: the reported invariant"),
+        (Pr, r"$|\bar{S}G| = \lim\,\varepsilon\,/\,|\Delta\ln T_e|$",
+         "magma", "(c) their product: the reported coefficient"),
     ]
     n_nowin3 = 0
     for q, (arr, cblab, cmap, title) in enumerate(panels):
@@ -1948,9 +1948,13 @@ def main():
   (b) $|G| = |\mathrm{d}\ln u / \mathrm{d}\ln T_e|$, the reservoir gain,
   measuring how far the ground population moves for a given change in
   temperature.
-  (c) Their product $|\bar{S}G| = \mathrm{d}\varepsilon/\mathrm{d}\ln T_e$,
-  the step-size-independent quantity this chapter reports in place of a
-  percentage that depends on the step chosen.
+  (c) Their product $|\bar{S}G|$, which is the small-step limit of
+  $\varepsilon/|\mathrm{d}\ln T_e|$ and is the coefficient this chapter reports
+  in place of a percentage that depends on the step chosen. It is written as a
+  limiting ratio and not as $\mathrm{d}\varepsilon/\mathrm{d}\ln T_e$ because
+  $\varepsilon = |\mathrm{e}^z-1|$ has a corner at $z=0$, where the two-sided
+  derivative does not exist. $G$ itself is a secant over the step taken, not a
+  local derivative, so it carries a weak and systematic step dependence.
   All three are heating, one grid index in $T_e$
   ($\mathrm{d}\ln T_e = @DLNTE@$), over all @NCELL@ cells.
   Ranges quoted with their scope, because the scope changes them: over the

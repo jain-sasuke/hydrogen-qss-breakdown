@@ -1284,8 +1284,12 @@ Equation~\eqref{eq:log_sensitivity} says the sensitivity peaks somewhere between
 the two limits. It does not yet say how high, or at what reservoir. Both follow
 in closed form, and the answer is more restrictive than one might expect.
 
-Work in the logarithmic reservoir variable $x = \ln(\bdep\Zsb{1}\nel)$. In that
-variable Eq.~\eqref{eq:ground_fed_fraction} is exactly a logistic,
+Work in the logarithmic reservoir variable $x = \ln(\bdep\Zsb{1}\nel)$. That
+combination is the neutral-to-ion ratio itself: $\bdep\Zsb{1}\nel = \ngs/\nion$,
+so $x = \ln u$ in the notation Chapter~\ref{ch:results} uses throughout, and the
+Saha coefficient cancels out of it entirely. The two chapters work in the same
+variable under two names, and it is worth seeing that before the algebra starts.
+In that variable Eq.~\eqref{eq:ground_fed_fraction} is exactly a logistic,
 \begin{equation}
   \ffrac{m}(x) = \frac{1}{1 + e^{-(x - x_m)}},
   \qquad x_m \equiv \ln\!\left(\frac{c_m}{a_m}\right),
@@ -1306,8 +1310,12 @@ each sits. Their separation is
 \noindent the logarithm of the span between the two asymptotes of
 Figure~\ref{fig:R_of_b1}. Equation~\eqref{eq:f_logistic} also makes explicit a
 distinction that is easy to lose. \textbf{The switching point of shell $m$ is
-$\bdep = c_m/(a_m\Zsb{1}\nel)$, which is a property of the network, not of the
-Saha balance.} A plasma may lie far above the Saha--Boltzmann ground-state
+$u_m = c_m/a_m$, a ratio of two network coefficients and nothing else.} In the
+$\bdep$ coordinate the same point reads
+$\bdep = c_m/(a_m\Zsb{1}\nel)$, which carries $\Zsb{1}\nel$ and is therefore a
+Saha-normalised label for a quantity that does not depend on the Saha balance.
+Equation~\eqref{eq:f_logistic} already says this: it puts the switching point at
+$x_m = \ln(c_m/a_m) = \ln u_m$. A plasma may lie far above the Saha--Boltzmann ground-state
 population, $\bdep \gg 1$, and still have both shells fed predominantly from
 above. The
 benchmark point is exactly such a case: $\bdep^{\mathrm{CRE}} = 956$, while the
@@ -1335,9 +1343,15 @@ $\Delta > 0$, but for a pair of shells drawn in the opposite order $\Delta$
 changes sign while the left-hand side cannot. The maximum is attained at
 $\bdep\Zsb{1}\nel = \sqrt{(c_3/a_3)(c_4/a_4)}$, the
 geometric mean of the two switching points. The area is fixed by the same
-quantity: integrating Eq.~\eqref{eq:log_sensitivity} over the reservoir gives
-$\int(\ffrac{3}-\ffrac{4})\,\mathrm{d}\ln\bdep = \ln\Robs^{\rm grd} -
-\ln\Robs^{\rm rec} = \Delta$. That second relation is only the fundamental
+quantity: integrating Eq.~\eqref{eq:log_sensitivity} over the \emph{whole}
+reservoir axis gives
+$\int_{-\infty}^{+\infty}(\ffrac{3}-\ffrac{4})\,\mathrm{d}\ln\bdep =
+\ln\Robs^{\rm grd} - \ln\Robs^{\rm rec} = \Delta$. The limits are not
+decoration: the identity is a sum rule over the full excursion from
+purely recombination-fed to purely ground-fed, and an integral over any finite
+interval is smaller. Chapter~\ref{ch:results} uses a finite-interval version of
+the same integral for a different purpose, to define a mean sensitivity over the
+excursion a real step produces, and the two must not be confused. That second relation is only the fundamental
 theorem of calculus, and it is quoted here for what it is, a consistency check
 tying the two figures together, not an independent result. The figure script
 evaluates both and halts if either disagrees with the sampled curve.
@@ -1359,15 +1373,44 @@ reservoir cannot be amplified in logarithmic space, only attenuated.
 
 It is worth being precise about what this does and does not bound. It bounds the
 error in the \emph{observable}. A diagnostician does not suffer an error in
-$\Robs$ directly: they measure $\Robs$ and invert it for $(\Te,\nel)$, and the
-error in the inferred temperature is
+$\Robs$ directly: they measure $\Robs$ and invert it for $(\Te,\nel)$. Take the
+simplest case first, in which $\nel$ has been fixed by an independent
+measurement so that only $\Te$ is being inferred. Then the error in the inferred
+temperature is
 \begin{equation}
-  \Delta\ln\Te = \frac{\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep}
-                      {\mathrm{d}\ln\Robs/\mathrm{d}\ln\Te}\,\Delta\ln\bdep .
+  \delta\ln\Te \;=\;
+  \frac{\big(\partial\ln\Robs/\partial\ln\bdep\big)_{\Te,\nel}}
+       {\big(\mathrm{d}\ln\Rcre/\mathrm{d}\ln\Te\big)_{\nel}}\,\delta\ln\bdep ,
+  \qquad \nel \text{ known} .
   \label{eq:inversion_jacobian}
 \end{equation}
 
-\noindent The bound constrains the numerator only. Where the ratio is itself
+\noindent Both derivatives are taken at fixed $\nel$, and the relation is a
+local linearisation: it is exact only in the limit of small $\delta\ln\bdep$,
+and Chapter~\ref{ch:results} uses the exact finite-step form in its place
+wherever a number is quoted.
+
+\textbf{If $\nel$ is not known independently, one ratio is not enough.} Two
+unknowns need two observables, and the honest local statement is a Jacobian
+rather than a quotient: with two measured ratios $\Robs^{(1)}$ and
+$\Robs^{(2)}$,
+\begin{equation}
+  \begin{pmatrix}\delta\ln\Robs^{(1)}\\[2pt]\delta\ln\Robs^{(2)}\end{pmatrix}
+  = \bm{J}\begin{pmatrix}\delta\ln\Te\\[2pt]\delta\ln\nel\end{pmatrix},
+  \qquad
+  \begin{pmatrix}\delta\ln\Te\\[2pt]\delta\ln\nel\end{pmatrix}
+  = \bm{J}^{-1}\begin{pmatrix}\delta\ln\Robs^{(1)}\\[2pt]\delta\ln\Robs^{(2)}\end{pmatrix},
+  \label{eq:inversion_2x2}
+\end{equation}
+
+\noindent and the amplification is governed by the conditioning of $\bm{J}$
+rather than by a single quotient. Chapter~\ref{ch:intro} already noted that one
+ratio is one constraint on two unknowns and that practice supplies a second;
+Eq.~\eqref{eq:inversion_jacobian} is what that second constraint buys.
+This thesis measures the numerator and does not measure $\bm{J}$, so no claim
+about a two-parameter inversion is made anywhere in it.
+
+The bound constrains the numerator only. Where the ratio is itself
 weakly sensitive to temperature, which is where Balmer diagnostics are known
 to be least useful, a bounded error in $\Robs$ can still become a large error
 in the inferred $\Te$. The inversion Jacobian in the denominator is supplied in
@@ -1408,13 +1451,21 @@ $\Zsb{1}\nel(a_3c_4-a_4c_3)/c_4^2$, which is finite. The two limits are
 statements about the \emph{fractional} response of the observable, which is what
 a diagnostic error is.
 
-The classification into ionising and recombining plasmas is due to
-Fujimoto~\cite{Fujimoto2004}, and the crossover between the two is exactly the
-region Eq.~\eqref{eq:log_sensitivity} singles out. A plasma is ionising when
-excitation out of the ground state supplies most of the excited population and
-recombining when capture from the continuum does; between those limits both
-supply channels of Eq.~\eqref{eq:two_supplies} contribute, the two shells draw
-on them in different proportion, and the sensitivity is largest. That crossover
+The two supply channels are Fujimoto's, who names the first term of
+Eq.~\eqref{eq:two_supplies} the \emph{recombining plasma component} and the
+second the \emph{ionising plasma component}~\cite[Sec.~4.1]{Fujimoto2004}.
+Naming the components that way is his and is standard. \textbf{Identifying which
+component dominates one shell with the state of the plasma is a different claim,
+and this thesis does not make it.} Call a shell \emph{ground-fed} when
+excitation out of the ground state supplies most of its population and
+\emph{recombination-fed} when capture from the continuum does. That is a
+statement about one level's supply budget. Whether the plasma is \emph{ionising}
+is a statement about the sign of the net stage-to-stage flux, as
+Section~\ref{sec:ground_fed_fraction} already insisted, and a level can be
+predominantly ground-fed in a plasma that is recombining on balance. The
+crossover Eq.~\eqref{eq:log_sensitivity} singles out is the ground-fed one:
+between the two limits both supply channels contribute, the two shells draw on
+them in different proportion, and the sensitivity is largest. That crossover
 is a statement about the switching points $c_m/a_m$ of the network, and where it
 falls in $(\Te,\nel)$ is measured rather than assumed; identifying it with any
 named divertor operating regime is a separate claim, requiring densities this
@@ -1509,8 +1560,13 @@ the time.
 Two remarks on terminology, both of which matter for what follows. First,
 $\bdep = 1$ denotes complete thermodynamic equilibrium, whereas
 $\bdep^{\mathrm{CRE}}$ denotes the steady state of the collisional--radiative
-system, which is a different and much weaker condition; in an optically thin
-ionising plasma $\bdep^{\mathrm{CRE}}$ is very much larger than unity. Second,
+system, which is a different and much weaker condition; where excitation out of
+the ground state dominates and the plasma is optically thin,
+$\bdep^{\mathrm{CRE}}$ is very much larger than unity. Note that a large
+$\bdep^{\mathrm{CRE}}$ does not by itself make the shells ground-fed: the
+benchmark has $\bdep^{\mathrm{CRE}} = 956$ and both shells fed predominantly
+from above, which is the distinction
+Section~\ref{sec:ground_fed_fraction} draws. Second,
 this model holds the ion density fixed (Section~\ref{sec:rate_equation}), so
 the quantity relaxing on $\tauslow$ is the ground-state population against a
 prescribed reservoir, not a self-consistent ionisation balance. What that

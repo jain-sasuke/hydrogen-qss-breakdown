@@ -572,8 +572,12 @@ Equation~\eqref{eq:R_of_b} makes the post-step observable a ratio of two affine
 functions of $u$, so the logarithmic sensitivity of
 Section~\ref{sec:ground_fed_fraction} is $\mathrm{d}\ln\Robs/\mathrm{d}\ln u =
 \ffrac{3}-\ffrac{4}$, the difference of the two ground-fed fractions.
-Integrating between the frozen and the equilibrated reservoir gives, with no
-approximation,
+Write $u^-$ for the reservoir the plasma arrives with, the
+\emph{pre-step} equilibrium value $u^{\mathrm{CRE}}(\Te^-)$ that the excited
+manifold is frozen onto during the plateau, and $u^+$ for the \emph{post-step}
+value $u^{\mathrm{CRE}}(\Te^+)$ that the lookup table assumes. Then $\Rpe$ is the
+post-step operator evaluated at $u^-$, and $\Rcre$ is the same operator at
+$u^+$. Integrating between the two gives, with no approximation,
 \begin{equation}
   \ln\frac{\Rpe}{\Rcre}
   \;=\; \int_{\ln u^+}^{\ln u^-}\!\!\big(\ffrac{3}-\ffrac{4}\big)\,\mathrm{d}\ln u
@@ -581,7 +585,14 @@ approximation,
   \label{eq:exact_decomposition}
 \end{equation}
 
-\noindent where $\Delta\ln u = \ln(u^-/u^+)$ is the reservoir displacement and
+\noindent where
+\begin{equation}
+  \Delta\ln u \;\equiv\; \ln\frac{u^+}{u^-}
+  \label{eq:dlnu_def}
+\end{equation}
+
+\noindent is the reservoir displacement, written post-step over pre-step so that
+$\Delta$ carries its usual sense of new minus old, and
 \begin{equation}
   \overline{S} \;\equiv\;
   \frac{1}{\Delta\ln u}\int_{\ln u^+}^{\ln u^-}\!\!
@@ -590,7 +601,30 @@ approximation,
 \end{equation}
 
 \noindent is the mean sensitivity over the interval the reservoir traverses.
-Both factors are dimensionless. Since $\ffrac{3},\ffrac{4}\in[0,1]$ by
+Both factors are dimensionless.
+
+\paragraph{The sign convention, stated once and used throughout.} The
+ground-fed fraction of $n=3$ exceeds that of $n=4$ at every point of this grid,
+so the integrand of Eq.~\eqref{eq:Sbar_def} is positive everywhere and only the
+direction of travel changes sign. Heating depletes the ground state, so
+$u^+ < u^-$, the interval runs forward, and $\Delta\ln u < 0$ while the integral
+is positive. Cooling refills it, so $\Delta\ln u > 0$ while the interval runs
+backwards and the integral is negative. \textbf{In both directions
+$\overline{S} < 0$, and in both directions $G < 0$}, the latter because
+$\Delta\ln u$ and $\Delta\ln\Te$ always carry opposite signs. Measured over all
+$2288$ rows of \texttt{reservoir\_gain.csv} this holds without exception:
+$\overline{S}$ runs $-0.4963$ to $-0.0355$ and $G$ runs $-14.52$ to $-2.64$.
+
+The product $\overline{S}\,\Delta\ln u$ is therefore positive for heating and
+negative for cooling, and $\epsplat$ is positive in both because
+Eq.~\eqref{eq:eps_plateau_exact} takes a modulus: heating gives
+$\mathrm{e}^{+}-1 > 0$ and cooling gives $1-\mathrm{e}^{-} > 0$. Nothing
+observable depends on the orientation, since reversing it flips $\Delta\ln u$
+and $\overline{S}$ together and leaves $\epsplat$ unchanged, which is why the
+tables report $|\overline{S}|$ and $|G|$. The convention is spelled out because
+an earlier draft defined $\Delta\ln u$ with the opposite orientation from the
+script that computes it; the two disagreed about the sign of $G$ while agreeing
+about every error. Since $\ffrac{3},\ffrac{4}\in[0,1]$ by
 Section~\ref{sec:ground_fed_fraction}, and $\overline{S}$ is an average of their
 difference, $|\overline{S}|$ is bounded by the peak sensitivity of
 Eq.~\eqref{eq:peak_sensitivity} and so is strictly less than unity everywhere.
@@ -625,21 +659,39 @@ in the equilibrium ground-state population. It is a \emph{secant}, taken along
 the CRE curve between the two endpoints of the step, and it is defined that way
 deliberately, so that Eq.~\eqref{eq:eps_of_step} below is exact rather than
 first-order; it tends to the partial derivative on the right as the step
-closes. It is dimensionless, it is negative throughout the grid because heating
-ionises the ground state away, and unlike $\epsplat$ it is very nearly a
+closes. Under the convention of Eq.~\eqref{eq:dlnu_def} the secant and its
+limit carry the same sign, which they did not in an earlier draft. It is
+dimensionless, it is negative throughout the grid because heating ionises the
+ground state away, and unlike $\epsplat$ it is very nearly a
 property of the operating point rather than of the experiment done to it. Substituting into
 Eq.~\eqref{eq:eps_plateau_exact},
 \begin{equation}
   \boxed{\ \epsplat = \Big|\exp\!\big(\overline{S}\,G\,\Delta\ln\Te\big)-1\Big|\ },
   \qquad
-  \lim_{\Delta\ln\Te\to0}\frac{\mathrm{d}\,\epsplat}{\mathrm{d}\ln\Te}
+  \lim_{\Delta\ln\Te\to0}\frac{\epsplat}{\big|\Delta\ln\Te\big|}
   = \big|\overline{S}\,G\big| .
   \label{eq:eps_of_step}
 \end{equation}
 
 \noindent The small-step limit on the right is the useful form: it is the
 diagnostic error per unit fractional temperature excursion, with the excursion
-divided out. At the benchmark point it is $1.31$, at $[15,3]$ it is $3.54$ and
+divided out. It is written as a ratio rather than as
+$\mathrm{d}\epsplat/\mathrm{d}\ln\Te$ for a reason that is easy to miss.
+$\epsplat = |\mathrm{e}^{z}-1|$ has a corner at $z=0$: its one-sided
+derivatives there are $+1$ and $-1$, so the two-sided derivative does not exist
+and a limit written that way is not well posed at the point it is being taken.
+The ratio of moduli is, and it is the quantity actually wanted. The
+\emph{signed} logarithmic response is smooth and gives the same content without
+the modulus,
+\begin{equation}
+  \lim_{\Delta\ln\Te\to0}
+  \frac{\ln\!\big(\Rpe/\Rcre\big)}{\Delta\ln\Te}
+  \;=\; \overline{S}\,G ,
+  \label{eq:signed_response}
+\end{equation}
+
+\noindent which is the form to differentiate if anything downstream needs a
+derivative. At the benchmark point it is $1.31$, at $[15,3]$ it is $3.54$ and
 at $[0,4]$ it is $6.96$, all computed as $|\overline{S}G|$ from the values in
 Table~\ref{tab:gain}. Read the middle one as: in the worst conditions this
 thesis defends, a \SI{1}{\percent} temperature transient costs the Balmer
@@ -718,14 +770,18 @@ the reframing.
 
 \subsection{A worked number at the benchmark}
 
-The chain closes arithmetically. At $[23,5]$ the mean sensitivity over the step
-is $|\overline{S}| = 0.2288$ (\texttt{findings\_10} ADDENDUM~B.2, which lists it
-alongside $\Delta = 1.9403$ and $\tanh(\Delta/4) = 0.4503$ at that point), the
-gain is $G = -5.736$, and one grid interval is $\Delta\ln\Te = 0.046984$. Then
+The chain closes arithmetically, and it is worked with signs rather than
+magnitudes so that the convention above can be checked rather than trusted. At
+$[23,5]$ the mean sensitivity over the step is $\overline{S} = -0.2288$
+(\texttt{findings\_10} ADDENDUM~B.2, which lists $|\overline{S}|$ alongside
+$\Delta = 1.9403$ and $\tanh(\Delta/4) = 0.4503$ at that point), the gain is
+$G = -5.736$, and one heating interval is $\Delta\ln\Te = +0.046984$. Two
+negatives and a positive give
 \begin{equation*}
-  \overline{S}\,G\,\Delta\ln\Te = 0.2288 \times 5.736 \times 0.046984 = 0.06166,
+  \overline{S}\,G\,\Delta\ln\Te = (-0.2288)\times(-5.736)\times(+0.046984)
+  = +0.06166,
   \qquad
-  \mathrm{e}^{0.06166} - 1 = 0.0636 ,
+  \mathrm{e}^{+0.06166} - 1 = +0.0636 ,
 \end{equation*}
 %
 against the $0.063612$ that \texttt{verify\_plateau\_gridmap.py} obtains for the
@@ -785,15 +841,30 @@ interval, it inherits the bound:
 Three properties make this worth stating separately from the algebra that
 produced it.
 
-\textbf{It does not depend on the atomic data.} The $\tanh$ is a consequence of
-the logistic having unit width, and the width is unity because the excited
-populations are exactly affine in $\ngs$, which is a structural property of the
+\textbf{There are two bounds here, and only one of them is independent of the
+atomic data.} The distinction is easy to lose and an examiner will not lose it.
+
+The \emph{universal} bound is $|\ffrac{3}-\ffrac{4}| < 1$, which follows from
+$\ffrac{3},\ffrac{4} \in [0,1]$ and therefore from nothing but the positivity of
+$\bm{a}$ and $\bm{c}$ established in Section~\ref{sec:ground_fed_fraction}. It
+holds for any non-negative rate data whatever, for any pair of shells, and it is
+what licenses the amplification statement below. Nothing about hydrogen enters
+it.
+
+The \emph{sharp} bound $\tanh(|\Delta|/4)$ is stronger and is not universal in
+the same sense. Its \emph{functional form} is structural: the $\tanh$ is a
+consequence of the logistic having unit width, and the width is unity because
+the excited populations are exactly affine in $\ngs$, which is a property of the
 linear system and not of any rate coefficient
-(\texttt{findings\_10} ADDENDUM~B.1). Every property of the 42-state network
-enters only through where the two curves sit, that is through $\Delta$.
-Consistent with that, $\Delta$ is invariant under rescaling the $\ngs/\nion$
-normalisation, verified exactly under factors of $10^{10}$ and $10^{-7}$, and
-is insensitive to the $\ell$-weighting used to bundle a shell: population sum,
+(\texttt{findings\_10} ADDENDUM~B.1). But its \emph{numerical value} is set by
+$\Delta = \ln[(a_3/a_4)/(c_3/c_4)]$, and those four coefficients are the atomic
+data. \textbf{Change the rate set and the cap moves.} Every property of the
+42-state network enters exactly there, and only there.
+What \emph{is} established about $\Delta$ is invariance under two specific
+choices, which is a narrower claim than robustness to the rate data and should
+not be read as it. $\Delta$ is invariant under rescaling the $\ngs/\nion$
+normalisation, verified exactly under factors of $10^{10}$ and $10^{-7}$, and is
+insensitive to the $\ell$-weighting used to bundle a shell: population sum,
 $p$-states, $d$, $s$ and statistically weighted give $1.94561$, $1.94474$,
 $1.94447$, $1.94471$ and $1.94574$ at the benchmark, a spread of
 \SI{0.07}{\percent} (\texttt{findings\_10}~\S B.5). The individual switching
@@ -813,21 +884,41 @@ $|\overline{S}| = 0.2288$ against a cap of $0.4503$, so the sensitivity is at
 into the crest, $|\overline{S}| = 0.4261$ against a cap of $0.4394$, that is
 \SI{97}{\percent} (both from the table in \texttt{findings\_10}~\S B.2;
 the percentages are arithmetic on those two columns). Where the error is
-largest, the diagnostic is running at essentially its structural maximum
-sensitivity to the reservoir, and no refinement of the rate coefficients can
-make that worse.
+largest, the diagnostic is running at essentially the maximum sensitivity to the
+reservoir that \emph{this rate set} permits.
+
+An earlier draft added that no refinement of the rate coefficients could make
+that worse. \textbf{That does not follow and is withdrawn.} Sitting at
+\SI{97}{\percent} of the cap says there is little headroom \emph{beneath} the
+cap; it says nothing about where the cap itself would move, and the cap moves
+with $\Delta$, which is atomic data. A refinement can raise
+$\tanh(|\Delta|/4)$ and can move $u^{\mathrm{peak}}$ relative to the operating
+point, in either direction.
+
+What is measured, and it is less than the withdrawn claim, is insensitivity to
+two specific perturbations of the rate set. Rebuilding $\Lmat$ with a
+density-consistent Debye cutoff at every grid point moves $\ffrac{3}-\ffrac{4}$
+by at most \SI{0.42}{\percent}, and scaling every $\ell$-mixing rate over a range
+of $\times0.1$ to $\times10$ moves it by under \SI{0.3}{\percent}
+(Section~\ref{sec:lmixing}). Both concern $\ell$-mixing. \textbf{No test in this
+thesis bounds $\Delta$ under a refinement of the excitation or recombination
+datasets}, which are the coefficients $\Delta$ is actually built from, and where
+Chapter~\ref{ch:validation} records agreement with RMPS only at the
+\SI{20}{\percent} level for $n_{\rm upper}\le4$. The \SI{97}{\percent} is a
+statement about the present rate set and should be read as one.
 
 \subsection{What the bound does not constrain}
 \label{sec:inversion_jacobian}
 
 A diagnostician does not suffer an error in $\Robs$. They measure $\Robs$ and
-invert it for $(\Te,\nel)$, and Eq.~\eqref{eq:inversion_jacobian} makes the
-inferred temperature error
-$\Delta\ln\Te = (\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep)/
-(\mathrm{d}\ln\Robs/\mathrm{d}\ln\Te)\,\Delta\ln\bdep$.
-Equation~\eqref{eq:Sbar_bound} constrains the numerator. It says nothing about
-the denominator, and Chapter~\ref{ch:theory} deferred the denominator to this
-chapter.
+invert it. At known $\nel$, Eq.~\eqref{eq:inversion_jacobian} makes the inferred
+temperature error the ratio of two derivatives, both taken at fixed $\nel$:
+the sensitivity of the observable to the reservoir over its sensitivity to
+temperature. Equation~\eqref{eq:Sbar_bound} constrains the numerator. It says
+nothing about the denominator, and Chapter~\ref{ch:theory} deferred the
+denominator to this chapter. If $\nel$ is not independently known the relevant
+object is the $2\times2$ Jacobian of Eq.~\eqref{eq:inversion_2x2} instead, which
+this thesis does not measure.
 
 The denominator vanishes. Scanning $\Te$ at
 $\nel = \SI{5.18e13}{\per\cubic\centi\metre}$, $\epsstep$ of

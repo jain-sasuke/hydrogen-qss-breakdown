@@ -188,7 +188,8 @@ density, and $\Svec$ has units of \si{\per\second}, not
 \si{\cubic\centi\metre\per\second}.
 
 This matters physically, not just dimensionally. At $\nel = \SI{e12}{\per\cubic\centi\metre}$
-the three-body channel supplies under 10\% of the feed into any level; at
+the three-body channel already supplies more than \SI{10}{\percent} of the feed
+into $30$ of the $36$ resolved levels, and is negligible only for $n \le 3$; at
 $\nel = \SI{e15}{\per\cubic\centi\metre}$ it supplies more than 99\% into the
 high-$n$ shells. The same equation therefore describes two physically different
 regimes at the two ends of the density grid, a fact used in
@@ -220,9 +221,19 @@ removes an atom from the bound states. Therefore
 \end{equation}
 
 \noindent Each column of $\Lmat$ must sum to the ionisation leak from the level
-that column represents, no more, no less. An error in a single off-diagonal
-element, a transposed index, or a missing back-reaction all break this
-immediately.
+that column represents, no more, no less.
+
+The check is worth having and it is worth being precise about what it can
+detect, because the answer is narrower than it looks. Each block of the
+assembly writes its diagonal as minus the column sum of the off-diagonal
+entries it has just written, so the identity holds by construction whatever
+those entries contain. Injecting a tenfold error into one excitation rate
+coefficient, deleting every de-excitation rate, and transposing the entire
+input array each leave the residual unchanged. What the check does detect is an
+inconsistency between the two separately stored radiative arrays, the
+transition probabilities and the total decay rates: halving one without the
+other moves the residual by thirteen orders of magnitude.
+Chapter~\ref{ch:validation} grades it on that basis.
 
 \subsection{A worked example}
 
@@ -273,8 +284,8 @@ column-sum residual is
   \label{eq:conservation_measured}
 \end{equation}
 
-\noindent which is round-off for a matrix whose entries span eight orders of
-magnitude. The assembly is arithmetically sound.
+\noindent which is round-off for a matrix whose non-zero entries span about
+twelve decades. The assembly is arithmetically sound.
 
 It is worth being precise about what this does and does not establish. It
 establishes that every transition entered as a loss also entered as a gain
@@ -440,9 +451,13 @@ there proceeds stepwise. We write
   \tauqss \equiv \frac{1}{|\lambda_0|} = \SI{22.73}{\micro\second}.
 \end{equation}
 
-The next mode $\bm{v}_1$ has almost no ground-state weight and is distributed
-across the excited manifold. It is the excited states rearranging among
-themselves:
+The next mode $\bm{v}_1$ is the excited states rearranging among themselves.
+Its participation ratio is $2.64$, so it lives on two or three levels rather
+than across the manifold. Its ground-state weight depends on the measure and
+both are worth stating: in the raw eigenvector the $1s$ component is the largest
+entry, at $1.0000$, while scaled by the equilibrium populations it is
+$1.9\times10^{-4}$. The second measure is the one that matters for the
+populations, and it is the reason this mode is not a ground-state mode:
 \begin{equation}
   \taurel \equiv \frac{1}{|\lambda_1|} = \SI{2.277}{\nano\second}.
 \end{equation}
@@ -717,8 +732,10 @@ continuum, so each column sum is strictly negative rather than zero, and the
 Levy--Desplanques theorem applies. Physically, there are no perfectly trapped
 states within the excited manifold. Its condition number lies between
 $1.48\times10^{3}$ and $1.74\times10^{5}$ across the grid, so the inversion is
-numerically well behaved despite the eight orders of magnitude spanned by the
-entries.
+numerically well behaved despite the twelve decades spanned by the entries.
+Both the range and the condition number are produced by
+\texttt{verify\_operator\_conditioning.py} and stamped in
+\texttt{validation/operator\_conditioning/}.
 
 \subsection{The reduced dynamics}
 
@@ -813,7 +830,7 @@ separation $\Msep^{\rm eff} = \tauqss/\|\Lmat_{FF}^{-1}\|_2$,
 \begin{equation}
   \Msep^{\rm eff} = 8659 \ \text{at the benchmark},
   \qquad
-  \Msep^{\rm eff} \ge 77.6 \ \text{at all 400 grid points},
+  \Msep^{\rm eff} \ge 77.3 \ \text{at all 400 grid points},
   \label{eq:M_eff}
 \end{equation}
 
@@ -1019,13 +1036,32 @@ the corner where the atomic-only model is weakest for an independent reason: at
 \SIrange{95}{98}{\percent} neutral and \SI{1}{\electronvolt} the gas is
 molecular, and neither $\mathrm{H}_2$ nor molecular-assisted recombination
 appears in $\Lmat$. Chapter~\ref{ch:limits} takes both limitations up
-quantitatively. Neither affects the structural results of this chapter, which
-are statements about whatever $\Lmat$ is supplied: the quasi-steady-state
-closure, the three-argument form of $\Rqss$ and the identity
-$\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep = \ffrac{3}-\ffrac{4}$ hold for a
-trapped-line rate matrix exactly as they do for an optically thin one. What
-changes is the numerical value of $\bdep^{\rm CRE}$ that such a matrix
-produces.
+quantitatively.
+
+The structural results of this chapter are statements about whatever $\Lmat$ is
+supplied, and it is worth being exact about the condition they need, because it
+is easy to claim too much here. The quasi-steady-state closure, the
+three-argument form of $\Rqss$ and the identity
+$\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep = \ffrac{3}-\ffrac{4}$ require that
+$\Lmat_{FF}$, $\Lmat_{FS}$ and $\Svec_F$ contain no $\ngs$. That is what makes
+Eq.~\eqref{eq:two_supplies} affine in the reservoir, and the affinity is what
+makes $\ffrac{p}$ a logistic of unit width.
+
+For a matrix with the Lyman transitions trapped at a \emph{fixed} escape factor
+the condition holds, and the identities carry over with a different
+$\bdep^{\rm CRE}$. For the self-consistent trapped problem it does not:
+$\Theta_P$ depends on $\ngs$, so the effective transition probabilities do too,
+$\bm a$ is no longer independent of the reservoir, and the unit width is lost.
+The ceiling then becomes $\tanh(m|\Delta|/4)$ with $m \neq 1$ and not known in
+advance. Section~\ref{sec:opacity} of Chapter~\ref{ch:limits} treats the
+self-consistent case and quantifies where it matters.
+
+A molecular reservoir breaks the condition more seriously, because
+$\mathrm{H}_2$ set by recycling is a \emph{third} independent supply. Then
+$n_p = a_p\ngs + c_p\nion + m_p n_{\mathrm{H}_2}$, $\ffrac{p}$ is not a
+one-variable logistic, and the ceiling does not follow at all. The framework of
+this chapter is two-channel by construction, and that is a statement about its
+form rather than about the accuracy of its coefficients.
 
 \textbf{$\bdep$ is a dynamical variable}, and it is worth being precise about
 how it evolves. Differentiating Eq.~\eqref{eq:departure} at fixed $\nion$,
@@ -1533,9 +1569,12 @@ are well behaved, and these are not.
 The reason is a physical asymmetry running through the whole matrix. Radiative
 decay carries atoms downward at up to $\SI{6.3e8}{\per\second}$; electron-impact
 excitation carries them upward at $C\nel \sim \SI{e4}{\per\second}$ at the
-benchmark density. Downward and upward coupling therefore differ by some nine
-orders of magnitude, and $\Lmat$ is very far from symmetric. Its eigenvectors,
-consequently, are very far from orthogonal.
+benchmark density. Downward and upward coupling therefore differ by nearly five
+orders of magnitude, and $\Lmat$ is very far from symmetric. That asymmetry does
+not by itself establish non-normality, for the reason given in
+Section~\ref{sec:two_clocks}: a non-symmetric matrix may still be normal. The
+non-normality is established separately, by measurement, and the numerical
+abscissa is positive at all $400$ grid points.
 
 The consequence is worth stating carefully, because it is easy to overstate.
 Every eigenvalue has negative real part, so every mode decays and any

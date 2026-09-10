@@ -435,7 +435,7 @@ Section~\ref{sec:atomic_uncertainty} is able to test.
 That exclusion has a consequence which is easy to miss and which
 Section~\ref{sec:lmixing} turns into the central argument of this chapter. With
 $\Delta n = 0$ electron impact removed there is no electron-driven route between
-$2s$ and $2p$ at all. Together with the fact that $2s$ cannot radiate, it leaves
+$2s$ and $2p$ at all. Together with the near-absence of a radiative exit from $2s$, it leaves
 the $n=2$ manifold with almost nothing to do, unless another collision partner
 is admitted.
 
@@ -551,8 +551,12 @@ exponential integrals and $g_0,g_1,g_2$ the Gaunt polynomials of Johnson's
 Table~1 (\texttt{recombination\_rates.py}). $y$ and the bracket are
 dimensionless and $D$ carries the units, so both sides are
 \si{\cubic\centi\metre\per\second}. Physically, capture into a shell is easiest
-when the electron's thermal energy matches that shell's binding energy, so
-$\alpha_{\mathrm{RR}}$ peaks near $\Te \sim I_n$. The shell total is split over
+so capture is favoured at low electron energy. Over the range used here
+$\alpha_{\mathrm{RR}}(n,\Te)$ decreases monotonically with $\Te$ for every
+level, with no interior maximum: Eq.~\eqref{eq:alpha_RR} gives
+$\alpha \propto \Te^{-1/2}$ at high energy and drives $\alpha \to 0$ at low
+energy, so the maximum lies below \SI{1}{\electronvolt} for the shells that
+matter here. The shell total is split over
 $\ell$ statistically, $\alpha_{\mathrm{RR}}(n,\ell) =
 \alpha_{\mathrm{RR}}(n)(2\ell+1)/n^{2}$~\cite{MaoKaastra2016}, a step requiring
 $\nel \gtrsim \SI{e10}{\per\cubic\centi\metre}$, two decades below our lowest
@@ -921,7 +925,15 @@ $\nion = \nel$ by quasi-neutrality, and $\Delta\ell = \pm1$ only. A fourth is
 easy to miss on reading the code. The Debye length inside $U_m$ is evaluated at
 a fixed reference density \SI{e14}{\per\cubic\centi\metre} rather than at each
 grid density, on the stated grounds that $F$ depends on density only
-logarithmically and varies by about \SI{30}{\percent} across the grid. The
+logarithmically. That stated ground is wrong: evaluating the module's own
+expression gives a factor $3.7$ variation for $n=2$ and a factor $50$ for $n=8$
+across the density grid. The practice survives for a different reason, measured
+rather than assumed. Rebuilding $\Lmat$ with a density-consistent cutoff at every
+grid point moves $\ffrac{3}-\ffrac{4}$ by at most \SI{0.42}{\percent}, and
+scaling every $\ell$-mixing rate over a range of $\times0.1$ to $\times10$ moves
+it by less than \SI{0.3}{\percent} at the benchmark and the density maximum.
+$\ell$-mixing is saturated, so the frozen table costs nothing that can be
+measured. The
 stored table has no density axis at all, so the linear $\propto\nel$ scaling
 applied at assembly is exact while the Coulomb-logarithm factor inside it is
 frozen at mid-grid. One item is left open rather than settled: Badnell's
@@ -937,8 +949,12 @@ We can now close the loop that Sections~\ref{sec:state_space},
 \ref{sec:excitation} and~\ref{sec:radiative} each opened, and the result is the
 strongest single statement in this chapter.
 
-Ask what an atom in $2s$ can do. It cannot radiate: $2s \to 1s$ is E1-forbidden
-and $\gamma_{2s} = 0$. It cannot be moved to $2p$ by an electron: $\Delta n = 0$
+Ask what an atom in $2s$ can do. Its only radiative exit is two-photon emission
+at \SI{8.229}{\per\second}: $2s \to 1s$ is E1-forbidden, and $\gamma_{2s} = 0$
+in this dataset because the two-photon channel is not carried in it. That rate
+is ten orders of magnitude below the collisional rates that follow, which is why
+its omission is harmless here and why it nonetheless matters: it is the one
+depopulation route that does not vanish as $\nel \to 0$. It cannot be moved to $2p$ by an electron: $\Delta n = 0$
 transitions were excluded from the CCC dataset on the provider's instruction.
 What is left is electron-impact excitation to $n \ge 3$, electron-impact
 ionisation, and proton $\ell$-mixing. Decomposing the total loss from $2s$ into

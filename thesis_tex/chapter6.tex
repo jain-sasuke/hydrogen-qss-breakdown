@@ -140,7 +140,7 @@ included. There the model's own CR solution gives $\ngs/\nion = 28.3$, so
 quasi-neutrality fixes
 $\ngs = 1.47\times10^{15}\,\si{\per\cubic\centi\metre}$. At
 \SI{1}{\electronvolt} that gives
-$\sigma_0 = 7.74\times10^{-14}\,\si{\square\centi\metre}$, and the Lyman-$\alpha$
+$\sigma_0 = 5.47\times10^{-14}\,\si{\square\centi\metre}$, and the Lyman-$\alpha$
 optical depth per centimetre of path is
 
 \begin{center}
@@ -149,23 +149,25 @@ optical depth per centimetre of path is
   $\Te$ (eV) & $\tau_{\rm Ly\alpha}$ per \si{\centi\metre} at
               $\nel = 5.18\times10^{13}\,\si{\per\cubic\centi\metre}$ \\
   \midrule
-  1.00 & 114 \\
-  1.15 & 15.0 \\
-  1.60 & 0.32 \\
-  2.02 & 0.036 \\
-  2.95 & 0.0023 \\
+  1.00 & 80.3 \\
+  1.15 & 10.6 \\
+  1.60 & 0.224 \\
+  2.02 & 0.0255 \\
+  2.95 & 0.00163 \\
   \bottomrule
 \end{tabular}
 \end{center}
 
-\noindent An optical depth of $114$ per centimetre is worth translating, because
+\noindent An optical depth of $80$ per centimetre is worth translating, because
 the figure is otherwise abstract: it means a Lyman-$\alpha$ photon at that point
-travels under a tenth of a millimetre before it is reabsorbed. It is not
-travelling anywhere. Over \SI{5}{\centi\metre} of plasma the accumulated depth
-is $7900$ and the escape factor is $2.7\times10^{-5}$; roughly one photon in
-forty thousand gets out. That figure is an independent reproduction of the
-$3\times10^{-5}$ quoted in Chapter~\ref{ch:theory}: it was recomputed here from
-the model's own solution rather than copied from that chapter, and the two agree.
+travels about a tenth of a millimetre before it is reabsorbed. It is not
+travelling anywhere. Over \SI{5}{\centi\metre} of plasma the line-centre depth
+over the half slab is $201$ and the population escape factor is
+$1.2\times10^{-3}$; roughly one photon in eight hundred gets out. Chapter~%
+\ref{ch:theory} quotes $3\times10^{-5}$ at a different grid point, a different
+slab thickness and a different density, so the two are not the same quantity and
+the agreement in order of magnitude should not be read as a reproduction of
+one by the other.
 The blunt reading is that the effective $A_{2p\to1s}$ belonging in $\Lmat$ at
 that point is wrong by four to five orders of magnitude.
 
@@ -301,7 +303,7 @@ stronger statement than a restriction and should be read as one.
 threefold}
 
 The same calculation is much less kind to the cold edge, and it should be,
-because that is where the optical depth was $114$ per centimetre.
+because that is where the optical depth was $80$ per centimetre.
 Table~\ref{tab:trapping_worstpoint} follows the worst point of the optically
 thin map through the sweep.
 
@@ -446,10 +448,16 @@ locally; the ones that do not ionise leave, and fresh ones arrive continuously.
 
 The comparison is not close. At the worst point of the map $\tauqss$ is
 \SI{233}{\milli\second}: nearly a quarter of a second for a stationary atom to
-be ionised. A deuterium atom at \SIrange{1}{3}{\electronvolt} crosses a
-\SI{10}{\centi\metre} plasma in \SIrange{6}{10}{\micro\second}. The atom has left
-the volume roughly twenty thousand times over before the local ionisation
-balance would have finished with it.
+be ionised. A deuterium atom at \SIrange{1}{3}{\electronvolt} would cross a
+\SI{10}{\centi\metre} plasma ballistically in \SIrange{6}{10}{\micro\second}, but
+it does not travel ballistically: resonant charge exchange with the surrounding
+ions randomises its direction after about \SI{1.7}{\centi\metre} at this
+density, so escape is diffusive and takes closer to \SI{72}{\micro\second}. That
+correction runs in this model's favour. The threshold at which the worst point
+would fall below \SI{10}{\percent} is a ground-state renewal time of about
+\SI{26}{\micro\second}, so the result survives by a factor of $2.8$ rather than
+failing outright. It survives only because charge exchange traps the neutrals,
+which is a thin margin to rest on and is stated as one.
 
 \begin{quote}
 \textbf{In a divertor, the ground-state neutral density at a given point is not
@@ -562,8 +570,20 @@ stated.
 The \emph{numerical} cold-edge results are atomic-model results and nothing
 more. Adding a third supply channel that feeds $n=3$ preferentially would change
 $\ffrac{3}-\ffrac{4}$, and could plausibly change it a great deal; this work
-offers no bound on how much, and none can be constructed from the data in this
-repository.
+offers no direct calculation of how much. A bound can nonetheless be
+constructed, from the emissivity fractions cited in this section. For a given
+upper level the molecular fraction of the emissivity equals the molecular
+fraction of the population, because both channels emit through the same
+transition probability, and molecular-assisted recombination bypasses the ground
+state entirely, so it dilutes the ground-fed fraction as
+$\ffrac{p} \to \ffrac{p}(1-\phi_p)$. Taking $\phi_3 = 0.60$ and $\phi_4 = 0.30$
+from the reported \SIrange{60}{70}{\percent} of $\mathrm{D}\alpha$ and
+\SIrange{10}{20}{\percent} of $\mathrm{D}\gamma$, the sensitivity at the cold
+corner falls from $0.201$ to $0.054$ and at the density maximum from $0.053$ to
+$0.019$. Since $\epsplat$ is linear in $\ffrac{3}-\ffrac{4}$, that is a
+\textbf{factor of three to five reduction} of the cold-corner plateau error.
+The bound is crude, it inherits every uncertainty in the quoted fractions, and
+it applies only where those fractions do. It is not nothing.
 
 The \emph{structural} results are indifferent to it. The exact factorisation of
 the plateau error, the logistic form of the ground-fed fraction $\ffrac{m}$, and
@@ -578,8 +598,9 @@ likely to be raised first by a referee drawn from the divertor spectroscopy
 community, and the correct answer is the honest one: this is an atomic model,
 its cold-edge numbers are atomic-model numbers, and the reader should treat them
 as such.
-\todo{Molecular channels: unquantified, and no bound available from this work.
-Stated as a conditional.}
+\todo{Molecular channels are not in $\Lmat$. The dilution bound above is
+constructed from published emissivity fractions rather than computed here, and
+should be replaced by a calculation if molecular states are ever added.}
 
 %-----------------------------------------------------------------------------
 \section{Where the ridge sits depends on what the model assumed about neutrals}
@@ -1059,7 +1080,8 @@ depends on a slab thickness the model does not contain; and below
 \SI{1.15}{\electronvolt} even the location of the ridge is undetermined.
 
 It cannot say what a real divertor does, because the ground-state population
-there is renewed by recycling on a \SIrange{6}{10}{\micro\second} transit time,
+there is renewed by recycling on a transport timescale of order
+\SI{72}{\micro\second},
 against a local ionisation balance of \SI{233}{\milli\second} at the worst
 point. Four orders of magnitude separate the two, and the model contains only
 the slower one.

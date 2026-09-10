@@ -22,8 +22,10 @@ and a spectrometer has spread it out by wavelength. Two lines stand out: a red
 one at \SI{656}{\nano\metre} and a blue-green one at \SI{486}{\nano\metre}, both
 emitted by hydrogen atoms. She divides the brightness of the first by the
 brightness of the second, looks the resulting number up in a table, and reads
-off an electron temperature and an electron density. That is how the hottest and
-least accessible part of the machine gets measured.
+off an electron temperature and an electron density. That is how one of the
+least accessible regions of the machine gets measured. It is not the hottest
+part; the core is far hotter. It is the part where the plasma meets a solid
+surface, and the one whose conditions decide whether that surface survives.
 
 This thesis is about the table. It was built by solving a model of hydrogen's
 excited states to steady state, and it is indexed on two numbers: temperature
@@ -121,7 +123,7 @@ plasma whose light carries the most information.
 What conditions are those, in numbers? Edge modelling of the ITER baseline
 burning plasma gives target electron temperatures spanning roughly one to a few
 tens of electronvolts across the design database, with the large majority of
-cases below \SI{15}{\electronvolt} \cite{Stangeby2023, Stangeby2023}, and
+cases below \SI{15}{\electronvolt} \cite{Stangeby2023}, and
 falling below \SI{1}{\electronvolt} across half a metre of each target in the
 most strongly detached solutions obtained so far \cite{Lore2022}. The near-target
 electron density under partial detachment is expected to reach about
@@ -354,7 +356,9 @@ present (three-body recombination, which therefore needs two electrons and
 becomes important at high density). Meanwhile every excited atom is decaying
 radiatively on its own clock, and every decay from a high level cascades down
 through the intermediate ones. No single one of these processes dominates in a
-divertor. All of them run at once, at comparable rates.
+divertor. All of them run at once, and their rate coefficients span more than
+ten orders of magnitude, so which of them matters depends on the level and on
+the conditions rather than being settled once.
 
 The object that keeps track of all of it is a \emph{collisional--radiative} (CR)
 model. It is nothing more exotic than a population balance written for every
@@ -442,7 +446,9 @@ in the normalised form Chapter~\ref{ch:theory} adopts
 \cite{Bates1962, FujimotoMcWhirter1990, Fujimoto2004}. Its two limits have names
 that will recur: a plasma in which the first term dominates is called
 \emph{ionising}, one in which the second dominates is called \emph{recombining},
-and a divertor passes from the first into the second as it detaches.
+and a divertor moves between the two as its conditions change. The crossover is
+not identified with any named operating regime here; Chapter~\ref{ch:limits}
+gives the densities and explains why that identification does not hold.
 
 Now put Eq.~\eqref{eq:two_supplies_intro} into the observable. For the two Balmer
 levels,

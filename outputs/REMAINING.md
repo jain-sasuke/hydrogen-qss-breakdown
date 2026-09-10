@@ -66,13 +66,26 @@ Three findings came out of that work that were not on the list:
 
 ## C. Open, and needs work
 
-1. **The reviewer's first and most serious demand is unmet.** One concrete
-   published diagnostic procedure showing equations, inputs, what is tabulated,
-   and exactly where n_1s/n_i is eliminated. Without it the thesis is a good
-   analysis of a closure that may be reframed as the cost of an
-   equilibrium-reservoir closure rather than a failure of a procedure in use.
-   Chapter 1 cites Pigarov 1998 and ADAS, and neither is worked through in that
-   detail.
+1. ~~**The reviewer's first and most serious demand is unmet.**~~ **CLOSED
+   11 Sep 2026, and it forced the reframing the reviewer predicted.**
+   Lomanowski et al. 2015 (Nucl. Fusion 55 123028) read in full. It infers Te in
+   JET-ILW from the D 9->2 / 5->2 intensity ratio using ADAS PECs, and it does
+   **not** eliminate n_1s/n_i: the defining figure plots the ratio against Te
+   *and* the neutral fraction, drawn at an assumed n_0/n_e = 0.50. Bracketing
+   the neutral fraction over 0.1 to 0.8 turns one measured ratio into
+   Te = 1.8 to 2.5 eV, quoted as an upper limit. The closure they adopt is that
+   the ratio is "mainly driven by recombination", following Lumma 1997 and
+   McCracken 1998, available because "the contribution due to excitation is
+   negligible for n_upper > 5 for Te < 2 eV".
+   **Consequence, now written into Chapter 1 as sec:worked_inversion and into
+   the abstract:** no procedure read for this thesis eliminates the ratio by
+   imposing ionisation balance. The careful practice is the cancellation route.
+   The thesis is therefore not a demonstration that divertor Balmer diagnostics
+   fail; it is the cost of the closure that must be adopted where the
+   cancellation is unavailable, which is precisely at n=3 and n=4. That is the
+   narrower claim the reviewer said was defensible, and it is now the claim made.
+   A bonus: the non-uniqueness of the inversion is stated in that paper and is
+   found independently here.
 
 2. **The observable is n_3/n_4, not a ratio of line integrals.** The reviewer's
    structural point: reformulate the derivation on the A-weighted emissivity

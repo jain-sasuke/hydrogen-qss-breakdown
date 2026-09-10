@@ -501,17 +501,71 @@ ion, and it is fixed by the plasma's recent history and by transport, not by the
 local temperature and density.
 
 A table with two axes must therefore dispose of the third quantity, and there are
-only two honest ways to do it. One is to work in a region of the operating range
-where a single supply dominates \emph{both} levels, so that the third argument
-cancels between numerator and denominator of Eq.~\eqref{eq:ratio_three_args} and
-the table is right whatever the neutral fraction does. The other is to adopt a
-closure, a rule that fixes $\ngs/\nion$ in terms of $\Te$ and $\nel$. The rule
-used in practice is \emph{equilibrium ionisation balance}: solve the CR system
-all the way to steady state, and take the neutral-to-ion ratio it predicts for
-those local conditions. The state it predicts is called collisional--radiative
-equilibrium (CRE), and it is worth being clear that this is a much weaker
-condition than full thermodynamic equilibrium: it means only that the CR rate
-equations have stopped changing, not that the populations are thermal.
+only two honest ways to do it. \textbf{Route one} is to work where a single
+supply dominates \emph{both} levels, so that the third argument cancels between
+numerator and denominator of Eq.~\eqref{eq:ratio_three_args} and the answer is
+right whatever the neutral fraction does. \textbf{Route two} is to adopt a
+closure, a rule that fixes $\ngs/\nion$ in terms of $\Te$ and $\nel$. The
+obvious such rule is \emph{equilibrium ionisation balance}: solve the CR system
+all the way to steady state and take the neutral-to-ion ratio it predicts for
+the local conditions. That state is collisional--radiative equilibrium (CRE),
+and it is a much weaker condition than full thermodynamic equilibrium: it means
+only that the CR rate equations have stopped changing, not that the populations
+are thermal. \textbf{This thesis measures what route two costs.}
+
+\subsection{A worked example, because the distinction is easy to assert and
+hard to demonstrate}
+\label{sec:worked_inversion}
+
+It is fair to ask which route the literature actually takes, and the question
+deserves a specific paper rather than an impression. Lomanowski and co-workers
+infer divertor plasma properties in JET-ILW from hydrogen Balmer and Paschen
+spectroscopy, and their temperature inference is a line ratio of exactly the
+form of Eq.~\eqref{eq:ratio_three_args}: the $\mathrm{D}\,9\!\to\!2$ to
+$\mathrm{D}\,5\!\to\!2$ intensity ratio, with the level populations built from
+ADAS photon emissivity coefficients \cite[Sec.~3.2]{Lomanowski2015}.
+
+\textbf{They take route one, and they do not eliminate the third quantity.} The
+figure that defines their method plots the ratio against $\Te$ \emph{and the
+neutral fraction}, and its companion panel is drawn at a stated
+$n_0/\nel = 0.50$ rather than at a value derived from ionisation balance. The
+consequence is reported plainly: ``it is possible for the measured line ratio
+value to correspond to different temperatures, if the extent of the excitation
+contribution is not known''. Bracketing the neutral fraction over $0.1$ to $0.8$
+turns one measured ratio into $\Te = 1.8$ to \SI{2.5}{\electronvolt}, quoted as
+an \emph{upper limit} rather than a value \cite[Sec.~3.2]{Lomanowski2015}.
+
+What lets them proceed is the cancellation of route one. They adopt the
+assumption that the ratio is ``mainly driven by recombination processes in
+detached plasmas'', following earlier measurements at Alcator C-Mod and JET
+\cite{Lumma1997, McCracken1998}, and that assumption is available to them
+because, in their words, ``the contribution due to excitation is negligible for
+$n_{\rm upper} > 5$ for $\Te < 2$ eV for any reasonable values of the neutral
+fraction'' \cite[Sec.~3.2]{Lomanowski2015}.
+
+Three things follow, and they set the terms of this thesis.
+
+\emph{First, the criticism must be aimed correctly.} No procedure read for this
+thesis eliminates $\ngs/\nion$ by imposing ionisation balance on a Balmer ratio
+and reading off a temperature. The careful practice is route one. \textbf{This
+thesis is therefore not a demonstration that standard divertor Balmer
+diagnostics fail. It is a measurement of what the equilibrium-reservoir closure
+costs where route one is unavailable}, and the reader should hold it to that
+narrower claim throughout.
+
+\emph{Second, route one is unavailable for exactly the lines studied here.} The
+cancellation works because $a_p\ngs \ll c_p\nion$ for both levels, which is the
+statement that the ground-fed fraction of each shell is near zero. That holds
+for $n \geq 5$ in a detached plasma and fails for $n=3$ and $n=4$, where neither
+supply dominates. The two lines this thesis studies are the two where the third
+quantity cannot be cancelled away, which is why the closure has to be adopted
+there and why its cost is worth measuring.
+
+\emph{Third, the non-uniqueness is not this thesis's invention.} That one
+measured ratio can correspond to more than one temperature is stated in
+\cite{Lomanowski2015} and is found independently here from the model's own
+operator, in Section~\ref{sec:inversion_jacobian}. Two routes to the same defect is
+better evidence than either alone.
 
 That closure is an assumption about the plasma, not a piece of atomic physics.
 

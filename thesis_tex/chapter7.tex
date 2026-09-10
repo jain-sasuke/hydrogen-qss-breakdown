@@ -296,6 +296,19 @@ The \emph{general theorem} is Anderson's~\cite{Anderson1955}: for a symmetric
 unimodal density, $\sup_x[F(x)-F(x-\Delta)] = 2F(\Delta/2)-1$. This claim is its
 logistic instance, and the object itself is the L\'evy concentration function.
 
+What the search did \emph{not} find is the bound in the
+collisional--radiative literature, and one negative is worth recording because
+it was the largest remaining publication risk. Fujimoto's
+\emph{Plasma Spectroscopy} Chapter~4 \cite{Fujimoto2004} is where the
+population coefficients $r_0(p)$ and $r_1(p)$ that $\ffrac{p}$ is built from are
+introduced, tabulated and analysed at length. \textbf{It contains no $\tanh$, no
+logistic, and no bound on the difference of two population coefficients};
+searching the printed chapter for each of those returns nothing. The
+normalisation it does establish, $r_0(p) + r_1(p) \to 1$ at high density, is the
+statement that the two channels exhaust the population, which is what makes
+$\ffrac{p}$ a fraction in the first place and is assumed rather than derived
+here. The bound is not implicit in that chapter.
+
 The corollary $|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ is likewise not new.
 That $\ffrac{p}\in(0,1)$ is the standard statement that substrate elasticities
 lie between zero and the Hill coefficient~\cite{CornishBowden2012}, and a
@@ -360,6 +373,16 @@ electron density, the ion density and the electron temperature
 \enquote{are given} \cite[p.~5565]{SawadaFujimoto1994}. \textbf{The reservoir is
 a fixed parameter in their calculation.} It cannot be stale, because it never
 moves, and the question this thesis asks cannot arise inside their framework.
+
+That is not one paper's choice. The same calculation is the worked example of
+Appendix~4B of Fujimoto's \emph{Plasma Spectroscopy}, whose figures are
+captioned as quoted from that paper, and the appendix sets it up the same way:
+neutral atoms are immersed in a plasma at $t=0$ and, in its words, ``if $n(1)$
+is kept constant, after the initial transient this system should reduce to the
+high-temperature ionizing plasma'' treated earlier in the chapter
+\cite[App.~4B]{Fujimoto2004}. \textbf{The frozen reservoir is how the standard
+textbook treatment is posed}, which makes the gap this thesis fills a gap in the
+tradition rather than an oversight in one paper.
 
 The two-channel decomposition this thesis is built on is their Eq.~(3),
 $n(p) = R_0(p)\,n_z n_e + R_1(p)\,n(1)\,n_e$, and the ground-state equation

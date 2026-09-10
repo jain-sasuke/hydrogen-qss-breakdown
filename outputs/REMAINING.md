@@ -100,8 +100,17 @@ Three findings came out of that work that were not on the list:
 4. **The appendices are empty stubs.** State ordering, atomic data sources,
    numerical methods and convergence: three `\chapter` headings with no body.
 
-5. **Fujimoto, *Plasma Spectroscopy* (2004), Chapter 4.** Needs a physical copy.
-   Not in any scanned corpus reachable from here.
+5. ~~**Fujimoto, *Plasma Spectroscopy* (2004), Chapter 4.**~~ **CLOSED
+   11 Sep 2026.** Chapter 4 and Appendices 4A/4B read. Four things settled:
+   (a) Table 4.1's density rows run lg n_e = 12 to 24, which is a plasma only in
+   m^-3, confirming the reading Chapter 4 of this thesis already argued from
+   Griem; (b) the columns are p with no l label, confirming the bundled-shell
+   reading; (c) the chapter contains **no tanh, no logistic and no bound** on the
+   difference of two population coefficients, which closes the largest remaining
+   novelty risk; (d) Appendix 4B's figures are captioned as quoted from Sawada
+   and Fujimoto (1994), so the book and the paper are one calculation, not two.
+   The App. 4B timescale comparison was re-derived and reproduces the recorded
+   0.34x and 1.77x exactly.
 
 6. **The crest position's sensitivity to n_max.** Needs the rate pipeline rerun
    at n_max = 12 and 20, not a validation script.

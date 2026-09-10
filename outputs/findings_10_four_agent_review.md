@@ -1211,3 +1211,138 @@ that dropped states without removing their loss channels from the diagonal
 produced a spurious 22 to 37% jump that looked like a headline finding. It was
 an artifact. Anyone repeating the test must add back Σ_dropped L[k,i] to L[i,i].
 The production matrix is self-consistently truncated.
+
+---
+
+# ADDENDUM E — Gates 5 and 6, and a terminology collision aimed at the examiners
+
+**10 September 2026.** Gate 5 adjudicated 175 claims across all seven chapters:
+139 supported, 20 unsupported, 11 refuted, 5 scope-restricted. Gate 6 is
+partial. Full accounts in `outputs/claim_evidence_table.md` and
+`outputs/novelty_classification.md`.
+
+## E.1 The finding aimed squarely at a Chemical Engineering committee
+
+`chapter5.tex:142` coins **partial equilibrium (PE)** for the state in which the
+excited manifold has settled onto an unmoved reservoir.
+
+**"Partial equilibrium approximation" is an established term in chemical
+kinetics with a different meaning:** eliminating a fast reaction *extent*, not a
+fast *species*. Canonically Goussis, *Combust. Theory Model.* **16**(5),
+869–926 (2012), doi:10.1080/13647830.2012.680502.
+
+The examiners are chemical engineers. This is the audience most likely to know
+PEA and least likely to let the collision pass. The thesis already uses the
+Bodenstein bridge well (`chapter1.tex:514` carries the mandated sentence, and
+Bodenstein appears in four chapters), so it is fluent in exactly the vocabulary
+that makes the collision visible.
+
+**Recommendation: keep the term, distinguish it explicitly at first use.**
+Renaming across five chapters eleven days out is expensive and the term is
+otherwise apt. One sentence at `chapter5.tex:142` saying that PEA in chemical
+kinetics eliminates a fast reaction extent while this state is a fast *species*
+manifold slaved to a slow one converts a trap into evidence that the author
+knows the neighbouring literature.
+
+## E.2 Fifty-seven numbers whose only artifact is a markdown file
+
+Gate 5 counted them. Five verification scripts write nothing to disk, including
+`verify_ridge_mechanism.py`, which produces the result the project calls its
+best-evidenced. Backlog entries G3 to G7 carry ✅ Verified with no script and no
+artifact, and one of those numbers (the worst-case spectral separation 86.5) is
+promoted in Chapter 5 to "the figure that describes the grid".
+
+**One of them was mine, and it is the same defect I had just finished
+recording.** Backlog H11 said the condition-number claim "now has a script". It
+did not; the value had been computed once in an ad-hoc shell session.
+`chapter4.tex:580` said it had no producer and the chapter was right.
+
+**Closed here.** `src/validation/verify_operator_conditioning.py` now produces,
+over all 400 points and stamped to `validation/operator_conditioning/`:
+
+| quantity | measured | recorded | agreement |
+|---|---|---|---|
+| κ(L_FF) min | **1.4821×10³** at [0,0] | chapter3.tex:719's 1.48×10³ | 0.14% |
+| κ(L_FF) max | **1.7436×10⁵** at [33,7] | chapter3.tex:721's 1.74×10⁵ | 0.21% |
+| μ(L) benchmark | **1.2841×10¹¹** | CLAUDE.md 1.28×10¹¹ | 0.32% |
+| spectral abscissa benchmark | **−4.3999×10⁴** | CLAUDE.md −4.40×10⁴ | 0.00% |
+
+It also measures the premise of the Levy–Desplanques argument that
+`chapter3.tex:714-719` uses to prove L_FF invertible: the minimum |column sum|
+of L_FF is **1.4109×10⁴ s⁻¹** at [0,0], strictly positive everywhere. An
+argument whose premise was never measured is an assertion; it is now a
+measurement. Backlog C1 and C2 were closed on markdown-only numbers and now
+carry this artifact.
+
+## E.3 The participation ratio depends on its norm, and the difference is large
+
+`chapter3.tex:444-446` calls v₁ "distributed across the excited manifold".
+
+| | raw | population-scaled |
+|---|---|---|
+| PR(v₀) benchmark | 1.0000 | **3.4291** |
+| PR(v₁) benchmark | **2.6449** | 4.5563 |
+| PR(v₁) grid range | 1.73 to 6.77 | 2.06 to 21.56 |
+| v₁ ground weight, benchmark | **1.0000** | 1.9019×10⁻⁴ |
+
+PR(v₁) ≈ 2.6 describes a vector living on two or three components, not a
+distributed one, so the sentence is wrong in the raw measure. **And PR(v₀) is
+1.0000 raw but 3.43 population-scaled**, so the chapter's habit of quoting PR
+for v₀ only, where it looks trivially uninformative, is itself an artifact of
+the norm. Report both norms or neither.
+
+## E.4 Three gates confirmed as wiring checks, one with a corrected reason
+
+Gate 5 independently confirmed by fault injection what Gate 4 found: the
+conservation gate, the tanh bound gate and Gate C's Saha limit cannot fail on
+physical input.
+
+Two refinements matter.
+
+**The conservation check samples 20 of 400 points**, while `derivation_01:142`
+and `chapter3.tex:270` both say 400. The quoted residual is right; the shipped
+script does not test what the text claims it tests.
+
+**The stated reason for the tanh gate's insensitivity was wrong, and it came
+from my brief.** I told the Chapter 4 agent that a c₃↔c₄ swap leaves |Δ|
+unchanged "likewise". It does not. Measured at the benchmark: the 3↔4 swap
+sends Δ → −Δ and leaves |Δ| = 1.945614 unchanged, but the c₃↔c₄ swap moves it
+to **0.939493**, a factor 2.07. The gate still passes, because it compares
+|f₃−f₄| against tanh(|Δ|/4) evaluated from the same corrupted **c**. The
+conclusion held; the reason did not. `chapter4.tex` corrected.
+
+## E.5 A checker that goes stale inverts its own verdict
+
+`verify_ch3_claims.py` hardcodes the thesis values it checks. Chapter 3 has
+since been corrected, so the script's sole FAIL now fires **against the
+corrected chapter**. A claims ledger that stores its targets rather than reading
+them will eventually report the right answer as wrong, which is worse than
+reporting nothing.
+
+Related, and in the opposite direction to this project's usual failure: **three
+of Gate 5's five disagreements are cases where the chapter is right and a
+register or a script is wrong.** The written thesis has overtaken its own
+verification record in places.
+
+## E.6 Scope, again
+
+`chapter3.tex:820`'s "margin reduced by 13%" is a benchmark-point number placed
+immediately after an equation stated "at all 400 grid points". The grid-worst
+value is **34.5% at [49,0]**. That is the eighth instance this session of a
+regime-restricted number presented as global.
+
+## E.7 Citations
+
+Gate 6 re-verified all 46 DOI-bearing entries against Crossref and OpenAlex. The
+seven errors caught earlier are genuinely fixed. Two new items:
+
+- **`Kaveeva2020` author 11 is D. Coster, not D. Reiter.** Both are SOLPS-community
+  names, which is how it survived.
+- The Fujimoto JPSJ numbering in my agent briefs was wrong. `10.1143/JPSJ.54.2905`
+  is **Part V**, and **Part IV is `10.1143/JPSJ.49.1569`**. The bibliography is
+  right; the briefs were not.
+
+**The tanh identity is exact**, confirmed numerically to 2.2×10⁻¹⁶ over 500
+random midpoint pairs. That constrains its classification: an exact elementary
+identity is far more likely to exist somewhere in print than a physical result
+would be, which is why the novelty claim should rest on the application.

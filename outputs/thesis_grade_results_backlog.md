@@ -728,7 +728,7 @@ and Gates 1, 3 and 4 of the ten-gate thesis system. All ran read-only against
 
 ## F. IDEAS CLOSED BY THIS SESSION
 
-### C1. Map μ(L) across the grid — ✅ Verified, closed
+### C1. Map μ(L) across the grid — ✅ Verified, closed, artifact `validation/operator_conditioning/`
 
 Measured over all 400 points: **min 3.396×10⁸, max 1.513×10¹², benchmark
 1.2841×10¹¹ s⁻¹**, reproducing CLAUDE.md's +1.28×10¹¹. μ(L) > 0 everywhere, so
@@ -741,7 +741,7 @@ predictive non-normality criterion here. Recording the negative result closes
 the idea; a *predictive* criterion was the only thing that would have made it a
 thesis result.
 
-### C2. Participation ratio across the spectrum — ✅ Verified, closed
+### C2. Participation ratio across the spectrum — ✅ Verified, closed, artifact `validation/operator_conditioning/`
 
 PR(v₀) = 1.00, trivially, because λ₀ is the ground-state mode. **PR(v₁) = 2.64
 at the benchmark and 1.88 at [49,7].**
@@ -894,7 +894,8 @@ would move ≲ 10% in that one cell and nowhere else.
 | H8 | Controlled correlations | findings_09 §3.1's +0.33 and −0.16 do not reproduce. Measured +0.274 (all pairs), +0.326 (heating only, which is where +0.33 came from), and **−0.442** quadratic. The **sign flip is robust across eight bases**; the magnitude is basis-dependent and must carry its basis |
 | H9 | ELM count | **202, not 201.** findings_09 W5 asserted "201, not 202" while decomposing it as 105 heat + 97 cool in the same sentence. Recounted: 105 + 97 = 202 over 113 distinct points |
 | H10 | ε at [23,3] | **0.12166.** findings_10 A10's 0.122 is right; its own §7.1 figure of 0.111 is wrong |
-| H11 | cond(L_EE) | `chapter3.tex:719-721`'s 1.48×10³ to 1.74×10⁵ is **correct**, verified over all 400 points (1.4821e3, 1.7436e5, median 2.1044e4). It was unsupported, not wrong, and now has a script |
+| H11 | cond(L_EE) | `chapter3.tex:719-721`'s 1.48×10³ to 1.74×10⁵ is **correct**, verified over all 400 points (1.4821e3 at [0,0], 1.7436e5 at [33,7], median 2.1044e4). **Correction, 10 Sep:** an earlier version of this row said it "now has a script". It did not. The value had been computed once in an ad-hoc shell session, which is the same provenance defect the row was recording. `verify_operator_conditioning.py` now produces it, together with μ(L), the spectral abscissa, the Levy–Desplanques premise and both participation-ratio norms, stamped to `validation/operator_conditioning/` |
+| H12 | Claim 5.3 falsifier | **The 680/680 is an identity, not a test.** With $\ln A=\ln(R_{\rm pe}/R_q)$ and $\ln D=\ln(R_{\rm old}/R_{\rm pe})$, $\varepsilon_{\rm plateau}>\varepsilon_{\rm step}\iff D/A\in(-2,0)$. Measured over the 680: $D/A$ min $-1.0752$, median $-0.9142$, max $-0.3105$, inside $(-2,0)$ at 680/680 and never closer than a factor $1.86$ to the boundary. It is forced by three facts each holding 680/680 with no exception: heating depletes the ground ($\ln x<0$, 338/338), $f_3>f_4$ everywhere, and $\mathrm{sign}(\ln D)=-\mathrm{sign}(\ln A)$ (680/680). `claim_evidence_table.md:745` names the falsifier "one counterexample would refute it; none in 680" and marks it SUPPORTED; no counterexample can exist, so the named falsifier is not one. This is §J's missing-prediction defect applied to claim 5.3. **Replacement statement, which does have a falsifier:** the two supply channels cancel to a median $|1+D/A|=0.0858$ in the CRE $T_e$-response of $n_3/n_4$ — an 8× cancellation, measurable and refutable. Verified 10 Sep 2026 from `L_grid.npy` (`2d92b58e…`) / `S_grid.npy` (`7822f536…`) via `cr_context.py`; the same run reproduces the stored 680 pairs, 680/680, median amplification 11.653, min 1.447. |
 
 ## I. OPEN, RANKED BY DAMAGE
 

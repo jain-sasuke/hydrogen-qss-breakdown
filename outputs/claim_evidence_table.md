@@ -30,11 +30,11 @@ SHA-256 `2d92b58e…59224e`, companion `S_grid.npy` `7822f536…fb80a`.
 | 1 Reading the Light | 849 | 62 | 6 | 8 |
 | 2 The Atoms | 1335 | 157 | ~95 | 26 |
 | 3 Two Clocks | 1641 | 160 | ~90 | 34 |
-| 4 Does the Model Work? | **860, incomplete** | 80 | ~70 | 30 |
+| 4 Does the Model Work? | **860, incomplete** | 80 | ~70 | 31 |
 | 5 What the Model Says | 1546 | 134 | ~120 | 38 |
 | 6 What This Model Cannot Say | 1077 | 99 | ~80 | 24 |
 | 7 What It Means | 435 | 43 | ~30 | 14 |
-| | | **735** | | **174** |
+| | | **735** | | **175** |
 
 **Selection rule for the table.** Every claim that (a) states a number this
 thesis computed, and (b) is load-bearing for Claims A–G of
@@ -57,16 +57,25 @@ Graduation states are the project's own: 💡 idea · 📐 derived · 💻 imple
 
 ## PART 0 — Headline counts
 
+Counts are machine-counted from the tables in PART 4, not estimated. Each row
+is classified by the **most severe** verdict it carries, so a row reading
+"number SUPPORTED, provenance UNSUPPORTED" counts once, as UNSUPPORTED.
+
 | | count |
 |---|---|
-| Rows adjudicated | 174 |
-| SUPPORTED | 96 |
-| SCOPE-RESTRICTED | 41 |
-| UNSUPPORTED (correct or unknown, but no artifact / no severe test) | 29 |
-| REFUTED (measurement contradicts the written sentence) | 8 |
+| Rows adjudicated | **175** |
+| SUPPORTED outright | 139 |
+| SCOPE-RESTRICTED (true over a narrower set than stated) | 5 |
+| UNSUPPORTED (no artifact, or no test that could have failed) | 20 |
+| REFUTED (measurement contradicts the written sentence) | **11** |
 | Claims whose only artifact is a markdown file | **57** |
 | Claims the chapters already self-flag `[UNVERIFIED]` / `[SOURCE REQUIRED]` / `\todo` | 21 |
 | Gates presented as validation that cannot fail on the fault class they guard | **3, all confirmed today** |
+
+The SCOPE-RESTRICTED count of 5 understates the problem and should be read
+with PART 3: seven extrema are audited there, four of them quoted globally
+somewhere in the project, and three of those four have already been corrected
+in the chapters but not in the registers.
 
 **The single most important structural fact,** carried forward from
 `backlog` §J and confirmed here against the written chapters: of thirteen
@@ -156,16 +165,35 @@ exact condition under which three retractions happened.
 above 5×10⁻³) and `src/validation/verify_ridge_mechanism.py:838-845` (raise)
 with the pass line at `:957`.
 
-**Fault injection at the benchmark [23,5], real `a`, `c` from the matrix:**
+**Fault injection at the benchmark [23,5], real `a`, `c` from the matrix.**
+Run twice, independently, by two agents using different code; the Δ values
+agree to all six decimals shown. State ordering loaded through
+`CRContext.load()` rather than hardcoded, per CLAUDE.md rule 1. Measured
+channel coefficients at [23,5]:
+
+```
+a3 = 4.543572e-05   a4 = 1.073753e-05
+c3 = 1.140562e-07   c4 = 1.886233e-07
+min(a) = 1.082e-08   min(c) = 8.555e-09     -> a, c >= 0 confirmed
+```
+
+The positivity of every component of `a` and `c` is the premise the theorem
+needs, and it is measured here rather than assumed. It follows from
+`-L_FF` being a non-singular M-matrix, and independently confirms the
+"0 negative entries at all 400 points" result behind Claim B.
 
 | input | Δ | tanh(\|Δ\|/4) | numerical peak | rel dev | outcome |
 |---|---|---|---|---|---|
-| unperturbed | +1.945614 | 0.4513573 | 0.4513573 | 2.5e-16 | PASS |
-| 3↔4 shell swap | −1.945614 | 0.4513573 | 0.4513573 | 2.5e-16 | PASS |
-| **c₃↔c₄ only** | **+0.939493** | **0.2306474** | 0.2306474 | 2.4e-16 | **PASS** |
-| a₃↔a₄ only | −0.939493 | 0.2306474 | 0.2306474 | 3.6e-16 | PASS |
+| unperturbed | +1.945614 | 0.4513573 | 0.4513573 | 3.9e-10 | PASS |
+| 3↔4 full shell swap | −1.945614 | 0.4513573 | 0.4513573 | 3.9e-10 | PASS |
+| **c₃↔c₄ only** | **+0.939493** | **0.2306474** | 0.2306474 | 4.6e-10 | **PASS** |
+| a₃↔a₄ only | −0.939493 | 0.2306474 | 0.2306474 | 4.6e-10 | PASS |
 | a₃ × 7.3 | +3.933488 | 0.7545220 | 0.7545220 | 0.0 | PASS |
-| `tanh(\|Δ\|/2)` instead of `/4` | — | — | — | 3.98e-01 | **FAIL — caught** |
+| `tanh(\|Δ\|/2)` instead of `/4` | +1.945614 | 0.7499352 | 0.4513573 | 3.98e-01 | **FAIL — caught** |
+
+The unperturbed Δ = 1.945614 reproduces `chapter5.tex`'s 1.94561 to six
+figures, so the corrupted rows are perturbations of the real quantity and not
+of a mis-set-up calculation.
 
 **Confirmed: the gate passes on every corrupted physical input and fails only
 on an arithmetic bug in its own formula.** It is a theorem for any
@@ -956,14 +984,31 @@ prediction and the map is its test.
 
 ## Closing note on method
 
-Nothing in this audit was made to pass. Three checks were confirmed unable to
-fail and are labelled wiring checks rather than removed; four numbers were
-reproduced and agreed (3.6078×10⁻¹¹, `M_eff` 8659/77.6, the 0.0098%/0.3461%
-framing agreement, Δ = 1.945614); five numbers were reproduced and disagreed
-with a document (the τ_QSS floor against a stale script literal, σ₀ against
-`chapter6.tex`, |Δ| under a c₃↔c₄ swap against `chapter4.tex`, the conservation
-sampling scope against `derivation_01`, and κ(L_FF)'s provenance against
-`backlog` H11). In every case the disagreement is reported and left standing.
+Nothing in this audit was made to pass, no tolerance was touched, and no
+missing value was stood in for. Three checks were confirmed unable to fail and
+are labelled wiring checks rather than removed.
+
+**What was run.** Two report-only scripts from the repo
+(`verifych3_gb.py`, `verify_ch3_claims.py`, both confirmed to contain no write
+call) and two throwaway scripts in the session scratchpad, all against the
+canonical `L_grid.npy`. `git status` confirms nothing under `data/`,
+`validation/`, `src/` or `thesis_tex/` was modified.
+
+**Reproduced and agreed** — 3.6078×10⁻¹¹ at [0,2] (twice, independently);
+`M_eff` 8659 at benchmark and 77.6 at [49,7]; the 1.118/1.151/1.526 norm
+ratio; the 0.0098% and 0.3461% framing agreement; Δ = 1.945614 (twice,
+independently, matching `chapter5.tex` to six figures); M = 9981.93,
+M⁺ = 8242.74, isolation 3566.96 and 24.3286.
+
+**Reproduced and disagreed with a document** — the τ_QSS floor against a stale
+literal hardcoded in `verify_ch3_claims.py`; σ₀ = 5.474×10⁻¹⁴ against
+`chapter6.tex`'s 7.74×10⁻¹⁴; |Δ| under a c₃↔c₄ swap (1.945614 → 0.939493)
+against `chapter4.tex:548-550`'s "likewise"; the conservation sampling scope
+(20 of 400) against `derivation_01:142`'s "all 50×8"; and κ(L_FF)'s provenance
+against `backlog` H11's "now has a script". **Every disagreement is reported
+and left standing.** Three of the five are cases where the chapter is right
+and a register or a script is wrong, which is the opposite of the direction
+this project has had to correct before.
 
 **The thesis's evidentiary record is stronger than its provenance record.**
 Twelve of thirteen results carry a falsifier named in advance and three of

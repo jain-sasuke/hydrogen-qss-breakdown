@@ -20,9 +20,17 @@
 %     CONTRADICTS Section~\ref{sec:fujimoto}: it publishes the r_1 deficit as a
 %     model failure, which findings_10 ADDENDUM D.3 shows is very probably a
 %     defect in the benchmark target. It must be withdrawn or rewritten to
-%     match. sec:nmax states the n_max convergence check has never been run;
-%     it has now been run (ADDENDUM D.8) and only the SEPARATE bundled-shell
-%     l-distribution check remains unrun. Fix that sentence.
+%     match.
+%
+%     sec:nmax needs LESS work than it looks. Its sentence that a check
+%     "has never been executed" refers to verify_bundling_psm20.py, the
+%     bundled-shell l-distribution check, and that is still TRUE: do not
+%     "correct" it. What sec:nmax lacks is the separate n_max convergence
+%     result, now measured (ADDENDUM D.8) and carried in
+%     Section~\ref{sec:convergence}. Its \todo asking for provenance on the
+%     4.9-6.2x terminal-shell excess is also closed there, by the internal
+%     terminal-vs-interior measurement (9.4x at p=8, 10.7x at p=9, 6.3x at
+%     p=10), which brackets it.
 %
 %  3. chapter3.tex:222-225 asserts a severity for the conservation check that
 %     Section~\ref{sec:conservation_severity} measures and refutes. Either
@@ -312,12 +320,10 @@ two energy ladders that differ; the common residual is the eight-figure
 rounding of the stored state table. \textbf{Grade: severe.} Two energy tables
 would have shown up as a drift across the ladder, and there is none.
 
-The same audit gives the collisional side over $2457$ excitation-pair
-comparisons spanning three temperatures: maximum deviation $7.31\times10^{-9}$,
-median $7.5\times10^{-10}$, again consistent with the state table's rounding.
-% 819 pairs x 3 temperatures = 2457. ADDENDUM D.6 writes "2457 pairs x 3
-% temperatures", which would be 7371 comparisons. The phrasing above is true
-% under either reading; resolve the count before submission.
+The same audit gives the collisional side over the $819$ excitation pairs at
+each of three temperatures, $2457$ comparisons in total: maximum deviation
+$7.31\times10^{-9}$, median $7.5\times10^{-10}$, again consistent with the state
+table's rounding.
 
 \subsection{Gate B: the coronal limit}
 
@@ -550,8 +556,13 @@ It is not. Given $\bm{a},\bm{c}\ge0$, which
 Section~\ref{sec:R_depends_on_b} proves from the M-matrix structure of
 $-\Lmat_{FF}$, the bound is a theorem: it cannot fail except on an arithmetic
 bug. Fed corrupted input it still passes. Swapping shells $3\leftrightarrow4$
-leaves both $|\Delta|$ and the logarithmic ratio unchanged; swapping
-$c_3\leftrightarrow c_4$ likewise (\texttt{findings\_10} ADDENDUM~B.3).
+sends $\Delta\to-\Delta$ and leaves both $|\Delta|$ and the logarithmic ratio
+unchanged, so the gate cannot see it. Swapping $c_3\leftrightarrow c_4$ also
+passes, but for a different reason: it moves $|\Delta|$ from $1.945614$ to
+$0.939493$, a factor $2.07$, and the gate still passes because it compares
+$|f_3-f_4|$ against $\tanh(|\Delta|/4)$ evaluated from the same corrupted
+$\bm{c}$. The bound is satisfied by whatever $\bm{a},\bm{c}\ge0$ it is
+handed.
 \textbf{Grade: tautological.} The script's own docstring calls it a wiring
 check; the line it prints does not, and the printed line is what a reader sees.
 
@@ -1404,8 +1415,9 @@ them, with the grade of Section~\ref{sec:gate_philosophy} attached to each.
   because the quantity tested was constructed from the relation being tested;
   \emph{weak} means it can fail but only for an error far larger than any
   plausible one; \emph{severe} means a plausible wrong version of this model
-  fails it. Four of the fourteen entries are severe, one external gate fails,
-  and one external comparison is open with an unverified target.}
+  fails it. Of the fifteen internal checks, nine are severe, four are
+  tautological and two are weak; of the four external comparisons, two pass,
+  one is open with an unverified target, and one fails.}
   \label{tab:ladder}
   \small
   \begin{tabular}{p{4.3cm}p{2.0cm}p{5.6cm}}
@@ -1420,6 +1432,7 @@ them, with the grade of Section~\ref{sec:gate_philosophy} attached to each.
     Reduced against full $\Robs$ & severe & $0.777768$ by three routes; catches the same swap \\
     Pinned input hashes & severe & both SHA-256 match byte for byte \\
     Recomputation guards on the figures & severe & every plotted row rebuilt from $\Lmat$ at $10^{-9}$, raises \\
+    State-space convergence in $n_{\max}$ & severe & increments geometric at ratio $0.75$; extrapolated \SI{+0.9}{\percent} at the benchmark, \SI{-1.4}{\percent} at the cold corner, \SI{-0.55}{\percent} at the ridge \\
     Gate~A, detailed balance & tautological & $<\SI{0.01}{\percent}$, but $K_{\rm deexc}$ was derived from $K_{\rm exc}$ \\
     Column-sum conservation & tautological & $3.61\times10^{-11}$; three of four injected faults undetected \\
     The $\tanh$ bound & tautological & holds at all $248$ points, and holds on corrupted input \\

@@ -1,3 +1,51 @@
+> ## ⚠️ STALE SNAPSHOT — READ BEFORE USING
+>
+> **This document surveys the repository as it stood on 2026-08-23, not as it
+> stands now.** It was produced on 2026-09-10 by agents whose filesystem view was
+> frozen ~18 days behind the working tree. The staleness was detected after the
+> document was written and is recorded here rather than silently corrected.
+>
+> **What is still true:** every mtime quoted here was re-checked against the live
+> filesystem and matches (`L_grid.npy` 2026-07-21 20:44:53;
+> `validation/{M_grid,tau_QSS_grid,tau_relax_grid}.npy` and `gate_{B,C,D}.csv`
+> 2026-08-23 11:17:01). The relative orderings, the write collisions, the quoted
+> code and the error-metric inventory are a correct account of the 2026-08-23 tree.
+>
+> **What is wrong:**
+> - The inventory covers **66** `.py` files under `src/`. There are now **80**.
+>   Fourteen are missing — listed below.
+> - Anywhere this document says a file was regenerated "today", it means
+>   **2026-08-23**, eighteen days ago. It does not mean the current session.
+> - Items 2, 7, 9 and 10 draw conclusions from a script census that is now
+>   incomplete, so their negative findings ("no reader found", "no producer
+>   found", "59 of 66 do not import cr_context") are **not safe to rely on**.
+>
+> **Scripts absent from this survey** (all postdate the snapshot):
+>
+> | path | mtime |
+> |---|---|
+> | `src/validation/verify_fujimoto_table41.py` | 2026-08-23 15:38:47 |
+> | `src/validation/verify_ch3_claims.py` | 2026-08-24 00:50:35 |
+> | `src/validation/verifych3_gb.py` | 2026-08-24 01:51:25 |
+> | `src/analysis/make_ch3_figures.py` | 2026-08-24 02:10:19 |
+> | `src/validation/verify_eps_gridmap.py` | 2026-08-24 02:17:27 |
+> | `src/validation/grid.py` | 2026-08-24 02:55:23 |
+> | `src/validation/verify_ridge_mechanism.py` | 2026-08-24 03:20:58 |
+> | `src/validation/preflight.py` | 2026-08-24 03:40:09 |
+> | `src/validation/audit_writers.py` | 2026-08-24 03:50:02 |
+> | `src/validation/verify_plateau_bridge.py` | 2026-08-24 04:52:34 |
+> | `src/validation/verify_lyman_trapping.py` | 2026-09-10 00:05:19 |
+> | `src/analysis/make_ch5_figures.py` | 2026-09-10 01:00:16 |
+> | `src/validation/verify_reservoir_gain.py` | 2026-09-10 10:13:28 |
+> | `src/analysis/make_story_figures.py` | 2026-09-10 18:16:57 |
+>
+> Two of these bear directly on this document's own findings:
+> `audit_writers.py` exists to check the one-writer-per-output-path rule that
+> Item 2 reports as unaddressed, and `grid.py` is a second grid-provenance module
+> alongside `cr_context.py`, which Item 7 treats as the sole canonical source.
+>
+> — appended 2026-09-10 18:17
+
 # Repository structure survey — 2026-08-23
 
 **Scope:** static survey of what this repo computes and what depends on what.

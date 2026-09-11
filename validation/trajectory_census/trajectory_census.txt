@@ -1,0 +1,90 @@
+==============================================================================
+TRAJECTORY CENSUS: dynamic bridge, true time average, finite exposure
+generated 2026-09-11 16:19 by verify_trajectory_census.py
+interpreter /opt/anaconda3/envs/cr/bin/python   numpy 2.3.5
+L_grid sha256      2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256      7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+radiative sha256   389ab78a2a1449af0a18a95fe9a660d7bb7f1d1d313944b830253bc51e3d8aef
+window k = 30; TOL_TRACK 0.002; threshold 0.1; Te floor 2.0; drives ['100 us', '506 us']; 400 samples/decade; eigen-vs-expm check at 12 times, tol 1e-08
+==============================================================================
+
+propagated 784 (point, direction) pairs in 9 s
+eigen-propagation against expm: worst deviation/tolerance 5.845e-01 (tolerance max(1e-08, eps ||L|| t)); worst relative imaginary residue 0.000e+00
+exposure integral, augmented expm against trapezoid of the sampled trajectory, benchmark 100 us: 2.718e-07
+
+==============================================================================
+A. DYNAMIC BRIDGE, GRID-WIDE (shell observable; k = 30 window unless stated)
+==============================================================================
+  ('heat', 23, 5): t_track 1.948 tau_relax (bridge script: 1.94); flatness max_W |eps_CRE/eps_plateau - 1| k=30 0.0323 (chapter 5: 0.0333); max_W eps_PE k=30 0.00193, historical window 0.00117; max_W eps_track k=30 8.660e-06
+  ('heat', 15, 3): t_track 3.734 tau_relax (bridge script: 3.72); flatness max_W |eps_CRE/eps_plateau - 1| k=30 0.0301 (chapter 5: 0.0128); max_W eps_PE k=30 0.00460, historical window 0.00278; max_W eps_track k=30 6.919e-07
+  shell over 680 window_ok pairs: max_W eps_track max 4.446e-05, median 1.126e-06; pairs above TOL 0
+        max_W eps_PE: median 0.0022, max 0.0154 at ('cool', 1, 3)
+        t_track: median 2.93 tau_relax, max 4.84, never settled 0
+  line  over 680 window_ok pairs: max_W eps_track max 4.449e-05, median 1.113e-06; pairs above TOL 0
+        max_W eps_PE: median 0.0022, max 0.0153 at ('cool', 1, 3)
+        t_track: median 2.92 tau_relax, max 4.84, never settled 0
+  warm (Te >= 2, 448 pairs): max_W eps_track max 4.446e-05
+  scaling: max_W eps_track * M over 680 window pairs: median 0.060, range 0.001 to 0.427; log-log correlation of max_W eps_track with 1/M +0.945
+  growth of the excited-block deviation from partial equilibrium (L2, t <= 10 tau_relax): max over 784 pairs 0.9998 (never above 1: True); over all t the max is 1.536, from the slow reservoir drift, not transient growth
+  early transient (t < 50 tau_relax) effect on the 100 us average: benchmark -4.02e-05 relative; warm pairs -1.70e-03 to +3.20e-04
+
+==============================================================================
+B. TRUE 100 us AVERAGE AGAINST THE SINGLE-SLOW-MODE ESTIMATE (shell)
+==============================================================================
+  convergence check at 1600 samples/decade (four times this run), 100 us, shell:
+    ('heat', 0, 4): 0.386811215 -> 0.386811216  relative change +2.69e-10
+    ('heat', 15, 3): 0.175282759 -> 0.175282759  relative change -2.57e-09
+    ('heat', 15, 5): 0.072184638 -> 0.072184608  relative change -4.15e-07
+    ('heat', 23, 5): 0.011796242 -> 0.011796187  relative change -4.70e-06
+    ('heat', 0, 0): 0.083083821 -> 0.083083821  relative change -4.95e-09
+  tab:lowerbound (chapter 4) reproduction:
+    ('heat', 0, 4): eps_plateau 0.386903  true avg 0.386811 (table 0.386785)  estimate 0.386820  ratio 1.0000 (table 0.9999)  eps_step 0.028323  tau_relax/tau_d 6.24e-05  early-transient effect -5.20e-05
+    ('heat', 15, 3): eps_plateau 0.180728  true avg 0.175283 (table 0.175272)  estimate 0.174812  ratio 1.0027 (table 1.0026)  eps_step 0.011177  tau_relax/tau_d 7.41e-05  early-transient effect -6.68e-05
+    ('heat', 15, 5): eps_plateau 0.103550  true avg 0.072185 (table 0.072175)  estimate 0.071722  ratio 1.0065 (table 1.0063)  eps_step 0.013681  tau_relax/tau_d 2.58e-05  early-transient effect -1.83e-05
+    ('heat', 23, 5): eps_plateau 0.063612  true avg 0.011796 (table 0.01179)  estimate 0.011712  ratio 1.0072 (table 1.0066)  eps_step 0.008692  tau_relax/tau_d 2.24e-05  early-transient effect -4.02e-05
+    ('heat', 0, 0): eps_plateau 0.083004  true avg 0.083084 (table 0.083065)  estimate 0.083004  ratio 1.0010 (table 1.0007)  eps_step 0.027942  tau_relax/tau_d 3.83e-04  early-transient effect +9.57e-04
+  100us shell, warm: true/estimate 0.9791 to 1.0222, median 0.9998; below 1 at 226 of 448; |ratio-1| > 5% at 0
+  100us line , warm: true/estimate 0.9790 to 1.0223, median 0.9998; below 1 at 226 of 448; |ratio-1| > 5% at 0
+  100us shell, all window_ok: 0.9791 to 1.0222
+  506us shell, warm: true/estimate 0.9671 to 1.0377, median 0.9994; below 1 at 227 of 448; |ratio-1| > 5% at 0
+  506us line , warm: true/estimate 0.9670 to 1.0378, median 0.9994; below 1 at 227 of 448; |ratio-1| > 5% at 0
+  506us shell, all window_ok: 0.9671 to 1.0377
+  mechanism: slow-mode amplitude in the Hbeta channel relative to CRE, delta, over warm pairs: -0.2202 to +0.3018; heating all positive True, cooling all negative True
+  asymptote (1+delta)ln(1+delta)/delta for tau_d >> tau_slow: 0.8808 to 1.1377; the 506 us true/estimate range above should sit inside it where tau_d/tau_slow is large
+
+==============================================================================
+C. THE CENSUS ON FIVE DEFINITIONS OF THE 100 us / 506 us QUANTITY
+==============================================================================
+  scope: window_ok and Te >= 2.0 eV, 448 pairs; threshold 0.1
+
+  tau_d = 100us
+  definition                       count    worst               at enter leave   (enter/leave relative to the estimate on the SAME observable)
+  estimate, shell (thesis)       45/448    0.1748      heat [15,3]     0     0
+  estimate, line                 44/448    0.1746      heat [15,3]     0     0
+  true average, shell            43/448    0.1753      heat [15,3]     0     2
+      leaves: cool [22,3] 0.099490 (estimate, same observable 0.100077)
+      leaves: cool [23,2] 0.099985 (estimate, same observable 0.100431)
+  true average, line             43/448    0.1750      heat [15,3]     0     1
+      leaves: cool [23,2] 0.099677 (estimate, same observable 0.100122)
+  exposure ratio, shell          43/448    0.1753      heat [15,3]     0     2
+      leaves: cool [22,3] 0.099465 (estimate, same observable 0.100077)
+      leaves: cool [23,2] 0.099977 (estimate, same observable 0.100431)
+  exposure ratio, line           43/448    0.1750      heat [15,3]     0     1
+      leaves: cool [23,2] 0.099669 (estimate, same observable 0.100122)
+  exposure-ratio / true-average (line), warm: 0.9901 to 1.0114, median 1.0000
+
+  tau_d = 506us
+  definition                       count    worst               at enter leave   (enter/leave relative to the estimate on the SAME observable)
+  estimate, shell (thesis)       24/448    0.1533      heat [15,3]     0     0
+  estimate, line                 24/448    0.1531      heat [15,3]     0     0
+  true average, shell            24/448    0.1552      heat [15,3]     0     0
+  true average, line             23/448    0.1550      heat [15,3]     0     1
+      leaves: cool [17,1] 0.099751 (estimate, same observable 0.100066)
+  exposure ratio, shell          24/448    0.1553      heat [15,3]     0     0
+  exposure ratio, line           23/448    0.1551      heat [15,3]     0     1
+      leaves: cool [17,1] 0.099749 (estimate, same observable 0.100066)
+  exposure-ratio / true-average (line), warm: 0.9806 to 1.0217, median 1.0000
+
+  thesis: 45 of 448, worst 0.1748 at heat [15,3] (100 us); 24 of 448, worst 0.1533 (506 us)
+  signed error changes sign during the rise (sign(eps_step) != sign(eps_plateau), line): 98 of 784 pairs, 89 warm, 0 census members; largest eps_plateau among them 0.0640

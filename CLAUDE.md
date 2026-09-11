@@ -2,7 +2,7 @@
 
 **Project:** Time-dependent collisional-radiative modelling of hydrogen plasma;
 quantifying quasi-steady-state validity in ITER divertor conditions.
-M.Tech thesis, Chemical Engineering, IIT Kanpur. **Defense 1 September 2026.**
+M.Tech thesis, Chemical Engineering, IIT Kanpur. **Defence 15 October 2026.**
 
 ---
 

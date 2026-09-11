@@ -919,13 +919,26 @@ non-negative linear functional of the state vector. The substitution is
 therefore not free but it is also not load-bearing, and
 Section~\ref{sec:balmer_equivalence} measures what it costs. The transient error
 of Chapter~\ref{ch:results}, computed from the $A$-weighted line ratio and from
-the shell ratio, agrees to \SI{0.014}{\percent} at the benchmark point; across
-the whole grid the line-ratio value runs between $0.978$ and $0.9999$ times the
-shell-ratio value, a worst case of \SI{2.2}{\percent} at the low-density edge
-$\nel = \SI{e12}{\per\cubic\centi\metre}$. The residue is the $4f$ level, which
-the shell sum in Eq.~\eqref{eq:observable_def} contains and $H_\beta$ cannot
-see, and it is largest at the lowest density because that is where proton
-$\ell$-mixing is weakest. It is convenient to normalise to the ground state as well,
+the shell ratio, agrees to \SI{0.065}{\percent} at the benchmark point
+($0.063571$ against $0.063612$); across all $784$ point-and-direction pairs the
+line-ratio value runs between $0.9482$ and $0.9999$ times the shell-ratio
+value, below $1$ at every pair, with the worst case of \SI{5.2}{\percent} at
+the heating step from $9.54$ to \SI{10.0}{\electronvolt} at the low-density
+edge $\nel = \SI{e12}{\per\cubic\centi\metre}$
+(\texttt{validation/weighted\_census/}). The difference is not the darkness of
+the $4f$ level alone. The $\ell$-distribution within a shell differs between
+the ground-fed and the recombination-fed channels, so the $A$-weighted sum and
+the shell sum of Eq.~\eqref{eq:observable_def} respond differently to the
+transient, and the $H_\alpha$ numerator contributes more to the difference than
+the $H_\beta$ denominator: substituting one side at a time at that corner gives
+$0.967$ for the numerator against $0.981$ for the denominator, and $0.948$
+with both substituted (\texttt{validation/weighted\_census/}). The
+\SI{5.2}{\percent} scales inversely with the proton $\ell$-mixing rate, the
+within-shell $\ell$-changing rates being scaled by a common factor with the
+column sums of the operator preserved: \SI{10.0}{\percent} at half the rate,
+\SI{2.6}{\percent} at double and \SI{1.1}{\percent} at five times
+(\texttt{validation/weighted\_census/weighted\_census\_lmix.csv}), and it
+sits on the grid boundary. It is convenient to normalise to the ground state as well,
 writing $\rp = n_p/\ngs$, since that is the form in which the QSS solution is
 usually tabulated.
 

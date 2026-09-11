@@ -1,0 +1,19 @@
+# generated 2026-09-11 16:19 by verify_trajectory_census.py
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# radiative_rates sha256 389ab78a2a1449af0a18a95fe9a660d7bb7f1d1d313944b830253bc51e3d8aef
+# frac 0.05, window k 30.0, TOL_TRACK 0.002, threshold 0.1, Te floor 2.0, samples/decade 400
+tau_d_us,definition,n_scope,count,worst,worst_at,n_enter,n_leave
+100.0,"estimate, shell (thesis)",448,45,0.17481155240298507,"heat [15,3]",0,0
+100.0,"estimate, line",448,44,0.17456645823699088,"heat [15,3]",0,0
+100.0,"true average, shell",448,43,0.17528275926026712,"heat [15,3]",0,2
+100.0,"true average, line",448,43,0.17503749361001963,"heat [15,3]",0,1
+100.0,"exposure ratio, shell",448,43,0.175287648581119,"heat [15,3]",0,2
+100.0,"exposure ratio, line",448,43,0.17504238065348487,"heat [15,3]",0,1
+506.0,"estimate, shell (thesis)",448,24,0.15330059755550957,"heat [15,3]",0,0
+506.0,"estimate, line",448,24,0.15308566277810043,"heat [15,3]",0,0
+506.0,"true average, shell",448,24,0.1552024795889298,"heat [15,3]",0,0
+506.0,"true average, line",448,23,0.15498692040653775,"heat [15,3]",0,1
+506.0,"exposure ratio, shell",448,24,0.15530277732103848,"heat [15,3]",0,0
+506.0,"exposure ratio, line",448,23,0.15508717761872148,"heat [15,3]",0,1

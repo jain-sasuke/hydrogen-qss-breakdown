@@ -1,0 +1,55 @@
+==============================================================================
+WINDOW-FACTOR SWEEP -- recount from existing verify_divertor_map.py CSVs
+generated 2026-09-11 11:49  by verify_window_sweep.py
+repo root      /Users/phi/Desktop/non_markovian_cr
+ks swept       [10, 20, 30, 50]
+L_grid sha256 (pipeline, current)   2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256 (pipeline, current)   7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state idx sha (pipeline, current)   23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+==============================================================================
+
+--- k=10  (validation/divertor_map_w10/divertor_map.csv) ---
+  rows=784  n_window_ok=779  n_warm(Te>=2.0)=547  n_dense(also ne>=1e+14)=202
+  census @100us (thr 10%): 45/547  worst=0.1748  at=('heat', 15, 3, 2.023589647725157, 19306977288832.457)
+  census @506us (thr 10%): 24/547  worst=0.1533
+  census @100us at thr=5%: 141   thr=20%: 0
+
+--- k=20  (validation/divertor_map_w20/divertor_map.csv) ---
+  rows=784  n_window_ok=728  n_warm(Te>=2.0)=496  n_dense(also ne>=1e+14)=151
+  census @100us (thr 10%): 45/496  worst=0.1748  at=('heat', 15, 3, 2.023589647725157, 19306977288832.457)
+  census @506us (thr 10%): 24/496  worst=0.1533
+  census @100us at thr=5%: 141   thr=20%: 0
+
+--- k=30  (validation/divertor_map/divertor_map.csv) ---
+  rows=784  n_window_ok=680  n_warm(Te>=2.0)=448  n_dense(also ne>=1e+14)=108
+  census @100us (thr 10%): 45/448  worst=0.1748  at=('heat', 15, 3, 2.023589647725157, 19306977288832.457)
+  census @506us (thr 10%): 24/448  worst=0.1533
+  census @100us at thr=5%: 141   thr=20%: 0
+
+--- k=50  (validation/divertor_map_w50/divertor_map.csv) ---
+  rows=784  n_window_ok=596  n_warm(Te>=2.0)=364  n_dense(also ne>=1e+14)=66
+  census @100us (thr 10%): 45/364  worst=0.1748  at=('heat', 15, 3, 2.023589647725157, 19306977288832.457)
+  census @506us (thr 10%): 24/364  worst=0.1533
+  census @100us at thr=5%: 141   thr=20%: 0
+
+==============================================================================
+CHECK 1: eps_plateau identical across k (frozen-reservoir algebra, computed before the window gate)
+  k=10: max|eps_plateau(k) - eps_plateau(30)| = 0.000e+00 over 784 rows  OK (identical)
+  k=20: max|eps_plateau(k) - eps_plateau(30)| = 0.000e+00 over 784 rows  OK (identical)
+  k=50: max|eps_plateau(k) - eps_plateau(30)| = 0.000e+00 over 784 rows  OK (identical)
+
+==============================================================================
+CHECK 2: crest (argmax eps_plateau among window_ok columns), heating, Te >= 2.0 eV -- does the argmax j change with k?
+  Te rows compared: 34   rows where crest j changes with k: 9
+    i=40  Te=6.5513 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=41  Te=6.8665 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=42  Te=7.1969 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=43  Te=7.5431 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=44  Te=7.9060 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=45  Te=8.2864 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=46  Te=8.6851 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 2}
+    i=47  Te=9.1030 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 1}
+    i=48  Te=9.5410 eV   crest j by k: {10: 3, 20: 3, 30: 3, 50: 1}
+
+wrote /Users/phi/Desktop/non_markovian_cr/validation/window_sweep/window_sweep.txt
+wrote /Users/phi/Desktop/non_markovian_cr/validation/window_sweep/window_sweep_summary.csv

@@ -113,7 +113,10 @@ $\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep = \ffrac{3}-\ffrac{4}$. From
 Chapter~\ref{ch:intro}: the operating range
 $\Te = 1$--\SI{10}{\electronvolt}, $\nel =
 10^{12}$--\SI{e15}{\per\cubic\centi\metre}, and the fact that an edge-localised
-mode (ELM) disturbs a divertor for of order \SI{100}{\micro\second}.
+mode (ELM) disturbs a divertor for of order \SI{100}{\micro\second}. That
+duration is the aggressive end of the range; the value extrapolated to the ITER
+pedestal is \SI{506}{\micro\second} \cite[Sec.~5]{Loarte2003}, and
+Section~\ref{sec:persistence} carries both.
 The benchmark point $\Te = \benchTe$, $\nel = \benchne$, grid index $[23,5]$,
 runs through this chapter as it runs through the last.
 
@@ -158,7 +161,10 @@ axis, at the benchmark and at the coldest grid point.
   \label{fig:trajectory}
 \end{figure}
 
-The ELM that motivates this thesis lasts of order \SI{100}{\micro\second}. It
+The ELM that motivates this thesis lasts of order \SI{100}{\micro\second},
+which is the aggressive end of the range: the duration extrapolated to the ITER
+pedestal is \SI{506}{\micro\second} \cite[Sec.~5]{Loarte2003}, and
+Section~\ref{sec:persistence} reports both. The shorter figure
 is long against $\taurel$ by a factor of about $4\times10^{4}$ and comparable
 to $\tauslow$, so a spectrometer pointed at the divertor during one spends its
 integration time looking at the plateau. That is the state whose error this
@@ -433,25 +439,29 @@ The answer, over the grid steps available, is that the error grows fast:
 
 \begin{table}[htbp]
 \centering
-\caption{Grid maximum of $\epsplat$ against the size of the imposed temperature
-step, in grid intervals. Values from \texttt{verify\_eps\_gridmap.py} via
-\texttt{CH5\_EVIDENCE.md}~\S1; the one-interval and four-interval maxima sit at
-$[0,4]$ and $[0,5]$ respectively, both on the cold edge, and neither is
-quantitative (Section~\ref{sec:scope}). The middle row is recorded in
-\texttt{pivot\_decision.md}~\S2 without a location.}
+\caption{$\epsplat$ against the size of the imposed heating step, in grid
+intervals: the grid maximum with its location, and the same-point series at
+three fixed operating points. Values from
+\texttt{validation/reservoir\_gain/reservoir\_gain.csv}
+(\texttt{verify\_reservoir\_gain.py}, heating direction). The one- and
+two-interval maxima sit at $[0,4]$ and the four-interval maximum at $[0,5]$,
+all on the cold edge, and none is quantitative (Section~\ref{sec:scope}).}
 \label{tab:step_dependence}
-\begin{tabular}{lrr}
+\begin{tabular}{lrrrrr}
   \toprule
-  step (grid intervals) & step in $\Te$ & grid maximum of $\epsplat$ \\
+  step & step in $\Te$ & grid max.\ of $\epsplat$ & at $[0,4]$ & at $[15,3]$ & at $[23,5]$ \\
   \midrule
-  1 & $+\SI{4.81}{\percent}$  & \SI{38.7}{\percent} \\
-  2 & $+\SI{9.85}{\percent}$  & \SI{87.4}{\percent} \\
-  4 & $+\SI{20.68}{\percent}$ & \SI{190.4}{\percent} \\
+  1 & $+\SI{4.81}{\percent}$  & \SI{38.7}{\percent} at $[0,4]$  & \SI{38.7}{\percent}  & \SI{18.1}{\percent} & \SI{6.36}{\percent} \\
+  2 & $+\SI{9.85}{\percent}$  & \SI{87.4}{\percent} at $[0,4]$  & \SI{87.4}{\percent}  & \SI{38.2}{\percent} & \SI{13.9}{\percent} \\
+  4 & $+\SI{20.68}{\percent}$ & \SI{190.4}{\percent} at $[0,5]$ & \SI{187.3}{\percent} & \SI{81.1}{\percent} & \SI{32.9}{\percent} \\
   \bottomrule
 \end{tabular}
 \end{table}
 
-A factor $4.3$ in step size moves the reported error by a factor $4.9$. Quoted
+A factor $4.3$ in fractional step size moves the error at a fixed operating
+point by a factor $4.8$ at $[0,4]$ ($0.3869$ to $1.8732$), $4.5$ at $[15,3]$
+and $5.2$ at the benchmark $[23,5]$; the grid maximum moves by a factor $4.9$
+only because its location shifts from $[0,4]$ to $[0,5]$ at four intervals. Quoted
 bare, \SI{38.7}{\percent} is a statement about a grid, and the sentence
 \emph{``the quasi-steady-state error reaches \SI{39}{\percent}''} is not
 falsifiable because it does not say what it is \SI{39}{\percent} of.
@@ -732,8 +742,8 @@ inversion about \SI{3.5}{\percent} in the line ratio.
 \caption{The reservoir gain $G$ at three grid points, for steps of one, two and
 four grid intervals. $G$ moves by $5$ to \SI{6}{\percent} across a fourfold
 change in step size --- the secant closing on its tangent, quantified below ---
-while $\epsplat$ itself changes by a factor $4.9$ over the
-same range (Table~\ref{tab:step_dependence}). Values from
+while $\epsplat$ itself changes by a factor $4.5$ to $5.2$ at the
+same three points over the same range (Table~\ref{tab:step_dependence}). Values from
 \texttt{pivot\_decision.md}~\S4; see the provenance note below, which is not
 optional reading.}
 \label{tab:gain}
@@ -1082,8 +1092,10 @@ $\Te = 2$--\SI{9}{\electronvolt}, for a one-interval temperature step. From
 \end{tabular}
 \end{table}
 
-The first two rows of Table~\ref{tab:mechanism_profiles} agree to
-\SI{2.2}{\percent} at every column and the third is flat to one per cent. The
+The normalised density profiles of $\epsplat$ and of $|\overline{S}|$, the
+first two rows of Table~\ref{tab:mechanism_profiles}, agree to
+\SI{2.2}{\percent} at every column, and the $|\Delta\ln u|$ row is flat to one
+per cent. The
 density structure of the plateau error is the density structure of the
 observable's sensitivity to its reservoir.
 
@@ -1303,8 +1315,8 @@ neither source characterises. Two further facts make the identification
 untenable rather than merely unsupported. At the citable detached band,
 $\nel = 10^{14}$ to $\SI{e15}{\per\cubic\centi\metre}$ with
 $\Te\ge\SI{2}{\electronvolt}$, the plateau error is at most \SI{10.4}{\percent}
-per $+\SI{4.81}{\percent}$ step and the ELM-averaged bound of
-Section~\ref{sec:persistence} never reaches \SI{10}{\percent}, peaking at
+per $+\SI{4.81}{\percent}$ step and the \SI{100}{\micro\second} time-averaged
+estimate of Section~\ref{sec:persistence} never reaches \SI{10}{\percent}, peaking at
 \SI{7.2}{\percent}. And the crest location is proportional to the assumed
 neutral density, which in this model is set by a local ionisation balance with
 no transport and no recycling, whereas in a divertor it is set by recycling;
@@ -1354,8 +1366,14 @@ $[15,3]$:
     because the interval begins in the tail of the fast transient. An external
     review of this work quoted the maxima; the settled column is the one that
     supports the claim that the manifold has equilibrated.
-  \item Over the plateau, $\epsCRE(t)$ departs from the analytic $\epsplat$ by
-    \SI{3.33}{\percent} at the benchmark and \SI{1.28}{\percent} at $[15,3]$.
+  \item Over the plateau, $\epsCRE(t)$ departs from the analytic $\epsplat$,
+    and the size of the departure $\max|\epsCRE(t)/\epsplat - 1|$ depends on
+    the interval it is measured on. On the bridge script's measured plateau,
+    which at $[15,3]$ is the shorter interval, it is \SI{3.33}{\percent} at the
+    benchmark and \SI{1.28}{\percent} at $[15,3]$. On the fixed $k=30$ window
+    $[30\,\taurel,\,\tauslow/30]$ used by the grid-wide census below it is
+    $0.0323$ at the benchmark and $0.0301$ at $[15,3]$
+    (\texttt{flat\_w30\_shell} in \texttt{validation/trajectory\_census/}).
     That flatness is what licenses quoting a single $\epsplat$ instead of a
     time-dependent error, and it is measured rather than assumed.
 \end{itemize}
@@ -1370,11 +1388,26 @@ expression evaluated twice, and the semigroup check is near-tautological for a
 scaling-and-squaring implementation of \texttt{expm}, which is why it returned
 exactly zero at both points.
 
-\textbf{Scope.} This establishes the dynamic chain
-$\text{full transient}\to\Rqss(u(t))\to\Rpe$ at two grid points, not grid-wide.
-The density structure of Section~\ref{sec:density_mechanism} comes from a
-grid-wide algebraic calculation. A grid-wide dynamic claim would need the bridge
-test run at every point, which has not been done.
+\textbf{Scope.} The bridge test above is at two grid points. Running the same
+propagation at every analysed pair (\texttt{verify\_trajectory\_census.py},
+output in \texttt{validation/trajectory\_census/}) extends the dynamic chain
+$\text{full transient}\to\Rqss(u(t))\to\Rpe$ to the grid. At all $680$ pairs
+with a plateau window, the maximum departure of the excited manifold from the
+instantaneous QSS manifold over the $k=30$ window is at most
+$4.4\times10^{-5}$ (median $1.1\times10^{-6}$) against the $2\times10^{-3}$
+tolerance, and sustained tracking begins within $4.84\,\taurel$ everywhere
+(median $2.93$). The departure of $\epsCRE(t)$ from the analytic plateau over
+the window has median $0.0022$ and maximum $0.0154$, at cool $[1,3]$. The
+maximum tracking error over the window scales roughly as $0.06/\Msep$: the
+median of $\Msep\,\max_W\epsQSS$ over the $680$ pairs is $0.060$, with a
+range of $0.001$ to $0.427$, and the log-log correlation of $\max_W\epsQSS$
+with $1/\Msep$ is $+0.945$ (\texttt{validation/trajectory\_census/},
+section~A), which is consistent with the singular-perturbation expectation that the slow
+eigenvector departs from the QSS manifold by $O(1/\Msep)$. The
+eigen-propagation used for the census was checked against
+\texttt{scipy.linalg.expm} at every pair, on the state and on the observable.
+The density structure of Section~\ref{sec:density_mechanism} is a separate,
+grid-wide algebraic calculation.
 
 One honest record of a failed preregistration belongs here. The first version
 of the plateau criterion required
@@ -1414,56 +1447,96 @@ That gives a time-average over an event of duration $\taudrive$:
   \label{eq:elm_bound}
 \end{equation}
 
-\noindent which tends to $\epsplat$ as $\taudrive\to0$ and to zero as
-$\taudrive\to\infty$, both as they should.
+\noindent which tends to zero as $\taudrive\to\infty$. Its other limit is
+wrong: as $\taudrive\to0$ the estimate tends to $\epsplat$, whereas the true
+time average tends to the step error $\epsstep$ of the rise, $0.0283$ against
+$0.3869$ at $[0,4]$ and $0.0087$ against $0.0636$ at the benchmark
+(\texttt{validation/trajectory\_census/}), so the estimate is valid only for
+$\taudrive\gg\taurel$. One transient precedes the plateau
+at the benchmark and does not enter this average: because $n=4$ relaxes faster
+than $n=3$, their relative deviations from partial equilibrium cross at
+$0.72\,\taurel$ and the ratio $n_3/n_4$ overshoots $\Rpe$ by
+\SI{0.40}{\percent} at $1.16\,\taurel$ (\SI{2.6}{\nano\second}), carrying
+$\epsCRE$ to $0.0678$ against $\epsplat = 0.0636$ before settling by
+$5\,\taurel$; over $t\le10\,\taurel$ the $L^{2}$ norm of the excited-block
+deviation from the frozen-reservoir state never exceeds its initial value at
+any of the $784$ pairs (maximum growth factor $0.9998$), so the overshoot
+belongs to the ratio and not to the state. Over longer times that norm does
+rise again, by up to a factor $1.536$, as the reservoir drift carries the
+state toward the new equilibrium; that is the slow decay, not a transient.
+The overshoot is absent at $[15,3]$, and the transient before $50\,\taurel$
+moves the \SI{100}{\micro\second} average at the benchmark by
+$-4.0\times10^{-5}$ relative (\texttt{validation/trajectory\_census/},
+section~A).
 
 \textbf{It is written with $\simeq$ rather than $\ge$, and that is a
 correction.} Equation~\eqref{eq:elm_bound} was constructed as a conservative
 lower bound, on the reasoning that the observable cannot decay faster than the
 slowest mode, and earlier drafts of this thesis called it one throughout. Direct
-43-state eigen-propagation shows it is much better than a bound and also,
-occasionally, not one: the ratio of the true \SI{100}{\micro\second} average to
-$\epsestim$ runs from $0.9999$ to $1.0066$ at seven points including the worst
-on the grid (\texttt{findings\_10}~\S3.2). \textbf{The $0.9999$ is a
-counterexample to the inequality, sitting inside this thesis's own data}, and it
-is four orders of magnitude larger than the $10^{-7}$ to $10^{-9}$ agreement the
-propagation achieves elsewhere, so it is not numerical noise. An inequality with
-a known counterexample is not an inequality, and $\epsestim$ is demoted to what
-it is: a single-slow-mode estimate, accurate to under \SI{0.7}{\percent} at
-every point tested.
+43-state eigen-propagation at every pair (\texttt{verify\_trajectory\_census.py},
+\texttt{validation/trajectory\_census/}) shows it is close to the true average
+and not a bound on it. Over the $448$ pairs above \SI{2}{\electronvolt} the
+ratio of the true \SI{100}{\micro\second} average to $\epsestim$ runs from
+$0.9791$ to $1.0222$ (median $0.9998$, below unity at $226$ of the $448$), and
+at \SI{506}{\micro\second} from $0.9671$ to $1.0377$. The ratio below unity at
+the worst point $[0,4]$, $0.999978$, is not a quadrature artefact: raising the
+sampling from $400$ to $1600$ per decade changes the five averages of
+Table~\ref{tab:lowerbound} by at most $4.7\times10^{-6}$ relative and the
+$[0,4]$ average by $2.7\times10^{-10}$ (\texttt{validation/trajectory\_census/},
+section~B). Its deficit of $2.2\times10^{-5}$ is the net of two contributions
+of opposite sign: the first $50\,\taurel$, during which the error is $\epsstep$
+rather than $\epsplat$, lower the average by $5.2\times10^{-5}$ relative, and
+the slow-mode mechanism below raises it by the remainder. An inequality with a known
+counterexample is not an inequality, and $\epsestim$ is what its name says: a
+single-slow-mode estimate, within \SI{2.2}{\percent} of the true average at
+\SI{100}{\micro\second} and \SI{3.8}{\percent} at \SI{506}{\micro\second} over
+the grid.
 
-The reason it is that accurate is the spectral gap of
-Section~\ref{sec:qss_is_exact}. With nothing between $\lambda_0$ and
-$\lambda_1$, there is no intermediate mode for the observable to decay on, so a
-single exponential is very nearly the whole answer.
+The spectral gap of Section~\ref{sec:qss_is_exact} is why a single exponential
+comes this close: the slow mode projects strongly onto the observable at every
+pair and no second mode contributes. The residual departure is not a transient.
+$\epsCRE = |R(t)/\Rcre - 1|$ is a ratio whose denominator, the $n=4$
+population, relaxes on the same $\tauslow$ as the numerator. With $\delta$ the
+slow-mode amplitude in the H$\beta$ channel relative to its CR-equilibrium
+value, the ratio of true average to estimate tends to
+$(1+\delta)\ln(1+\delta)/\delta = 1+\delta/2-\delta^{2}/6+O(\delta^{3})$
+for $\taudrive\gg\tauslow$.
+Heating gives $\delta>0$ and the estimate reads low; cooling gives $\delta<0$
+and it reads high. Over the warm pairs $\delta$ runs from $-0.22$ to $+0.30$,
+which is why the extreme ratios are a cooling minimum and a heating maximum in
+the same density column at neighbouring temperatures, cool $[49,1]$ and heat
+$[48,1]$ at \SI{100}{\micro\second}.
 
-\textbf{What the demotion costs the census is one point, and it is worth
-computing rather than waving at.} No analysed pair lies within
-\SI{0.01}{\percent} of the \SI{10}{\percent} threshold, which is the size of the
-counterexample, so the counterexample itself cannot move any count. Carrying the
-full observed spread instead, and taking the true average to be $\epsestim$
-times anything in $[0.9999, 1.0066]$, the census above \SI{2}{\electronvolt} is
-$45$ of $448$ at the low end and at the estimate, and $46$ at the high end. The
-single pair that can enter is $\Te = \SI{2.12}{\electronvolt}$, whose estimate
-is $0.09962$ and whose high-end value is $0.10027$. No pair leaves.
-\textbf{Every census in this chapter should therefore be read as $45$, or $46$
-if the estimate sits at the top of its measured spread.}
+\textbf{What the demotion costs the census is two pairs, and it is worth
+computing rather than waving at.} Counting the same $448$ pairs on the true
+\SI{100}{\micro\second} average instead of on $\epsestim$ moves the census from
+$45$ to $43$, worst $0.1753$ at heat $[15,3]$. No pair enters. The two that
+leave, cool $[22,3]$ at $0.09949$ and cool $[23,2]$ at $0.09999$, sit at and
+just below the threshold; the second misses it by $1.5\times10^{-4}$ relative,
+so the propagated count is $43$, with $44$ within the numerics. At
+\SI{506}{\micro\second} the propagated count is $24$ on the shell ratio and
+$23$ on the $A$-weighted line ratio. \textbf{Every census in this chapter
+should therefore be read as $45$ on the estimate and $43$ propagated.}
 
 \subsection{The census, inside the defensible scope}
 
-Counting the pairs whose ELM-averaged error exceeds \SI{10}{\percent} at
-$\taudrive = \SI{100}{\micro\second}$, with a one-interval step
+Counting the pairs whose time-averaged error $\epsestim$, the average of the
+instantaneous CR-equilibrium-reference error over
+$\taudrive = \SI{100}{\micro\second}$, exceeds \SI{10}{\percent}, with a
+one-interval step
 (\texttt{validation/divertor\_map/divertor\_map.csv}):
 
 \begin{table}[htbp]
 \centering
-\caption{ELM-averaged breakdown census at $\taudrive = \SI{100}{\micro\second}$,
-one-interval step, counted on the single-slow-mode estimate of
-Eq.~\eqref{eq:elm_bound}. Each row states the set it counts over.}
+\caption{Breakdown census on the \SI{100}{\micro\second} time average of the
+model-defined instantaneous CR-equilibrium-reference error, counted on the
+single-slow-mode estimate $\epsestim$ of Eq.~\eqref{eq:elm_bound} with a
+one-interval step. The average is taken over a chosen duration $\taudrive$; it
+is not a measurement model of an ELM. Each row states the set it counts over.}
 \label{tab:elm_census}
 \begin{tabular}{lrrl}
   \toprule
-  scope & pairs & bound $>\SI{10}{\percent}$ & worst \\
+  scope & pairs & $\epsestim >\SI{10}{\percent}$ & worst \\
   \midrule
   all analysed pairs & 680 & 202 & $0.3868$ at $[0,4]$ \\
   $\Te\ge\SI{2}{\electronvolt}$ & 448 & 45 & $0.1748$ at $[15,3]$ \\
@@ -1485,8 +1558,8 @@ extrapolated to the ITER pedestal it is $24$ of $448$, worst
 \SI{15.3}{\percent}, at the same point (Table~\ref{tab:duration_sensitivity}).
 At citable divertor densities there are zero breakdowns at either duration, with
 the worst case \SI{7.2}{\percent}. The
-benchmark point does not break down: its ELM-averaged error is
-\SI{1.2}{\percent}.
+benchmark point does not break down: its \SI{100}{\micro\second} time-averaged
+error is \SI{1.2}{\percent}.
 
 An earlier note recorded the first row as $201$ and in the same sentence
 decomposed it as $105$ heating plus $97$ cooling pairs, which do not agree.
@@ -1503,7 +1576,7 @@ Section~\ref{sec:transients} gives the refereed extrapolation to ITER: the ELM
 power pulse at the target is set by parallel ion transport from the pedestal,
 and at the expected ITER pedestal it lasts
 $\tau^{\rm ELM}_{\rm IR} = \SI{506}{\micro\second}$
-\cite[Sec.~5]{Loarte2003}. Since the bound of Eq.~\eqref{eq:elm_bound} averages
+\cite[Sec.~5]{Loarte2003}. Since the estimate of Eq.~\eqref{eq:elm_bound} averages
 a decaying error over the window, a longer window gives a smaller average, and
 \SI{100}{\micro\second} is therefore the aggressive end rather than a neutral
 choice.
@@ -1517,7 +1590,7 @@ extrapolation to the ITER pedestal.}
 \label{tab:duration_sensitivity}
 \begin{tabular}{lrl}
   \toprule
-  $\taudrive$ & bound $>\SI{10}{\percent}$ & worst \\
+  $\taudrive$ & $\epsestim >\SI{10}{\percent}$ & worst \\
   \midrule
   \SI{100}{\micro\second} & 45 & $0.1748$ \\
   \SI{250}{\micro\second} & 33 & $0.1664$ \\
@@ -1535,7 +1608,7 @@ case falls from \SI{17.5}{\percent} to \SI{14.4}{\percent}, a relative change of
 ITER-relevant statement should use. The maps and every derived quantity in this
 chapter are computed at \SI{100}{\micro\second} and are labelled with it; the
 $506$-microsecond census is a strict subset of the $100$-microsecond one,
-because the bound falls monotonically with the window at every point, so no
+because the estimate falls monotonically with the window at every point, so no
 conclusion drawn about the $45$ fails to apply to the $24$.
 
 Two further sensitivities belong with the census. The count depends strongly on
@@ -1546,6 +1619,31 @@ all and is unaffected by it. And the $104$ points excluded for having no plateau
 contain no breakdowns whatever, all sitting at $\Te\ge\SI{3.24}{\electronvolt}$
 with a maximum estimate of $0.0011$, so the exclusion does not hide anything;
 including them changes $202/680$ to $202/784$.
+
+\paragraph{A detector records a ratio of integrated brightnesses, not the mean
+of the instantaneous error.} A spectrometer with exposure $\taudrive$
+integrates each line separately and reports
+$\int_0^{\taudrive} j_\alpha\,\mathrm{d}t \big/ \int_0^{\taudrive} j_\beta\,\mathrm{d}t$,
+a brightness-weighted mean of the instantaneous ratio, which is not the time
+average of $\epsCRE$ that the census counts. That observable was computed
+at every pair with the augmented-matrix exponential, which gives
+$\int_0^{\taudrive}\nvec\,\mathrm{d}t$ without quadrature and to the round-off
+of the matrix exponential; at the benchmark and \SI{100}{\micro\second} it
+agrees with trapezoidal quadrature of $\mathbf{w}\cdot\nvec(t)$ on the sampled
+trajectory to $2.7\times10^{-7}$ (\texttt{verify\_trajectory\_census.py}).
+Across the $448$ pairs the error of the exposure ratio against the
+CR-equilibrium ratio agrees with the time average of $\epsCRE$ to within
+\SI{1.2}{\percent} at \SI{100}{\micro\second} (ratio of the two errors $0.9901$
+to $1.0114$) and to within \SI{2.2}{\percent} at \SI{506}{\micro\second}
+($0.9806$ to $1.0217$); that \SI{2.2}{\percent} is the agreement between two
+definitions of the averaged error, and is distinct from the
+\SI{2.2}{\percent} by which $\epsestim$ departs from the true average at
+\SI{100}{\micro\second}. The exposure ratio gives the same census: $43$ of $448$ at \SI{100}{\micro\second} on both the
+shell ratio and the $A$-weighted line ratio, and $24$ and $23$ at
+\SI{506}{\micro\second}. The agreement is empirical rather than structural. At
+$98$ of the $784$ pairs the signed error changes sign during the rise, so
+cancellation inside the exposure integral is possible in principle; all $98$
+have $\epsplat\le0.064$ and none is a census member.
 
 \paragraph{The plateau window itself is a free parameter, and it moves only one
 of the two things.} The window is defined by a separation factor $k$, taken as
@@ -1589,20 +1687,53 @@ Chapter~\ref{ch:limits} states the caveat that this closure adds an ion
 reservoir without closing the electron balance and without adding transport.
 
 The second objection is that a step is an idealisation and a real ELM has a
-finite rise time. Any ramp with $\taurel \ll t_{\mathrm{ramp}} \ll \tauslow$
-reaches the same plateau, because the fast manifold tracks the ramp adiabatically
-while the slow reservoir cannot follow it at all. The relevant Damk\"ohler-like
-ratio is $\tauslow/\taudrive$, which is $2332$ at $[0,4]$, and not
-$\taurel/\taudrive \approx 10^{-5}$, which describes the suppression of the fast
-excited-manifold error and has nothing to say about the plateau. The step
-idealisation is safe, and it is safe for the second reason and not the first.
+finite rise time. Replacing the step by a linear ramp of duration
+$t_{\mathrm{ramp}}$, integrating the full 43-state system through
+$\Lmat(t) = (1-f)\,\Lmat^{-} + f\,\Lmat^{+}$ with
+$f = \min(t/t_{\mathrm{ramp}},1)$, and reading the error at the start of the
+plateau window gives, at $[15,3]$, the fractions $0.9995$, $0.9954$, $0.9555$
+and $0.6469$ of the step's plateau error for
+$t_{\mathrm{ramp}}/\tauslow = 10^{-3}$, $10^{-2}$, $10^{-1}$ and $1$
+(\texttt{verify\_ramp\_plateau.py}, \texttt{validation/ramp\_plateau/}). A
+single-pole system driven by a ramp reaches the fraction
+$\mathrm{De}\,(1-\mathrm{e}^{-1/\mathrm{De}})$ of its step response, with
+$\mathrm{De} = \tauslow/t_{\mathrm{ramp}}$, which is $0.9995$, $0.9950$,
+$0.9516$ and $0.6321$ at the same four ratios: within \SI{0.5}{\percent} of the
+43-state result for $\mathrm{De}\ge10$, and \SI{2.3}{\percent} low at
+$\mathrm{De}=1$, where the 43-state value itself moves a further
+\SI{1.7}{\percent}, from $0.6469$ to $0.6576$, between linear and log-linear
+interpolation of the operator along the ramp
+(\texttt{validation/ramp\_plateau/}, log-linear sensitivity block; at
+$t_{\mathrm{ramp}} = 10^{-2}\tauslow$ the same change is $+1.6\times10^{-4}$),
+so the fraction there is $0.65\pm0.01$. During a linear ramp the ground-state
+reservoir completes the fraction
+$1 - \mathrm{De}\,(1-\mathrm{e}^{-1/\mathrm{De}})$ of its total excursion, the
+lag of a single pole behind a ramp, which for large $\mathrm{De}$ expands to
+$(t_{\mathrm{ramp}}/\tauslow)\,(\tfrac12 - \tfrac{1}{6\,\mathrm{De}}
++ \tfrac{1}{24\,\mathrm{De}^{2}} - \ldots)$. Per unit $t_{\mathrm{ramp}}/\tauslow$
+the 43-state system at $[15,3]$ gives $0.4984$ at $\mathrm{De}=100$ against the
+exact $0.4983$, and $0.4841$ at $\mathrm{De}=10$ against $0.4837$; at
+$\mathrm{De}=1$ the reservoir completes $0.3737$ of its excursion against the
+exact $0.3679$, where the two-term truncation gives $0.3333$; at
+$\mathrm{De}=1000$ the drift is $5\times10^{-4}$ of the excursion and the
+43-state value is \SI{1.3}{\percent} above the exact form
+(\texttt{validation/ramp\_plateau/}, lag-law block). The agreement is
+established at these four values of $\mathrm{De}$ only. The relevant Damk\"ohler-like ratio is $\tauslow/\taudrive$,
+which is $2332$ at $[0,4]$, and not $\taurel/\taudrive \approx 10^{-5}$, which
+describes the suppression of the fast excited-manifold error and has nothing to
+say about the plateau; at $\mathrm{De} = 2332$ the plateau is suppressed by
+\SI{0.02}{\percent}. The step idealisation is safe, and the ratio that makes it
+safe is $\tauslow/t_{\mathrm{ramp}}$, not $\taurel/t_{\mathrm{ramp}}$.
 
-\subsection{Stepping both parameters, which is what an ELM does}
+\subsection{Stepping temperature and density together as a two-parameter perturbation stress test}
 \label{sec:joint_step}
 
-Every map above steps $\Te$ at fixed $\nel$, and an ELM raises both. A
+Every map above steps $\Te$ at fixed $\nel$, and an ELM raises both. The test
+here moves the two parameters by whole grid intervals at once; it is a stress
+test of the two-channel framework, not a prescription for the path an ELM
+takes through the $(\Te,\nel)$ plane. A
 spot check at the benchmark had suggested this runs in the model's favour, the
-time-averaged bound falling from $0.0117$ to $0.0030$ when the density steps up
+time-averaged estimate falling from $0.0117$ to $0.0030$ when the density steps up
 with the temperature, because a higher $\nel$ shortens $\tauslow$. That spot
 check is reproduced exactly by the full map, and it is not representative.
 
@@ -1617,14 +1748,15 @@ $3.7\times10^{-16}$ (\texttt{verify\_joint\_step\_map.py}). The sensitivity is a
 property of the observable and the displacement is a property of the plasma,
 whichever axis moved.
 
-\paragraph{The gain becomes a gradient, and it is additive.} What does not
+\paragraph{The gain acquires a second component, and it is additive.} What does not
 survive unchanged is the second factorisation, $\Delta\ln u = G\,\Delta\ln\Te$,
-which has one axis in it. Measuring the two partial gains at each starting point
-from the single-axis steps,
+which has one axis in it. Measuring the two gains at each starting point as
+secants over the single-axis steps of one grid interval, $+\SI{4.81}{\percent}$
+in $\Te$ at fixed $\nel$ and a factor $2.68$ in $\nel$ at fixed $\Te$,
 \begin{equation}
-  G_T = \frac{\partial\ln u}{\partial\ln\Te}\bigg|_{\nel},
+  G_T = \frac{\Delta\ln u}{\Delta\ln\Te}\bigg|_{\nel,\;\Delta\ln\Te = 0.0470},
   \qquad
-  G_n = \frac{\partial\ln u}{\partial\ln\nel}\bigg|_{\Te},
+  G_n = \frac{\Delta\ln u}{\Delta\ln\nel}\bigg|_{\Te,\;\Delta\ln\nel = 0.987},
   \qquad
   \Delta\ln u \simeq G_T\,\Delta\ln\Te + G_n\,\Delta\ln\nel ,
   \label{eq:gain_gradient}
@@ -1668,7 +1800,7 @@ reproducing it exactly.}
 \label{tab:joint_census}
 \begin{tabular}{lrrl}
   \toprule
-  density step & pairs & bound $>\SI{10}{\percent}$ & worst \\
+  density step & pairs & $\epsestim >\SI{10}{\percent}$ & worst \\
   \midrule
   $-1$ index, $\times0.373$ & 426 & 44 & $0.1863$ at \SI{2.02}{\electronvolt}, \SI{5.18e13}{\per\cubic\centi\metre} \\
   $0$, fixed $\nel$ & 448 & 45 & $0.1748$ at \SI{2.02}{\electronvolt}, \SI{1.93e13}{\per\cubic\centi\metre} \\
@@ -1694,26 +1826,41 @@ the worst case is not, and that the worst case is understated by the
 fixed-density map rather than overstated.
 
 %-----------------------------------------------------------------------------
-\section{Timescale separation does not predict it}
+\section{Timescale separation does not predict the reservoir-closure error}
 \label{sec:M_does_not_predict}
 % QUESTION: does the standard validity criterion for the quasi-steady-state
-% approximation, the timescale separation M, indicate where the diagnostic fails?
+% approximation, the timescale separation M, indicate where the reservoir-closure error is largest?
 %-----------------------------------------------------------------------------
 
 A modeller deciding whether to trust a QSS-based inversion reaches for
 $\Msep = \tauslow/\taurel$, the stiffness ratio that licenses eliminating the
 fast variables in the first place. Chapter~\ref{ch:theory} measured it from
-$86.8$ to $1.73\times10^{9}$ across the grid. The natural expectation is that
+$86.8$ to $1.73\times10^{9}$ over all $784$ pairs of the grid; over the $680$
+analysed pairs on which the correlations below are computed its minimum is
+$902$ (\texttt{validation/partial\_fe/}). The natural expectation is that
 the diagnostic is worst where $\Msep$ is smallest.
 
 It is not. Once the operating point is accounted for, what remains is not an
 absence of information but information with the \emph{opposite} sign to the
 naive expectation: the controlled partial correlation is negative in all twelve
-combinations of Table~\ref{tab:partial_sweep}, median $-0.53$. Larger timescale
-separation goes with \emph{larger} diagnostic error at fixed $(\Te,\nel)$, which
-is the reverse of what the stiffness argument would suggest. An earlier draft
-said $\Msep$ carried no information at all; that is contradicted by the table
-sixty lines below it and is withdrawn.
+combinations of Table~\ref{tab:partial_sweep}, median $-0.53$, and it stays
+negative, $-0.617$ pooled, under saturated two-way fixed effects
+(Table~\ref{tab:partial_fe}). The statement has to be read precisely. At fixed
+$(\Te,\nel)$ and step direction there is exactly one $\Msep$ and one
+$\epsplat$, so nothing is being compared \emph{at} a fixed point. What the
+partial says is that, after the additive trends in $\log\Te$ and $\log\nel$
+are removed, the residual variation of $\log\Msep$ and the residual variation
+of $\log\epsplat$ are anticorrelated. Those residuals are small: two-way fixed
+effects explain $R^{2} = 0.998$ of $\log\Msep$ and $0.992$ of $\log\epsplat$
+in the heating direction ($0.987$ and $0.983$ pooled;
+\texttt{validation/partial\_fe/}, two-way fixed-effects $R^{2}$ block), so the
+partial correlates the remaining $0.2$ and $0.8$ percent of the variance.
+Two-way fixed effects absorb every additive function of $\Te$ and of $\nel$,
+so what remains is the $\Te$--$\nel$ interaction: the partial is a
+second-order statement about that interaction, not a statement that larger
+$\Msep$ means larger error. An earlier draft said $\Msep$ carried no
+information at all; that is contradicted by the tables below and is
+withdrawn.
 
 \begin{figure}[tbp]
   \centering
@@ -1722,14 +1869,25 @@ sixty lines below it and is withdrawn.
   \label{fig:M_vs_eps}
 \end{figure}
 
-The two extrema make the point without statistics. The largest $\Msep$ on the
-grid, $1.7\times10^{9}$, sits at $[0,0]$ and carries
-$\epsplat = \SI{12.0}{\percent}$, which is the 75th percentile of the
-distribution. The largest error, \SI{38.7}{\percent} at $[0,4]$, sits $52\times$
-away in density at an $\Msep$ smaller by a factor $46$. \textbf{The maxima of
-the two quantities are $52\times$ apart in density, and the error at the
-timescale-separation maximum is a factor $3.2$ below the worst.} Where $\Msep$
-is largest is not where the diagnostic fails.
+The two extrema make the point without statistics. Over the whole grid the
+largest $\Msep$, $1.73\times10^{9}$, sits at the cooling step from $[1,0]$
+($\Te = \SI{1.048}{\electronvolt}$ before the step,
+$\nel = \SI{e12}{\per\cubic\centi\metre}$) and carries
+$\epsplat = \SI{12.0}{\percent}$; the coldest corner $[0,0]$ exists only in
+the heating direction, with $\Msep = 9.39\times10^{8}$ and
+$\epsplat = \SI{8.30}{\percent}$, the 59th percentile of the $680$ analysed
+pairs. The largest error, \SI{38.7}{\percent} at $[0,4]$, sits $52\times$ away
+in density at an $\Msep$ smaller by a factor $46$
+(\texttt{validation/divertor\_map/divertor\_map.csv}). Those are whole-grid
+numbers and both extrema lie below \SI{2}{\electronvolt}. Inside the defended
+range $\Te\ge\SI{2}{\electronvolt}$ the separation persists at smaller
+magnitude: the largest $\Msep$ is $2.63\times10^{6}$ at the cooling step from
+$[15,0]$ with $\epsplat = \SI{7.4}{\percent}$, the largest $\epsplat$ is
+\SI{18.1}{\percent} at the heating step from $[15,3]$ with
+$\Msep = 2.0\times10^{5}$, the two points sit on the same $\Te$ row
+$19.3\times$ apart in density, and the error at the $\Msep$ maximum is a factor
+$2.5$ below the worst (\texttt{validation/m\_rank\_test/}, Part~5). Where
+$\Msep$ is largest is not where the reservoir-closure error is largest.
 
 The raw association looks strong and is a temperature proxy. Over the $680$
 analysed pairs, $\mathrm{corr}(\log\Msep, \log\epsplat) = +0.76$. But
@@ -1745,9 +1903,11 @@ Removing the shared trend reverses the sign. Residualising both $\log\Msep$ and
 $\log\epsplat$ on $(\log\Te,\log\nel)$ leaves a partial correlation of $+0.27$
 over all pairs and $+0.33$ over the heating pairs alone; residualising on a
 full quadratic basis in the same two variables leaves $-0.44$
-(\texttt{make\_ch5\_figures.py}, which refuses to draw
-Figure~\ref{fig:M_vs_eps} at all unless the quadratic partial comes out
-negative).
+(\texttt{make\_ch5\_figures.py}, which reports the sign of the quadratic
+partial when it draws Figure~\ref{fig:M_vs_eps}; an earlier version refused
+to draw the figure unless that sign was negative, which made the figure
+unproducible for the one outcome that would have been informative, and that
+guard was removed).
 
 \textbf{Report the sign, not the magnitude.} The magnitude of the controlled
 partial depends on the basis chosen for the control, which is a modelling
@@ -1779,13 +1939,65 @@ Stamped in \texttt{validation/partial\_correlation/}.}
 
 \textbf{The partial is negative in all twelve combinations with quadratic
 control or richer}, ranging from $-0.272$ to $-0.769$ with median $-0.532$, and
-it is negative in the defended range on every basis. Adding richer control does
-not bring the sign back, which is the test that matters: if the reversal were an
-artifact of over-fitting the control, enriching the basis would have made it
-worse rather than steadier. An earlier note recorded a range of $-0.22$ to
-$-0.70$ over eight unspecified combinations; that range is approximately right
-and could not be reproduced as stated, because the eight were never named. The
-twelve above are named.
+it is negative in the defended range on every basis. Whether that sign is a
+property of the polynomial basis is tested directly in
+Table~\ref{tab:partial_fe}, which replaces the polynomial by saturated two-way
+fixed effects, one dummy per $\Te$ row and one per $\nel$ column. That control
+removes every additive function of the two variables and assumes no functional
+form. Under it the partial is $-0.617$ pooled, $-0.939$ heating and $-0.770$
+cooling, at least as negative as under quadratic control in every direction.
+It keeps its sign when any one of the eight density columns is dropped (pooled
+range $-0.549$ to $-0.783$), when any one of the $35$ temperature rows is
+dropped ($-0.609$ to $-0.620$), and against a permutation null that shuffles
+$\log\epsplat$ within each $\Te$ row: none of $2000$ draws reaches the observed
+value in any direction (\texttt{validation/partial\_fe/}). Enriching the basis
+is not a uniform test. Additive enrichment moves the partial toward the
+fixed-effects value ($-0.531$ quadratic, $-0.614$ additive quadratic, $-0.609$
+additive quartic, $-0.617$ fixed effects, pooled), whereas adding
+$\Te\times\nel$ cross terms absorbs part of the interaction in which the
+residual lives and pushes the partial toward zero (full quartic: $-0.524$
+pooled, $-0.281$ heating, $-0.335$ cooling; \texttt{validation/partial\_fe/},
+full-quartic block). That design has a condition number of $3.2\times10^{5}$,
+worse than any other control in the file, so its partial is the least
+well-determined of the set. An earlier note recorded a range
+of $-0.22$ to $-0.70$ over eight unspecified combinations; that range is
+approximately right and could not be reproduced as stated, because the eight
+were never named. The twelve above are named.
+
+\begin{table}[htbp]
+\centering
+\caption{Partial correlation of $\log\Msep$ with $\log\epsplat$ over the
+analysed pairs at $\Te\ge\SI{2}{\electronvolt}$, under the quadratic control
+of Table~\ref{tab:partial_sweep} and under saturated two-way fixed effects
+(one dummy per $\Te$ row and one per $\nel$ column). The null columns give the
+mean and standard deviation of the partial over $2000$ permutations of
+$\log\epsplat$ within each $\Te$ row; no draw reached the observed value in
+any cell. Stamped in \texttt{validation/partial\_fe/}.}
+\label{tab:partial_fe}
+\begin{tabular}{lrrrrr}
+  \toprule
+  scope & $n$ & quadratic & null mean (sd) & two-way fixed effects & null mean (sd) \\
+  \midrule
+  heating only & $218$ & $-0.590$ & $+0.036$ ($0.068$) & $-0.939$ & $-0.002$ ($0.079$) \\
+  cooling only & $230$ & $-0.620$ & $+0.044$ ($0.065$) & $-0.770$ & $-0.003$ ($0.074$) \\
+  pooled       & $448$ & $-0.531$ & $+0.015$ ($0.057$) & $-0.617$ & $+0.000$ ($0.057$) \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+The sign is a statement about residuals and must not be read as a ranking. At
+fixed $\Te$, $\Msep$ falls monotonically with $\nel$ in all $98$ (row,
+direction) series of the map, while $\epsplat$ peaks at the density crest of
+Section~\ref{sec:mechanism}, at $\nel = \SI{1.9e13}{\per\cubic\centi\metre}$ in
+$95$ of the $98$ and one column higher in the other three
+(\texttt{validation/divertor\_map/divertor\_map.csv}). A monotone function
+cannot share its maximum with a unimodal one, so $\Msep$ cannot rank the error
+across density at all: in no row of either direction does the largest $\Msep$
+coincide with the largest $\epsplat$. The row-wise Spearman correlation of
+$\Msep$ with $\epsplat$ across the density columns has median $+0.07$ pooled at
+$\Te\ge\SI{2}{\electronvolt}$, with $49$ percent of rows negative, and its
+value in a given row is set by where the crest sits relative to the grid
+columns, not by any predictive skill (\texttt{validation/m\_rank\_test/}).
 
 The negative result itself is not new as a general statement.
 Greenland concluded, for arbitrary collisional--radiative systems, that
@@ -1801,7 +2013,10 @@ measures a \emph{distance}, the product of a sensitivity and a displacement,
 neither of which appears in $\Msep$. A large $\Msep$ means the excited
 states equilibrate quickly with the reservoir, which
 Section~\ref{sec:qss_is_exact} confirms to a part in $10^{8}$. It says nothing
-about whether the reservoir is in the right place.
+about whether the reservoir is in the right place. The conclusion the data
+support is the narrower one: $\Msep$ supports the fast-state QSS reduction,
+and it is neither a sufficient nor a robust predictor of the reservoir-closure
+error.
 
 %-----------------------------------------------------------------------------
 \section{Where the quantitative scope begins}
@@ -2054,8 +2269,8 @@ not detachment, and it is the $(3,4)$ pair's maximum rather than the Balmer
 series'.
 
 Inside the defensible scope, $\Te\ge\SI{2}{\electronvolt}$, $45$ of $448$
-point-and-direction pairs commit an ELM-averaged error above \SI{10}{\percent}
-at $\taudrive = \SI{100}{\micro\second}$, the worst being \SI{17.5}{\percent},
+point-and-direction pairs commit a time-averaged error above \SI{10}{\percent}
+over $\taudrive = \SI{100}{\micro\second}$, the worst being \SI{17.5}{\percent},
 falling to $24$ of $448$ and \SI{15.3}{\percent} at the
 \SI{506}{\micro\second} extrapolated to the ITER pedestal;
 at citable divertor densities none do, the worst being \SI{7.2}{\percent}. That

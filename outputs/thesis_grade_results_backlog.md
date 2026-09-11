@@ -672,6 +672,79 @@ benchmark row of that file carries τ_QSS = 1.8494e-05 s and M = 8243, i.e. the
 **post-step** operator L[24,5], not the 2.2728e-05 s / 9982 of A1 — the two
 numbers are different operators and the thesis must say which it quotes.
 
+**A11 sensitivity — plateau-window factor k (11 Sep 2026, report-only, 💻→▶️).**
+Reviewer question: is A11's census (45/448, worst 0.1748 at heat[15,3], 24/448
+at 506 µs) stable if the window `k*tau_relax < t < tau_slow/k` uses k = 10, 20,
+50 instead of the thesis's k = 30? Ran
+`verify_divertor_map.py --win-lo K --win-hi K --out validation/divertor_map_wK`
+for K = 10, 20, 50 (each 0.3 s wall time; canonical `validation/divertor_map/`
+confirmed byte-identical before and after by sha256, so the sweep did not
+touch it), then recounted from all four CSVs with a new script,
+`src/validation/verify_window_sweep.py`, written for this check and saved for
+reuse; output `validation/window_sweep/window_sweep_summary.csv` and `.txt`.
+
+K = 30 recount reproduces A11/A1-adjacent figures exactly: n_window_ok = 680,
+n_warm (Te ≥ 2 eV) = 448, n_dense (also ne ≥ 1e14) = 108, census@100µs = 45,
+worst = 0.174812 at heat[15,3] (Te = 2.0236 eV, ne = 1.9307e13 cm⁻³),
+census@506µs = 24 (worst 0.153301) — all match the values already on record.
+
+**What changes with K, what does not.** n_window_ok falls monotonically as K
+grows (779 → 728 → 680 → 596 for K = 10, 20, 30, 50) because the gate is
+`M > K²` and M is fixed per row; n_warm and n_dense fall with it (547→496→
+448→364 warm; 202→151→108→66 dense). **The census counts do not move at
+all**: census@100µs = 45/45/45/45, worst = 0.174812 at heat[15,3] in every
+case; census@506µs = 24/24/24/24, worst = 0.153301 in every case; thr = 5%
+count 141 and thr = 20% count 0 at every K. `eps_plateau` (the frozen-reservoir
+algebraic solve) is bit-identical across K for all 784 rows, max|Δ| = 0.000e+00
+exactly — confirmed both by direct row-by-row comparison and inside the new
+script. Same identity check run on `verify_reservoir_gain.py` (which does
+accept `--win-lo/--win-hi/--out`; run at K=10, K=50 with `--write`, canonical
+untouched, confirmed by sha256): G and Sbar bit-identical to the K=30 file for
+all 2288 rows, only the `window_ok` flag flips (285/2288 rows at K=10,
+245/2288 at K=50). The reported `|Sbar|`/`|G|` *ranges* over "k=1 heating,
+window_ok" narrow or widen with K (canonical 0.0649–0.4822 / 2.64–14.52;
+K=10 0.0491–0.4822 / 2.64–14.52; K=50 0.0786–0.4822 / 2.647–14.52) but this is
+membership at the edge of the distribution, not a changed value — the row
+that used to set the K=30 minimum G (2.6396) simply exits the window at K=50
+and a different row (2.647) becomes the new extremum among the smaller set.
+
+**One thing that does change, and was not anticipated going in: the crest.**
+For 9 of 34 warm (Te ≥ 2 eV) heating rows — the hottest, Te = 6.55–9.54 eV —
+the density index j at which `eps_plateau` is largest **among window_ok
+columns** moves from j=3 (K ≤ 30) to j=2 (K=50, Te = 6.55–8.69 eV) or j=1
+(K=50, Te = 9.10–9.54 eV). This is purely a membership effect: `eps_plateau`
+at j=3 is unchanged (e.g. 0.05815 at i=40 for every K) but at K=50 that column
+fails `M > 2500` (M = 2457.6 there) and drops out of window_ok, so the
+argmax among the *surviving* columns falls back to smaller ne. The true,
+window-unrestricted maximum over ne never moves. This qualifies the "k sets
+census membership, never magnitude" claim: it is exactly true for the 100 µs
+and 506 µs census reported in the thesis (their worst-case row, heat[15,3] at
+Te ≈ 2 eV, stays comfortably inside the window at every K tested), but a
+crest-style "which density is worst at fixed Te" statement is not
+K-invariant at the hot edge of the grid and should not be extended there
+without saying so.
+
+**What would have refuted "stable":** a change in census@100µs or
+census@506µs count, or in the worst-case value/location, across K = 10, 20,
+30, 50. None appeared. A change in eps_plateau, G, or Sbar with K would have
+meant the window gate was leaking into the "physics" quantities instead of
+only gating which rows are counted; none appeared (max|Δ| = 0 exactly, not a
+small residual). The crest shift at the hot edge is the one caveat that did
+appear and must be carried alongside the "stable" headline.
+
+**Runtimes.** `verify_divertor_map.py`: ≈0.3 s wall per K (10, 20, 50).
+`verify_reservoir_gain.py --write`: ≈0.6 s wall per K (10, 50).
+`verify_window_sweep.py`: <1 s. No failures, warnings, or kills.
+
+**Graduation: 💻 → ▶️.** Sensitivity check run as requested; caveats above are
+written. Not ✅ — this entry inherits A11's own un-promoted status (the
+[23,5]-vs-[24,5] operator-identity caveat above) and adds one of its own (the
+crest is not K-invariant at Te ≳ 6.5 eV). Artifacts:
+`validation/divertor_map_w10/`, `validation/divertor_map_w20/`,
+`validation/divertor_map_w50/`, `validation/reservoir_gain_w10/`,
+`validation/reservoir_gain_w50/`, `validation/window_sweep/`. Script:
+`src/validation/verify_window_sweep.py`.
+
 **A12 — reproduced exactly, from the preserved `*_FILTERED_20260721` evidence.**
 Comparing `tau_QSS_grid.npy`/`tau_relax_grid.npy`/`M_grid.npy` against their
 `_FILTERED_20260721` counterparts: **19 of 400** points differ ✓, at Te indices
@@ -880,6 +953,68 @@ CLAUDE.md pattern: error found, traced, sized, headline unaffected.
 worst cell [0,7]**, where the escape factor is still ≥ 0.85. The observed ratio
 would move ≲ 10% in that one cell and nowhere else.
 
+### G8. The A-weighted line ratio changes no defended number, and the thesis's 2.2 percent is wrong ✅ Verified (11 Sep 2026)
+
+**Script:** `src/validation/verify_weighted_census.py`. **Artifact:**
+`validation/weighted_census/` (784 rows, summary CSV, text log; sha256 of
+L_grid, S_grid, state_index and radiative_rates.csv in the header).
+Re-executes the `verify_divertor_map.py` construction and contracts the same
+`n0`, `n1`, `n_old`, `n_new` with the Einstein-A weights from
+`Balmer_transient_ratio.load_radiative_weights` (Hα: 3s, 3p, 3d → n=2;
+Hβ: 4s, 4p, 4d → n=2; 4f carries zero). Shell half reproduces
+`divertor_map.csv` bitwise on `eps_plateau`, `tau_QSS`, `f3`, `f4`, `eps_step`.
+
+**Predictions written before the run, and outcomes.**
+- P3, that eps_line/eps_shell runs 0.978 to 0.9999 as chapter 3:923 and
+  chapter 4:771 state: **refuted.** It runs **0.9482 to 0.9999** (all 784 rows,
+  identical over the 680 window rows), minimum at heat [48,0], the step
+  9.54 → 10.0 eV at ne = 1e12. The 0.978 is reproduced only by restricting to
+  Te < 2 eV, or by substituting the Hβ denominator alone (0.9810 to 1.0000),
+  which is what `thesis_ready.md` A6 literally describes. Chapter 4's
+  single-point [0,4] pair (0.386683 against 0.386903) reproduces exactly.
+- P4, that the census moves by at most a few pairs: **held.** 100 µs:
+  45 → 44 of 448 (cool [22,3] leaves, 0.1001 → 0.0999); worst 0.1748 → 0.1746
+  at heat [15,3], same point. 250 µs: 33 → 33. 506 µs: 24 → 24, 0.1533 → 0.1531.
+  750 µs: 20 → 19. Window scope: 202 → 200 of 680. Dense: 0 → 0 of 108.
+- Benchmark heat [23,5]: 0.063612 → 0.063571 (ratio 0.99935).
+- `ratio_plateau < 1` at every one of 784 rows: the shell census is
+  conservative for the line observable.
+
+**Skeptic pass (subagent, 11 Sep 2026).** Numbers reproduced at 60 digits in
+mpmath and by a from-scratch label-based rebuild of the weights that shares no
+code with the script (ratio_plateau to 1.2e-13 over 784 rows). The
+`emissivity_generalisation` artifact independently puts the Δ disagreement at
+5.4 percent at the same corner. Two of the script's printed checks (the
+factorisation identity and the photon/energy invariance) are algebraic
+identities of zero severity and are now labelled as such. The
+`eps_step` ratio range (0.04 to 1.36) is a zero-crossing artifact, now
+captioned.
+
+**Mechanism.** Not the 4f darkness alone. Substituting one side at a time at
+the corner: 4f removal 0.971, Hβ denominator 0.981, **Hα numerator 0.967**,
+full 0.948. The ℓ-distribution is channel-dependent (4F fraction of n=4 is
+0.432 ground-fed against 0.442 recombination-fed at the corner); A6's
+0.4361 to 0.4375 is the total-QSS 4F fraction, which is not the driver.
+
+**Sensitivity and caveats.** The 5.2 percent scales as 1/(ℓ-mixing rate):
+10.0 percent at half the PSM20 rate, 2.6 percent at double, 1.1 percent at
+five times. The sign survives the full range. The benchmark moves 0.13 to
+0.03 percent over the same range. The extremum is on the grid boundary with
+both trends monotone. The census insensitivity is a fact about where the
+census points sit (ratio 0.992 to 0.999 there), not about the observable;
+5 of 448 lower bounds lie within 0.002 of the 0.10 threshold.
+
+**Thesis consequences, not yet applied (author's call):**
+1. `chapter3.tex:921-925`, `chapter4.tex:769-777`: 0.978 / 2.2 percent →
+   0.948 / 5.2 percent, cite `validation/weighted_census/`.
+2. `chapter3.tex:925` "the residue is the 4f level": replace with the
+   channel-dependent ℓ-distribution statement.
+3. `chapter3.tex:922` "agrees to 0.014 percent at the benchmark": not
+   reproduced by any quantity in this script (eps_plateau 0.065 percent,
+   eps_step 0.0009 percent).
+4. Whether chapter 5's headline numbers switch to the line observable
+   (44 of 448, worst 0.1746) or stay on the shell with this bound stated.
+
 ## H. CORRECTIONS FORCED BY THIS SESSION
 
 | # | Item | Correction |
@@ -939,3 +1074,525 @@ no prior expectation can only be rationalised, never falsified.
 The repair is G1: headline dε/d ln Te = |S̄·G|, both factors independently
 measurable. That converts the weakest chain into one of the strongest, and it is
 what `pivot_decision.md` implements.
+
+---
+
+## SESSION REGISTER — 11 September 2026 (report-only, verification agent)
+
+### K1. Reviewer question on §5.9: does M(ne) rank ε_plateau(ne) at fixed T_e? 💻 → ▶️
+
+**The question.** A reviewer of Chapter 5 §5.9 ("Timescale separation does not
+predict it") called the polynomial partial-correlation machinery
+(Table `tab:partial_sweep`, residualising log M and log ε_plateau on a
+quadratic/cubic basis in log T_e, log n_e, reported negative in all twelve
+scope/basis combinations, median −0.53) over-engineered, and asked the more
+direct question that removes the T_e confound by construction instead of by
+regression: **at each fixed T_e row, does M(n_e) correctly rank
+ε_plateau(n_e) across the 8-point density sweep?** Nobody had run this before
+this session.
+
+**Script.** `src/validation/verify_m_rank_test.py` (new, written for this
+check). Run: `/opt/anaconda3/envs/cr/bin/python src/validation/verify_m_rank_test.py --write`
+from `/Users/phi/Desktop/non_markovian_cr`. Loads
+`validation/divertor_map/divertor_map.csv` (784 rows, sha256
+`5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490`), and
+labels the CSV's `i`, `j` columns against `Te_grid_L.npy` (50 pts,
+1.000–10.000 eV) / `ne_grid_L.npy` (8 pts, 1e12–1e15 cm⁻³) through
+`cr_context.py`; verified `Te_grid[i]`, `ne_grid[j]` reproduce the CSV's own
+`Te`, `ne` columns to 1e-9 relative before trusting any index label. Outputs:
+`validation/m_rank_test/m_rank_test.csv` (536 detail rows, one per
+direction×scope×quantity×i), `m_rank_test_summary.csv` (64 rows, all six
+sub-tests), `m_rank_test.txt`, each headed with the script name, date,
+interpreter path, and the four `#` provenance lines copied verbatim from
+`divertor_map.csv`'s own header (L_grid/S_grid/state_index sha256, fractional
+step 0.05, threshold 0.10).
+
+**Prediction, written in the script's docstring before computing anything.**
+If Chapter 5's negative partial correlation is real physics and not an
+artifact of the polynomial control basis, the same sign should appear in the
+much more elementary within-row rank test: a **majority** of fixed-T_e rows
+should have ρ_i(M, ε_plateau) < 0 across n_e. Refutation: a majority with
+ρ_i > 0.
+
+**The refutation appeared.** Pooled (heat+cool merged at common T_e index),
+scope = all 50 T_e rows, quantity = ε_plateau: only **36.0%** of rows have
+ρ_i < 0 (18/50), median ρ_i = **+0.228**. **PREDICTION REFUTED** by the
+script's own stated criterion.
+
+**Per-direction/scope breakdown (part 1 of the six sub-tests), n_rows always
+= n_rows qualified (every row had ≥4 window_ok columns; the ≥4-column
+minimum never actually binds except in scope (c) below):**
+
+| direction | scope | quantity | n rows | median ρ_i | frac ρ_i<0 | frac ρ_i>0.5 | frac ρ_i<−0.5 |
+|---|---|---|---|---|---|---|---|
+| heat | all | ε_plateau | 49 | +0.191 | 0.469 | 0.000 | 0.184 |
+| heat | Te≥2 | ε_plateau | 34 | −0.257 | 0.529 | 0.000 | 0.265 |
+| cool | all | ε_plateau | 49 | +0.476 | 0.163 | 0.102 | 0.163 |
+| cool | Te≥2 | ε_plateau | 35 | +0.393 | 0.229 | 0.143 | 0.229 |
+| pooled | all | ε_plateau | 50 | +0.228 | 0.360 | 0.000 | 0.160 |
+| pooled | Te≥2 | ε_plateau | 35 | +0.071 | 0.486 | 0.000 | 0.229 |
+
+**Heat/Te≥2 is the one cell that narrowly supports the prediction (52.9%
+negative) — and it does not survive inspection.** Printing ρ_i row by row
+(saved in `m_rank_test.csv`) shows the negative rows are concentrated
+entirely at the hot edge, T_e ≥ 4.29 eV, exactly where the plateau-window gate
+(A11/A11-sensitivity, §K above line ~675) starts stripping columns:
+n_cols = 8 for T_e = 2.02–3.09 eV (ρ_i = +0.33 to +0.48, all positive),
+n_cols = 7 for 3.24–4.09 eV (ρ_i = +0.214, still positive), then n_cols drops
+to 6, 5, 4 for T_e = 4.29–9.54 eV where ρ_i = −0.257, −0.700, and exactly
+−1.000 respectively. At n_cols = 4 (the script's own floor) a single
+adjacent-pair swap forces ρ_i to ±1 — three of the nine "negative" heat/Te≥2
+rows are driven by 4-point estimates that can only take the values
+{−1, −0.4, +0.4, +1, ...}. **None of the individual row p-values are
+significant** (p = 0.12–0.96 for every heat/Te≥2 row printed); the per-row
+test has essentially no power at n=4–8, and the one scope where the sign
+looks "right" is carried by the sparsest, least reliable rows at the grid
+edge, not by the well-populated interior (T_e = 2.02–4.09 eV, n_cols=7–8,
+ρ_i uniformly **positive**).
+
+**Part 2 — lo_ELM_crash (the 100 µs time-averaged quantity the census
+actually counts) is the sharpest result.** Row-wise ρ_i(M, lo_ELM_crash) is
+POSITIVE almost everywhere: pooled/all median ρ_i = **+0.740**,
+frac(ρ_i<0) = 0.020; pooled/Te≥2 median ρ_i = **+0.797**, frac(ρ_i<0) = 0.000
+(35/35 rows positive, 35/35 with ρ_i>0.5). Every direction/scope cell for
+lo_ELM_crash has frac(ρ_i<0) ≤ 0.082. This is the **opposite sign** from the
+Chapter 5 headline, for the exact quantity §5.9's census is built on.
+**Caveat (mechanism, not "fixed"):** lo_ELM_crash = ε_plateau · f(τ_QSS/τ_d)
+with f(x)=x(1−e^{−1/x}) monotonically increasing in τ_QSS, and
+τ_QSS = M·τ_relax; at fixed T_e the τ_QSS factor is close to proportional to
+M (τ_relax varies far less across n_e at fixed T_e than across the whole
+grid — A5 records a 45× range grid-wide). So part of lo_ELM_crash's strong
+positive row-wise correlation with M is close to definitional, not purely an
+independent physics finding about the "error". Reported, not adjusted.
+
+**Part 3 — argmax/argmin agreement.** argmax_j M never equals argmax_j
+ε_plateau, in **any** direction or scope (0/49, 0/34, 0/49, 0/35, 0/50, 0/35
+— exactly 0.000 every time). This is structural, not a coincidence: M(n_e)
+is monotonically decreasing in n_e at every T_e row examined (argmax always
+at j=0, the lowest density), while ε_plateau(n_e) is unimodal, peaking at an
+interior j (≈3–4); a monotone function and a unimodal function cannot share
+an argmax except by construction. argmin agreement is partial and direction-
+dependent: heat 0.510 (all)/0.471 (Te≥2), cool 0.837/0.771, pooled
+0.820/0.771 — because M's argmin is always at j=7 (highest density) and
+ε_plateau is often, but not always, also smallest there.
+
+**Part 4 — the reverse question is close to deterministic.** At FIXED n_e,
+across T_e rows with T_e≥2 eV, ρ_j(M, ε_plateau) = **+1.0000** for every one
+of the 8 density columns, in BOTH the heat direction (p ≈ 0–6.7e-64) and the
+cool direction (p ≈ 0–3.4e-197). Pooled (heat+cool merged per column,
+n=22–69) softens only slightly, ρ_j = +0.749 to +0.999, still overwhelmingly
+positive and significant. This directly confirms Chapter 5's own diagnosis:
+the raw, uncontrolled correlation (+0.76 over 680 pairs, reproduced here
+independently as pearson(log M, log ε_plateau) = **+0.7574** over the same
+680 window_ok rows — a standalone sanity check outside the six numbered
+sub-tests) is almost entirely the shared temperature trend, since M and
+ε_plateau are essentially perfectly co-monotonic in T_e at every fixed n_e.
+
+**Part 5 — extrema restricted to T_e≥2 eV & window_ok (the range Chapter 5
+can defend; the current text quotes [0,0]/[0,4], both T_e<2 eV).** In every
+direction, the largest-M point and the largest-ε_plateau point sit on the
+**same T_e row**, [15,·], T_e=2.0236 eV — structurally consistent with
+Chapter 5's own [0,0]/[0,4] comparison (also same row, i=0) — but materially
+smaller in magnitude:
+- heat: max M at [15,0] (n_e=1.000e12, M=1.387e6, ε=0.0624); max ε at [15,3]
+  (n_e=1.931e13, ε=0.1807, M=2.015e5). n_e ratio 0.0518 (≈**19.3×**, not the
+  52× quoted for the whole-grid [0,0]/[0,4] pair); M ratio ≈**6.9×** (not the
+  factor-46 quoted whole-grid); ε at the M-maximum is 0.0624 vs 0.1807 at the
+  worst point (factor ≈**2.9**, not 3.2 as separately reported for the
+  whole-grid pair, and the absolute worst error in this restricted range is
+  **18.1%, not 38.7%**).
+- cool: max M at [15,0] (M=2.633e6, ε=0.0735); max ε at [15,3]
+  (ε=0.1548, M=3.690e5); same n_e ratio 0.0518; M ratio ≈7.1×.
+- pooled: max M at cool[15,0], max ε at heat[15,3]; same n_e ratio 0.0518.
+**If Chapter 5 restricts this comparison to the T_e≥2 eV range it already
+defends elsewhere in the same section, the extremum-separation story shrinks
+by roughly a factor of 2.5–3 in every metric (density ratio, M ratio, and
+worst-case ε) relative to the whole-grid numbers currently quoted.**
+
+**Part 6 — plain (unresidualised) correlations, T_e≥2 eV, window_ok, for
+comparison with the row-wise numbers and with
+`validation/partial_correlation/partial_correlation_sweep.csv`'s own
+linear-basis partial (+0.416720, n=448, exact match on n confirms the same
+row selection):** pearson(log M, log ε_plateau): heat +0.574 (n=218), cool
++0.687 (n=230), pooled +0.625 (n=448); spearman: heat +0.596, cool +0.705,
+pooled +0.645. **All positive**, same sign as the raw uncontrolled
+correlation and the linear-basis partial, opposite sign from the
+quadratic/cubic-controlled partial (−0.53) that is the section's headline.
+
+**What would have refuted the prediction, and whether it appeared.** Stated
+in advance: a majority of rows with ρ_i>0 for ε_plateau. It appeared (64.0%
+of pooled/all rows; every scope/direction cell except the small, edge-driven
+heat/Te≥2 case). For the operationally relevant quantity (lo_ELM_crash) the
+refutation is not narrow — it is close to unanimous (98% of rows positive).
+
+**What failed/warned/was killed.** Nothing. The script ran clean, wrote all
+three output files, no exceptions, no timeouts. The one internal consistency
+check the script performs (CSV `Te`,`ne` columns vs `Te_grid[i]`,
+`ne_grid[j]` to 1e-9 relative) passed. The 0.000 argmax-match rate looked at
+first like a bug; traced to the structural mismatch between a monotone
+function (M) and a unimodal one (ε_plateau) — not a defect in the script.
+
+**One-sentence conclusion the data support.** At fixed T_e, M does not
+reliably rank ε_plateau in reverse — the row-wise test is close to a coin
+flip and trends positive in the well-populated interior of the grid, and for
+the quantity the census actually counts (the 100 µs time-averaged bound) M
+ranks it in the SAME direction almost everywhere, so the section's negative
+partial-correlation headline is a property of the quadratic/cubic polynomial
+control basis specifically, not something visible in the raw data, the
+linear partial, the reverse (fixed-n_e) test, or this simpler no-basis-choice
+rank test that the reviewer asked for instead.
+
+**Not ✅.** This is a report-only run: one script, one pass, no sensitivity
+sweep of the script's own MIN_COLS=4 threshold or of the plateau-window k
+(inherited from A11-sensitivity, not re-tested here), and the mechanism
+caveat on lo_ELM_crash (built from τ_QSS, which is nearly proportional to M
+at fixed T_e) has not been quantified. Graduation: **💻 → ▶️**. Whether this
+overturns or merely qualifies §5.9's headline sign claim is an editorial
+decision for the chapter, not this script's to make.
+
+Artifacts: `src/validation/verify_m_rank_test.py`,
+`validation/m_rank_test/m_rank_test.csv`,
+`validation/m_rank_test/m_rank_test_summary.csv`,
+`validation/m_rank_test/m_rank_test.txt`.
+
+**SUPERSEDED IN PART by the skeptic pass of 11 Sep 2026 (see K2).** The
+arithmetic above reproduces independently to 4 to 6 digits. The conclusion in
+the paragraph above it does not stand: the row-wise test controls for T_e
+only and gives +0.4 to +0.6; the partial controls for T_e *and* n_e and gives
+−0.53 (quadratic) to −0.94 (saturated two-way fixed effects, heating). The two
+are different conditionings and the row-wise test does not bear on the
+partial. The sign flip is produced by removing the density trend, not by the
+polynomial. Also: the headline cell (+0.228, 36 percent negative) is the
+pooled all-T_e scope; at the chapter's own T_e ≥ 2 eV scope it is +0.071 with
+49 percent of rows negative, and heating alone is −0.257. The lo_ELM_crash
+result is definitional (ρ(M, f(τ_slow/τ_d)) = +1 exactly in 34 of 50 rows; the
+null is +1, not 0, and the observed +0.74 to +0.80 sits *below* it). The
+"argmax never coincides" and "ρ_j ≈ +1 at fixed n_e" results are arithmetic
+identities (argmax M is always j = 0; both quantities are monotone in T_e) with
+no refuting outcome. The row-wise statistic is fragile to MIN_COLS (heating
+T_e ≥ 2 median goes −0.257 → +0.214 → +0.476 at MIN_COLS = 4, 5, 7) and to
+T_e decimation. What survives: at fixed T_e, M falls monotonically with n_e in
+98 of 98 series while ε_plateau peaks at the crest in 95 of 98, so M cannot
+rank the error across density by construction. Chapter 5 defects found in the
+same pass: the largest M (1.73e9) is at cool [1,0], not [0,0]; "52-fold apart
+in density" holds only for the coldest rows (19.3-fold at any T_e cut ≥ 1.5 eV);
+"86.8" is the minimum over 784 rows, 902 over the 680 window rows; "at fixed
+(T_e, n_e)" has no referent; and the `make_ch5_figures.py` guard near line 887
+raises unless the quadratic partial is negative, which is a results lock, not a
+test. Graduation stays ▶️.
+
+### K2. Stamping the skeptic pass: is §5.9's negative partial correlation a polynomial-basis artifact? 💡📐 (scratch) → 💻 → ▶️
+
+**The question K1 left open.** K1 found the row-wise rank test does not
+support §5.9's headline sign, and flagged (without resolving) that the
+headline itself is "a property of the quadratic/cubic polynomial control
+basis." A skeptic pass run earlier the same day, in scratch scripts only,
+tested that specific claim directly by residualising on a fully saturated,
+non-parametric two-way (T_e-row x n_e-column) fixed-effects control instead
+of a polynomial, and found the negative partial survives — this session
+turns that scratch result into a stamped artifact.
+
+**Script.** `src/validation/verify_partial_fe.py` (new). Run:
+`/opt/anaconda3/envs/cr/bin/python src/validation/verify_partial_fe.py --write`
+from `/Users/phi/Desktop/non_markovian_cr`. **Loaded:**
+`validation/divertor_map/divertor_map.csv` (784 rows, sha256
+`5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490`), with
+`Te_grid_L.npy`/`ne_grid_L.npy` via `cr_context.py` (never redefined); the
+CSV's `Te`,`ne` columns were checked against `Te_grid[i]`,`ne_grid[j]` to
+1e-9 relative before anything downstream trusted the index labels — passed.
+The `±5%` step fraction was **parsed from `divertor_map.csv`'s own header**
+("fractional step 0.05"), not hardcoded, then asserted to equal the task's
+0.05. Outputs: `validation/partial_fe/partial_fe.csv` (352 detail rows: the
+88-row main table over 8 controls × 2 scopes × 3 directions × 2 T_e-step
+variants, plus every leave-one-out run), `partial_fe_summary.csv` (30 rows:
+reference reproduction, raw Pearson/Spearman, permutation summaries, M
+range), `partial_fe.txt`, each headed with script name, date, interpreter
+path, and the **three sha256 lines copied verbatim** from
+`divertor_map.csv`'s own header (L_grid/S_grid/state_index) plus the CSV's
+own sha256 and the parsed step fraction. Deterministic: re-run with
+`--write` reproduced `partial_fe_summary.csv` byte-for-byte except the
+timestamp line. Runtime 1.6 s, no warnings, no exceptions, no failed
+stages (`failures` list empty in every run).
+
+**Every design was solved twice** (centred-and-scaled `numpy.linalg.lstsq`
+and QR/triangular-solve) and the two coefficient vectors were required to
+agree to 1e-8 before either was trusted — they did, in every one of the
+main-table, leave-one-out, and permutation-baseline fits; the largest
+lstsq-vs-QR discrepancy printed anywhere was `5.57e-11` (the 9-parameter
+additive-quartic design, condition number `1.8e5`). Design condition
+numbers ranged `1.3` (linear) to `1.8e5` (additive quartic); the two-way FE
+design (41-57 parameters) had condition number `6-11`, better conditioned
+than the polynomial bases despite far more parameters.
+
+**Reference reproduction (target vs. observed, `Te≥2 eV`, `window_ok`,
+pooled unless stated, pre-step T_e):**
+
+| quantity | target | observed | \|diff\| |
+|---|---|---|---|
+| quadratic, pooled | −0.531 | **−0.531359** | 0.0004 |
+| linear, pooled | +0.417 | **+0.416720** | 0.0003 |
+| two-way FE, pooled | −0.617 | **−0.617409** | 0.0004 |
+| two-way FE, heat | −0.939 | **−0.938964** | 0.0000 |
+| two-way FE, cool | −0.770 | **−0.770033** | 0.0000 |
+| T_e-row FE only, band [0.38, 0.59] | — | heat **+0.376690**, cool **+0.587553**, pooled **+0.474593** | heat **narrowly outside the band** (by 0.0033); cool and pooled inside |
+
+The quadratic value reproduces `partial_correlation_sweep.csv`'s own stored
+`-0.531359` to the digit, confirming the same 448-row selection and basis as
+Chapter 5's own script (`make_ch5_figures.py:partial()`). All five numeric
+targets reproduced to ≤0.0004 absolute; the one qualitative target (T_e-FE
+band) reproduced in 2 of 3 directions and missed the heat direction by a
+margin smaller than the band width itself (0.0033 vs. a 0.21-wide band) —
+reported as a miss, not rounded into the band.
+
+**The refuting observation did not appear.** Stated in advance: a positive
+two-way FE partial in any direction, or a permutation p above 0.01. Neither
+appeared:
+
+- **Two-way FE is at least as negative as quadratic in all three
+  directions** (heat −0.939 ≤ −0.590; cool −0.770 ≤ −0.620; pooled −0.617 ≤
+  −0.531) — prediction 1 held everywhere.
+- **T_e-row FE is positive in all three directions** (+0.377, +0.588,
+  +0.475) — prediction 2 held everywhere, consistent with K1 Part 4's
+  finding that M and eps_plateau are co-monotonic in T_e.
+- **Permutation test** (shuffle ln eps_plateau within each T_e row, 2000
+  draws, `numpy.random.default_rng(20260911)`, `Te≥2 & window_ok`): every
+  one of the 6 direction×control cells gave `frac(null ≤ observed) = 0.00000`
+  (0 of 2000 draws at or below the observed value), i.e. p < 1/2000, well
+  under the 0.001 threshold. Null means clustered near zero (+0.036 to
+  +0.044 for quadratic, −0.003 to +0.0004 for two-way FE) — the *un*controlled
+  T_e-row shuffle produces an essentially zero partial, as expected, and the
+  observed strongly negative values sit many standard deviations below that
+  (null sd 0.057-0.079).
+
+**Sensitivity, `Te≥2` scope, quadratic and two-way FE, both directions and
+pooled — every leave-one-out value is in the detail CSV:**
+
+- **Leave-one-ne-column-out (8 runs each):** sign never flips. Quadratic
+  pooled ranges −0.410 to −0.699 across the 8 drops (observed −0.531); two-way
+  FE pooled ranges −0.549 to −0.783 (observed −0.617). Heat and cool show the
+  same pattern (quadratic heat: −0.380 to −0.688; two-way FE heat: −0.924 to
+  −0.954). Dropping the benchmark-adjacent column (`j=5`, n_e≈1.39e14) gives
+  the *weakest* quadratic partial in every direction (pooled −0.410, heat
+  −0.380, cool −0.395) — flagged, not explained here; the two-way FE partial
+  at the same drop is far less moved (pooled −0.549, heat −0.929, cool
+  −0.742), consistent with the polynomial basis being more sensitive to
+  which columns are present than the FE basis is.
+- **Leave-one-T_e-row-out (34-35 runs each):** far tighter than the
+  density-column leave-out. Quadratic pooled: −0.536 to −0.527 (observed
+  −0.531); two-way FE pooled: −0.620 to −0.609 (observed −0.617). No sign
+  changes, no outlier rows.
+
+**a-variant (pre-step vs. post-step T_e) — reported, not resolved.** The
+two-way FE and T_e-row FE controls are index-based (dummies on grid row/
+column `i`,`j`) and are therefore identical under both variants by
+construction. The **continuous** controls are not: at `Te≥2, window_ok,
+pooled`, the quadratic partial is −0.531 under the pre-step T_e (the
+chapter's own variable) but only **−0.335** under the post-step T_e, and at
+the wider `window_ok` scope (no `Te≥2` cut) the quadratic partial is **−0.442
+pre-step vs. −0.172 post-step** — same sign, roughly 2.5× smaller in
+magnitude. Not every case even keeps sign this cleanly resolved from the
+printed table alone; the full 88-row main table in `partial_fe.csv` carries
+every combination for inspection. **This was not asked to be adjudicated,
+only reported: which T_e (pre- or post-step) belongs in the control matters
+to the size of the effect, not obviously to its sign in the cases checked
+here, but has not been swept as thoroughly as the fixed-effects question.**
+
+**Raw (unresidualised) Pearson/Spearman of (ln M, ln eps_plateau), `Te≥2 &
+window_ok`:** pooled Pearson +0.6251, Spearman +0.6449 (n=448) — matches K1
+Part 6's independently-computed +0.625/+0.645 to 3-4 digits, a second
+independent confirmation of the same raw positive correlation the partial
+analysis reverses. Heat +0.5743/+0.5958 (n=218), cool +0.6867/+0.7045
+(n=230). At the wider `window_ok` scope (no T_e cut): pooled +0.7574/+0.7909
+(n=680), matching `make_ch5_figures.py`'s stored `+0.76` and K1's
+independently-recomputed `+0.7574`.
+
+**M range:** window_ok (n=680): **9.021e2 to 1.729e9**. All rows (n=784):
+**8.677e1 to 1.729e9**. These are **whole-grid** extrema (50 T_e × 8 n_e, 1-10
+eV, 1e12-1e15 cm⁻³, both step directions) — not the ITER-benchmark-point M of
+9982 quoted elsewhere, and not restricted to `Te≥2`. The ratio of max to min
+window_ok M is ≈1.9×10^6, consistent with the earlier-recorded statement
+that τ_relax alone varies 45× across the grid — M varies far more than
+τ_relax alone because τ_QSS also varies strongly and non-uniformly.
+
+**What would have refuted the claim, and whether it appeared.** Stated in
+the script's docstring before any computation: a positive two-way FE partial
+in any direction, or a permutation p above 0.01. **Neither appeared** — the
+two-way FE partial was negative and *more* negative than the quadratic in
+every direction (−0.617 to −0.939), and every permutation p was effectively
+0 (0/2000).
+
+**What failed, warned, or was killed.** Nothing. `failures` (the script's
+own explicit collection of any stage that raised) was empty on every run;
+every lstsq/QR agreement check passed at 1e-8; every design was full column
+rank (checked before solving). The one near-miss is not a failure of the
+script but a genuine numeric result: the T_e-row-FE-only partial for the
+heat direction (+0.3767) falls 0.0033 short of the task's stated [0.38,0.59]
+reference band — reported as an out-of-band miss above, not rounded in.
+
+**One-sentence conclusion the data support.** Under the least
+assumption-laden control available on this grid (saturated two-way fixed
+effects, which removes any additive function of T_e and any additive
+function of n_e, not just a quadratic one), the partial correlation between
+ln M and ln eps_plateau is **negative and at least as strong** as under
+Chapter 5's quadratic control, in all three directions, survives dropping
+any single density column or any single T_e row, and is far outside a
+2000-draw permutation null — so K1's open question is answered in the
+opposite direction from what K1's own row-wise test suggested: the sign is
+not a polynomial-basis artifact, though K1's row-wise-rank and reverse-
+question findings (both real, both reproducible) still show that the
+*mechanism* is dominated by the shared T_e trend and is not simply "M ranks
+eps_plateau in reverse at fixed T_e."
+
+**Not ✅.** This report-only run adds the sensitivity checks (leave-one-out,
+permutation) that K1 lacked, but: (a) the pre-/post-step T_e sensitivity of
+the continuous-basis controls (−0.531 vs. −0.335 at the same scope) is
+reported, not resolved or swept as thoroughly as the FE question; (b) the
+T_e-row-FE heat-direction reference band was missed by a small margin,
+unexplained; (c) how this stamped result should be read against K1's
+row-wise finding (same data, opposite-seeming implication) is an editorial/
+physical-interpretation question for the chapter, not this script's to
+settle. Graduation: **💡📐 (scratch) → 💻 → ▶️**.
+
+Artifacts: `src/validation/verify_partial_fe.py`,
+`validation/partial_fe/partial_fe.csv`,
+`validation/partial_fe/partial_fe_summary.csv`,
+`validation/partial_fe/partial_fe.txt`.
+
+### K3. A finite ramp reaches the step's plateau: De(1 − e^(−1/De)), De = τ_slow/t_ramp ▶️ Run (11 Sep 2026)
+
+**Script:** `src/validation/verify_ramp_plateau.py`. **Artifact:**
+`validation/ramp_plateau/` (28 rows, sha256 of L_grid, S_grid, state_index,
+radiative_rates). Full 43-state integration (Radau, rtol 1e-10, hold segments
+ending exactly at the readout times, expm cross-check on every ramp case to
+better than 3e-8 on the state) through L(t) = (1 − f)L⁻ + fL⁺, f = min(t/t_ramp, 1),
+one grid interval heating, at [23,5] and [15,3].
+
+**Result.** Plateau column eps(t_ramp + 30 τ_relax)/eps_step(30 τ_relax) at
+[15,3]: 0.9995, 0.9954, 0.9555, 0.6469 for t_ramp/τ_slow = 1e-3, 1e-2, 1e-1, 1,
+against the single-pole ramp response 0.9995, 0.9950, 0.9516, 0.6321. Accurate
+to 0.5 percent for De ≥ 10; at De = 1 the formula is 2.3 percent low and the
+measured value moves a further 1.7 percent between linear and log-linear
+interpolation of the operator (0.6469 → 0.6576), so it is 0.65 ± 0.01. Ground
+reservoir drift during the ramp is (1/2 − 1/(6De))(t_ramp/τ_slow) of the total
+excursion, reproduced to 0.15 percent at [15,3]. The benchmark's De = 1000 ramp
+is only 8.2 τ_relax long and is outside the law's domain. Convergence (rtol
+1e-8 vs 1e-10): plateau ratio 1.6e-9, eps_max 4.1e-7.
+
+**By-product.** At the benchmark the pure step overshoots: n₃/n₄ exceeds R_PE
+by 0.40 percent at 1.16 τ_relax (2.6 ns), carrying ε_CRE to 0.0678 against
+ε_plat = 0.0636 (6.6 percent), settled by 5 τ_relax. It is a property of the
+ratio (n = 4 relaxes faster than n = 3; relative deviations cross at 0.72 and
+4.66 τ_relax), not of the state: the deviation norm over the excited block
+decays monotonically at all 784 pairs (worst growth factor 0.998), so it is
+not transient non-normal growth. It is in both the shell and the line ratio
+(1.0661 / 1.0661), observable-dependent (n = 3 population 1.020, n₃/n₅ 1.132,
+n₄/n₅ 2.92), present at 456 of 784 pairs (median excess 1.35, max 5.91 at
+[49,7] cool, largest where ε_plat is smallest), absent at [0,4], and it changes
+the 100 µs average by −4e-5 relative at the benchmark. No census, estimate or
+map moves.
+
+**Skeptic pass (11 Sep 2026):** reproduced with expm alone to six digits;
+found and fixed a dense-output readout error in the fifth digit; struck the
+word "non-normal". Caveats: two points, heating only, one grid interval,
+linear-in-time operator interpolation; a real ELM's factor-of-several excursion
+is not tested.
+
+### K4. Every plateau cell propagated: the bridge, the estimate and the exposure observable, grid-wide ✅ Verified (11 Sep 2026)
+
+**Script:** `src/validation/verify_trajectory_census.py`. **Artifact:**
+`validation/trajectory_census/` (784 rows, 400 samples/decade, sha256 of
+L_grid, S_grid, state_index, radiative_rates). Exact post-step solution
+n(t) = n_new + exp(L⁺t)(n_old − n_new) by eigen-propagation, gated at 12 times
+per row against `scipy.linalg.expm` on the state (tolerance max(1e-8,
+ε_mach‖L‖₂t), the intrinsic float64 limit, established against a 30-digit
+mpmath exponential) and on the observable; exposure integrals by the augmented
+matrix exponential, checked against direct quadrature to 1e-9. Convergence:
+true averages change by ≤ 8e-5 between 100 and 400 samples/decade; the [0,4]
+ratio by 4e-9. Closes Round 2 items 2, 4 and 5.
+
+**A. Bridge, grid-wide (Round 2 item 2).** Over the k = 30 window at all 680
+window pairs, max eps_track = |R(t)/R_QSS⁺(u(t)) − 1| ≤ 4.4e-5, median 1.1e-6,
+0 pairs above the 2e-3 tolerance; sustained tracking within 4.9 τ_relax
+(median 2.9); max |R(t)/R_PE − 1| median 0.0022, max 0.0154 at cool [1,3].
+max_W eps_track · M has median 0.06 (correlation with 1/M +0.945): the
+singular-perturbation O(1/M) departure of the slow eigenvector from the QSS
+manifold, resolved three to five orders above the 1.5e-10 numerical floor.
+Benchmark and [15,3]: t_track 1.948 and 3.734 τ_relax (bridge script 1.94,
+3.72); flatness max|ε_CRE/ε_plat − 1| on the k = 30 window 0.0323 and 0.0301
+(chapter 5's 3.33 % and 1.28 % were on the bridge script's measured plateau,
+a different interval at [15,3]).
+
+**B. The single-slow-mode estimate against the true average (item 4).** Over
+the 448 pairs above 2 eV, true/estimate runs 0.9791 to 1.0222 at 100 µs
+(median 0.9998, below 1 at 226) and 0.9671 to 1.0377 at 506 µs. tab:lowerbound
+reproduces with its 25 ns mesh bias removed: 0.99998, 1.0027, 1.0065, 1.0072,
+1.0010. The [0,4] value below unity is real: 2.19e-5, a rise deficit of
+−5.21e-5 plus +3.0e-5 curvature, residual 1.5e-9. **Mechanism (skeptic pass):**
+not the reviewer's weak-projection or multi-mode cancellation (slow-mode
+projection 0.03 to 0.45, residual 1e-9), but that ε_CRE is a ratio whose
+denominator relaxes on the same τ_slow: with δ the slow-mode amplitude in the
+Hβ channel relative to CRE, true/estimate → (1+δ)ln(1+δ)/δ ≈ 1 + δ/2; heating
+δ > 0 (estimate low), cooling δ < 0 (estimate high); δ runs −0.22 to +0.30 on
+the warm pairs, asymptote 0.88 to 1.14. The τ_d → 0 limit of the estimate is
+wrong (it gives ε_plat; the true average gives ε_step); valid only for
+τ_d ≫ τ_relax.
+
+**C. Census (items 4 and 5).** 100 µs, window_ok ∧ Te ≥ 2, > 0.10: estimate
+shell 45, estimate line 44, true average 43 (shell and line), exposure ratio
+∫j_α/∫j_β 43 (shell and line); worst 0.1753 at heat [15,3]. Leavers cool
+[22,3] (0.09949) and cool [23,2] (0.09999, 1.5e-4 below threshold: quote 43,
+44 within the numerics). 506 µs: 24/24/24/23/24/23. Exposure ratio against
+time average pointwise: 0.990 to 1.011 (100 µs), 0.981 to 1.022 (506 µs).
+Caveat: at 98 of 784 pairs the signed error changes sign during the rise, so
+the exposure integral can cancel in principle; none is a census member and all
+have ε_plat ≤ 0.064.
+
+**Skeptic pass (11 Sep 2026):** numbers reproduced by Gauss–Legendre panels on
+expm to 1e-9; found and corrected in place: the P3 arithmetic (dropped
+division), the invalid 3.33 % comparison, the false docstring accuracy
+sentence, the state-normalised gate (now also on the observable), and census
+bookkeeping for the line rows. Definition-dependent: t_track (threshold,
+sampling), max_W ε_PE (window), the count itself (45/44/43 by definition).
+Inherits every upstream caveat of L_grid and the fixed-ion closure; the
+12.7 % rate uncertainty of chapter 4 dwarfs the 1.5e-4 that decides 43 vs 44.
+
+### K5. Round 2 review, status after this session
+
+| item | state |
+|---|---|
+| 1 captions | closed (generator and .tex) |
+| 2 grid-wide bridge | closed, K4 |
+| 3 window factor k | closed, `validation/window_sweep/` (census 45 at k = 10, 20, 30, 50; denominators 547/496/448/364) |
+| 4 estimate not a bound | closed, K4; chapter 4 and 5 text updated |
+| 5 finite-exposure observable | closed, K4 |
+| 6 100 µs naming | closed (text) |
+| 7 joint step heading, secant gains | closed (text) |
+| 8 §5.9 | closed on K2 (FE partial) and K1-as-amended; `make_ch5_figures.py` results lock at ~line 893 reported, not changed |
+| 9 [UNVERIFIED] sweep | artifact exists; provenance header still missing on `partial_correlation_sweep.csv` (writer in `make_ch5_figures.py`) |
+| 10 Table 5.1 | closed (same-point series from `reservoir_gain.csv`) |
+| 11 ramp | closed, K3 |
+
+### K6. Addenda after the maths audit of the day's edits (11 Sep 2026, evening)
+
+A `math-auditor` pass over the ~400 changed thesis lines found one false
+sentence (the deviation norm "decays monotonically": it never exceeds its
+initial value over 10 τ_relax, then rises with the reservoir drift), a lag law
+quoted beyond its tested range (the truncated 1/2 − 1/(6De) is 9 % off at
+De = 1; the exact form is 1 − De(1 − e^(−1/De))), three stale "0.7 percent"
+sites, three leftover "bound" wordings, and eight numbers that traced only to
+script docstrings. All eight are now stamped rather than deleted:
+
+| number | now in |
+|---|---|
+| growth factor of the excited-block deviation ≤ 0.9998 (784 pairs, L2, t ≤ 10 τ_relax) | `trajectory_census/` §A |
+| early-transient effect on the 100 µs average, −4.0e-5 at the benchmark | `trajectory_census/` §A and column `early_effect_*` |
+| convergence at 1600 samples/decade, ≤ 4.7e-6 at the five table points | `trajectory_census/` §B |
+| M · max_W eps_track median 0.060, correlation +0.945 | `trajectory_census/` §A |
+| Hα-numerator-only 0.9672, Hβ-denominator-only 0.9810 at the corner | `weighted_census/` P3 block, columns `ratio_numerator_only`, `ratio_denominator_only` |
+| ℓ-mixing scan 0.9000 / 0.9482 / 0.9736 / 0.9893 at s = 0.5, 1, 2, 5 | `weighted_census/weighted_census_lmix.csv` |
+| two-way FE R² 0.9980/0.9919 (heat), 0.9871/0.9829 (pooled); full quartic −0.524/−0.281/−0.335 | `partial_fe/` |
+| log-linear interpolation rows, exact lag law | `ramp_plateau/` (`interp` column) |
+
+Not stamped and therefore removed from the text: the −5.2e-5 / +3.0e-5
+decomposition of the [0,4] deficit (the net 2.2e-5 is stamped).
+

@@ -1,0 +1,309 @@
+# generated 2026-09-11 11:51 by verify_m_rank_test.py
+# python interpreter: /opt/anaconda3/envs/cr/bin/python
+# source generated 2026-08-23 13:47 by verify_divertor_map.py
+# source L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# source S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# source state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# source fractional step 0.05, threshold 0.1
+# source csv: validation/divertor_map/divertor_map.csv  sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# min_cols_per_row 4
+==============================================================================
+M-RANK TEST -- does M(ne) rank eps_plateau(ne) at fixed Te?
+generated 2026-09-11 11:51  by verify_m_rank_test.py
+python interpreter: /opt/anaconda3/envs/cr/bin/python
+repo root: /Users/phi/Desktop/non_markovian_cr
+loaded    : /Users/phi/Desktop/non_markovian_cr/validation/divertor_map/divertor_map.csv  (784 rows)
+  (source header) # generated 2026-08-23 13:47 by verify_divertor_map.py
+  (source header) # L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+  (source header) # S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+  (source header) # state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+  (source header) # fractional step 0.05, threshold 0.1
+Te grid   : 50 points from cr_context (Te_grid_L.npy), 1.0000-10.0000 eV
+ne grid   : 8 points from cr_context (ne_grid_L.npy), 1.000e+12-1.000e+15 cm^-3
+CSV i/j columns verified against Te_grid[i], ne_grid[j] to 1e-9 relative: OK
+
+PREDICTION (from the docstring, written before computing):
+  Ch.5's partial correlation is negative in all 12 scope/basis combos
+  (median -0.53): larger M goes with larger eps_plateau at fixed (Te,ne).
+  Prediction: within-row rho_i(M, eps_plateau) across ne at fixed Te
+  should be NEGATIVE for a majority of rows.
+  Refutation would be: a MAJORITY of rows with rho_i > 0.
+==============================================================================
+
+==============================================================================
+PART 1/2 -- row-wise Spearman rho_i(M, quantity) across ne, fixed Te
+==============================================================================
+
+[  heat] scope=all              quantity=eps_plateau
+  rows seen=49  rows qualified (>=4 window_ok cols)=49
+  median rho_i=+0.1905  min=-1.0000  max=+0.4762
+  frac(rho_i<0)=0.469  frac(rho_i>0.5)=0.000  frac(rho_i<-0.5)=0.184
+
+[  heat] scope=all              quantity=lo_ELM_crash
+  rows seen=49  rows qualified (>=4 window_ok cols)=49
+  median rho_i=+0.6905  min=-0.1905  max=+1.0000
+  frac(rho_i<0)=0.082  frac(rho_i>0.5)=0.673  frac(rho_i<-0.5)=0.000
+
+[  heat] scope=Te>=2            quantity=eps_plateau
+  rows seen=34  rows qualified (>=4 window_ok cols)=34
+  median rho_i=-0.2571  min=-1.0000  max=+0.4762
+  frac(rho_i<0)=0.529  frac(rho_i>0.5)=0.000  frac(rho_i<-0.5)=0.265
+
+[  heat] scope=Te>=2            quantity=lo_ELM_crash
+  rows seen=34  rows qualified (>=4 window_ok cols)=34
+  median rho_i=+0.7714  min=+0.4762  max=+1.0000
+  frac(rho_i<0)=0.000  frac(rho_i>0.5)=0.971  frac(rho_i<-0.5)=0.000
+
+[  heat] scope=Te>=2_ne>=1e14   quantity=eps_plateau
+  rows seen=34  rows qualified (>=4 window_ok cols)=0
+  -- no rows qualify; cannot compute a distribution
+  (expected: only 3 of 8 ne columns satisfy ne>=1e14 per direction, below the 4-column minimum)
+
+[  heat] scope=Te>=2_ne>=1e14   quantity=lo_ELM_crash
+  rows seen=34  rows qualified (>=4 window_ok cols)=0
+  -- no rows qualify; cannot compute a distribution
+  (expected: only 3 of 8 ne columns satisfy ne>=1e14 per direction, below the 4-column minimum)
+
+[  cool] scope=all              quantity=eps_plateau
+  rows seen=49  rows qualified (>=4 window_ok cols)=49
+  median rho_i=+0.4762  min=-1.0000  max=+0.5952
+  frac(rho_i<0)=0.163  frac(rho_i>0.5)=0.102  frac(rho_i<-0.5)=0.163
+
+[  cool] scope=all              quantity=lo_ELM_crash
+  rows seen=49  rows qualified (>=4 window_ok cols)=49
+  median rho_i=+0.7500  min=+0.4762  max=+1.0000
+  frac(rho_i<0)=0.000  frac(rho_i>0.5)=0.735  frac(rho_i<-0.5)=0.000
+
+[  cool] scope=Te>=2            quantity=eps_plateau
+  rows seen=35  rows qualified (>=4 window_ok cols)=35
+  median rho_i=+0.3929  min=-1.0000  max=+0.5952
+  frac(rho_i<0)=0.229  frac(rho_i>0.5)=0.143  frac(rho_i<-0.5)=0.229
+
+[  cool] scope=Te>=2            quantity=lo_ELM_crash
+  rows seen=35  rows qualified (>=4 window_ok cols)=35
+  median rho_i=+0.7857  min=+0.5952  max=+1.0000
+  frac(rho_i<0)=0.000  frac(rho_i>0.5)=1.000  frac(rho_i<-0.5)=0.000
+
+[  cool] scope=Te>=2_ne>=1e14   quantity=eps_plateau
+  rows seen=35  rows qualified (>=4 window_ok cols)=0
+  -- no rows qualify; cannot compute a distribution
+  (expected: only 3 of 8 ne columns satisfy ne>=1e14 per direction, below the 4-column minimum)
+
+[  cool] scope=Te>=2_ne>=1e14   quantity=lo_ELM_crash
+  rows seen=35  rows qualified (>=4 window_ok cols)=0
+  -- no rows qualify; cannot compute a distribution
+  (expected: only 3 of 8 ne columns satisfy ne>=1e14 per direction, below the 4-column minimum)
+
+[pooled] scope=all              quantity=eps_plateau
+  rows seen=50  rows qualified (>=4 window_ok cols)=50
+  median rho_i=+0.2278  min=-1.0000  max=+0.4971
+  frac(rho_i<0)=0.360  frac(rho_i>0.5)=0.000  frac(rho_i<-0.5)=0.160
+
+[pooled] scope=all              quantity=lo_ELM_crash
+  rows seen=50  rows qualified (>=4 window_ok cols)=50
+  median rho_i=+0.7400  min=-0.1905  max=+1.0000
+  frac(rho_i<0)=0.020  frac(rho_i>0.5)=0.720  frac(rho_i<-0.5)=0.000
+
+[pooled] scope=Te>=2            quantity=eps_plateau
+  rows seen=35  rows qualified (>=4 window_ok cols)=35
+  median rho_i=+0.0714  min=-1.0000  max=+0.4971
+  frac(rho_i<0)=0.486  frac(rho_i>0.5)=0.000  frac(rho_i<-0.5)=0.229
+
+[pooled] scope=Te>=2            quantity=lo_ELM_crash
+  rows seen=35  rows qualified (>=4 window_ok cols)=35
+  median rho_i=+0.7967  min=+0.5618  max=+1.0000
+  frac(rho_i<0)=0.000  frac(rho_i>0.5)=1.000  frac(rho_i<-0.5)=0.000
+
+[pooled] scope=Te>=2_ne>=1e14   quantity=eps_plateau
+  rows seen=35  rows qualified (>=4 window_ok cols)=16
+  median rho_i=+0.8286  min=+0.6000  max=+0.8286
+  frac(rho_i<0)=0.000  frac(rho_i>0.5)=1.000  frac(rho_i<-0.5)=0.000
+  CAVEAT: 'pooled' merges heat+cool at the same Te index, so this scope can clear >=4 columns using only 3 distinct ne values counted twice (once per step direction) -- NOT genuine extra density resolution; see script docstring
+
+[pooled] scope=Te>=2_ne>=1e14   quantity=lo_ELM_crash
+  rows seen=35  rows qualified (>=4 window_ok cols)=16
+  median rho_i=+1.0000  min=+0.9429  max=+1.0000
+  frac(rho_i<0)=0.000  frac(rho_i>0.5)=1.000  frac(rho_i<-0.5)=0.000
+  CAVEAT: 'pooled' merges heat+cool at the same Te index, so this scope can clear >=4 columns using only 3 distinct ne values counted twice (once per step direction) -- NOT genuine extra density resolution; see script docstring
+
+==============================================================================
+Rows with rho_i > 0 (going the OTHER way from the prediction), scope=all, quantity=eps_plateau
+==============================================================================
+[heat] 26 row(s) with rho_i>0:
+    i=16  Te=2.1210 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=17  Te=2.2230 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=18  Te=2.3300 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=19  Te=2.4421 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=20  Te=2.5595 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=21  Te=2.6827 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=22  Te=2.8118 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=23  Te=2.9471 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=24  Te=3.0888 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=14  Te=1.9307 eV  rho_i=+0.3333  n_cols=8  p=0.42
+    i=15  Te=2.0236 eV  rho_i=+0.3333  n_cols=8  p=0.42
+    i=25  Te=3.2375 eV  rho_i=+0.2143  n_cols=7  p=0.645
+    i=26  Te=3.3932 eV  rho_i=+0.2143  n_cols=7  p=0.645
+    i=27  Te=3.5565 eV  rho_i=+0.2143  n_cols=7  p=0.645
+    i=28  Te=3.7276 eV  rho_i=+0.2143  n_cols=7  p=0.645
+    i=29  Te=3.9069 eV  rho_i=+0.2143  n_cols=7  p=0.645
+    i=30  Te=4.0949 eV  rho_i=+0.2143  n_cols=7  p=0.645
+    i=6   Te=1.3257 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=7   Te=1.3895 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=8   Te=1.4563 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=9   Te=1.5264 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=10  Te=1.5999 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=11  Te=1.6768 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=12  Te=1.7575 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=13  Te=1.8421 eV  rho_i=+0.1905  n_cols=8  p=0.651
+    i=5   Te=1.2649 eV  rho_i=+0.0238  n_cols=8  p=0.955
+[cool] 41 row(s) with rho_i>0:
+    i=22  Te=2.8118 eV  rho_i=+0.5952  n_cols=8  p=0.12
+    i=23  Te=2.9471 eV  rho_i=+0.5952  n_cols=8  p=0.12
+    i=24  Te=3.0888 eV  rho_i=+0.5952  n_cols=8  p=0.12
+    i=25  Te=3.2375 eV  rho_i=+0.5952  n_cols=8  p=0.12
+    i=26  Te=3.3932 eV  rho_i=+0.5952  n_cols=8  p=0.12
+    i=1   Te=1.0481 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=2   Te=1.0985 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=3   Te=1.1514 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=4   Te=1.2068 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=5   Te=1.2649 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=6   Te=1.3257 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=7   Te=1.3895 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=8   Te=1.4563 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=9   Te=1.5264 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=10  Te=1.5999 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=11  Te=1.6768 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=12  Te=1.7575 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=13  Te=1.8421 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=14  Te=1.9307 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=15  Te=2.0236 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=16  Te=2.1210 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=17  Te=2.2230 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=18  Te=2.3300 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=19  Te=2.4421 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=20  Te=2.5595 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=21  Te=2.6827 eV  rho_i=+0.4762  n_cols=8  p=0.233
+    i=27  Te=3.5565 eV  rho_i=+0.3929  n_cols=7  p=0.383
+    i=28  Te=3.7276 eV  rho_i=+0.3929  n_cols=7  p=0.383
+    i=29  Te=3.9069 eV  rho_i=+0.3929  n_cols=7  p=0.383
+    i=30  Te=4.0949 eV  rho_i=+0.3929  n_cols=7  p=0.383
+    i=31  Te=4.2919 eV  rho_i=+0.3929  n_cols=7  p=0.383
+    i=32  Te=4.4984 eV  rho_i=+0.3929  n_cols=7  p=0.383
+    i=33  Te=4.7149 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=34  Te=4.9417 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=35  Te=5.1795 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=36  Te=5.4287 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=37  Te=5.6899 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=38  Te=5.9636 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=39  Te=6.2506 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=40  Te=6.5513 eV  rho_i=+0.0286  n_cols=6  p=0.957
+    i=41  Te=6.8665 eV  rho_i=+0.0286  n_cols=6  p=0.957
+[pooled] 32 row(s) with rho_i>0:
+    i=22  Te=2.8118 eV  rho_i=+0.4971  n_cols=16  p=0.0501
+    i=23  Te=2.9471 eV  rho_i=+0.4971  n_cols=16  p=0.0501
+    i=24  Te=3.0888 eV  rho_i=+0.4971  n_cols=16  p=0.0501
+    i=19  Te=2.4421 eV  rho_i=+0.4676  n_cols=16  p=0.0678
+    i=20  Te=2.5595 eV  rho_i=+0.4676  n_cols=16  p=0.0678
+    i=21  Te=2.6827 eV  rho_i=+0.4676  n_cols=16  p=0.0678
+    i=16  Te=2.1210 eV  rho_i=+0.4618  n_cols=16  p=0.0718
+    i=17  Te=2.2230 eV  rho_i=+0.4529  n_cols=16  p=0.0781
+    i=18  Te=2.3300 eV  rho_i=+0.4529  n_cols=16  p=0.0781
+    i=15  Te=2.0236 eV  rho_i=+0.4353  n_cols=16  p=0.092
+    i=14  Te=1.9307 eV  rho_i=+0.4324  n_cols=16  p=0.0944
+    i=13  Te=1.8421 eV  rho_i=+0.4000  n_cols=16  p=0.125
+    i=25  Te=3.2375 eV  rho_i=+0.3929  n_cols=15  p=0.147
+    i=26  Te=3.3932 eV  rho_i=+0.3929  n_cols=15  p=0.147
+    i=11  Te=1.6768 eV  rho_i=+0.3706  n_cols=16  p=0.158
+    i=12  Te=1.7575 eV  rho_i=+0.3706  n_cols=16  p=0.158
+    i=10  Te=1.5999 eV  rho_i=+0.3500  n_cols=16  p=0.184
+    i=8   Te=1.4563 eV  rho_i=+0.3118  n_cols=16  p=0.24
+    i=9   Te=1.5264 eV  rho_i=+0.3118  n_cols=16  p=0.24
+    i=7   Te=1.3895 eV  rho_i=+0.2824  n_cols=16  p=0.289
+    i=6   Te=1.3257 eV  rho_i=+0.2676  n_cols=16  p=0.316
+    i=27  Te=3.5565 eV  rho_i=+0.2527  n_cols=14  p=0.383
+    i=28  Te=3.7276 eV  rho_i=+0.2527  n_cols=14  p=0.383
+    i=29  Te=3.9069 eV  rho_i=+0.2527  n_cols=14  p=0.383
+    i=30  Te=4.0949 eV  rho_i=+0.2527  n_cols=14  p=0.383
+    i=5   Te=1.2649 eV  rho_i=+0.2029  n_cols=16  p=0.451
+    i=4   Te=1.2068 eV  rho_i=+0.1559  n_cols=16  p=0.564
+    i=32  Te=4.4984 eV  rho_i=+0.1209  n_cols=13  p=0.694
+    i=3   Te=1.1514 eV  rho_i=+0.1118  n_cols=16  p=0.68
+    i=2   Te=1.0985 eV  rho_i=+0.0941  n_cols=16  p=0.729
+    i=1   Te=1.0481 eV  rho_i=+0.0824  n_cols=16  p=0.762
+    i=31  Te=4.2919 eV  rho_i=+0.0714  n_cols=13  p=0.817
+
+==============================================================================
+PART 3 -- argmax_j / argmin_j agreement between M and eps_plateau, fixed Te
+==============================================================================
+[  heat] scope=all      rows qualified=49/49  argmax match frac=0.000 (0/49)  argmin match frac=0.510 (25/49)
+[  heat] scope=Te>=2    rows qualified=34/34  argmax match frac=0.000 (0/34)  argmin match frac=0.471 (16/34)
+[  cool] scope=all      rows qualified=49/49  argmax match frac=0.000 (0/49)  argmin match frac=0.837 (41/49)
+[  cool] scope=Te>=2    rows qualified=35/35  argmax match frac=0.000 (0/35)  argmin match frac=0.771 (27/35)
+[pooled] scope=all      rows qualified=50/50  argmax match frac=0.000 (0/50)  argmin match frac=0.820 (41/50)
+[pooled] scope=Te>=2    rows qualified=35/35  argmax match frac=0.000 (0/35)  argmin match frac=0.771 (27/35)
+
+==============================================================================
+PART 4 -- reverse: Spearman rho_j(M, eps_plateau) across Te (Te>=2 eV), fixed ne
+==============================================================================
+
+[heat]
+  j=0 ne=1.000e+12  n=34  rho_j=+1.0000  p=0
+  j=1 ne=2.683e+12  n=34  rho_j=+1.0000  p=0
+  j=2 ne=7.197e+12  n=34  rho_j=+1.0000  p=0
+  j=3 ne=1.931e+13  n=34  rho_j=+1.0000  p=0
+  j=4 ne=5.179e+13  n=31  rho_j=+1.0000  p=0
+  j=5 ne=1.389e+14  n=25  rho_j=+1.0000  p=0
+  j=6 ne=3.728e+14  n=16  rho_j=+1.0000  p=0
+  j=7 ne=1.000e+15  n=10  rho_j=+1.0000  p=6.65e-64
+
+[cool]
+  j=0 ne=1.000e+12  n=35  rho_j=+1.0000  p=0
+  j=1 ne=2.683e+12  n=35  rho_j=+1.0000  p=0
+  j=2 ne=7.197e+12  n=35  rho_j=+1.0000  p=0
+  j=3 ne=1.931e+13  n=35  rho_j=+1.0000  p=0
+  j=4 ne=5.179e+13  n=33  rho_j=+1.0000  p=0
+  j=5 ne=1.389e+14  n=27  rho_j=+1.0000  p=3.38e-197
+  j=6 ne=3.728e+14  n=18  rho_j=+1.0000  p=0
+  j=7 ne=1.000e+15  n=12  rho_j=+1.0000  p=0
+
+[pooled]
+  j=0 ne=1.000e+12  n=69  rho_j=+0.9988  p=9.01e-90
+  j=1 ne=2.683e+12  n=69  rho_j=+0.9979  p=2.66e-81
+  j=2 ne=7.197e+12  n=69  rho_j=+0.9903  p=4.31e-59
+  j=3 ne=1.931e+13  n=69  rho_j=+0.9809  p=2.28e-49
+  j=4 ne=5.179e+13  n=64  rho_j=+0.9685  p=3.75e-39
+  j=5 ne=1.389e+14  n=52  rho_j=+0.9406  p=4.21e-25
+  j=6 ne=3.728e+14  n=34  rho_j=+0.8704  p=2.26e-11
+  j=7 ne=1.000e+15  n=22  rho_j=+0.7486  p=6.14e-05
+
+==============================================================================
+PART 5 -- extremum comparison restricted to Te>=2 eV & window_ok
+(Chapter 5 currently quotes [0,0] and [0,4], both Te<2 eV)
+==============================================================================
+[heat]
+  largest M    : dir=heat [15,0] Te=2.0236 eV  ne=1.0000e+12 cm^-3  M=1.3867e+06  eps_plateau=0.0624
+  largest eps  : dir=heat [15,3] Te=2.0236 eV  ne=1.9307e+13 cm^-3  M=2.0149e+05  eps_plateau=0.1807
+  ne ratio (largest-M point / largest-eps point) = 0.05179
+[cool]
+  largest M    : dir=cool [15,0] Te=2.0236 eV  ne=1.0000e+12 cm^-3  M=2.6332e+06  eps_plateau=0.0735
+  largest eps  : dir=cool [15,3] Te=2.0236 eV  ne=1.9307e+13 cm^-3  M=3.6901e+05  eps_plateau=0.1548
+  ne ratio (largest-M point / largest-eps point) = 0.05179
+[pooled]
+  largest M    : dir=cool [15,0] Te=2.0236 eV  ne=1.0000e+12 cm^-3  M=2.6332e+06  eps_plateau=0.0735
+  largest eps  : dir=heat [15,3] Te=2.0236 eV  ne=1.9307e+13 cm^-3  M=2.0149e+05  eps_plateau=0.1807
+  ne ratio (largest-M point / largest-eps point) = 0.05179
+
+==============================================================================
+PART 6 -- pooled log M vs log eps_plateau, Te>=2 eV, window_ok rows
+(for comparison with Ch.5's uncontrolled +0.76 and the linear-basis
+ partial +0.416720 at Te>=2 eV from partial_correlation_sweep.csv)
+==============================================================================
+[heat] n=218  pearson(logM,logEps)=+0.5743 (p=1.57e-20)  spearman=+0.5958 (p=2.46e-22)
+[cool] n=230  pearson(logM,logEps)=+0.6867 (p=2.01e-33)  spearman=+0.7045 (p=8.36e-36)
+[pooled] n=448  pearson(logM,logEps)=+0.6251 (p=6.02e-50)  spearman=+0.6449 (p=5.01e-54)
+
+==============================================================================
+VERDICT ON THE PREDICTION
+==============================================================================
+pooled, scope=all, eps_plateau: frac(rho_i<0)=0.360, median rho_i=+0.2278
+PREDICTION REFUTED (majority of rows rank M and eps_plateau the SAME way)

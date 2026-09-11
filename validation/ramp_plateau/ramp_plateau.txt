@@ -1,0 +1,311 @@
+# generated 2026-09-11 16:20 by verify_ramp_plateau.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  scipy 1.16.3
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# radiative_rates sha256 389ab78a2a1449af0a18a95fe9a660d7bb7f1d1d313944b830253bc51e3d8aef
+# divertor_map.csv # generated 2026-08-23 13:47 by verify_divertor_map.py
+# rtol 1e-10 (convergence rerun 1e-08), atol 1e-12*max|n_old|, Radau, t_end = tau_ramp + 10 tau_slow; window readouts from step endpoints
+# main block interpolation: linear; sensitivity block: the other one at tau_ramp/tau_slow in (0.01, 0.1, 1.0)
+==============================================================================
+RAMP PLATEAU: does a finite ramp reach the step's partial-equilibrium plateau?
+# generated 2026-09-11 16:20 by verify_ramp_plateau.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  scipy 1.16.3
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# radiative_rates sha256 389ab78a2a1449af0a18a95fe9a660d7bb7f1d1d313944b830253bc51e3d8aef
+# divertor_map.csv # generated 2026-08-23 13:47 by verify_divertor_map.py
+# rtol 1e-10 (convergence rerun 1e-08), atol 1e-12*max|n_old|, Radau, t_end = tau_ramp + 10 tau_slow; window readouts from step endpoints
+# main block interpolation: linear; sensitivity block: the other one at tau_ramp/tau_slow in (0.01, 0.1, 1.0)
+Halpha weights: 3S=6.3172e+06, 3P=2.2461e+07, 3D=6.4688e+07
+Hbeta  weights: 4S=2.5796e+06, 4P=9.6735e+06, 4D=2.0637e+07
+observables: shell = n3/n4 (shell sums); line = A-weighted Halpha/Hbeta
+==============================================================================
+
+------------------------------------------------------------------------------
+BENCHMARK  [23,5] -> [24,5]   Te 2.9471 -> 3.0888 eV   ne 1.3895e+14 cm^-3
+------------------------------------------------------------------------------
+  post-step operator [24,5]: tau_slow 1.849416e-05 s   tau_relax 2.243691e-09 s   M 8242.7
+  divertor_map.csv tau_QSS   1.849416e-05   rel diff 0.00e+00
+  divertor_map.csv tau_relax 2.243691e-09   rel diff 0.00e+00
+  n_g_old 8.803938e-04   n_g_new 6.723793e-04   total drift |n_g_new/n_g_old - 1| = 2.362744e-01
+  shell R_old 0.777768  R_PE 0.820114  R_CRE_new 0.771066   eps_step 0.008692   eps_plateau 0.063612
+  line  R_old 4.073859  R_PE 4.295500  R_CRE_new 4.038754   eps_step 0.008692   eps_plateau 0.063571
+  divertor_map.csv eps_plateau (shell) 0.063612   rel diff 6.98e-15
+  generator check, linear   : min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.4089e+04 s^-1 at f = 0
+  generator check, loglinear: min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.4089e+04 s^-1 at f = 0
+  P1 ODE vs expm, pure step, 20 log-spaced times: worst ||dn||/||n|| 1.14e-09, worst shell-ratio rel err 3.28e-09   (nfev 2731)
+
+            ramp tau_ramp [s] td/t_slow td/t_rel   obs max eps t>td      MAX    eps(ws)  PLATEAU    eps(we) eps(t_end)  ng drift  /total     expm
+                                                                     /eps_pl            /step ws
+  ------------------------------------------------------------------------------------------------------------------------------------------------------
+            step   0.0000e+00   0.0e+00  0.0e+00 shell     0.067817   1.0661   0.063386   1.0000   0.061557   2.93e-06  0.00e+00  0.0000  1.1e-09
+            step   0.0000e+00   0.0e+00  0.0e+00  line     0.067775   1.0661   0.063345   1.0000   0.061517   2.93e-06  0.00e+00  0.0000  1.1e-09
+  0.001 tau_slow   1.8494e-08   1.0e-03  8.2e+00 shell     0.064209   1.0094   0.063355   0.9995   0.061588   2.93e-06  1.43e-04  0.0006  1.9e-09
+  0.001 tau_slow   1.8494e-08   1.0e-03  8.2e+00  line     0.064168   1.0094   0.063314   0.9995   0.061548   2.93e-06  1.43e-04  0.0006  1.9e-09
+   0.01 tau_slow   1.8494e-07   1.0e-02  8.2e+01 shell     0.063359   0.9960   0.063075   0.9951   0.061862   2.92e-06  1.20e-03  0.0051  1.9e-09
+   0.01 tau_slow   1.8494e-07   1.0e-02  8.2e+01  line     0.063318   0.9960   0.063034   0.9951   0.061822   2.91e-06  1.20e-03  0.0051  1.9e-09
+    0.1 tau_slow   1.8494e-06   1.0e-01  8.2e+02 shell     0.060580   0.9523   0.060361   0.9523        nan   2.79e-06  1.15e-02  0.0485  1.9e-09
+    0.1 tau_slow   1.8494e-06   1.0e-01  8.2e+02  line     0.060541   0.9523   0.060322   0.9523        nan   2.79e-06  1.15e-02  0.0485  1.9e-09
+      1 tau_slow   1.8494e-05   1.0e+00  8.2e+03 shell     0.040170   0.6315   0.040026   0.6315        nan   1.84e-06  8.79e-02  0.3720  1.2e-09
+      1 tau_slow   1.8494e-05   1.0e+00  8.2e+03  line     0.040144   0.6315   0.040000   0.6315        nan   1.84e-06  8.79e-02  0.3720  1.2e-09
+     1 tau_relax   2.2437e-09   1.2e-04  1.0e+00 shell     0.067129   1.0553   0.063382   0.9999   0.061561   2.93e-06  2.57e-05  0.0001  1.9e-09
+     1 tau_relax   2.2437e-09   1.2e-04  1.0e+00  line     0.067087   1.0553   0.063341   0.9999   0.061521   2.93e-06  2.57e-05  0.0001  1.9e-09
+    10 tau_relax   2.2437e-08   1.2e-03  1.0e+01 shell     0.064091   1.0075   0.063348   0.9994   0.061594   2.93e-06  1.68e-04  0.0007  1.9e-09
+    10 tau_relax   2.2437e-08   1.2e-03  1.0e+01  line     0.064049   1.0075   0.063307   0.9994   0.061554   2.93e-06  1.68e-04  0.0007  1.9e-09
+
+  LOGLINEAR INTERPOLATION SENSITIVITY (same columns; compare with the linear rows above)
+  ------------------------------------------------------------------------------------------------------------------------------------------------------
+   0.01 tau_slow   1.8494e-07   1.0e-02  8.2e+01 shell     0.063318   0.9954   0.063081   0.9952   0.061868   2.92e-06  1.18e-03  0.0050  1.9e-09
+   0.01 tau_slow   1.8494e-07   1.0e-02  8.2e+01  line     0.063277   0.9954   0.063040   0.9952   0.061828   2.91e-06  1.18e-03  0.0050  1.9e-09
+    0.1 tau_slow   1.8494e-06   1.0e-01  8.2e+02 shell     0.060634   0.9532   0.060420   0.9532        nan   2.79e-06  1.12e-02  0.0476  1.9e-09
+    0.1 tau_slow   1.8494e-06   1.0e-01  8.2e+02  line     0.060594   0.9532   0.060381   0.9532        nan   2.79e-06  1.12e-02  0.0476  1.9e-09
+      1 tau_slow   1.8494e-05   1.0e+00  8.2e+03 shell     0.040555   0.6375   0.040411   0.6375        nan   1.86e-06  8.64e-02  0.3659  1.2e-09
+      1 tau_slow   1.8494e-05   1.0e+00  8.2e+03  line     0.040529   0.6375   0.040385   0.6375        nan   1.86e-06  8.64e-02  0.3659  1.2e-09
+
+            ramp   obs       linear MAX    loglinear MAX       diff       linear PLATEAU    loglinear PLATEAU       diff
+   0.01 tau_slow shell           0.9960           0.9954  -6.48e-04               0.9951               0.9952  +9.71e-05
+   0.01 tau_slow  line           0.9960           0.9954  -6.48e-04               0.9951               0.9952  +9.71e-05
+    0.1 tau_slow shell           0.9523           0.9532  +8.42e-04               0.9523               0.9532  +9.29e-04
+    0.1 tau_slow  line           0.9523           0.9532  +8.42e-04               0.9523               0.9532  +9.29e-04
+      1 tau_slow shell           0.6315           0.6375  +6.05e-03               0.6315               0.6375  +6.06e-03
+      1 tau_slow  line           0.6315           0.6375  +6.05e-03               0.6315               0.6375  +6.06e-03
+
+  LAG LAW for the reservoir, linear ramp of the target, single pole tau_slow:
+    exact      drift/total = 1 - De (1 - exp(-1/De));  drift/(td/tau_slow) = De [1 - De (1 - exp(-1/De))]
+    truncated  drift/(td/tau_slow) = 1/2 - 1/(6 De)
+            ramp    interp       De  drift/total        exact  drift/(td/ts)      exact  truncated
+  0.001 tau_slow    linear     1000     0.000604     0.000500       0.604157   0.499833   0.499833
+   0.01 tau_slow    linear      100     0.005093     0.004983       0.509266   0.498337   0.498333
+    0.1 tau_slow    linear       10     0.048494     0.048374       0.484939   0.483742   0.483333
+      1 tau_slow    linear        1     0.371958     0.367879       0.371958   0.367879   0.333333
+   0.01 tau_slow loglinear      100     0.004994     0.004983       0.499399   0.498337   0.498333
+    0.1 tau_slow loglinear       10     0.047553     0.048374       0.475527   0.483742   0.483333
+      1 tau_slow loglinear        1     0.365873     0.367879       0.365873   0.367879   0.333333
+
+  OVERSHOOT of the ratio, max_t eps_CRE / max(eps_step, eps_plateau), per observable (linear rows):
+              step shell  1.0661  at t = 2.608e-09 s = 1.16 tau_relax
+              step  line  1.0661  at t = 2.608e-09 s = 1.16 tau_relax
+    0.001 tau_slow shell  1.0094  at t = 2.011e-08 s = 8.96 tau_relax = td + 0.72 tau_relax
+    0.001 tau_slow  line  1.0094  at t = 2.011e-08 s = 8.96 tau_relax = td + 0.72 tau_relax
+     0.01 tau_slow shell  0.9960  at t = 1.865e-07 s = 83.13 tau_relax = td + 0.70 tau_relax
+     0.01 tau_slow  line  0.9960  at t = 1.865e-07 s = 83.13 tau_relax = td + 0.70 tau_relax
+      0.1 tau_slow shell  0.9523  at t = 1.851e-06 s = 824.83 tau_relax = td + 0.56 tau_relax
+      0.1 tau_slow  line  0.9523  at t = 1.851e-06 s = 824.83 tau_relax = td + 0.56 tau_relax
+        1 tau_slow shell  0.6315  at t = 1.849e-05 s = 8242.90 tau_relax = td + 0.16 tau_relax
+        1 tau_slow  line  0.6315  at t = 1.849e-05 s = 8242.90 tau_relax = td + 0.16 tau_relax
+       1 tau_relax shell  1.0553  at t = 4.134e-09 s = 1.84 tau_relax = td + 0.84 tau_relax
+       1 tau_relax  line  1.0553  at t = 4.134e-09 s = 1.84 tau_relax = td + 0.84 tau_relax
+      10 tau_relax shell  1.0075  at t = 2.406e-08 s = 10.72 tau_relax = td + 0.72 tau_relax
+      10 tau_relax  line  1.0075  at t = 2.406e-08 s = 10.72 tau_relax = td + 0.72 tau_relax
+
+------------------------------------------------------------------------------
+DEFENDED MAXIMUM  [15,3] -> [16,3]   Te 2.0236 -> 2.1210 eV   ne 1.9307e+13 cm^-3
+------------------------------------------------------------------------------
+  post-step operator [16,3]: tau_slow 1.493772e-03 s   tau_relax 7.413482e-09 s   M 201493.9
+  divertor_map.csv tau_QSS   1.493772e-03   rel diff 0.00e+00
+  divertor_map.csv tau_relax 7.413482e-09   rel diff 0.00e+00
+  n_g_old 1.412176e-02   n_g_new 9.803895e-03   total drift |n_g_new/n_g_old - 1| = 3.057595e-01
+  shell R_old 0.999046  R_PE 1.166563  R_CRE_new 0.988003   eps_step 0.011177   eps_plateau 0.180728
+  line  R_old 5.230841  R_PE 6.106634  R_CRE_new 5.173032   eps_step 0.011175   eps_plateau 0.180475
+  divertor_map.csv eps_plateau (shell) 0.180728   rel diff 2.46e-15
+  generator check, linear   : min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.9071e+02 s^-1 at f = 0
+  generator check, loglinear: min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.9071e+02 s^-1 at f = 0
+  P1 ODE vs expm, pure step, 20 log-spaced times: worst ||dn||/||n|| 1.71e-08, worst shell-ratio rel err 9.99e-08   (nfev 1961)
+
+            ramp tau_ramp [s] td/t_slow td/t_rel   obs max eps t>td      MAX    eps(ws)  PLATEAU    eps(we) eps(t_end)  ng drift  /total     expm
+                                                                     /eps_pl            /step ws
+  ------------------------------------------------------------------------------------------------------------------------------------------------------
+            step   0.0000e+00   0.0e+00  0.0e+00 shell     0.180718   0.9999   0.180703   1.0000   0.175292   8.97e-06  0.00e+00  0.0000  1.7e-08
+            step   0.0000e+00   0.0e+00  0.0e+00  line     0.180464   0.9999   0.180450   1.0000   0.175046   8.96e-06  0.00e+00  0.0000  1.7e-08
+  0.001 tau_slow   1.4938e-06   1.0e-03  2.0e+02 shell     0.180639   0.9995   0.180621   0.9995   0.175372   8.96e-06  1.55e-04  0.0005  3.2e-08
+  0.001 tau_slow   1.4938e-06   1.0e-03  2.0e+02  line     0.180386   0.9995   0.180367   0.9995   0.175127   8.95e-06  1.55e-04  0.0005  3.2e-08
+   0.01 tau_slow   1.4938e-05   1.0e-02  2.0e+03 shell     0.179900   0.9954   0.179880   0.9954   0.176099   8.92e-06  1.52e-03  0.0050  3.2e-08
+   0.01 tau_slow   1.4938e-05   1.0e-02  2.0e+03  line     0.179648   0.9954   0.179628   0.9954   0.175853   8.91e-06  1.52e-03  0.0050  3.2e-08
+    0.1 tau_slow   1.4938e-04   1.0e-01  2.0e+04 shell     0.172688   0.9555   0.172667   0.9555        nan   8.53e-06  1.48e-02  0.0484  3.1e-08
+    0.1 tau_slow   1.4938e-04   1.0e-01  2.0e+04  line     0.172447   0.9555   0.172426   0.9555        nan   8.52e-06  1.48e-02  0.0484  3.1e-08
+      1 tau_slow   1.4938e-03   1.0e+00  2.0e+05 shell     0.116905   0.6469   0.116890   0.6469        nan   5.62e-06  1.14e-01  0.3737  2.1e-08
+      1 tau_slow   1.4938e-03   1.0e+00  2.0e+05  line     0.116746   0.6469   0.116730   0.6469        nan   5.61e-06  1.14e-01  0.3737  2.1e-08
+     1 tau_relax   7.4135e-09   5.0e-06  1.0e+00 shell     0.180718   0.9999   0.180703   1.0000   0.175292   8.97e-06  2.16e-06  0.0000  3.2e-08
+     1 tau_relax   7.4135e-09   5.0e-06  1.0e+00  line     0.180464   0.9999   0.180449   1.0000   0.175047   8.96e-06  2.16e-06  0.0000  3.2e-08
+    10 tau_relax   7.4135e-08   5.0e-05  1.0e+01 shell     0.180715   0.9999   0.180699   1.0000   0.175296   8.97e-06  9.70e-06  0.0000  3.2e-08
+    10 tau_relax   7.4135e-08   5.0e-05  1.0e+01  line     0.180462   0.9999   0.180446   1.0000   0.175050   8.96e-06  9.70e-06  0.0000  3.2e-08
+
+  LOGLINEAR INTERPOLATION SENSITIVITY (same columns; compare with the linear rows above)
+  ------------------------------------------------------------------------------------------------------------------------------------------------------
+   0.01 tau_slow   1.4938e-05   1.0e-02  2.0e+03 shell     0.179930   0.9956   0.179909   0.9956   0.176128   8.92e-06  1.47e-03  0.0048  3.2e-08
+   0.01 tau_slow   1.4938e-05   1.0e-02  2.0e+03  line     0.179678   0.9956   0.179657   0.9956   0.175882   8.91e-06  1.47e-03  0.0048  3.2e-08
+    0.1 tau_slow   1.4938e-04   1.0e-01  2.0e+04 shell     0.172972   0.9571   0.172951   0.9571        nan   8.55e-06  1.43e-02  0.0467  3.1e-08
+    0.1 tau_slow   1.4938e-04   1.0e-01  2.0e+04  line     0.172730   0.9571   0.172709   0.9571        nan   8.54e-06  1.43e-02  0.0467  3.1e-08
+      1 tau_slow   1.4938e-03   1.0e+00  2.0e+05 shell     0.118852   0.6576   0.118836   0.6576        nan   5.72e-06  1.11e-01  0.3627  2.2e-08
+      1 tau_slow   1.4938e-03   1.0e+00  2.0e+05  line     0.118689   0.6576   0.118673   0.6577        nan   5.71e-06  1.11e-01  0.3627  2.2e-08
+
+            ramp   obs       linear MAX    loglinear MAX       diff       linear PLATEAU    loglinear PLATEAU       diff
+   0.01 tau_slow shell           0.9954           0.9956  +1.62e-04               0.9954               0.9956  +1.63e-04
+   0.01 tau_slow  line           0.9954           0.9956  +1.62e-04               0.9954               0.9956  +1.63e-04
+    0.1 tau_slow shell           0.9555           0.9571  +1.57e-03               0.9555               0.9571  +1.57e-03
+    0.1 tau_slow  line           0.9555           0.9571  +1.57e-03               0.9555               0.9571  +1.57e-03
+      1 tau_slow shell           0.6469           0.6576  +1.08e-02               0.6469               0.6576  +1.08e-02
+      1 tau_slow  line           0.6469           0.6576  +1.08e-02               0.6469               0.6577  +1.08e-02
+
+  LAG LAW for the reservoir, linear ramp of the target, single pole tau_slow:
+    exact      drift/total = 1 - De (1 - exp(-1/De));  drift/(td/tau_slow) = De [1 - De (1 - exp(-1/De))]
+    truncated  drift/(td/tau_slow) = 1/2 - 1/(6 De)
+            ramp    interp       De  drift/total        exact  drift/(td/ts)      exact  truncated
+  0.001 tau_slow    linear     1000     0.000506     0.000500       0.506329   0.499833   0.499833
+   0.01 tau_slow    linear      100     0.004984     0.004983       0.498407   0.498337   0.498333
+    0.1 tau_slow    linear       10     0.048412     0.048374       0.484118   0.483742   0.483333
+      1 tau_slow    linear        1     0.373704     0.367879       0.373704   0.367879   0.333333
+   0.01 tau_slow loglinear      100     0.004806     0.004983       0.480599   0.498337   0.498333
+    0.1 tau_slow loglinear       10     0.046709     0.048374       0.467094   0.483742   0.483333
+      1 tau_slow loglinear        1     0.362658     0.367879       0.362658   0.367879   0.333333
+
+  OVERSHOOT of the ratio, max_t eps_CRE / max(eps_step, eps_plateau), per observable (linear rows):
+              step shell  0.9999  at t = 8.551e-08 s = 11.53 tau_relax
+              step  line  0.9999  at t = 8.551e-08 s = 11.53 tau_relax
+    0.001 tau_slow shell  0.9995  at t = 1.540e-06 s = 207.73 tau_relax = td + 6.24 tau_relax
+    0.001 tau_slow  line  0.9995  at t = 1.540e-06 s = 207.73 tau_relax = td + 6.24 tau_relax
+     0.01 tau_slow shell  0.9954  at t = 1.497e-05 s = 2019.06 tau_relax = td + 4.12 tau_relax
+     0.01 tau_slow  line  0.9954  at t = 1.497e-05 s = 2019.06 tau_relax = td + 4.12 tau_relax
+      0.1 tau_slow shell  0.9555  at t = 1.494e-04 s = 20153.82 tau_relax = td + 4.43 tau_relax
+      0.1 tau_slow  line  0.9555  at t = 1.494e-04 s = 20153.84 tau_relax = td + 4.45 tau_relax
+        1 tau_slow shell  0.6469  at t = 1.494e-03 s = 201493.94 tau_relax = td + 0.00 tau_relax  [at the ramp end]
+        1 tau_slow  line  0.6469  at t = 1.494e-03 s = 201493.94 tau_relax = td + 0.00 tau_relax  [at the ramp end]
+       1 tau_relax shell  0.9999  at t = 8.933e-08 s = 12.05 tau_relax = td + 11.05 tau_relax
+       1 tau_relax  line  0.9999  at t = 8.933e-08 s = 12.05 tau_relax = td + 11.05 tau_relax
+      10 tau_relax shell  0.9999  at t = 1.419e-07 s = 19.14 tau_relax = td + 9.14 tau_relax
+      10 tau_relax  line  0.9999  at t = 1.419e-07 s = 19.14 tau_relax = td + 9.14 tau_relax
+
+==============================================================================
+POST-HOC (a): PLATEAU column against the scalar formula De (1 - exp(-1/De)), De = tau_slow/tau_ramp
+  plateau = eps(window start, ramp) / eps(window start, step)   [the column compared]
+  max     = eps_max_post / eps_plateau                           [carries the ratio's transient peak]
+==============================================================================
+             point           ramp    interp   obs        De   formula   plateau       max plateau/formula
+         benchmark 0.001 tau_slow    linear shell  1.00e+03   0.99950   0.99951   1.00939         1.00001
+         benchmark 0.001 tau_slow    linear  line  1.00e+03   0.99950   0.99951   1.00940         1.00001
+         benchmark  0.01 tau_slow    linear shell  1.00e+02   0.99502   0.99509   0.99603         1.00008
+         benchmark  0.01 tau_slow    linear  line  1.00e+02   0.99502   0.99509   0.99603         1.00008
+         benchmark   0.1 tau_slow    linear shell  1.00e+01   0.95163   0.95228   0.95234         1.00068
+         benchmark   0.1 tau_slow    linear  line  1.00e+01   0.95163   0.95228   0.95234         1.00068
+         benchmark     1 tau_slow    linear shell  1.00e+00   0.63212   0.63147   0.63149         0.99897
+         benchmark     1 tau_slow    linear  line  1.00e+00   0.63212   0.63147   0.63149         0.99897
+         benchmark    1 tau_relax    linear shell  8.24e+03   0.99994   0.99994   1.05529         1.00000
+         benchmark    1 tau_relax    linear  line  8.24e+03   0.99994   0.99994   1.05532         1.00000
+         benchmark   10 tau_relax    linear shell  8.24e+02   0.99939   0.99940   1.00753         1.00001
+         benchmark   10 tau_relax    linear  line  8.24e+02   0.99939   0.99940   1.00753         1.00001
+         benchmark  0.01 tau_slow loglinear shell  1.00e+02   0.99502   0.99519   0.99538         1.00017
+         benchmark  0.01 tau_slow loglinear  line  1.00e+02   0.99502   0.99519   0.99538         1.00017
+         benchmark   0.1 tau_slow loglinear shell  1.00e+01   0.95163   0.95320   0.95318         1.00166
+         benchmark   0.1 tau_slow loglinear  line  1.00e+01   0.95163   0.95320   0.95318         1.00166
+         benchmark     1 tau_slow loglinear shell  1.00e+00   0.63212   0.63753   0.63754         1.00856
+         benchmark     1 tau_slow loglinear  line  1.00e+00   0.63212   0.63753   0.63754         1.00857
+  defended maximum 0.001 tau_slow    linear shell  1.00e+03   0.99950   0.99954   0.99951         1.00004
+  defended maximum 0.001 tau_slow    linear  line  1.00e+03   0.99950   0.99954   0.99951         1.00004
+  defended maximum  0.01 tau_slow    linear shell  1.00e+02   0.99502   0.99544   0.99542         1.00043
+  defended maximum  0.01 tau_slow    linear  line  1.00e+02   0.99502   0.99544   0.99542         1.00043
+  defended maximum   0.1 tau_slow    linear shell  1.00e+01   0.95163   0.95553   0.95551         1.00410
+  defended maximum   0.1 tau_slow    linear  line  1.00e+01   0.95163   0.95553   0.95552         1.00411
+  defended maximum     1 tau_slow    linear shell  1.00e+00   0.63212   0.64686   0.64686         1.02332
+  defended maximum     1 tau_slow    linear  line  1.00e+00   0.63212   0.64688   0.64688         1.02335
+  defended maximum    1 tau_relax    linear shell  2.01e+05   1.00000   1.00000   0.99994         1.00000
+  defended maximum    1 tau_relax    linear  line  2.01e+05   1.00000   1.00000   0.99994         1.00000
+  defended maximum   10 tau_relax    linear shell  2.01e+04   0.99998   0.99998   0.99993         1.00000
+  defended maximum   10 tau_relax    linear  line  2.01e+04   0.99998   0.99998   0.99993         1.00000
+  defended maximum  0.01 tau_slow loglinear shell  1.00e+02   0.99502   0.99561   0.99558         1.00059
+  defended maximum  0.01 tau_slow loglinear  line  1.00e+02   0.99502   0.99561   0.99558         1.00059
+  defended maximum   0.1 tau_slow loglinear shell  1.00e+01   0.95163   0.95710   0.95708         1.00575
+  defended maximum   0.1 tau_slow loglinear  line  1.00e+01   0.95163   0.95710   0.95709         1.00576
+  defended maximum     1 tau_slow loglinear shell  1.00e+00   0.63212   0.65763   0.65763         1.04036
+  defended maximum     1 tau_slow loglinear  line  1.00e+00   0.63212   0.65765   0.65765         1.04039
+
+==============================================================================
+EXPM CROSS-CHECK: worst ||n_ode - n_expm|| / ||n_expm|| after the ramp (must be < 1e-6)
+==============================================================================
+         benchmark           step      none  state 1.14e-09   shell ratio 3.28e-09
+         benchmark 0.001 tau_slow    linear  state 1.91e-09   shell ratio 4.14e-10
+         benchmark  0.01 tau_slow    linear  state 1.88e-09   shell ratio 4.08e-10
+         benchmark   0.1 tau_slow    linear  state 1.87e-09   shell ratio 4.04e-10
+         benchmark     1 tau_slow    linear  state 1.21e-09   shell ratio 2.59e-10
+         benchmark    1 tau_relax    linear  state 1.92e-09   shell ratio 4.16e-10
+         benchmark   10 tau_relax    linear  state 1.91e-09   shell ratio 4.14e-10
+         benchmark  0.01 tau_slow loglinear  state 1.88e-09   shell ratio 4.08e-10
+         benchmark   0.1 tau_slow loglinear  state 1.87e-09   shell ratio 4.04e-10
+         benchmark     1 tau_slow loglinear  state 1.21e-09   shell ratio 2.59e-10
+  defended maximum           step      none  state 1.71e-08   shell ratio 9.99e-08
+  defended maximum 0.001 tau_slow    linear  state 3.24e-08   shell ratio 1.47e-08
+  defended maximum  0.01 tau_slow    linear  state 3.23e-08   shell ratio 1.47e-08
+  defended maximum   0.1 tau_slow    linear  state 3.10e-08   shell ratio 1.83e-06
+  defended maximum     1 tau_slow    linear  state 2.12e-08   shell ratio 2.51e-07
+  defended maximum    1 tau_relax    linear  state 3.24e-08   shell ratio 1.47e-08
+  defended maximum   10 tau_relax    linear  state 3.24e-08   shell ratio 1.47e-08
+  defended maximum  0.01 tau_slow loglinear  state 3.23e-08   shell ratio 1.47e-08
+  defended maximum   0.1 tau_slow loglinear  state 3.10e-08   shell ratio 1.93e-06
+  defended maximum     1 tau_slow loglinear  state 2.15e-08   shell ratio 2.68e-07
+
+==============================================================================
+CONVERGENCE: relative change of every reported number at rtol 1e-8 vs 1e-10
+==============================================================================
+  conv_eps_max_post_ramp     worst 4.08e-07  (defended maximum, 0.1 tau_slow, line)   median 5.39e-08
+  conv_eps_at_window_start   worst 1.64e-09  (defended maximum, 0.1 tau_slow, line)   median 4.35e-11
+  conv_plateau_ratio         worst 1.64e-09  (defended maximum, 0.1 tau_slow, line)   median 4.35e-11
+  conv_eps_at_window_end     worst 7.54e-13  (benchmark, 0.01 tau_slow, line)   median 2.80e-14
+  conv_eps_at_ramp_end       worst 5.02e-12  (benchmark, 0.1 tau_slow, line)   median 1.80e-13
+  conv_eps_at_t_end          worst 2.90e-05  (benchmark, 1 tau_slow, line)   median 1.19e-05
+  conv_ng_drift_ramp         worst 2.05e-10  (defended maximum, 1 tau_relax, shell)   median 3.96e-13
+  conv_t_of_max              worst 6.53e-03  (defended maximum, 1 tau_relax, shell)   median 6.43e-08
+
+==============================================================================
+PREDICTIONS
+==============================================================================
+  [FAILED] benchmark shell P7 step overshoot of the ratio 1.0661 (max/eps_plateau - 1 = +6.61e-02), interior: < 1e-2
+  [FAILED] benchmark shell P2 1e-3 (max column): |ratio-1| = 9.39e-03 < 5e-3
+  [HELD] benchmark shell REFUTER 1e-3 (max column): |ratio-1| = 9.39e-03 < 1e-2
+  [HELD] benchmark shell P3 1e-2 (max column): |ratio-1| = 3.97e-03 in [3e-3, 5e-2]
+  [HELD] benchmark shell P4 1e-1 (max column): ratio = 0.9523 in [0.85, 0.97]
+  [FAILED] benchmark shell P5 1 (max column): ratio = 0.6315 <= 0.6
+  [HELD] benchmark shell P6 1 tau_relax (plateau column): |plateau-1| = 5.98e-05 < 1e-3
+  [HELD] benchmark shell P6 10 tau_relax (plateau column): |plateau-1| = 5.97e-04 < 1e-3
+  [HELD] benchmark shell REFUTER overshoot: worst ramp excess +5.53e-02 <= step overshoot +6.61e-02 + 1e-3
+  [N/A] benchmark shell P8 0.001 tau_slow: drift/(td/tau_slow) = 0.6042, truncated 1/2 - 1/(6 De) = 0.4998 (exact 0.4998), |diff| = 0.1043 < 0.02   [OUTSIDE LAW DOMAIN: td = 8.2 tau_relax < 30; not counted]
+  [HELD] benchmark shell P8 0.01 tau_slow: drift/(td/tau_slow) = 0.5093, truncated 1/2 - 1/(6 De) = 0.4983 (exact 0.4983), |diff| = 0.0109 < 0.02
+  [HELD] benchmark shell P8 0.1 tau_slow: drift/(td/tau_slow) = 0.4849, truncated 1/2 - 1/(6 De) = 0.4833 (exact 0.4837), |diff| = 0.0016 < 0.02
+  [FAILED] benchmark line P7 step overshoot of the ratio 1.0661 (max/eps_plateau - 1 = +6.61e-02), interior: < 1e-2
+  [FAILED] benchmark line P2 1e-3 (max column): |ratio-1| = 9.40e-03 < 5e-3
+  [HELD] benchmark line REFUTER 1e-3 (max column): |ratio-1| = 9.40e-03 < 1e-2
+  [HELD] benchmark line P3 1e-2 (max column): |ratio-1| = 3.97e-03 in [3e-3, 5e-2]
+  [HELD] benchmark line P4 1e-1 (max column): ratio = 0.9523 in [0.85, 0.97]
+  [FAILED] benchmark line P5 1 (max column): ratio = 0.6315 <= 0.6
+  [HELD] benchmark line P6 1 tau_relax (plateau column): |plateau-1| = 5.98e-05 < 1e-3
+  [HELD] benchmark line P6 10 tau_relax (plateau column): |plateau-1| = 5.97e-04 < 1e-3
+  [HELD] benchmark line REFUTER overshoot: worst ramp excess +5.53e-02 <= step overshoot +6.61e-02 + 1e-3
+  [N/A] benchmark line P8 0.001 tau_slow: drift/(td/tau_slow) = 0.6042, truncated 1/2 - 1/(6 De) = 0.4998 (exact 0.4998), |diff| = 0.1043 < 0.02   [OUTSIDE LAW DOMAIN: td = 8.2 tau_relax < 30; not counted]
+  [HELD] benchmark line P8 0.01 tau_slow: drift/(td/tau_slow) = 0.5093, truncated 1/2 - 1/(6 De) = 0.4983 (exact 0.4983), |diff| = 0.0109 < 0.02
+  [HELD] benchmark line P8 0.1 tau_slow: drift/(td/tau_slow) = 0.4849, truncated 1/2 - 1/(6 De) = 0.4833 (exact 0.4837), |diff| = 0.0016 < 0.02
+  [HELD] defended maximum shell P7 step overshoot of the ratio 0.9999 (max/eps_plateau - 1 = -5.89e-05), interior: < 1e-2
+  [HELD] defended maximum shell P2 1e-3 (max column): |ratio-1| = 4.91e-04 < 5e-3
+  [HELD] defended maximum shell REFUTER 1e-3 (max column): |ratio-1| = 4.91e-04 < 1e-2
+  [HELD] defended maximum shell P3 1e-2 (max column): |ratio-1| = 4.58e-03 in [3e-3, 5e-2]
+  [HELD] defended maximum shell P4 1e-1 (max column): ratio = 0.9555 in [0.85, 0.97]
+  [FAILED] defended maximum shell P5 1 (max column): ratio = 0.6469 <= 0.6
+  [HELD] defended maximum shell P6 1 tau_relax (plateau column): |plateau-1| = 2.27e-06 < 1e-3
+  [HELD] defended maximum shell P6 10 tau_relax (plateau column): |plateau-1| = 2.27e-05 < 1e-3
+  [HELD] defended maximum shell REFUTER overshoot: worst ramp excess -5.89e-05 <= step overshoot -5.89e-05 + 1e-3
+  [HELD] defended maximum shell P8 0.001 tau_slow: drift/(td/tau_slow) = 0.5063, truncated 1/2 - 1/(6 De) = 0.4998 (exact 0.4998), |diff| = 0.0065 < 0.02
+  [HELD] defended maximum shell P8 0.01 tau_slow: drift/(td/tau_slow) = 0.4984, truncated 1/2 - 1/(6 De) = 0.4983 (exact 0.4983), |diff| = 0.0001 < 0.02
+  [HELD] defended maximum shell P8 0.1 tau_slow: drift/(td/tau_slow) = 0.4841, truncated 1/2 - 1/(6 De) = 0.4833 (exact 0.4837), |diff| = 0.0008 < 0.02
+  [HELD] defended maximum line P7 step overshoot of the ratio 0.9999 (max/eps_plateau - 1 = -5.89e-05), interior: < 1e-2
+  [HELD] defended maximum line P2 1e-3 (max column): |ratio-1| = 4.91e-04 < 5e-3
+  [HELD] defended maximum line REFUTER 1e-3 (max column): |ratio-1| = 4.91e-04 < 1e-2
+  [HELD] defended maximum line P3 1e-2 (max column): |ratio-1| = 4.58e-03 in [3e-3, 5e-2]
+  [HELD] defended maximum line P4 1e-1 (max column): ratio = 0.9555 in [0.85, 0.97]
+  [FAILED] defended maximum line P5 1 (max column): ratio = 0.6469 <= 0.6
+  [HELD] defended maximum line P6 1 tau_relax (plateau column): |plateau-1| = 2.27e-06 < 1e-3
+  [HELD] defended maximum line P6 10 tau_relax (plateau column): |plateau-1| = 2.27e-05 < 1e-3
+  [HELD] defended maximum line REFUTER overshoot: worst ramp excess -5.89e-05 <= step overshoot -5.89e-05 + 1e-3
+  [HELD] defended maximum line P8 0.001 tau_slow: drift/(td/tau_slow) = 0.5063, truncated 1/2 - 1/(6 De) = 0.4998 (exact 0.4998), |diff| = 0.0065 < 0.02
+  [HELD] defended maximum line P8 0.01 tau_slow: drift/(td/tau_slow) = 0.4984, truncated 1/2 - 1/(6 De) = 0.4983 (exact 0.4983), |diff| = 0.0001 < 0.02
+  [HELD] defended maximum line P8 0.1 tau_slow: drift/(td/tau_slow) = 0.4841, truncated 1/2 - 1/(6 De) = 0.4833 (exact 0.4837), |diff| = 0.0008 < 0.02
+  38 of 46 held (2 not counted)
+  runtime 2.0 s

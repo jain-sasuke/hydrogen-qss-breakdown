@@ -1915,6 +1915,9 @@ def main():
   $\tau_{\rm slow}$ as the ground state, and with it the ionisation balance,
   finally responds. The excited states are fast enough to track the new
   temperature within nanoseconds. The reservoir that feeds them is not.
+  In (a) the curve crosses the $R^{\rm PE}$ line at $0.7\,\tau_{\rm relax}$,
+  peaks near $1.2\,\tau_{\rm relax}$ and settles back onto it, because $n = 4$ relaxes faster than $n = 3$ and
+  the ratio briefly exceeds its partial-equilibrium value.
   (a) The benchmark, $T_e = @BENCH_TE@ \rightarrow @TB_TENEW@$~eV at
   $n_e = @BENCH_NE@$~cm$^{-3}$: $R$ moves from $@TB_ROLD@$ through
   $@TB_RPE@$ to $@TB_RNEW@$, a plateau error of @TB_EPS@\%, with

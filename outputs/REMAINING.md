@@ -1,8 +1,26 @@
 # What is left
 
-Updated 10 September 2026, after the session that closed the seven items listed
-in the previous version of this file. **175 pages, no LaTeX errors, no undefined
-references or citations, zero em dashes.**
+Updated 11 September 2026 (evening), after the Round 2 session. **190 pages, no
+LaTeX errors, no undefined references or citations, zero em dashes. Defence
+15 October 2026.** Everything from the Round 2 session is uncommitted.
+
+## A0. Round 2 review, closed 11 September 2026
+
+All ten demands plus the ramp point have a stamped artifact and updated text;
+see `HANDOFF.md` §5b and backlog K5. Two loose ends remain from that work:
+
+1. `validation/partial_correlation/partial_correlation_sweep.csv` has no
+   provenance header (writer at `make_ch5_figures.py` ~line 882). Add the
+   header and regenerate, which reruns the figure script.
+2. ~~`make_ch5_figures.py` results lock~~ **Removed 11 Sep (evening)** on the
+   author's instruction: the sign of the quadratic partial is now printed and
+   the figure is drawn either way; chapter 5's sentence updated.
+3. Chapter 4's 4f-fraction framing (lines ~764 to 770) now carries a
+   qualifying sentence; the paragraph could be shortened.
+4. The overshoot scan across the grid (456 of 784 pairs) lives in the ramp
+   script's docstring from the skeptic pass, not in a stamped artifact; the
+   thesis quotes only the benchmark value, which is stamped.
+
 
 Every claim below is stated with the artifact that would settle it. Anything
 marked CLOSED is closed in the thesis text, not only in this file.

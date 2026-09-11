@@ -890,12 +890,13 @@ def main():
     print(f"    wrote {swp}")
     print()
 
-    if r_quad >= 0:
-        raise RuntimeError(
-            f"the controlled correlation did not change sign: quadratic "
-            f"control gives {r_quad:+.3f}. findings_09 §3.1 records a sign "
-            f"flip, and Figure 5.3's caption asserts one; do not draw the "
-            f"figure until this is resolved")
+    # The sign of the controlled correlation is a RESULT, not a precondition.
+    # An earlier version raised here when r_quad >= 0, which made the figure
+    # unproducible for exactly the outcome that would have been informative
+    # (a results lock; removed 11 Sep 2026). The sign is now reported and the
+    # figure is drawn either way; the caption text carries the measured value.
+    print(f"    quadratic-control partial correlation: {r_quad:+.3f} "
+          f"({'negative' if r_quad < 0 else 'NOT negative: the chapter 5 text asserts a sign flip and must be revisited'})")
 
     fig, ax = plt.subplots(figsize=(5.6, 3.7))
     norm = LogNorm(vmin=tv.min(), vmax=tv.max())
@@ -1179,7 +1180,7 @@ def main():
   or well-localised line. The column at $n_e = @NE4@$~cm$^{-3}$ carries the row
   maximum in @NJ4@ of @NROWS@ heating rows, all of them the coldest; at every
   warmer temperature the maximum sits at $@NE3@$~cm$^{-3}$. Both columns must
-  be reported: quoting either alone misstates where the closure is worst, and
+  be reported: quoting either alone misstates where the reservoir-closure error is largest, and
   below $1.15$~eV the position moves across three columns once Lyman trapping
   is included (Figure~\ref{fig:trapping}), so no maximum location is claimed
   there at all.}
@@ -1199,8 +1200,10 @@ def main():
   the same point without statistics: the largest $M$ on the grid
   ($@MMAX@$, blue) carries $\varepsilon = @MMAX_EPS@\%$, while the largest
   error (@EPSMAX@\%, red) occurs @NERATIO@$\times$ away in density, at an $M$
-  smaller by a factor @MRATIO@. A large timescale separation is not evidence that
-  the quasi-steady-state closure is accurate.}
+  smaller by a factor @MRATIO@. A large timescale separation supports the
+  quasi-steady-state reduction of the fast excited states; it does not
+  determine the error incurred by assuming that the slow ground-state
+  reservoir has already reached CR equilibrium.}
 
 \newcommand{\CapFigTrapping}{%
   \textbf{Lyman trapping, and why the quantitative scope starts at 2~eV.}

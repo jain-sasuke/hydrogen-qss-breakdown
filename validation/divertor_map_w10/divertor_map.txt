@@ -1,0 +1,62 @@
+==============================================================================
+DIVERTOR DRIVE MAP -- time-averaged shell-ratio error, two bounds
+generated 2026-09-11 11:45  by verify_divertor_map.py
+repo root      /Users/phi/Desktop/non_markovian_cr
+L_grid sha256  2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256  7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state idx sha  23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+n=3 [3, 4, 5] ['3S', '3P', '3D']   n=4 [6, 7, 8, 9] ['4S', '4P', '4D', '4F']
+fractional step +/-5.0%   breakdown threshold 10%
+LOWER bound: eps_plateau*(tQ/td)*(1-exp(-td/tQ))  -- decays on tau_QSS
+UPPER bound: eps_plateau                          -- no decay (pinned)
+The lower bound is CONSERVATIVE: it understates the error wherever
+the observable decays more slowly than tau_QSS (as at the cold corner,
+where tau_fit = 207 x tau_QSS).
+OBSERVABLE: n=3/n=4 shell population ratio (NOT yet the Balmer line
+ratio -- needs the C8 l-distribution check)
+==============================================================================
+
+evaluated 784 (point, direction) pairs; 5 have no separated plateau stage
+max superposition error: 3.075e-14   OK
+achieved fractional step -0.0459 .. +0.0481
+tau_QSS over the grid: 9.378e-08 .. 6.723e+01 s
+
+==============================================================================
+BREAKDOWN COUNTS (window_ok points only)
+drive                   tau_d                   LOWER bound                   UPPER bound
+                                   median      max     >thr      median      max     >thr
+ELM_crash               1e-04      0.0386   0.3868  202/779      0.0610   0.3869  225/779
+fast_detachment         1e-03      0.0093   0.3861  162/779      0.0610   0.3869  225/779
+slow_detachment         1e-02      0.0010   0.3787  113/779      0.0610   0.3869  225/779
+inter_ELM               1e-01      0.0001   0.3508   65/779      0.0610   0.3869  225/779
+
+==============================================================================
+EXTERNAL VALIDATION -- Fujimoto, Plasma Spectroscopy (2004) App. 4B
+His example: Te = 10 eV, ne = 1e18 m^-3 = 1e12 cm^-3
+  excited-state response time  ~1e-7 s
+  ground-state depletion time  ~1e-4 s
+This model at grid [49,0] (Te=10.0000 eV, ne=1.000e+12 cm^-3):
+  tau_relax = 3.4057e-08 s   ratio to Fujimoto ~1e-7: 0.341
+  tau_QSS   = 1.7657e-04 s   ratio to Fujimoto ~1e-4: 1.766
+  M = 5185
+  NOTE Fujimoto's response time is max_p t_tr(p), the 63% rise time
+  of the slowest-responding level (= t_rl at Griem's boundary level),
+  NOT 1/|lambda_1|. Agreement to a factor of a few is the meaningful
+  comparison; exact agreement would be suspicious.
+
+==============================================================================
+BENCHMARK POINT, all drives
+  grid [23,5] = nearest to Te=3 eV, ne=1e14 cm^-3 (representative attached divertor; not a published operating point)
+  Te=2.9471 eV  ne=1.3895e+14 cm^-3  step +0.0481
+  tau_QSS=1.8494e-05 s  tau_relax=2.2437e-09 s  M=8243
+  f3=0.3102  f4=0.0607  |f3-f4|=0.2495
+  eps_step=0.008692   eps_plateau=0.063612
+    ELM_crash          td=1e-04  lower 0.011712   upper 0.063612
+    fast_detachment    td=1e-03  lower 0.001176   upper 0.063612
+    slow_detachment    td=1e-02  lower 0.000118   upper 0.063612
+    inter_ELM          td=1e-01  lower 0.000012   upper 0.063612
+
+==============================================================================
+WHERE THE LOWER BOUND EXCEEDS THE THRESHOLD AT ELM TIMESCALES
+  105 heating points. Te range 1.000-2.947 eV, ne range 2.683e+12-1.000e+15 cm^-3
+  worst: Te=1.0000 ne=5.1795e+13  lower=0.3868  eps_plateau=0.3869  tau_QSS=2.332e-01

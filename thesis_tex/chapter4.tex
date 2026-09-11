@@ -766,15 +766,33 @@ $0.4361$ to $0.4375$ across the grid, against the statistical value
 $14/32 = 0.4375$; proton-impact $\ell$-mixing drives the shell to a statistical
 distribution to better than \SI{0.3}{\percent} everywhere, with the departure
 concentrated at $\nel = \SI{e12}{\per\cubic\centi\metre}$ where $\ell$-mixing
-weakens and radiative decay competes. And the ratio of the transient error
+weakens and radiative decay competes. That fraction is a property of the full
+equilibrium population; the quantity that sets the line-versus-shell difference
+below is the $\ell$-distribution within each supply channel separately, which
+is not statistical at the low-density edge. And the ratio of the transient error
 computed on the line ratio to the same error computed on the shell ratio runs
-from $0.978$ to $0.9999$ over the grid: \textbf{worst case
-\SI{2.2}{\percent}, at the lowest density} (\texttt{thesis\_ready.md} A6). At
+from $0.9482$ to $0.9999$ over the $784$ point-and-direction pairs, below $1$ at
+every one: \textbf{worst case \SI{5.2}{\percent}, at the heating step from
+$9.54$ to \SI{10.0}{\electronvolt} at the lowest density}
+(\texttt{verify\_weighted\_census.py}, stamped to
+\texttt{validation/weighted\_census/}). At
 $[0,4]$, the point carrying the largest error anywhere, the two agree to
-\SI{0.06}{\percent} ($0.386683$ against $0.386903$).
+\SI{0.06}{\percent} ($0.386683$ against $0.386903$). Because the ratio is below
+$1$ everywhere, the shell census of Chapter~\ref{ch:results} is conservative
+for the line observable: counted on the line ratio, $44$ instead of $45$ of the
+$448$ pairs above \SI{2}{\electronvolt} exceed \SI{10}{\percent} at
+\SI{100}{\micro\second}, with the worst case $0.1746$ instead of $0.1748$ at
+the same point. The \SI{5.2}{\percent} scales inversely with the proton
+$\ell$-mixing rate: with the within-shell $\ell$-changing rates scaled by a
+common factor and the column sums of the operator preserved, the corner
+departure is \SI{10.0}{\percent} at half the rate, \SI{2.6}{\percent} at double
+and \SI{1.1}{\percent} at five times, while the benchmark line-to-shell ratio
+stays between $0.9987$ and $0.9999$ (\texttt{validation/weighted\_census/},
+$\ell$-mixing sensitivity block and \texttt{weighted\_census\_lmix.csv}); and
+it sits on the grid boundary.
 
 That \SI{0.06}{\percent} is a single-point figure and must not be quoted as a
-grid-wide one. The grid-wide statement is the \SI{2.2}{\percent}.
+grid-wide one. The grid-wide statement is the \SI{5.2}{\percent}.
 
 \subsection{And is the plasma transparent to its own Balmer light?}
 
@@ -894,15 +912,16 @@ Section~\ref{sec:transport} states the objection that no amount of closing the
 atomic system can answer, and Section~\ref{sec:quasineutrality} states the one
 that this test makes sharper rather than softer.
 
-\subsection{Is the time-averaged error really bounded below by the plateau?}
+\subsection{Is the single-slow-mode estimate a bound on the time-averaged error?}
 
 Chapter~\ref{ch:results} evaluates the error at the partial-equilibrium plateau
-and builds from it the lower bound of Eq.~\eqref{eq:elm_bound}, which multiplies
-the plateau error $\epsplat$ of Section~\ref{sec:eps_definitions} by the
-fraction of $\taudrive$ over which an exponential decay on $\tauslow$ keeps it
-alive. The bound assumes the observable cannot decay faster than the slowest
-mode. That assumption is testable, and a bound quoted as though it were the
-answer is a claim about tightness that has to be measured.
+and builds from it the single-slow-mode estimate of Eq.~\eqref{eq:elm_bound},
+which multiplies the plateau error $\epsplat$ of
+Section~\ref{sec:eps_definitions} by the fraction of $\taudrive$ over which an
+exponential decay on $\tauslow$ keeps it alive. It was first written as a lower
+bound, on the assumption that the observable cannot decay faster than the
+slowest mode. That assumption is testable, and an estimate quoted as though it
+were the answer is a claim about accuracy that has to be measured.
 
 Propagating the full $43$-state system through the step by direct
 eigen-decomposition and integrating the error over \SIrange{0}{100}{\micro\second}
@@ -910,33 +929,41 @@ gives the comparison in Table~\ref{tab:lowerbound}.
 
 \begin{table}[tbp]
   \centering
-  \caption[Tightness of the plateau lower bound]{The plateau error, the true
-  error averaged over \SIrange{0}{100}{\micro\second} from direct
-  eigen-propagation of the full $43$-state system, and the claimed lower bound,
-  at five grid points. The bound reproduces the true average to better than
-  \SI{0.7}{\percent} everywhere tested. The value below unity at $[0,4]$ is a
-  trapezoid artifact: the nanosecond-scale rise is under-resolved on a uniform
-  \SI{25}{\nano\second} mesh, which under-weights it. Source:
-  \texttt{findings\_10}~\S3.2.}
+  \caption[Accuracy of the single-slow-mode estimate]{The plateau error, the
+  true error averaged over \SIrange{0}{100}{\micro\second} from direct
+  eigen-propagation of the full $43$-state system, and the single-slow-mode
+  estimate of Eq.~\eqref{eq:elm_bound}, at five grid points. The averages are
+  integrated at $400$ time samples per decade; at $1600$ per decade the five
+  change by at most $4.7\times10^{-6}$ relative, and the $[0,4]$ average by
+  $2.7\times10^{-10}$. An earlier version of this table integrated on a uniform
+  \SI{25}{\nano\second} mesh, which under-resolves the nanosecond rise and read
+  low by $6\times10^{-5}$ to $5\times10^{-4}$ relative. The estimate reproduces
+  the true average to better than \SI{0.8}{\percent} at the five points. The
+  value below unity at $[0,4]$ is real: a deficit of $2.2\times10^{-5}$ that
+  survives the denser grid. Source: \texttt{verify\_trajectory\_census.py},
+  \texttt{validation/trajectory\_census/}.}
   \label{tab:lowerbound}
   \begin{tabular}{lrrrr}
     \toprule
-    point & $\epsplat$ & true \SI{100}{\micro\second} average & bound, Eq.~\eqref{eq:elm_bound} & true/bound \\
+    point & $\epsplat$ & true \SI{100}{\micro\second} average & estimate, Eq.~\eqref{eq:elm_bound} & true/estimate \\
     \midrule
-    $[0,4]$ worst case & $0.386903$ & $0.386785$ & $0.386820$ & $0.9999$ \\
-    $[15,3]$ ridge     & $0.180728$ & $0.175272$ & $0.174812$ & $1.0026$ \\
-    $[15,5]$           & $0.103550$ & $0.072175$ & $0.071722$ & $1.0063$ \\
-    $[23,5]$ benchmark & $0.063612$ & $0.011790$ & $0.011712$ & $1.0066$ \\
-    $[0,0]$            & $0.083004$ & $0.083065$ & $0.083004$ & $1.0007$ \\
+    $[0,4]$ worst case & $0.386903$ & $0.386811$ & $0.386820$ & $0.99998$ \\
+    $[15,3]$ ridge     & $0.180728$ & $0.175283$ & $0.174812$ & $1.00270$ \\
+    $[15,5]$           & $0.103550$ & $0.072185$ & $0.071722$ & $1.00646$ \\
+    $[23,5]$ benchmark & $0.063612$ & $0.011796$ & $0.011712$ & $1.00722$ \\
+    $[0,0]$            & $0.083004$ & $0.083084$ & $0.083004$ & $1.00096$ \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-At the five points tested the bound sits within \SI{0.7}{\percent} of the
-directly propagated average, so on this evidence it behaves as an estimate and
-not as a loose bound. Section~\ref{sec:persistence} draws that consequence; what
-matters here is that the assumption underneath it was tested rather than
-asserted.
+At the five points tested the estimate sits within \SI{0.8}{\percent} of the
+directly propagated average, and at $[0,4]$ it sits above it, so it is an
+estimate and not a bound. The accuracy at these five points does not
+generalise: over the $448$ pairs above \SI{2}{\electronvolt} the ratio of true
+average to estimate departs from unity by up to \SI{2.2}{\percent} at
+\SI{100}{\micro\second} and \SI{3.8}{\percent} at \SI{506}{\micro\second}
+(Section~\ref{sec:persistence}). What matters here is that the assumption
+underneath it was tested rather than asserted.
 
 The reason is structural, and it is a property the shell ratio has and another
 observable in this same project does not. The spectrum of $\Lmat$ has one slow
@@ -949,8 +976,10 @@ on. That was the failure mode being hunted, and it does occur for the
 ground-normalised error measure, which does not cancel the reservoir and whose
 $1/\mathrm{e}$ time is
 \SI{2.58}{\second} against $\tauslow = \SI{67.2}{\second}$ at the cold corner.
-The bound is tight for this observable and not for that one, and the spectrum
-says which is which.
+The estimate is accurate for this observable and not for that one, and the
+spectrum says which is which; why it is nevertheless not a bound, the
+denominator of the ratio relaxing on the same $\tauslow$, is set out in
+Section~\ref{sec:persistence}.
 
 %-----------------------------------------------------------------------------
 \section{External comparison: Fujimoto's population coefficients}
@@ -1714,8 +1743,10 @@ costs the observable at about \SI{1}{\percent}.
 \textbf{The structural results are robust to the choices that could have
 manufactured them.} Closing the ion boundary changes the persistence census by
 one part in $325$. Scaling $\ell$-mixing over two decades moves the observable
-by under \SI{0.3}{\percent} where the thesis makes claims. The plateau lower
-bound is the true time-averaged answer to better than \SI{0.7}{\percent}.
+by under \SI{0.3}{\percent} where the thesis makes claims. The single-slow-mode
+estimate of Eq.~\eqref{eq:elm_bound} reproduces the true time-averaged error to
+within \SI{2.2}{\percent} at \SI{100}{\micro\second} over the $448$ pairs above
+\SI{2}{\electronvolt}.
 
 \subsection{What it may not be used for}
 

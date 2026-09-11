@@ -67,7 +67,10 @@ assuming. An \emph{ELM} (edge-localised mode) is the repetitive burst of
 heat and particles that a tokamak edge throws at the divertor every few
 milliseconds, and it is the transient every ``event duration'' below refers to;
 $\taudrive = \SI{100}{\micro\second}$ throughout, the duration used in
-Chapter~\ref{ch:results}.
+Chapter~\ref{ch:results}. That is the aggressive end of the range: the duration
+extrapolated to the ITER pedestal is \SI{506}{\micro\second}
+\cite[Sec.~5]{Loarte2003}, and a longer window gives a smaller time average
+(Section~\ref{sec:persistence}).
 
 %-----------------------------------------------------------------------------
 \section{Optical thickness: when the plasma cannot let its own light out}
@@ -182,9 +185,9 @@ the plasma cools'',} and the answer is a factor of $5\times10^{4}$ between
 That is why the results of Chapter~\ref{ch:results} were declared for
 $\Te \gtrsim \SI{2}{\electronvolt}$ in the first place
 (Section~\ref{sec:two_references}). It is also, uncomfortably, where the
-headline was living. Recounting the ELM breakdown census against optical depth
-rather than against temperature: of the $202$ points at which the ELM-averaged
-estimate of the error exceeds \SI{10}{\percent}, an extremum count over
+headline was living. Recounting the \SI{100}{\micro\second} breakdown census against optical depth
+rather than against temperature: of the $202$ points at which the
+\SI{100}{\micro\second} time-averaged estimate of the error exceeds \SI{10}{\percent}, an extremum count over
 the $680$ window-resolvable points of the full grid, $157$ lie below
 \SI{2}{\electronvolt}, $105$ have
 $\tau_{\rm Ly\alpha}(\SI{5}{\centi\metre}) > 1$, and $26$ have it above $100$.
@@ -242,11 +245,11 @@ number without its $D$ would be reporting an assumption as a measurement.
 
 \begin{table}[tbp]
   \centering
-  \caption[ELM breakdown census under Lyman trapping]{Effect of radiation
-  trapping on the ELM breakdown census. Each entry counts the grid points at
-  which the ELM-averaged estimate of the CR-equilibrium error exceeds
-  \SI{10}{\percent}, for an event of duration
-  $\taudrive = \SI{100}{\micro\second}$, out of the points at which a
+  \caption[Breakdown census under Lyman trapping]{Effect of radiation
+  trapping on the \SI{100}{\micro\second} breakdown census. Each entry counts the grid points at
+  which the time-averaged estimate of the CR-equilibrium-reference error,
+  averaged over a chosen duration $\taudrive = \SI{100}{\micro\second}$, exceeds
+  \SI{10}{\percent}, out of the points at which a
   quasi-steady-state window is resolvable; ``worst'' is the largest estimate
   within that scope. Rows differ only in the assumed slab thickness $D$ used to
   compute the self-consistent Holstein escape factor applied to all $14$ Lyman
@@ -482,7 +485,7 @@ reservoir not being refreshed.
 Neutral transport refreshes it. Any process that replaces the ground-state
 population on a timescale shorter than $\tauslow$ resets the staleness, and this
 model contains no such process. The threshold is computable from the map itself:
-for the ELM-averaged estimate at the worst point to fall below the
+for the \SI{100}{\micro\second} time-averaged estimate at the worst point to fall below the
 \SI{10}{\percent} breakdown threshold, an effective ground-state renewal time of
 about \SI{26}{\micro\second} would suffice. Neutral transit across the plasma is
 faster than that.
@@ -495,7 +498,7 @@ and reports that it survives. That was the wrong place to test it. The point
 $[0,4]$ sits at \SI{1}{\electronvolt}, below the scope boundary of
 Section~\ref{sec:scope}, and no quantitative claim in this thesis rests on it.
 The pairs that carry the defended claim are the $45$ above
-\SI{2}{\electronvolt} whose ELM-averaged estimate exceeds \SI{10}{\percent}
+\SI{2}{\electronvolt} whose \SI{100}{\micro\second} time-averaged estimate exceeds \SI{10}{\percent}
 (Table~\ref{tab:elm_census}). Whether the closed parcel holds \emph{there} is a
 different question, and it has a different answer.
 
@@ -553,7 +556,7 @@ $0$. Doubling $L$ from $10$ to \SI{20}{\centi\metre} leaves it at $0$. The
 finding is not an artifact of any of the three.
 
 \paragraph{The selection is structural, not incidental.} A pair enters the
-census because $\tauslow$ is long, since the ELM-averaged bound of
+census because $\tauslow$ is long, since the single-slow-mode estimate of
 Eq.~\eqref{eq:elm_bound} rises with $\tauslow$ at fixed $\taudrive$. A long
 $\tauslow$ means slow ionisation out of the ground state. Slow ionisation is
 exactly the condition under which neutral transport, whose timescale does not
@@ -586,7 +589,7 @@ history and cannot reach any of them.
 \textbf{Conditional on the closed parcel.} The reservoir gain $G$, which is
 a secant along the CRE curve and therefore assumes the ground
 state responds through collisional--radiative balance alone; $\epsplat$, which
-is built from it; the breakdown census; and every ELM-averaged magnitude in
+is built from it; the breakdown census; and every time-averaged magnitude in
 Chapter~\ref{ch:results}. If recycling renews $\ngs$ on a timescale shorter than
 $\tauslow$, $G$ is not the gain the plasma has, and these numbers are upper
 estimates of an error whose true size this model cannot compute.
@@ -871,7 +874,7 @@ The corresponding restriction on the error map is in Chapter~\ref{ch:results}
 and bears repeating here in its scoped form. Restricted to
 $\Te \ge \SI{2}{\electronvolt}$ \emph{and} to the citable detached density band
 $\nel \ge 10^{14}\,\si{\per\cubic\centi\metre}$, the number of points at which
-the ELM-averaged estimate exceeds \SI{10}{\percent} is \emph{zero} out of
+the \SI{100}{\micro\second} time-averaged estimate exceeds \SI{10}{\percent} is \emph{zero} out of
 $108$, and the largest estimate anywhere within that set is
 \SI{7.2}{\percent}. The ridge and the detached band do not overlap. Where the
 diagnostic is most used, this model says the transient error is real but modest.
@@ -1325,7 +1328,7 @@ agreement with Griem's boundary criterion is not an artifact of neglected
 opacity.
 
 And at citable divertor densities above \SI{2}{\electronvolt}, the conditions
-where the diagnostic is actually used, the ELM-averaged error never reaches
+where the diagnostic is actually used, the \SI{100}{\micro\second} time-averaged error never reaches
 \SI{10}{\percent} at all, over $108$ points, with a worst case of
 \SI{7.2}{\percent}.
 

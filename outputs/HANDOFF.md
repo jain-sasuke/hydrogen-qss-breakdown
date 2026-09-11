@@ -1,14 +1,15 @@
 # Handoff: non_markovian_cr thesis
 
-Written 11 September 2026. Everything a fresh session needs to continue without
-re-deriving the context. Read this first, then `CLAUDE.md`, then
-`outputs/REMAINING.md`.
+Written 11 September 2026, updated the same evening after the Round 2 session.
+Everything a fresh session needs to continue without re-deriving the context.
+Read this first, then `CLAUDE.md`, then `outputs/REMAINING.md`.
 
 ---
 
 ## 1. The project
 
-M.Tech thesis, Chemical Engineering, IIT Kanpur. **Defence 1 September 2026.**
+M.Tech thesis, Chemical Engineering, IIT Kanpur. **Defence 15 October 2026**
+(corrected in `CLAUDE.md` and here on 11 Sep).
 Time-dependent collisional-radiative (CR) modelling of hydrogen, quantifying what
 a Balmer-ratio divertor diagnostic costs when it assumes ionisation balance has
 settled.
@@ -17,10 +18,13 @@ Repo `/Users/phi/Desktop/non_markovian_cr`, branch
 `backup/verification-session-2026-09-10`, remote
 `github.com/jain-sasuke/NonMarkovianCR` which is **PUBLIC**.
 
-**Current state: 187 pages, 0 LaTeX errors, 0 undefined references, 0 undefined
+**Current state: 190 pages, 0 LaTeX errors, 0 undefined references, 0 undefined
 citations, BibTeX clean, 0 em dashes, 66 bib entries.**
-Markers: 4 `\todo`, 1 `[UNVERIFIED]`, 0 `[SOURCE REQUIRED]`,
-1 `[MECHANISM NOT ESTABLISHED]`. Down from 29 at the start of this work.
+Markers: 4 `\todo` (plus the front-matter personalise note), 1 `[UNVERIFIED]`,
+0 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT ESTABLISHED]`.
+
+The Round 2 session's changes were committed on the evening of 11 Sep with an
+explicit file list (see `git log`).
 
 ---
 
@@ -84,8 +88,10 @@ Key values, all reproducible:
 | grid | 50 Te (1-10 eV) x 8 ne (1e12-1e15), `dlnTe = ln(10)/49 = 0.0469915` |
 | two-channel superposition residual | 3.075e-14 |
 | benchmark eps_plateau | 0.063612 |
-| census, Te >= 2 eV, 100 us | 45 of 448, worst 17.5% |
-| census at ITER-extrapolated 506 us | 24 of 448, worst 15.3% |
+| census, Te >= 2 eV, 100 us | 45 of 448 on the estimate (44 on the line ratio), 43 propagated; worst 17.5% |
+| census at ITER-extrapolated 506 us | 24 of 448 (23 on the line ratio, propagated), worst 15.3% |
+| estimate against true average, 448 pairs | 0.979 to 1.022 (100 us), 0.967 to 1.038 (506 us) |
+| line/shell eps ratio | 0.9482 to 0.9999, worst at heat [48,0] |
 | \|Sbar\| range | 0.0649 to 0.4822 |
 | \|G\| range | 2.64 to 14.52, negative everywhere |
 
@@ -160,15 +166,61 @@ of 24 if read literally.
 
 ---
 
+## 5b. The Round 2 session (11 September, afternoon)
+
+The Round 2 review text arrived. Its ten demands plus the ramp point were
+inventoried against the text (0 closed, 6 partial, 5 open) and then worked
+through with one script per demand, each sent to a hostile subagent before its
+numbers entered the thesis. Backlog entries G8, K1 to K5 carry the detail.
+
+New scripts, all in `src/validation/`, all stamped under `validation/`:
+
+| script | artifact | what it settles |
+|---|---|---|
+| `verify_weighted_census.py` | `weighted_census/` | A-weighted Hα/Hβ against the shell ratio: eps ratio 0.9482 to 0.9999, below 1 everywhere; census 45 → 44; the thesis's 0.978 / 2.2 % was wrong (5.2 %) |
+| `verify_trajectory_census.py` | `trajectory_census/` | every plateau cell propagated: QSS tracking ≤ 4.4e-5 at all 680 window pairs; true/estimate 0.979 to 1.022 (100 µs), 0.967 to 1.038 (506 µs); exposure ratio ∫j_α/∫j_β; census propagated 45 → 43 |
+| `verify_ramp_plateau.py` | `ramp_plateau/` | ramp reaches De(1 − e^(−1/De)) of the plateau, De = τ_slow/t_ramp; benchmark overshoot 6.6 % of eps_plat before the window, a property of the ratio |
+| `verify_window_sweep.py` | `window_sweep/`, `divertor_map_w10/20/50/`, `reservoir_gain_w10/50/` | census 45 at k = 10, 20, 30, 50; denominators 547/496/448/364 |
+| `verify_m_rank_test.py` | `m_rank_test/` | at fixed Te, M is monotone in ne and eps unimodal: M cannot rank the error |
+| `verify_partial_fe.py` | `partial_fe/` | the negative partial survives two-way fixed effects (−0.94 heating), jackknife and permutation |
+
+**Findings that changed the thesis:**
+
+- The single-slow-mode estimate (Eq. 5.10) is neither a bound nor accurate to
+  0.7 %: it is within 2.2 % (100 µs) and 3.8 % (506 µs) over the 448 defended
+  pairs, low for heating and high for cooling, because eps_CRE is a ratio whose
+  denominator relaxes on the same τ_slow (asymptote (1+δ)ln(1+δ)/δ). Its
+  τ_drive → 0 limit was stated wrongly. The propagated census is 43 of 448.
+- The finite-exposure observable a detector records gives the same census.
+- The line-versus-shell worst case is 5.2 % at the hot low-density corner, not
+  2.2 %; the mechanism is the channel-dependent ℓ-distribution, with the Hα
+  numerator contributing more than the 4f darkness.
+- §5.9's negative partial correlation is real (fixed effects), but "at fixed
+  (Te, ne)" had no referent, the extrema were mislabelled ([0,0] → cool [1,0]),
+  and `make_ch5_figures.py` (~line 893) refuses to draw the figure unless the
+  quadratic partial is negative: a results lock, reported to the author, not
+  changed.
+- The benchmark's step response overshoots the plateau by 6.6 % at 1.2 τ_relax
+  (visible in the published trajectory figure, now captioned). Not
+  non-normal growth: the deviation norm decays monotonically at all 784 pairs.
+
+**Method notes that saved time:** eigen-propagation of L⁺ is fast and, gated
+against `expm` on the state and on the observable with tolerance
+max(1e-8, ε_mach‖L‖t), trustworthy; at the cold corner both float64 methods are
+limited by ε_mach‖L‖t and the eigen path is the more accurate (checked against
+a 30-digit mpmath exponential). `expm_multiply` hangs at ‖Lt‖ ~ 1e10; do not
+use it there. Exposure integrals are exact through the augmented matrix
+[[L, d0],[0, 0]]. The 100 samples/decade log trapezoid carries a +8e-5 bias;
+the stamped artifact uses 400.
+
 ## 6. What is left
 
 Read `outputs/REMAINING.md` for the full register. The substantive items:
 
-1. **The emissivity-ratio reformulation is done analytically but not carried
-   through the numerics.** `make_ch3_figures.py:252-253` and
-   `make_ch5_figures.py:364-368` still use unweighted shell sums. Substituting
-   `w·a` and `w·c` there is a two-line change at each site; weights come from
-   `Balmer_transient_ratio.load_radiative_weights`. Do **not** use
+1. ~~The emissivity-ratio reformulation not carried through the numerics.~~
+   **Done 11 Sep** (`verify_weighted_census.py`, `verify_trajectory_census.py`).
+   The figure scripts still draw the shell ratio; the chapters state the line
+   numbers alongside. Do **not** use
    `Halpha_sensitivity.py:estimate_halpha_weights_from_L`, which self-documents
    as unsuitable.
 2. **Three appendices are empty stubs**: state ordering, atomic data sources,
@@ -179,9 +231,8 @@ Read `outputs/REMAINING.md` for the full register. The substantive items:
    `chapter5.tex:1242`) needs the rate pipeline rerun at n_max = 12 and 20.
 5. **Eight older Ch3/Ch5 figures fail a colour-blind check** (`#2e7d32` against
    `#c0392b`, dE 4.2 under deuteranopia).
-6. **Round 2's remaining items**, which I could not verify without the review
-   text: a grid-wide bridge test (~680 propagations, genuinely expensive) and the
-   finite-exposure observable.
+6. ~~Round 2's remaining items.~~ **Closed 11 Sep**; see §5b. The bridge test
+   turned out to cost 9 s, not hours.
 7. Four `\todo`s are author-supplied citations or named-as-impossible work
    (SOLPS-coupled calculation, molecular matrix, the separatrix quantity, the
    n=15 ground-fed provenance).

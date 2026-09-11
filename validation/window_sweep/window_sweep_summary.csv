@@ -1,0 +1,15 @@
+# generated 2026-09-11 11:49 by verify_window_sweep.py
+# commands used to produce the swept divertor_map CSVs (k != 30), and this recount:
+#   python src/validation/verify_divertor_map.py --win-lo 10 --win-hi 10 --out validation/divertor_map_w10
+#   python src/validation/verify_divertor_map.py --win-lo 20 --win-hi 20 --out validation/divertor_map_w20
+#   python src/validation/verify_divertor_map.py --win-lo 50 --win-hi 50 --out validation/divertor_map_w50
+#   python src/validation/verify_window_sweep.py --ks 10 20 30 50
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# canonical k=30 file: validation/divertor_map/divertor_map.csv
+K,n_window_ok,n_warm,n_dense,census_100us,worst_100us,worst_at,census_506us,worst_506us,census_thr005,census_thr020
+10,779,547,202,45,0.174812,"heat[15,3]_Te=2.0236_ne=1.9307e+13",24,0.153301,141,0
+20,728,496,151,45,0.174812,"heat[15,3]_Te=2.0236_ne=1.9307e+13",24,0.153301,141,0
+30,680,448,108,45,0.174812,"heat[15,3]_Te=2.0236_ne=1.9307e+13",24,0.153301,141,0
+50,596,364,66,45,0.174812,"heat[15,3]_Te=2.0236_ne=1.9307e+13",24,0.153301,141,0

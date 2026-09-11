@@ -1,0 +1,286 @@
+# generated 2026-09-11 16:20 by verify_partial_fe.py
+# python interpreter: /opt/anaconda3/envs/cr/bin/python
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# source csv: validation/divertor_map/divertor_map.csv  sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# fractional step (parsed from source header): 0.05
+# permutation seed 20260911, draws 2000
+==============================================================================
+PARTIAL CORRELATION UNDER FIXED-EFFECTS AND POLYNOMIAL CONTROLS
+generated 2026-09-11 16:20  by verify_partial_fe.py
+python interpreter: /opt/anaconda3/envs/cr/bin/python
+repo root: /Users/phi/Desktop/non_markovian_cr
+loaded: /Users/phi/Desktop/non_markovian_cr/validation/divertor_map/divertor_map.csv  (784 rows)
+  (source header) # generated 2026-08-23 13:47 by verify_divertor_map.py
+  (source header) # L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+  (source header) # S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+  (source header) # state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+  (source header) # fractional step 0.05, threshold 0.1
+Te grid: 50 pts from cr_context (Te_grid_L.npy), 1.0000-10.0000 eV
+ne grid: 8 pts from cr_context (ne_grid_L.npy), 1.000e+12-1.000e+15 cm^-3
+CSV i/j columns verified against Te_grid[i], ne_grid[j] to 1e-9 relative: OK
+fractional step parsed from divertor_map.csv header: 0.05 (asserted == 0.05: OK)
+
+PREDICTION (from the docstring, written before computing):
+  1. two-way FE partial <= quadratic partial (more negative or equal)
+     in every direction.
+  2. Te-row-only FE partial is POSITIVE in every direction.
+  3. permutation p < 0.001 for quadratic and two-way FE, Te>=2 scope,
+     every direction.
+  REFUTING: a positive two-way FE partial anywhere, or any
+  permutation p > 0.01.
+==============================================================================
+
+==============================================================================
+RAW M RANGE (sanity check against Chapter 5's grid-wide figures)
+==============================================================================
+M over window_ok rows (n=680/680 expected): 9.021339e+02 .. 1.729277e+09
+M over ALL rows (n=784/784 expected): 8.676777e+01 .. 1.729277e+09
+
+==============================================================================
+RAW (unresidualised) PEARSON / SPEARMAN OF (ln M, ln eps_plateau)
+==============================================================================
+[  heat] scope=window_ok      n=338   pearson=+0.7305 (p=1.31e-57)  spearman=+0.7720 (p=4.13e-68)
+[  heat] scope=window_ok_Te2  n=218   pearson=+0.5743 (p=1.57e-20)  spearman=+0.5958 (p=2.46e-22)
+[  cool] scope=window_ok      n=342   pearson=+0.8015 (p=6.59e-78)  spearman=+0.8232 (p=1.39e-85)
+[  cool] scope=window_ok_Te2  n=230   pearson=+0.6867 (p=2.01e-33)  spearman=+0.7045 (p=8.36e-36)
+[pooled] scope=window_ok      n=680   pearson=+0.7574 (p=1.22e-127)  spearman=+0.7909 (p=9.45e-147)
+[pooled] scope=window_ok_Te2  n=448   pearson=+0.6251 (p=6.02e-50)  spearman=+0.6449 (p=5.01e-54)
+
+==============================================================================
+MAIN TABLE -- partial correlation, all controls / scopes / directions
+(a_variant: pre = ln(pre-step Te, the CSV's Te column); post = ln(Te_grid[k]), the +/-5% post-step grid point)
+Controls 6 (twoway_fe) and 7 (te_fe) are INDEX-based (dummies on i, j) and are therefore IDENTICAL under pre/post a_variant -- computed and listed under both tags for a uniform table, not recomputed.
+==============================================================================
+[  heat] scope=window_ok      a=pre  control=linear         n=338  p=3   partial=+0.325612  cond=1.284e+00  lstsq-QR diff=1.07e-14
+[  heat] scope=window_ok      a=pre  control=quadratic      n=338  p=6   partial=-0.272200  cond=8.736e+01  lstsq-QR diff=5.33e-15
+[  heat] scope=window_ok      a=pre  control=cubic          n=338  p=10  partial=-0.591782  cond=5.121e+03  lstsq-QR diff=6.32e-13
+[  heat] scope=window_ok      a=pre  control=add_quadratic  n=338  p=5   partial=-0.705457  cond=6.916e+01  lstsq-QR diff=2.26e-14
+[  heat] scope=window_ok      a=pre  control=add_quartic    n=338  p=9   partial=-0.936940  cond=1.811e+05  lstsq-QR diff=5.57e-11
+[  heat] scope=window_ok      a=pre  control=twoway_fe      n=338  p=56  partial=-0.958715  cond=7.594e+00  lstsq-QR diff=2.50e-14
+[  heat] scope=window_ok      a=pre  control=te_fe          n=338  p=49  partial=+0.279634  cond=6.509e+00  lstsq-QR diff=1.07e-14
+[  heat] scope=window_ok      a=post control=linear         n=338  p=3   partial=+0.325612  cond=1.284e+00  lstsq-QR diff=1.24e-14
+[  heat] scope=window_ok      a=post control=quadratic      n=338  p=6   partial=-0.272200  cond=8.742e+01  lstsq-QR diff=1.27e-14
+[  heat] scope=window_ok      a=post control=cubic          n=338  p=10  partial=-0.591782  cond=5.127e+03  lstsq-QR diff=6.68e-13
+[  heat] scope=window_ok      a=post control=add_quadratic  n=338  p=5   partial=-0.705457  cond=6.918e+01  lstsq-QR diff=2.84e-14
+[  heat] scope=window_ok      a=post control=add_quartic    n=338  p=9   partial=-0.936940  cond=1.812e+05  lstsq-QR diff=3.98e-11
+[  heat] scope=window_ok      a=post control=twoway_fe      n=338  p=56  partial=-0.958715  cond=7.594e+00  lstsq-QR diff=2.50e-14
+[  heat] scope=window_ok      a=post control=te_fe          n=338  p=49  partial=+0.279634  cond=6.509e+00  lstsq-QR diff=1.07e-14
+[  heat] scope=window_ok_Te2  a=pre  control=linear         n=218  p=3   partial=+0.545798  cond=1.356e+00  lstsq-QR diff=1.78e-15
+[  heat] scope=window_ok_Te2  a=pre  control=quadratic      n=218  p=6   partial=-0.590221  cond=9.872e+01  lstsq-QR diff=1.60e-14
+[  heat] scope=window_ok_Te2  a=pre  control=cubic          n=218  p=10  partial=-0.612204  cond=6.095e+03  lstsq-QR diff=2.27e-13
+[  heat] scope=window_ok_Te2  a=pre  control=add_quadratic  n=218  p=5   partial=-0.792525  cond=7.120e+01  lstsq-QR diff=1.95e-14
+[  heat] scope=window_ok_Te2  a=pre  control=add_quartic    n=218  p=9   partial=-0.833637  cond=1.791e+05  lstsq-QR diff=6.82e-12
+[  heat] scope=window_ok_Te2  a=pre  control=twoway_fe      n=218  p=41  partial=-0.938964  cond=6.187e+00  lstsq-QR diff=4.66e-15
+[  heat] scope=window_ok_Te2  a=pre  control=te_fe          n=218  p=34  partial=+0.376690  cond=5.237e+00  lstsq-QR diff=1.92e-15
+[  heat] scope=window_ok_Te2  a=post control=linear         n=218  p=3   partial=+0.545798  cond=1.356e+00  lstsq-QR diff=4.66e-15
+[  heat] scope=window_ok_Te2  a=post control=quadratic      n=218  p=6   partial=-0.590221  cond=9.877e+01  lstsq-QR diff=2.66e-14
+[  heat] scope=window_ok_Te2  a=post control=cubic          n=218  p=10  partial=-0.612204  cond=6.102e+03  lstsq-QR diff=2.12e-12
+[  heat] scope=window_ok_Te2  a=post control=add_quadratic  n=218  p=5   partial=-0.792525  cond=7.120e+01  lstsq-QR diff=1.42e-14
+[  heat] scope=window_ok_Te2  a=post control=add_quartic    n=218  p=9   partial=-0.833637  cond=1.791e+05  lstsq-QR diff=1.25e-11
+[  heat] scope=window_ok_Te2  a=post control=twoway_fe      n=218  p=41  partial=-0.938964  cond=6.187e+00  lstsq-QR diff=4.66e-15
+[  heat] scope=window_ok_Te2  a=post control=te_fe          n=218  p=34  partial=+0.376690  cond=5.237e+00  lstsq-QR diff=1.92e-15
+[  cool] scope=window_ok      a=pre  control=linear         n=342  p=3   partial=+0.337600  cond=1.265e+00  lstsq-QR diff=3.55e-15
+[  cool] scope=window_ok      a=pre  control=quadratic      n=342  p=6   partial=-0.328748  cond=8.627e+01  lstsq-QR diff=1.42e-14
+[  cool] scope=window_ok      a=pre  control=cubic          n=342  p=10  partial=-0.606850  cond=5.070e+03  lstsq-QR diff=1.00e-12
+[  cool] scope=window_ok      a=pre  control=add_quadratic  n=342  p=5   partial=-0.663265  cond=6.887e+01  lstsq-QR diff=9.77e-15
+[  cool] scope=window_ok      a=pre  control=add_quartic    n=342  p=9   partial=-0.881566  cond=1.806e+05  lstsq-QR diff=9.09e-12
+[  cool] scope=window_ok      a=pre  control=twoway_fe      n=342  p=56  partial=-0.898028  cond=7.614e+00  lstsq-QR diff=1.29e-14
+[  cool] scope=window_ok      a=pre  control=te_fe          n=342  p=49  partial=+0.592730  cond=6.546e+00  lstsq-QR diff=7.11e-15
+[  cool] scope=window_ok      a=post control=linear         n=342  p=3   partial=+0.337600  cond=1.265e+00  lstsq-QR diff=5.33e-15
+[  cool] scope=window_ok      a=post control=quadratic      n=342  p=6   partial=-0.328748  cond=8.621e+01  lstsq-QR diff=2.49e-14
+[  cool] scope=window_ok      a=post control=cubic          n=342  p=10  partial=-0.606850  cond=5.065e+03  lstsq-QR diff=8.24e-13
+[  cool] scope=window_ok      a=post control=add_quadratic  n=342  p=5   partial=-0.663265  cond=6.886e+01  lstsq-QR diff=3.02e-14
+[  cool] scope=window_ok      a=post control=add_quartic    n=342  p=9   partial=-0.881566  cond=1.806e+05  lstsq-QR diff=3.27e-11
+[  cool] scope=window_ok      a=post control=twoway_fe      n=342  p=56  partial=-0.898028  cond=7.614e+00  lstsq-QR diff=1.29e-14
+[  cool] scope=window_ok      a=post control=te_fe          n=342  p=49  partial=+0.592730  cond=6.546e+00  lstsq-QR diff=7.11e-15
+[  cool] scope=window_ok_Te2  a=pre  control=linear         n=230  p=3   partial=+0.530890  cond=1.332e+00  lstsq-QR diff=6.44e-15
+[  cool] scope=window_ok_Te2  a=pre  control=quadratic      n=230  p=6   partial=-0.619669  cond=9.566e+01  lstsq-QR diff=1.51e-14
+[  cool] scope=window_ok_Te2  a=pre  control=cubic          n=230  p=10  partial=-0.625731  cond=5.841e+03  lstsq-QR diff=6.68e-13
+[  cool] scope=window_ok_Te2  a=pre  control=add_quadratic  n=230  p=5   partial=-0.668156  cond=7.052e+01  lstsq-QR diff=1.24e-14
+[  cool] scope=window_ok_Te2  a=pre  control=add_quartic    n=230  p=9   partial=-0.718309  cond=1.793e+05  lstsq-QR diff=1.16e-11
+[  cool] scope=window_ok_Te2  a=pre  control=twoway_fe      n=230  p=42  partial=-0.770033  cond=6.324e+00  lstsq-QR diff=5.27e-15
+[  cool] scope=window_ok_Te2  a=pre  control=te_fe          n=230  p=35  partial=+0.587553  cond=5.377e+00  lstsq-QR diff=4.00e-15
+[  cool] scope=window_ok_Te2  a=post control=linear         n=230  p=3   partial=+0.530890  cond=1.332e+00  lstsq-QR diff=3.77e-15
+[  cool] scope=window_ok_Te2  a=post control=quadratic      n=230  p=6   partial=-0.619669  cond=9.561e+01  lstsq-QR diff=3.29e-14
+[  cool] scope=window_ok_Te2  a=post control=cubic          n=230  p=10  partial=-0.625731  cond=5.835e+03  lstsq-QR diff=9.31e-13
+[  cool] scope=window_ok_Te2  a=post control=add_quadratic  n=230  p=5   partial=-0.668156  cond=7.052e+01  lstsq-QR diff=1.14e-14
+[  cool] scope=window_ok_Te2  a=post control=add_quartic    n=230  p=9   partial=-0.718309  cond=1.793e+05  lstsq-QR diff=2.46e-11
+[  cool] scope=window_ok_Te2  a=post control=twoway_fe      n=230  p=42  partial=-0.770033  cond=6.324e+00  lstsq-QR diff=5.27e-15
+[  cool] scope=window_ok_Te2  a=post control=te_fe          n=230  p=35  partial=+0.587553  cond=5.377e+00  lstsq-QR diff=4.00e-15
+[pooled] scope=window_ok      a=pre  control=linear         n=680  p=3   partial=+0.274465  cond=1.274e+00  lstsq-QR diff=5.33e-15
+[pooled] scope=window_ok      a=pre  control=quadratic      n=680  p=6   partial=-0.441803  cond=8.670e+01  lstsq-QR diff=3.60e-14
+[pooled] scope=window_ok      a=pre  control=cubic          n=680  p=10  partial=-0.509940  cond=5.087e+03  lstsq-QR diff=2.18e-13
+[pooled] scope=window_ok      a=pre  control=add_quadratic  n=680  p=5   partial=-0.599005  cond=6.899e+01  lstsq-QR diff=3.82e-14
+[pooled] scope=window_ok      a=pre  control=add_quartic    n=680  p=9   partial=-0.631731  cond=1.808e+05  lstsq-QR diff=3.68e-11
+[pooled] scope=window_ok      a=pre  control=twoway_fe      n=680  p=57  partial=-0.634672  cond=1.074e+01  lstsq-QR diff=1.22e-14
+[pooled] scope=window_ok      a=pre  control=te_fe          n=680  p=50  partial=+0.412007  cond=9.231e+00  lstsq-QR diff=1.47e-14
+[pooled] scope=window_ok      a=pre  control=quad_direction n=680  p=7   partial=-0.255074  cond=8.674e+01  lstsq-QR diff=3.51e-14
+[pooled] scope=window_ok      a=post control=linear         n=680  p=3   partial=+0.311311  cond=1.275e+00  lstsq-QR diff=5.33e-15
+[pooled] scope=window_ok      a=post control=quadratic      n=680  p=6   partial=-0.171885  cond=8.680e+01  lstsq-QR diff=3.46e-14
+[pooled] scope=window_ok      a=post control=cubic          n=680  p=10  partial=-0.184730  cond=5.094e+03  lstsq-QR diff=1.12e-12
+[pooled] scope=window_ok      a=post control=add_quadratic  n=680  p=5   partial=-0.495008  cond=6.902e+01  lstsq-QR diff=3.06e-14
+[pooled] scope=window_ok      a=post control=add_quartic    n=680  p=9   partial=-0.588434  cond=1.809e+05  lstsq-QR diff=3.43e-11
+[pooled] scope=window_ok      a=post control=twoway_fe      n=680  p=57  partial=-0.634672  cond=1.074e+01  lstsq-QR diff=1.22e-14
+[pooled] scope=window_ok      a=post control=te_fe          n=680  p=50  partial=+0.412007  cond=9.231e+00  lstsq-QR diff=1.47e-14
+[pooled] scope=window_ok      a=post control=quad_direction n=680  p=7   partial=-0.182876  cond=8.682e+01  lstsq-QR diff=3.46e-14
+[pooled] scope=window_ok_Te2  a=pre  control=linear         n=448  p=3   partial=+0.416720  cond=1.342e+00  lstsq-QR diff=2.22e-15
+[pooled] scope=window_ok_Te2  a=pre  control=quadratic      n=448  p=6   partial=-0.531359  cond=9.683e+01  lstsq-QR diff=2.40e-14
+[pooled] scope=window_ok_Te2  a=pre  control=cubic          n=448  p=10  partial=-0.532557  cond=5.923e+03  lstsq-QR diff=1.04e-12
+[pooled] scope=window_ok_Te2  a=pre  control=add_quadratic  n=448  p=5   partial=-0.613979  cond=7.080e+01  lstsq-QR diff=7.34e-14
+[pooled] scope=window_ok_Te2  a=pre  control=add_quartic    n=448  p=9   partial=-0.609214  cond=1.791e+05  lstsq-QR diff=2.07e-11
+[pooled] scope=window_ok_Te2  a=pre  control=twoway_fe      n=448  p=42  partial=-0.617409  cond=6.242e+00  lstsq-QR diff=2.61e-15
+[pooled] scope=window_ok_Te2  a=pre  control=te_fe          n=448  p=35  partial=+0.474593  cond=5.308e+00  lstsq-QR diff=1.83e-15
+[pooled] scope=window_ok_Te2  a=pre  control=quad_direction n=448  p=7   partial=-0.414813  cond=9.690e+01  lstsq-QR diff=2.66e-14
+[pooled] scope=window_ok_Te2  a=post control=linear         n=448  p=3   partial=+0.508865  cond=1.344e+00  lstsq-QR diff=4.44e-16
+[pooled] scope=window_ok_Te2  a=post control=quadratic      n=448  p=6   partial=-0.334732  cond=9.707e+01  lstsq-QR diff=3.20e-14
+[pooled] scope=window_ok_Te2  a=post control=cubic          n=448  p=10  partial=-0.230885  cond=5.952e+03  lstsq-QR diff=1.14e-12
+[pooled] scope=window_ok_Te2  a=post control=add_quadratic  n=448  p=5   partial=-0.417697  cond=7.083e+01  lstsq-QR diff=1.95e-14
+[pooled] scope=window_ok_Te2  a=post control=add_quartic    n=448  p=9   partial=-0.256318  cond=1.792e+05  lstsq-QR diff=1.05e-11
+[pooled] scope=window_ok_Te2  a=post control=twoway_fe      n=448  p=42  partial=-0.617409  cond=6.242e+00  lstsq-QR diff=2.61e-15
+[pooled] scope=window_ok_Te2  a=post control=te_fe          n=448  p=35  partial=+0.474593  cond=5.308e+00  lstsq-QR diff=1.83e-15
+[pooled] scope=window_ok_Te2  a=post control=quad_direction n=448  p=7   partial=-0.410388  cond=9.717e+01  lstsq-QR diff=3.82e-14
+
+==============================================================================
+REFERENCE REPRODUCTION
+==============================================================================
+quadratic, pooled, window_ok_Te2              target=-0.5310  observed=-0.531359  |diff|=0.0004  n=448
+linear, pooled, window_ok_Te2                 target=+0.4170  observed=+0.416720  |diff|=0.0003  n=448
+twoway_fe, pooled, window_ok_Te2              target=-0.6170  observed=-0.617409  |diff|=0.0004  n=448
+twoway_fe, heat, window_ok_Te2                target=-0.9390  observed=-0.938964  |diff|=0.0000  n=218
+twoway_fe, cool, window_ok_Te2                target=-0.7700  observed=-0.770033  |diff|=0.0000  n=230
+te_fe, heat, window_ok_Te2 target band [0.38,0.59]  observed=+0.376690  *** OUT OF BAND ***
+te_fe, cool, window_ok_Te2 target band [0.38,0.59]  observed=+0.587553  IN BAND
+te_fe, pooled, window_ok_Te2 target band [0.38,0.59]  observed=+0.474593  IN BAND
+
+==============================================================================
+TWO-WAY FE R^2 -- fraction of variance in ln M / ln eps_plateau
+explained by the saturated Te-row x ne-column fixed effects
+(Te>=2 eV & window_ok, a_variant=pre; FE is index-based so pre/post
+ are identical by construction, as noted in the main table)
+==============================================================================
+[  heat] n=218  p=41   R^2(ln M)=0.9980   R^2(ln eps_plateau)=0.9919
+[  cool] n=230  p=42   R^2(ln M)=0.9979   R^2(ln eps_plateau)=0.9980
+[pooled] n=448  p=42   R^2(ln M)=0.9871   R^2(ln eps_plateau)=0.9829
+  cross-check against the coordinator's independent recomputation:
+    [heat] target R^2(ln M)=0.998 observed=0.9980 |diff|=0.0000;  target R^2(eps)=0.992 observed=0.9919 |diff|=0.0001
+    [pooled] target R^2(ln M)=0.987 observed=0.9871 |diff|=0.0001;  target R^2(eps)=0.983 observed=0.9829 |diff|=0.0001
+
+==============================================================================
+FULL QUARTIC WITH CROSS TERMS -- all a^p b^q, p+q<=4 (15 terms)
+(Te>=2 eV & window_ok, a_variant=pre, the chapter's sweep variant)
+==============================================================================
+[  heat] n=218  p=15   partial=-0.281454  cond=3.352e+05  lstsq-QR diff=5.82e-11
+[  cool] n=230  p=15   partial=-0.334727  cond=3.189e+05  lstsq-QR diff=3.30e-11
+[pooled] n=448  p=15   partial=-0.523998  cond=3.231e+05  lstsq-QR diff=1.27e-11
+  cross-check against the coordinator's independent recomputation:
+    [pooled] target=-0.524 observed=-0.523998 |diff|=0.0000
+    [heat] target=-0.281 observed=-0.281454 |diff|=0.0005
+    [cool] target=-0.335 observed=-0.334727 |diff|=0.0003
+
+==============================================================================
+STABILITY -- Te>=2 eV & window_ok scope, controls: quadratic, twoway_fe
+a_variant = pre (the chapter's sweep variant) throughout
+==============================================================================
+
+[  heat] control=quadratic  observed partial=-0.590221 (n=218)
+  leave-one-ne-column-out (8 runs):
+    drop j=0 (ne=1.000e+12): n=184  partial=-0.633308
+    drop j=1 (ne=2.683e+12): n=184  partial=-0.676064
+    drop j=2 (ne=7.197e+12): n=184  partial=-0.635758
+    drop j=3 (ne=1.931e+13): n=184  partial=-0.491521
+    drop j=4 (ne=5.179e+13): n=187  partial=-0.612434
+    drop j=5 (ne=1.389e+14): n=193  partial=-0.379721
+    drop j=6 (ne=3.728e+14): n=202  partial=-0.687793
+    drop j=7 (ne=1.000e+15): n=208  partial=-0.400817
+  leave-one-Te-row-out (34 runs):
+    34 rows dropped one at a time: partial range -0.603411 .. -0.582262, median -0.590331
+
+[  heat] control=twoway_fe  observed partial=-0.938964 (n=218)
+  leave-one-ne-column-out (8 runs):
+    drop j=0 (ne=1.000e+12): n=184  partial=-0.924225
+    drop j=1 (ne=2.683e+12): n=184  partial=-0.939521
+    drop j=2 (ne=7.197e+12): n=184  partial=-0.940365
+    drop j=3 (ne=1.931e+13): n=184  partial=-0.945136
+    drop j=4 (ne=5.179e+13): n=187  partial=-0.953999
+    drop j=5 (ne=1.389e+14): n=193  partial=-0.929338
+    drop j=6 (ne=3.728e+14): n=202  partial=-0.943823
+    drop j=7 (ne=1.000e+15): n=208  partial=-0.935972
+  leave-one-Te-row-out (34 runs):
+    34 rows dropped one at a time: partial range -0.943636 .. -0.934909, median -0.939039
+
+[  cool] control=quadratic  observed partial=-0.619669 (n=230)
+  leave-one-ne-column-out (8 runs):
+    drop j=0 (ne=1.000e+12): n=195  partial=-0.633037
+    drop j=1 (ne=2.683e+12): n=195  partial=-0.672872
+    drop j=2 (ne=7.197e+12): n=195  partial=-0.683402
+    drop j=3 (ne=1.931e+13): n=195  partial=-0.541687
+    drop j=4 (ne=5.179e+13): n=197  partial=-0.648768
+    drop j=5 (ne=1.389e+14): n=203  partial=-0.394979
+    drop j=6 (ne=3.728e+14): n=212  partial=-0.705261
+    drop j=7 (ne=1.000e+15): n=218  partial=-0.448826
+  leave-one-Te-row-out (35 runs):
+    35 rows dropped one at a time: partial range -0.634889 .. -0.612625, median -0.619658
+
+[  cool] control=twoway_fe  observed partial=-0.770033 (n=230)
+  leave-one-ne-column-out (8 runs):
+    drop j=0 (ne=1.000e+12): n=195  partial=-0.781032
+    drop j=1 (ne=2.683e+12): n=195  partial=-0.758840
+    drop j=2 (ne=7.197e+12): n=195  partial=-0.770768
+    drop j=3 (ne=1.931e+13): n=195  partial=-0.784026
+    drop j=4 (ne=5.179e+13): n=197  partial=-0.825417
+    drop j=5 (ne=1.389e+14): n=203  partial=-0.742061
+    drop j=6 (ne=3.728e+14): n=212  partial=-0.767560
+    drop j=7 (ne=1.000e+15): n=218  partial=-0.761821
+  leave-one-Te-row-out (35 runs):
+    35 rows dropped one at a time: partial range -0.790338 .. -0.745157, median -0.770454
+
+[pooled] control=quadratic  observed partial=-0.531359 (n=448)
+  leave-one-ne-column-out (8 runs):
+    drop j=0 (ne=1.000e+12): n=379  partial=-0.699101
+    drop j=1 (ne=2.683e+12): n=379  partial=-0.629871
+    drop j=2 (ne=7.197e+12): n=379  partial=-0.551120
+    drop j=3 (ne=1.931e+13): n=379  partial=-0.468296
+    drop j=4 (ne=5.179e+13): n=384  partial=-0.478280
+    drop j=5 (ne=1.389e+14): n=396  partial=-0.409785
+    drop j=6 (ne=3.728e+14): n=414  partial=-0.508513
+    drop j=7 (ne=1.000e+15): n=426  partial=-0.476450
+  leave-one-Te-row-out (35 runs):
+    35 rows dropped one at a time: partial range -0.535656 .. -0.527262, median -0.532244
+
+[pooled] control=twoway_fe  observed partial=-0.617409 (n=448)
+  leave-one-ne-column-out (8 runs):
+    drop j=0 (ne=1.000e+12): n=379  partial=-0.783070
+    drop j=1 (ne=2.683e+12): n=379  partial=-0.696507
+    drop j=2 (ne=7.197e+12): n=379  partial=-0.623959
+    drop j=3 (ne=1.931e+13): n=379  partial=-0.580561
+    drop j=4 (ne=5.179e+13): n=384  partial=-0.556996
+    drop j=5 (ne=1.389e+14): n=396  partial=-0.549098
+    drop j=6 (ne=3.728e+14): n=414  partial=-0.567818
+    drop j=7 (ne=1.000e+15): n=426  partial=-0.578728
+  leave-one-Te-row-out (35 runs):
+    35 rows dropped one at a time: partial range -0.619522 .. -0.609231, median -0.617847
+
+==============================================================================
+PERMUTATION TEST -- shuffle y within each Te row, 2000 draws, seed=20260911, Te>=2 eV & window_ok scope
+==============================================================================
+[  heat] control=quadratic  observed=-0.590221  null mean=+0.036006  null sd=0.068321  frac(null<=observed)=0.00000  p<0.001 HELD
+[  heat] control=twoway_fe  observed=-0.938964  null mean=-0.002010  null sd=0.079496  frac(null<=observed)=0.00000  p<0.001 HELD
+[  cool] control=quadratic  observed=-0.619669  null mean=+0.043820  null sd=0.064998  frac(null<=observed)=0.00000  p<0.001 HELD
+[  cool] control=twoway_fe  observed=-0.770033  null mean=-0.003039  null sd=0.073910  frac(null<=observed)=0.00000  p<0.001 HELD
+[pooled] control=quadratic  observed=-0.531359  null mean=+0.014961  null sd=0.056976  frac(null<=observed)=0.00000  p<0.001 HELD
+[pooled] control=twoway_fe  observed=-0.617409  null mean=+0.000370  null sd=0.056746  frac(null<=observed)=0.00000  p<0.001 HELD
+
+==============================================================================
+VERDICT ON THE THREE PREDICTIONS
+==============================================================================
+  [heat] quadratic=-0.590221  twoway_fe=-0.938964  twoway_fe <= quadratic: OK
+  [cool] quadratic=-0.619669  twoway_fe=-0.770033  twoway_fe <= quadratic: OK
+  [pooled] quadratic=-0.531359  twoway_fe=-0.617409  twoway_fe <= quadratic: OK
+  [heat] te_fe=+0.376690  positive: OK
+  [cool] te_fe=+0.587553  positive: OK
+  [pooled] te_fe=+0.474593  positive: OK
+  permutation p<0.001 in every direction/control: OK
+
+OVERALL: NOT REFUTED by the stated criterion (positive two-way FE partial anywhere, or any permutation p>0.01)

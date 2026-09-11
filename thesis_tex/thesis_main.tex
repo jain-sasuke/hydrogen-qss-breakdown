@@ -230,10 +230,13 @@ Averaged over an event of the duration extrapolated to the ITER pedestal,
 \SI{506}{\micro\second}, $24$ of the $448$ point-and-direction pairs above
 \SI{2}{\electronvolt} carry an error above \SI{10}{\percent}, the worst
 \SI{15.3}{\percent}; over the \SI{100}{\micro\second} the maps use it is $45$
-and \SI{17.5}{\percent}. The count is sensitive to the event duration and the
+and \SI{17.5}{\percent}. Counted on the exposure-integrated line ratio a
+detector records, rather than on the time-averaged error, the
+\SI{100}{\micro\second} census is $43$ of $448$. The count is sensitive to the event duration and the
 worst case is not, falling by \SI{18}{\percent} across a factor $7.5$ in it.
-Those are fixed-density figures. Stepping density up with temperature, which is
-what an edge-localised mode does, leaves the count near a tenth of the pairs
+Those are fixed-density figures. Stepping density up with temperature, as a
+two-parameter stress test rather than a model of an edge-localised mode, leaves
+the count near a tenth of the pairs
 available and raises the worst case to \SI{22.1}{\percent}, so the
 fixed-density map understates it. At
 citable detached-divertor densities nothing breaks down at either duration, and
@@ -324,8 +327,7 @@ Chapter~\ref{ch:atoms}, whose work this thesis rearranges rather than replaces.
   $\epsCRE$ & distance to collisional--radiative equilibrium & \\
   $\epsstep$ & distance between the two tabulated answers & \\
   $\epsplat$ & plateau error, the quantity this thesis reports & \\
-  $\epsestim$ & event-averaged estimate, Eq.~\eqref{eq:elm_bound}; an estimate & \\
-   & accurate to \SI{0.7}{\percent}, not a bound & \\
+  $\epsestim$ & single-slow-mode estimate of the time-averaged error over $\taudrive$, Eq.~\eqref{eq:elm_bound}; an estimate, not a bound & \\
   \addlinespace
   \multicolumn{3}{@{}l}{\emph{Abbreviations}}\\
   CR & collisional--radiative & \\

@@ -1,0 +1,37 @@
+# generated 2026-09-11 16:20 by verify_partial_fe.py
+# python interpreter: /opt/anaconda3/envs/cr/bin/python
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# source csv: validation/divertor_map/divertor_map.csv  sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# fractional step (parsed from source header): 0.05
+# permutation seed 20260911, draws 2000
+label,direction,scope,control,target,observed,abs_diff,test,in_band_0p38_0p59,n,pearson,pearson_p,spearman,spearman_p,n_draws,seed,observed_partial,null_mean,null_sd,frac_null_le_observed,n_params,r2_lnM,r2_ln_eps_plateau,a_variant,partial,design_cond,max_lstsq_qr_coef_diff,M_min,M_max
+"quadratic, pooled, window_ok_Te2",pooled,window_ok_Te2,quadratic,-0.531,-0.5313590330119571,0.00035903301195705506,reference_reproduction,,,,,,,,,,,,,,,,,,,,,
+"linear, pooled, window_ok_Te2",pooled,window_ok_Te2,linear,0.417,0.41672009280399563,0.00027990719600434755,reference_reproduction,,,,,,,,,,,,,,,,,,,,,
+"twoway_fe, pooled, window_ok_Te2",pooled,window_ok_Te2,twoway_fe,-0.617,-0.6174090614907397,0.000409061490739715,reference_reproduction,,,,,,,,,,,,,,,,,,,,,
+"twoway_fe, heat, window_ok_Te2",heat,window_ok_Te2,twoway_fe,-0.939,-0.938964494149839,3.5505850160988395e-05,reference_reproduction,,,,,,,,,,,,,,,,,,,,,
+"twoway_fe, cool, window_ok_Te2",cool,window_ok_Te2,twoway_fe,-0.77,-0.7700331648890513,3.316488905125148e-05,reference_reproduction,,,,,,,,,,,,,,,,,,,,,
+"te_fe, heat, window_ok_Te2",heat,window_ok_Te2,te_fe,,0.3766897204601055,,reference_reproduction,False,,,,,,,,,,,,,,,,,,,,
+"te_fe, cool, window_ok_Te2",cool,window_ok_Te2,te_fe,,0.5875529418687563,,reference_reproduction,True,,,,,,,,,,,,,,,,,,,,
+"te_fe, pooled, window_ok_Te2",pooled,window_ok_Te2,te_fe,,0.47459291346574434,,reference_reproduction,True,,,,,,,,,,,,,,,,,,,,
+,heat,window_ok,,,,,raw_pearson_spearman,,338.0,0.7305141124607457,1.3097243145690227e-57,0.7720303140813674,4.1347763952091154e-68,,,,,,,,,,,,,,,
+,heat,window_ok_Te2,,,,,raw_pearson_spearman,,218.0,0.57434313978071,1.571291974675919e-20,0.5957893493194121,2.4579182382530064e-22,,,,,,,,,,,,,,,
+,cool,window_ok,,,,,raw_pearson_spearman,,342.0,0.8014692957172118,6.585113747484009e-78,0.8231733502167652,1.3920471560375283e-85,,,,,,,,,,,,,,,
+,cool,window_ok_Te2,,,,,raw_pearson_spearman,,230.0,0.6867217597960369,2.007354582619639e-33,0.7044730852970836,8.357480801845421e-36,,,,,,,,,,,,,,,
+,pooled,window_ok,,,,,raw_pearson_spearman,,680.0,0.7574157205146136,1.2225165478397173e-127,0.7909053731938875,9.451868647037037e-147,,,,,,,,,,,,,,,
+,pooled,window_ok_Te2,,,,,raw_pearson_spearman,,448.0,0.6251464907413593,6.021606860016305e-50,0.644870445654775,5.009957738794866e-54,,,,,,,,,,,,,,,
+,heat,,quadratic,,,,permutation,,218.0,,,,,2000.0,20260911.0,-0.5902213893275671,0.03600598220366751,0.06832088409707161,0.0,,,,,,,,,
+,heat,,twoway_fe,,,,permutation,,218.0,,,,,2000.0,20260911.0,-0.938964494149839,-0.002009628430421781,0.07949603492891386,0.0,,,,,,,,,
+,cool,,quadratic,,,,permutation,,230.0,,,,,2000.0,20260911.0,-0.6196688274082748,0.04382049294506038,0.06499797520512351,0.0,,,,,,,,,
+,cool,,twoway_fe,,,,permutation,,230.0,,,,,2000.0,20260911.0,-0.7700331648890513,-0.0030389735739056586,0.07391006415168977,0.0,,,,,,,,,
+,pooled,,quadratic,,,,permutation,,448.0,,,,,2000.0,20260911.0,-0.5313590330119571,0.014961354673571901,0.05697599223644742,0.0,,,,,,,,,
+,pooled,,twoway_fe,,,,permutation,,448.0,,,,,2000.0,20260911.0,-0.6174090614907397,0.0003701956966842439,0.05674604994625255,0.0,,,,,,,,,
+,heat,window_ok_Te2,twoway_fe,,,,twoway_fe_r2,,218.0,,,,,,,,,,,41.0,0.9979533149014672,0.99194588888496,,,,,,
+,cool,window_ok_Te2,twoway_fe,,,,twoway_fe_r2,,230.0,,,,,,,,,,,42.0,0.9978527970975675,0.9979646284558665,,,,,,
+,pooled,window_ok_Te2,twoway_fe,,,,twoway_fe_r2,,448.0,,,,,,,,,,,42.0,0.9871148230777429,0.9828528716349433,,,,,,
+,heat,window_ok_Te2,quartic_full,,,,quartic_full,,218.0,,,,,,,,,,,15.0,,,pre,-0.28145385613050466,335216.86920962227,5.820766091346741e-11,,
+,cool,window_ok_Te2,quartic_full,,,,quartic_full,,230.0,,,,,,,,,,,15.0,,,pre,-0.3347273811015103,318865.1362285622,3.296918293926865e-11,,
+,pooled,window_ok_Te2,quartic_full,,,,quartic_full,,448.0,,,,,,,,,,,15.0,,,pre,-0.5239976768739344,323113.9682669341,1.2732925824820995e-11,,
+,pooled,window_ok,,,,,M_range,,680.0,,,,,,,,,,,,,,,,,,902.1338705577348,1729277213.3264832
+,pooled,all,,,,,M_range,,784.0,,,,,,,,,,,,,,,,,,86.76777390161087,1729277213.3264832

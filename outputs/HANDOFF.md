@@ -15,16 +15,26 @@ a Balmer-ratio divertor diagnostic costs when it assumes ionisation balance has
 settled.
 
 Repo `/Users/phi/Desktop/non_markovian_cr`, branch
-`backup/verification-session-2026-09-10`, remote
-`github.com/jain-sasuke/NonMarkovianCR` which is **PUBLIC**.
+`backup/verification-session-2026-09-10`, **pushed** and tracking
+`origin/backup/verification-session-2026-09-10`.
 
-**Current state (16 Sep 2026): 192 pages, 0 LaTeX errors, 0 undefined references,
-0 undefined citations, BibTeX clean, 0 em dashes, 66 bib entries.**
-Markers: 4 `\todo` (plus the front-matter personalise note), 1 `[UNVERIFIED]`,
-0 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT ESTABLISHED]`.
+**The remote was renamed.** `origin` still points at
+`github.com/jain-sasuke/NonMarkovianCR`; GitHub now redirects to
+`github.com/jain-sasuke/hydrogen-qss-breakdown`. Pushes work via the redirect
+but will break if anyone claims the old name. Fix with
+`git remote set-url origin https://github.com/jain-sasuke/hydrogen-qss-breakdown.git`.
+It is still **PUBLIC**: `refs/` and `data/processed/**/*.npy` are gitignored and
+must stay that way.
 
-The Round 2 session's changes were committed on the evening of 11 Sep with an
-explicit file list (see `git log`).
+**Current state (16 Sep 2026, evening): 202 pages, 0 LaTeX errors, 0 undefined
+references, 0 undefined citations, BibTeX clean, 0 em dashes in live prose,
+66 bib entries, 57 overfull boxes.**
+Markers: **1** `\todo` (the front-matter personalise note only), 0
+`[UNVERIFIED]`, 0 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT ESTABLISHED]`
+(`chapter5.tex`, the ridge-gain mechanism), 0 `[KEY REQUIRED]`.
+
+Round 2 committed 11 Sep. **Round 4 committed 16 Sep as `5a56d67` and pushed** —
+54 files, and it put `validation/` under version control for the first time.
 
 ---
 
@@ -216,6 +226,44 @@ a 30-digit mpmath exponential). `expm_multiply` hangs at ‖Lt‖ ~ 1e10; do not
 use it there. Exposure integrals are exact through the augmented matrix
 [[L, d0],[0, 0]]. The 100 samples/decade log trapezoid carries a +8e-5 bias;
 the stamped artifact uses 400.
+
+## 5c. The Round 4 session (16 September)
+
+An external ChatGPT review ("Round 4", verdict FAIL) was adjudicated rather than
+obeyed. Four read-only audit agents checked it against the tree; two of its
+fifteen findings were wrong, three were already fixed, and one broke a thesis
+claim.
+
+**The result that changed a claim.** Chapter 4's l-closure explanation of the
+Fujimoto r_1 deficit is withdrawn. Imposing the source's own statistical-l
+closure, `L_bundle = P L R`, moves r_1(3) by **0.42 %** (8.29 -> 8.26) and makes
+p=2 *worse* (10.8x -> 11.8x low); r_0(2) also degrades, 0.7392 -> 0.6459 against
+a tabulated 0.730. The projector annihilates the l-mixing operator identically
+(`max|P B R| = 8.5e-7` against a scale of 1.0e11), so removing l-mixing is the
+opposite limit, not a proxy, and the old "bracket" argument was never a bracket.
+Stamped by `src/validation/verify_fujimoto_bundle.py` ->
+`validation/fujimoto_bundle/`, six gates including a **severity gate** (bundling
+a deliberately non-statistical operator moves r_1(2) by 129x, so the null is a
+measurement not a blind instrument) and a **calibration gate** (production
+r_1(3) reproduces the value Chapter 4 already quoted, to 2.8e-5).
+Status is now an open external disagreement with three eliminated causes.
+
+**Ten numbers requoted** where a stamped artifact disagreed with the text; see
+the commit message of `5a56d67` for the list. The sharpest: Chapter 5's
+Lyman-alpha depths reproduced only under a *wrong* Doppler width `sqrt(kT/m)`,
+and were credited to a script that never emits an optical depth.
+
+**The eigenvalue filter** `eigs[eigs < -1.0]` was removed from
+`src/rates/solve_cr.py:269` and `check_mz.py:10` after confirming nothing
+imports either. It changes no number: identical at the benchmark, and at the
+cold corner the old filter returned tau_relax as tau_slow, wrong by nine orders.
+Chapters 2 and 4 now record the repair. **CLAUDE.md's known-issues entry is
+stale** — it points at `qss_analysis.py`, which was fixed on 23 Aug.
+
+**Appendices A, B, C written** from empty title pages. **Table 4.4 rebuilt**:
+18 internal + 5 external rows and a **provenance column** separating stamped
+results from working-note ones. Four checks graded *severe* rest on notes.
+**New section 6.10** gathers the five open questions.
 
 ## 6. What is left
 

@@ -1,0 +1,91 @@
+==============================================================================
+GROUND-STATE DENSITY SCALING: where the (3,4) ridge sits versus n_g
+generated 2026-09-16 02:49  by verify_ng_scaling.py
+interpreter /opt/anaconda3/envs/cr/bin/python   numpy 2.3.5
+repo root /Users/phi/Desktop/non_markovian_cr
+sha256 L_grid.npy         2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+sha256 S_grid.npy         7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+sha256 state_index.csv    23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+sha256 L_meta.csv         68e51d20d50a16e75f249ebc25813feb52c2caca163ebdc7bd2f1af7c6154265
+sha256 divertor_map.csv   5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+row i=15 Te=2.0236 eV (nearest to 2.02); post-step row k=16 Te=2.1210 eV (+4.81%)
+ne grid: 1e+12, 2.68e+12, 7.2e+12, 1.93e+13, 5.18e+13, 1.39e+14, 3.73e+14, 1e+15  (one interval = factor 2.683)
+shells: n=3 ['3S', '3P', '3D']  n=4 ['4S', '4P', '4D', '4F']  n=5 ['5S', '5P', '5D', '5F', '5G']
+E_H = 13.60569312299 eV from L_meta.csv
+==============================================================================
+
+1. THE TWO CONSTRUCTIONS
+  n_g/n_i at row 15 (CRE, n_i = 1): 0.0176, 0.0165, 0.0154, 0.0141, 0.0128, 0.0114, 0.0100, 0.0088
+  ground ratio x = n_g(post)/n_g(pre): 0.6928, 0.6933, 0.6939, 0.6942, 0.6944, 0.6942, 0.6934, 0.6924
+  I  operator L[15,j], own CRE n_g: two-channel split reproduces the CRE excited populations to 7.13e-15
+  II operator L[16,j], pre-step n_g (eps_plateau objects): two-channel split reproduces the CRE excited populations to 6.10e-15
+
+2. CROSS-LINK TO divertor_map.csv (construction II, s = 1, heat rows)
+  eps_plateau, f3, f4 at the 8 columns agree with the CSV to 1.85e-12  OK
+  (eps_plateau = |(1+(x-1)f4)/(1+(x-1)f3) - 1| with x the ground ratio,
+   which the n_g scaling leaves unchanged when both temperatures'
+   neutral densities are scaled together)
+
+3. THE SCAN: peak of |f3 - f4| across ne, per scaling of n_g
+
+  I  operator L[15,j], own CRE n_g
+   scale  |f3-f4| on the 8 columns                                       peak
+  x0.01   [0.0400 0.0366 0.0280 0.0169 0.0083 0.0037 0.0017 0.0009]      node j=0 <= 1e+12 (off grid)
+  x0.1    [0.2165 0.2300 0.2040 0.1404 0.0754 0.0355 0.0169 0.0085]      node j=1 2.68e+12  v3 2.296e+12  v5   n/a 
+  x1      [0.1820 0.2890 0.4086 0.4524 0.3778 0.2457 0.1398 0.0771]      node j=3 1.93e+13  v3 1.698e+13  v5 1.695e+13
+  x10     [0.0288 0.0572 0.1181 0.2201 0.3446 0.4385 0.4459 0.3749]      node j=6 3.73e+14  v3 2.497e+14  v5   n/a 
+  x100    [0.0030 0.0063 0.0139 0.0303 0.0622 0.1209 0.2119 0.3184]      node j=7 >= 1e+15 (off grid)
+
+  II operator L[16,j], pre-step n_g (eps_plateau objects)
+   scale  |f3-f4| on the 8 columns                                       peak
+  x0.01   [0.0530 0.0492 0.0381 0.0233 0.0115 0.0052 0.0024 0.0012]      node j=0 <= 1e+12 (off grid)
+  x0.1    [0.2400 0.2684 0.2507 0.1811 0.1010 0.0487 0.0234 0.0118]      node j=1 2.68e+12  v3 3.006e+12  v5   n/a 
+  x1      [0.1470 0.2468 0.3776 0.4580 0.4214 0.2996 0.1811 0.1028]      node j=3 1.93e+13  v3 2.322e+13  v5 2.279e+13
+  x10     [0.0208 0.0417 0.0881 0.1714 0.2879 0.4024 0.4523 0.4156]      node j=6 3.73e+14  v3 4.018e+14  v5   n/a 
+  x100    [0.0022 0.0044 0.0099 0.0217 0.0452 0.0905 0.1659 0.2659]      node j=7 >= 1e+15 (off grid)
+
+4. AGAINST THE RECORD (findings_10 4.4 / chapter6.tex 762-772)
+   scale   recorded        I: v3   ratio       II: v3   ratio
+  x0.1     2.28e+12    2.296e+12  1.0069    3.006e+12  1.3183
+  x1       1.68e+13    1.698e+13  1.0110    2.322e+13  1.3819
+  x10      2.48e+14    2.497e+14  1.0069    4.018e+14  1.6201
+  x0.01  recorded off grid; I: node j=0 <= 1e+12 (off grid); II: node j=0 <= 1e+12 (off grid)
+  x100   recorded off grid; I: node j=7 >= 1e+15 (off grid); II: node j=7 >= 1e+15 (off grid)
+  Construction I reproduces the three recorded peaks to two significant
+  figures with a residual of about one percent whose source is not
+  identified (the record has no script). Construction II does not
+  reproduce them. The words of findings_10 4.4 (Te = 2.02 eV, no step)
+  describe construction I.
+
+  proportionality d ln(ne_peak) / d ln(s), three-point vertices where
+  interior, nodes otherwise:
+    I_literal_L[i]   x0.01->x0.1: 0.361  x0.1->x1: 0.869  x1->x10: 1.167  x10->x100: 0.603
+    II_thesis_L[k]   x0.01->x0.1: 0.478  x0.1->x1: 0.888  x1->x10: 1.238  x10->x100: 0.396
+  (edge nodes cap the outer slopes; the x0.1 -> x1 -> x10 slopes are the
+   ones the chapter's 'roughly one decade per decade' refers to)
+
+5. GRIEM'S CRITERION AND THE TWO CREST NUMBERS
+  n_e = 7e18 n^-17/2 (kTe/E_H)^1/2 at n=4, Te=2 eV: 2.048e+13 cm^-3 (recorded 2.05e13; rounds to it: True); at Te=2.0236: 2.06e+13; n=3: 2.36e+14; n=5: 3.07e+12
+  unit-scaling node: I 1.931e+13, II 1.931e+13 (recorded 1.93e13)
+  unit-scaling three-point vertex: I 1.698e+13 (five-point 1.695e+13), II 2.322e+13 (five-point 2.279e+13)
+  node against Griem: 5.7%; I vertex against Griem: 17.1%; II vertex against Griem: 13.4%
+  Reconciliation: 1.93e13 is the grid node of the maximum (same in both
+  constructions); 1.68e13 is the three-point vertex of construction I.
+  They are two estimates of one crest, one at grid resolution and one
+  interpolated, and they differ by 12%. One grid interval is a factor 2.68, so the '6%' agreement
+  with Griem is inside the grid resolution and becomes 17% on the interpolated crest.
+
+6. THE (3,5) PAIR (chapter6.tex 798-801)
+  I_literal_L[i]   |f3-f5| peak: node j=2 7.2e+12  v3 6.727e+12  v5 6.389e+12;  (3,4)/(3,5) node factor 2.683, vertex factor 2.525
+  II_thesis_L[k]   |f3-f5| peak: node j=2 7.2e+12  v3 9.812e+12  v5 9.13e+12;  (3,4)/(3,5) node factor 2.683, vertex factor 2.366
+  recorded: 7.2e12 and a factor 2.68. The node factor is one grid interval, 10^(3/7) = 2.683, exactly: the record's 2.68 is
+  the grid spacing, and the vertex-to-vertex factor is what the
+  pair shift measures at sub-grid resolution.
+
+7. CHAPTER 5 CROSS-CHECK: nodes of |f_n - f_{n+1}| at s = 1
+  chapter5.tex ~1183: 3.73e14 (2,3), 1.93e13 (3,4), 2.68e12 (4,5)
+  I_literal_L[i]   (2,3) 3.73e+14  (3,4) 1.93e+13  (4,5) 2.68e+12
+  II_thesis_L[k]   (2,3) 3.73e+14  (3,4) 1.93e+13  (4,5) 2.68e+12
+
+wrote /Users/phi/Desktop/non_markovian_cr/validation/ng_scaling/ng_scaling.csv (80 rows)
+wrote /Users/phi/Desktop/non_markovian_cr/validation/ng_scaling/ng_scaling_peaks.csv (20 rows)

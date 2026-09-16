@@ -1,0 +1,117 @@
+# script       /Users/phi/Desktop/non_markovian_cr/src/validation/verify_closed_nuclei.py
+# generated    2026-09-11 21:28:05
+# interpreter  /opt/anaconda3/envs/cr/bin/python  python 3.11.14  numpy 2.3.5  scipy 1.16.3
+# L_grid       /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/L_grid.npy  sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid       /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/S_grid.npy  sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index  /Users/phi/Desktop/non_markovian_cr/data/processed/collisions/K_exc_full/state_index.csv  sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# divertor_map /Users/phi/Desktop/non_markovian_cr/validation/divertor_map/divertor_map.csv
+# frac 0.05  win_lo 30.0  win_hi 30.0
+==============================================================================
+CLOSED-NUCLEI SELF-CONSISTENT n_e ACROSS ONE Te STEP
+script       /Users/phi/Desktop/non_markovian_cr/src/validation/verify_closed_nuclei.py
+generated    2026-09-11 21:28:05
+interpreter  /opt/anaconda3/envs/cr/bin/python  python 3.11.14  numpy 2.3.5  scipy 1.16.3
+L_grid       /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/L_grid.npy  sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid       /Users/phi/Desktop/non_markovian_cr/data/processed/cr_matrix/S_grid.npy  sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state_index  /Users/phi/Desktop/non_markovian_cr/data/processed/collisions/K_exc_full/state_index.csv  sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+divertor_map /Users/phi/Desktop/non_markovian_cr/validation/divertor_map/divertor_map.csv
+frac 0.05  win_lo 30.0  win_hi 30.0
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+ground index 0 (1S); n=3 ['3S', '3P', '3D']; n=4 ['4S', '4P', '4D', '4F']
+divertor_map.csv L_grid sha256 matches the current L_grid
+==============================================================================
+n_e-DEPENDENCE OF THE OPERATOR (all Te rows, all 8 columns)
+  two-point fit cols 0,7; three-point fit cols 0,3,7
+  L = A + ne K       max rel residual on 8 cols   3.95e-16
+  S = a ne + b ne^2  max rel residual on 8 cols   1.50e-13
+  3-pt quadratic through L: |quad coeff|/|lin,const| 4.63e-16   residual 4.57e-16
+  3-pt quadratic through S: |const|/|lin,quad|       3.20e-19   residual 7.47e-14
+  ASSERTED: all residuals < 1e-12  (L linear, S quadratic in n_e)
+
+evaluated 784 (point, direction) pairs: 392 heat, 392 cool; window_ok 680; warm (window_ok & Te>=2) 448
+achieved fractional step -0.0459 .. +0.0481
+max root residual (nuclei balance)      2.68e-13
+max two-channel superposition error     3.18e-14
+
+CROSS-CHECK against divertor_map.csv (fixed-n_e quantities)
+  tau_QSS(k, ne_j)     max rel diff 1.96e-04  NOT REPRODUCED   (eig of the two-point form L(k, ne_j))
+  tau_QSS(k, ne_j)     max rel diff 0.00e+00  REPRODUCED   (eig of the grid matrix L[k,j] itself)
+  the two-point form reproduces L[k,j] to 3.9e-16; the eigenvalue nevertheless moves by up to 2.0e-04
+  because the least-negative eigenvalue of L is ill-conditioned where M is huge: worst at cool [1,0] (Te_post=1.000, M=1.73e+09).
+  eig vs Schur effective ground-loss rate (well-conditioned solve; differs from lambda_0 by O(1/M) analytically), restricted to the 75 pairs with M > 1e7: max rel diff 9.67e-05  (all pairs: 3.47e-03, dominated by the O(1/M) term at warm points)
+  -> divertor_map.csv tau_QSS carries a ~2e-04 relative numerical uncertainty in the cold corner; no ratio reported here depends on it at that level
+  eps_plateau(k, ne_j) max rel diff 6.48e-12  REPRODUCED
+  window_ok flags disagree on 0 pairs
+
+P3  CHAPTER 5.10.1 FIXED-n_e NUMBERS, RECOMPUTED (heat, k = i+1)
+  inferred dne/ne at [0,4]                     13.95        recorded 13.9     (0.35% apart)  REPRODUCED
+  inferred max at Te=1 eV row                  19.97        recorded 20       (0.169% apart)  REPRODUCED
+  inferred max for Te>=2                       0.005403     recorded 0.0054   (0.0577% apart)  REPRODUCED
+  Te of that max                               2.024        recorded 2.02     (0.178% apart)  REPRODUCED
+  Te above which inferred < 1e-3               2.56         recorded 2.56     (0.0177% apart)  REPRODUCED
+  pairs with inferred > 10%                    68           recorded 68       (0% apart)  REPRODUCED
+  pairs with inferred > 100%                   36           recorded 36       (0% apart)  REPRODUCED
+  pairs in census                              392          recorded 392      (0% apart)  REPRODUCED
+  10% contour, inferred, min Te                1.412        recorded 1.41     (0.114% apart)  REPRODUCED
+  10% contour, inferred, max Te                1.501        recorded 1.5      (0.0511% apart)  REPRODUCED
+  ground-only vs whole-manifold inference: max rel diff 1.36e+00; contour shift 0.00193%
+  P3 overall: REPRODUCED
+
+SCRATCH VALUES (cr-physicist check2.py), heat direction
+  pair       inferred   scratch    self-cons   scratch    bookkeep dln_ng_fix  dln_ng_sc       tau_slow fix->sc
+  [15,0]   5.403e-03    0.0054 ok  5.342e-03   0.00534 ok 5.338e-03    -0.3671    -0.3620  4.612e-02 -> 4.585e-02
+  [15,3]   4.318e-03   0.00432 ok  4.280e-03   0.00428 ok 4.276e-03    -0.3649    -0.3611  1.494e-03 -> 1.486e-03
+  [23,5]   2.080e-04  0.000208 ok  2.087e-04  0.000209 ok 2.087e-04    -0.2695    -0.2694  1.849e-05 -> 1.849e-05
+  [ 0,4]   1.395e+01      13.9 ok  1.049e+00      1.05 ok 9.074e-01    -0.6783    -0.0377  2.333e-01 -> 8.586e-02
+
+P1  WARM SET (window_ok & Te_pre >= 2 eV), both directions
+  max |ne+/ne - 1| self-consistent   7.982e-03  at cool [15,0] Te=2.024 ne=1e+12
+  max |u_new - u_old| inferred        8.176e-03  at cool [15,0] Te=2.024 ne=1e+12
+  max |rel change eps_plateau|, endpoint read at ne+   3.869e-03  at cool [15,0] Te=2.024 ne=1e+12
+  max |rel change eps_plateau|, table read at ne+      2.414e-02  at cool [15,0] Te=2.024 ne=1e+12
+  max |rel change tau_slow|                            9.055e-03  at cool [15,0] Te=2.024 ne=1e+12
+  max |eps_plateau| itself on the warm set             0.1807
+  P1 (ne <= 5.3e-3 and eps change < 0.2%): REFUTED
+
+P2  Te = 1 eV ROW, heating: fixed-n_e inference vs closed nuclei
+   j        ne    u_old u_new_fix  inferred  bookkeep self-cons       ne+  ln x_fix dln ng_sc tau_slow fix  tau_slow sc  eps_fix  eps_end  eps_ne+
+   0     1e+12   40.439    20.473    19.966     0.930     1.027  2.03e+12   -0.6807   -0.0257   3.6017e+01   1.5398e+01   0.0830   0.0618   0.0056
+   1  2.68e+12   37.539    19.021    18.517     0.925     1.038  5.47e+12   -0.6798   -0.0280   1.0925e+01   4.5068e+00   0.1503   0.1321   0.0100
+   2   7.2e+12   34.457    17.477    16.980     0.919     1.044  1.47e+13   -0.6788   -0.0308   3.1845e+00   1.2681e+00   0.2629   0.2794   0.0147
+   3  1.93e+13   31.358    15.914    15.444     0.913     1.050  3.96e+13   -0.6783   -0.0341   8.8678e-01   3.3743e-01   0.3709   0.4331   0.0167
+   4  5.18e+13   28.321    14.373    13.949     0.907     1.049  1.06e+14   -0.6783   -0.0377   2.3325e-01   8.5858e-02   0.3869   0.4538   0.0145
+   5  1.39e+14   25.474    12.920    12.554     0.902     1.054  2.85e+14   -0.6789   -0.0423   5.8652e-02   2.0695e-02   0.3033   0.3430   0.0106
+   6  3.73e+14   22.747    11.520    11.226     0.897     1.042  7.61e+14   -0.6803   -0.0469   1.3885e-02   4.6033e-03   0.2011   0.2187   0.0075
+   7     1e+15   20.474    10.349    10.125     0.892     0.976  1.98e+15   -0.6823   -0.0489   2.9838e-03   1.0025e-03   0.1314   0.1383   0.0052
+  self-consistent ne+/ne - 1 at 1 eV: 0.976 .. 1.054; inferred: 10.1 .. 20
+  P2 (factor ~2, not 15): HOLDS
+
+DISTRIBUTION over all pairs (self-consistent |ne+/ne - 1| vs inferred)
+  heat (392)  self-cons: median 1.738e-04 p90 3.853e-01 max 1.054  >10%:  67  >100%:   7   |  inferred: median 1.737e-04 max 19.966  >10%:  68  >100%:  36
+  cool (392)  self-cons: median 1.738e-04 p90 2.830e-01 max 0.513  >10%:  64  >100%:   0   |  inferred: median 1.737e-04 max 19.966  >10%:  68  >100%:  36
+  all (784)   self-cons: median 1.738e-04 p90 3.330e-01 max 1.054  >10%: 131  >100%:   7   |  inferred: median 1.737e-04 max 19.966  >10%: 136  >100%:  72
+  pairs whose ne+ leaves the tabulated density range: 98 (Te_pre up to 10.000 eV)
+  all pairs: max |rel change eps_plateau| endpoint 0.255, table-at-ne+ 0.978; max |rel change tau_slow| 2.066
+
+10 PERCENT CONTOUR IN Te PER DENSITY COLUMN (heating, log-log interpolation)
+   j         ne  inferred (chapter)  self-consistent
+   0      1e+12              1.5008           1.4781
+   1   2.68e+12              1.4915           1.4695
+   2    7.2e+12              1.4808           1.4595
+   3   1.93e+13              1.4686           1.4482
+   4   5.18e+13              1.4552           1.4355
+   5   1.39e+14              1.4413           1.4223
+   6   3.73e+14              1.4260           1.4080
+   7      1e+15              1.4116           1.3937
+  inferred      : 1.412 .. 1.501 eV (chapter: 1.41 .. 1.5)
+  self-consist. : 1.394 .. 1.478 eV
+  self-consistent heating correction first < 1e-3 above Te = 2.560 eV (inferred: 2.560 eV)
+
+VERDICT  P1 REFUTED   P2 HOLDS   P3 REPRODUCED

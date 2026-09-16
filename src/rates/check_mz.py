@@ -7,7 +7,7 @@ ne = 1e14
 
 L = build_L(ti, ne, rates)
 eigs = np.sort(np.linalg.eigvals(L).real)[::-1]
-neg = eigs[eigs < -1.0]
+neg = eigs[eigs < 0.0]
 
 print("Top 5 negative eigenvalues of full L(43x43):")
 for k in range(5):

@@ -1,0 +1,70 @@
+# generated 2026-09-11 21:24 by verify_lyman_optical_depth.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65  (data/processed/collisions/K_exc_full/state_index.csv)
+# census rows come from validation/divertor_map/divertor_map.csv, self-consistent Theta from validation/lyman_trapping/lyman_trapping.txt; both checked against the live hashes
+item,quantity,value,recorded,source,status
+P1,"sigma_0(1 eV, H) [cm^2]",5.473738378e-14,5.47e-14,chapter 6 ~146; escape_factor.validate Test 4,REPRODUCED (3 digits)
+P2,"kappa_0 H [0,4] per cm",80.29430015,80.3,chapter6.tex table,REPRODUCED (3 digits)
+P2,"kappa_0 H [3,4] per cm",10.64025742,10.6,chapter6.tex table,REPRODUCED (3 digits)
+P2,"kappa_0 H [10,4] per cm",0.2243978792,0.224,chapter6.tex table,REPRODUCED (3 digits)
+P2,"kappa_0 H [15,4] per cm",0.02546756842,0.0255,chapter6.tex table,REPRODUCED (3 digits)
+P2,"kappa_0 H [23,4] per cm",0.001631697715,0.00163,chapter6.tex table,REPRODUCED (3 digits)
+P3,"kappa_0 WRONG-width [0,4] per cm",113.5532882,114.0,chapter5.tex sec:optical_depth,REPRODUCED (3 digits)
+P3,"kappa_0 WRONG-width [15,4] per cm",0.03601658066,0.036,chapter5.tex sec:optical_depth,REPRODUCED (2 digits)
+P3,"kappa_0 WRONG-width [23,4] per cm",0.002307569039,0.0023,chapter5.tex sec:optical_depth,REPRODUCED (2 digits)
+P3,"kappa_0 deuterium [0,4] per cm",113.5251106,113.6,task expectation,REPRODUCED (3 digits)
+P3,"kappa_0 deuterium [0,4] vs ch5 114",113.5251106,114.0,chapter5.tex,REPRODUCED (3 digits)
+P4,"kappa_0 H, T_n=3 eV [0,4] per cm",46.3579358,46.4,task expectation,REPRODUCED (3 digits)
+2,"kappa_0 H [23,5] per cm",0.00390053594,,,
+2,"kappa_0 WRONG-width [23,5] per cm",0.005516190826,,,
+P5,"tau_half=1 boundary D=5 H, min Te [eV]",1.125212782,1.125,make_story_figures.py; task,REPRODUCED (4 digits)
+P5,"tau_half=1 boundary D=5 H, max Te [eV]",1.984037972,1.984,make_story_figures.py; task,REPRODUCED (4 digits)
+P5,"max |dTe/Te| of D=5 boundary, WRONG vs H",0.04174792472,,computed,
+P6,window_ok rows,680,680,chapter 5 table,REPRODUCED (3 digits)
+P6,breakdown pairs (lo_ELM_crash > 0.10),202,202,chapter 5 ~1549,REPRODUCED (3 digits)
+P6,of which pre-step Te < 2 eV,157,157,chapter 5 ~1550,REPRODUCED (3 digits)
+P6,"census (a) half-slab, hydrogen n(tau>1)",85,85,task,REPRODUCED
+P6,"census (a) half-slab, hydrogen n(tau>100)",15,15,task,REPRODUCED
+P6,"census (b) full-path, hydrogen n(tau>1)",100,100,task,REPRODUCED
+P6,"census (b) full-path, hydrogen n(tau>100)",23,23,task,REPRODUCED
+P6,"census (c) full-path, sqrt(kT/m) WRONG n(tau>1)",105,105,task,REPRODUCED
+P6,"census (c) full-path, sqrt(kT/m) WRONG n(tau>100)",26,26,task,REPRODUCED
+4,"census (d) half-slab, sqrt(kT/m) WRONG n(tau>1)",93,,computed,
+4,"census (d) half-slab, sqrt(kT/m) WRONG n(tau>100)",19,,computed,
+4,"census (e) half-slab, deuterium n(tau>1)",93,,computed,
+4,"census (e) half-slab, deuterium n(tau>100)",19,,computed,
+4,"census (f) full-path, deuterium n(tau>1)",105,,computed,
+4,"census (f) full-path, deuterium n(tau>100)",26,,computed,
+4,"census (g) half-slab, hydrogen, T_n=3 eV n(tau>1)",78,,computed,
+4,"census (g) half-slab, hydrogen, T_n=3 eV n(tau>100)",12,,computed,
+P6,variants reproducing thesis 105/26,2,1,chapter 5/6,"(c) full-path, sqrt(kT/m) WRONG; (f) full-path, deuterium"
+P7,"tau_half [0,4] D=5 H",200.7357504,200.7,task,REPRODUCED (4 digits)
+P7,"tau_half [0,4] D=5 H vs ch6 '201'",200.7357504,201.0,chapter 6 ~166,REPRODUCED (3 digits)
+P7,"one-shot Theta_P [0,4] D=5",0.001178112744,0.001178,task,REPRODUCED (4 digits)
+P7,one-shot Theta_P vs ch6 '1.2e-3',0.001178112744,0.0012,chapter 6 ~167,REPRODUCED (2 digits)
+P7,"self-consistent Theta_Lya [0,4] D=5 (log)",0.014401,0.0144,task; lyman_trapping.txt,REPRODUCED (3 digits)
+P7,"one-shot orders of A reduction [0,4] D=5",2.928813146,,computed,
+P7,"self-consistent orders of A reduction [0,4] D=5",1.84160735,,lyman_trapping.txt,
+P7,self-consistent grid minimum Theta_Lya (D=20),0.00077968,0.00078,task; lyman_trapping.txt,REPRODUCED (2 digits)
+5,"one-shot Theta_P [0,7] D=5 (tau_half 2801.7)",6.954974301e-05,7e-05,task '~',REPRODUCED (2 digits)
+5,"one-shot Theta_P [0,7] D=10 (tau_half 5603.4)",3.340335488e-05,3.7e-05,task '~',NOT REPRODUCED (0 digits)
+P8,"self-consistent Theta_Lya [23,5] D=1",0.99862,0.9999,chapter 6 ~286-287,NOT REPRODUCED (2 digits)
+P8,"self-consistent Theta_Lya [23,5] D=20",0.97304,0.973,chapter 6 ~286-287,REPRODUCED (3 digits)
+P8,"Theta_Lya [23,5] D=1 vs artifact 0.99862",0.99862,0.99862,task; lyman_trapping.txt,REPRODUCED (5 digits)
+3,tau=1 boundary D=1 half-slab H per column [eV],1.0068 1.0710 1.1424 1.2227 1.3132 1.4160 1.5320 1.6667,,computed,
+3,tau=1 boundary D=1 half-slab D per column [eV],1.0303 1.0972 1.1724 1.2566 1.3521 1.4605 1.5838 1.7271,,computed,
+3,tau=1 boundary D=1 full-path H per column [eV],1.0547 1.1251 1.2036 1.2926 1.3930 1.5081 1.6389 1.7914,,computed,
+3,tau=1 boundary D=1 full-path D per column [eV],1.0804 1.1538 1.2368 1.3301 1.4366 1.5585 1.6973 1.8600,,computed,
+3,tau=1 boundary D=1 half-slab WRONG per column [eV],1.0303 1.0972 1.1724 1.2566 1.3522 1.4605 1.5838 1.7271,,computed,
+3,tau=1 boundary D=5 half-slab H per column [eV],1.1252 1.2046 1.2948 1.3968 1.5137 1.6483 1.8025 1.9840,,computed,
+3,tau=1 boundary D=5 half-slab D per column [eV],1.1539 1.2378 1.3324 1.4406 1.5645 1.7076 1.8721 2.0668,,computed,
+3,tau=1 boundary D=5 full-path H per column [eV],1.1845 1.2724 1.3725 1.4870 1.6184 1.7708 1.9468 2.1560,,computed,
+3,tau=1 boundary D=5 full-path D per column [eV],1.2163 1.3090 1.4147 1.5358 1.6755 1.8383 2.0269 2.2522,,computed,
+3,tau=1 boundary D=5 half-slab WRONG per column [eV],1.1539 1.2378 1.3324 1.4406 1.5646 1.7076 1.8722 2.0669,,computed,
+3,tau=1 boundary D=20 half-slab H per column [eV],1.2499 1.3476 1.4591 1.5880 1.7371 1.9112 2.1135 2.3564,,computed,
+3,tau=1 boundary D=20 half-slab D per column [eV],1.2852 1.3880 1.5066 1.6435 1.8026 1.9891 2.2068 2.4692,,computed,
+3,tau=1 boundary D=20 full-path H per column [eV],1.3222 1.4314 1.5570 1.7026 1.8726 2.0730 2.3077 2.5921,,computed,
+3,tau=1 boundary D=20 full-path D per column [eV],1.3616 1.4769 1.6101 1.7653 1.9476 2.1632 2.4169 2.7259,,computed,
+3,tau=1 boundary D=20 half-slab WRONG per column [eV],1.2852 1.3881 1.5067 1.6435 1.8026 1.9892 2.2069 2.4693,,computed,

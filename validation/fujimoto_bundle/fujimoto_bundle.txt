@@ -1,0 +1,75 @@
+# generated 2026-09-16 10:28 by verify_fujimoto_bundle.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# K_lmix sha256 d92a969dcd6017beef676f831316cac37b79c8d510450826cf80a9a7abcab399
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# Te 10.000000 eV (Fujimoto 11.03 eV, -9.3%)
+# L_bundle = P L R, P[k,i]=1 for i in shell k, R[i,k]=g_i/g_k
+==============================================================================
+FUJIMOTO STATISTICAL-l BUNDLE -- does the l closure explain the r_1 deficit?
+==============================================================================
+L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+Te = 10.000000 eV (grid index 49); Fujimoto's table is 11.03 eV, -9.3% offset
+
+gate 1  max|P R - I| = 0.000e+00
+
+==============================================================================
+lg n_e = 18  ->  1.000e+12 cm^-3  (grid j=0)
+  l-mixing block: column conservation 3.815e-06, matrix scale 1.003e+11
+  max|P B R| = 8.4937e-07   (structural zero: bundling cannot express l-mixing)
+  gate 2  resolved column sums vs -ne K_ion : 1.751e-12
+  gate 3  bundled  column sums vs weighted  : 2.508e-13
+  gate 4  solve residuals: prod 1.03e-14  nolmix 4.65e-15  bundle 4.23e-15
+  gate 5  production r_1(3) = 6.8968e-06 vs Chapter 4's 6.897e-06, rel 2.846e-05
+  gate 6  SEVERITY: bundling a non-statistical operator moves r_1(2) by 129.3x (ratio 0.0077)
+
+    p    Fujimoto   PRODUCTION      NO-LMIX       BUNDLE  bund/prod  prod/Fuji  bund/Fuji
+    2   1.790e-04   1.6592e-05   1.9587e-03   1.5152e-05     0.9132      0.093      0.085
+    3   5.720e-05   6.8968e-06   2.3097e-05   6.9255e-06     1.0042      0.121      0.121
+    4   1.660e-05   3.7779e-06   5.4948e-06   3.7978e-06     1.0053      0.228      0.229
+    5   5.080e-06   1.6242e-06   2.0107e-06   1.6298e-06     1.0034      0.320      0.321
+    7   7.550e-07   3.5771e-07   4.4184e-07   3.5846e-07     1.0021      0.474      0.475
+   10   9.610e-08   9.2256e-08   1.0623e-07   9.2527e-08     1.0029      0.960      0.963
+   15   9.340e-09   4.5633e-08   5.2909e-08   4.5760e-08     1.0028      4.886      4.899
+
+  r_0: p=2 Fujimoto 0.730  production 0.7392  bundle 0.6459
+  ground-fed (n_nl/n_n)/(g_nl/g_n), production:
+    n=2: 1.264 0.912
+    n=3: 1.049 1.017 0.980
+    n=4: 1.025 1.017 1.002 0.987
+    n=8: 1.016 1.015 1.010 1.004 1.001 0.998 0.996 0.995
+
+==============================================================================
+lg n_e = 21  ->  1.000e+15 cm^-3  (grid j=7)
+  l-mixing block: column conservation 3.906e-03, matrix scale 1.003e+14
+  max|P B R| = 5.1880e-04   (structural zero: bundling cannot express l-mixing)
+  gate 2  resolved column sums vs -ne K_ion : 1.101e-12
+  gate 3  bundled  column sums vs weighted  : 1.662e-13
+  gate 4  solve residuals: prod 3.88e-14  nolmix 5.36e-15  bundle 4.44e-15
+
+    p    Fujimoto   PRODUCTION      NO-LMIX       BUNDLE  bund/prod  prod/Fuji  bund/Fuji
+    2   7.700e-03   5.6306e-03   5.8006e-03   5.6305e-03     1.0000      0.731      0.731
+    3   8.020e-04   4.4629e-04   4.5690e-04   4.4628e-04     1.0000      0.556      0.556
+    4   1.400e-04   7.2070e-05   7.3737e-05   7.2065e-05     0.9999      0.515      0.515
+    5   3.630e-05   1.8476e-05   1.8841e-05   1.8475e-05     0.9999      0.509      0.509
+    7   4.800e-06   2.9639e-06   3.0031e-06   2.9639e-06     1.0000      0.617      0.617
+   10   5.800e-07   6.9628e-07   7.0393e-07   6.9627e-07     1.0000      1.200      1.200
+   15   5.500e-08   3.3911e-07   3.4294e-07   3.3911e-07     1.0000      6.166      6.166
+
+  r_0: p=2 Fujimoto 0.981  production 0.8730  bundle 0.8729
+  ground-fed (n_nl/n_n)/(g_nl/g_n), production:
+    n=2: 1.000 1.000
+    n=3: 1.000 1.000 1.000
+    n=4: 1.001 1.001 1.000 1.000
+    n=8: 0.999 0.999 0.999 0.999 0.999 1.000 1.000 1.001
+
+==============================================================================
+VERDICT
+==============================================================================
+  Imposing Fujimoto's own statistical-l closure moves r_1(3) by +0.42%.
+  The deficit at p=3 goes from a factor 8.29 to a factor 8.26.
+  At p=2 the agreement WORSENS: 10.8x low becomes 11.8x low, and r_0(2) moves from 0.7392 to 0.6459 against a tabulated 0.730.
+  The refuting observation (bundle/prod of order 8) did not appear.
+  CONCLUSION: the l closure does not explain the r_1 deficit.

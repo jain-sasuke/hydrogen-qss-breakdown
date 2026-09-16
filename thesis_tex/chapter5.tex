@@ -741,7 +741,7 @@ inversion about \SI{3.5}{\percent} in the line ratio.
 \centering
 \caption{The reservoir gain $G$ at three grid points, for steps of one, two and
 four grid intervals. $G$ moves by $5$ to \SI{6}{\percent} across a fourfold
-change in step size --- the secant closing on its tangent, quantified below ---
+change in step size, the secant closing on its tangent, quantified below,
 while $\epsplat$ itself changes by a factor $4.5$ to $5.2$ at the
 same three points over the same range (Table~\ref{tab:step_dependence}). Values from
 \texttt{pivot\_decision.md}~\S4; see the provenance note below, which is not
@@ -760,9 +760,7 @@ optional reading.}
 
 \textbf{Provenance, and what is not established.} The nine values in
 Table~\ref{tab:gain} are recorded in \texttt{outputs/pivot\_decision.md}~\S4 as
-measured on 10 September 2026 against the canonical matrix. No script in the
-repository computes them and no artifact under \texttt{validation/} stores
-them. The three $k=1$ entries can be checked against artifacts that do exist,
+measured on 10 September 2026 against the canonical matrix. The three $k=1$ entries can be checked against artifacts that do exist,
 and all three pass. One grid interval is
 $\Delta\ln\Te = \ln(10)/49 = 0.0469915$, so
 $|G|\,\Delta\ln\Te$ predicts $|\Delta\ln u| = 0.2695$, $0.3649$ and $0.6783$ at
@@ -1032,9 +1030,204 @@ Where the locus exists the diagnostic is locally blind: a temperature excursion
 of any size moves the tabulated ratio by almost nothing, so the inversion cannot
 see it at all. \textbf{That is a different failure from the one this thesis
 maps, and a worse one for a practitioner, because it has no transient in it and
-persists in steady state.} It is reported here and not pursued. It also bears on
+persists in steady state.} Its consequence for the inversion is measured in
+Section~\ref{sec:inversion_measured}: $44$ of the $218$ heating pairs in the
+defended scope reach their inferred temperature only by crossing it. It also bears on
 the non-uniqueness of the inversion: a stationary point in $\Robs(\Te)$ is a
 fold, and on either side of it two temperatures return the same ratio.
+
+\subsection{The inversion, measured}
+\label{sec:inversion_measured}
+
+Equation~\eqref{eq:inversion_jacobian} is a linearisation, and
+Chapter~\ref{ch:theory} promised the exact finite-step form wherever a number
+is quoted. The exact form is a root-find. At known $\nel$, the temperature the
+table returns for the plateau observable $\Rpe$ is every $\Te^{*}$ on that
+density column at which $\Rcre(\Te^{*},\nel) = \Rpe$, and the
+inferred-temperature error is $\ln\Te^{*} - \ln\Te^{+}$, with $\Te^{+}$ the
+true post-step temperature. That root-find was run at every one of the $784$
+point-and-direction pairs of Section~\ref{sec:eps_definitions}, with the same
+step rule, the same plateau-window rule and the same three linear solves
+(\texttt{verify\_inversion\_error.py}). It reproduces the stamped
+\texttt{plateau\_gridmap.csv} with a worst difference of zero, and on the two
+monotone density columns the sign of every inferred error equals the sign of
+the observable error times the sign of $\mathrm{d}\ln\Rcre/\mathrm{d}\ln\Te$,
+$180$ of $180$, a check an inverted interpolation would fail at every pair.
+
+\textbf{In more than a third of the defended scope the table has no solution
+inside its own domain.} Of the $448$ pairs at $\Te\ge\SI{2}{\electronvolt}$,
+$166$ carry a plateau ratio below the smallest value the table holds anywhere
+on that density column, so no $\Te^{*}$ exists within the tabulated $1$ to
+\SI{10}{\electronvolt}, and every one of them is a cooling step. That count
+belongs to the table's edges as much as to the plasma, and it is quoted with
+the domain attached wherever it appears. A further $44$, all heating, place
+$\Te^{*}$ on the far side of a stationary point of
+Section~\ref{sec:inversion_jacobian} from $\Te^{+}$, so the inversion reached
+its answer only by crossing a fold. That leaves $238$ pairs with a unique,
+fold-free answer, and those carry the numbers below.
+
+\textbf{Over those $238$ pairs a one-interval temperature step of
+\SI{4.81}{\percent} is read back as a temperature error with median
+\SI{47.7}{\percent}} ($|\Delta\ln\Te^{*}| = 0.390$), a 90th percentile of
+\SI{96}{\percent} and a worst case of \SI{144}{\percent}. As an amplification
+of the true excursion the median is $8.3$, the 90th percentile $14.3$ and the
+largest $19.0$. Including the $44$ fold-crossed pairs at their nearest root
+raises the median to \SI{56}{\percent} and the amplification to $9.5$; the
+fold-free figures are the ones quoted, because a nearest root on the far side
+of a fold is a choice and not a measurement. Heating and cooling differ, at
+medians of \SI{55}{\percent} over $174$ heating pairs and \SI{38}{\percent}
+over $64$ cooling pairs.
+
+\textbf{What is a theorem.} At fixed $\nel$ the table is the composition
+$\Rcre(\Te) = R\big(\Te, u^{\mathrm{CRE}}(\Te)\big)$, so its slope splits by
+the chain rule into the manifold's own response and the response through the
+reservoir,
+\begin{equation}
+  \Sigma \;\equiv\; \frac{\mathrm{d}\ln\Rcre}{\mathrm{d}\ln\Te}
+  \;=\; P + SG,
+  \qquad
+  P \equiv \Big(\frac{\partial\ln R}{\partial\ln\Te}\Big)_{\!u},
+  \quad
+  S \equiv \Big(\frac{\partial\ln R}{\partial\ln u}\Big)_{\!\Te}
+    = \ffrac{3}-\ffrac{4},
+  \quad
+  G \equiv \frac{\mathrm{d}\ln u^{\mathrm{CRE}}}{\mathrm{d}\ln\Te},
+  \label{eq:slope_two_channels}
+\end{equation}
+exactly and locally. Here $S$ carries the natural sign of a derivative and is
+positive for the $(3,4)$ pair; the interval average $\overline{S}$ of
+Eq.~\eqref{eq:Sbar_def} is the same quantity with the opposite sign, by its
+limits of integration, and the two must not be confused. On the plateau the
+reservoir is frozen, so to first order the observable moves by
+$\delta\ln\Rpe \simeq P\,\delta\ln\Te$, while the table, which knows only
+equilibrium reservoirs, can account for any movement only at its own slope
+$\Sigma$. Inverting the plateau ratio against the table therefore returns
+$\delta\ln\Te^{*} \simeq (P/\Sigma)\,\delta\ln\Te$, and the error in the
+inferred temperature is
+\begin{equation}
+  \delta\ln\Te^{*} - \delta\ln\Te \;\simeq\; -\frac{SG}{\Sigma}\,\delta\ln\Te
+  \;=\; -\frac{SG}{P+SG}\,\delta\ln\Te ,
+  \label{eq:inversion_local}
+\end{equation}
+which is Eq.~\eqref{eq:inversion_jacobian} with the reservoir displacement
+written as $\delta\ln u = G\,\delta\ln\Te$. The amplification of the true
+excursion is $|SG/\Sigma|$, and it diverges where $\Sigma = P + SG \to 0$.
+The stationary point of Section~\ref{sec:inversion_jacobian} is therefore not
+a second, unrelated failure: it is the limit in which the two channels cancel
+exactly.
+
+\textbf{The finite step carries the same decomposition, exactly.} Over one
+grid interval $D = \Delta\ln\Te$ the three quantities are secants, and all
+three come out of the three solves that give $\epsplat$:
+\begin{equation}
+  \overline{P} = \frac{\ln\big[\Rpe/\Rcre(\Te^{-})\big]}{D},
+  \qquad
+  \overline{SG} = \frac{\ln\big[\Rcre(\Te^{+})/\Rpe\big]}{D},
+  \qquad
+  \overline{\Sigma} = \frac{\ln\big[\Rcre(\Te^{+})/\Rcre(\Te^{-})\big]}{D}
+  = \overline{P} + \overline{SG},
+  \label{eq:slope_secants}
+\end{equation}
+where the identity is a telescoping sum of logarithms. The reservoir secant is not a product of two separately averaged
+factors: by Eq.~\eqref{eq:exact_decomposition} and Eq.~\eqref{eq:gain_def} it
+equals $-\overline{S}\,G$ exactly, the sign being the one just noted, and
+\texttt{verify\_operator\_slope\_decomposition.py} confirms both identities to
+$5\times10^{-15}$ at all $784$ pairs.
+
+\textbf{What is measured.} Two signs hold at every one of the $448$ pairs in
+scope: $\overline{P} > 0$, the $(3,4)$ ratio rising with the temperature of the
+manifold at a frozen reservoir, and $\overline{SG} < 0$, which is $S > 0$
+times $G < 0$, heating emptying the reservoir. Neither is derived here; both
+are properties of this operator over the defended range. The net slope is
+negative, $\overline{\Sigma} < 0$, at $359$ of the $448$, and the local slope
+at the post-step node at $360$. The two channels are nearly equal and
+opposite: medians $|\overline{P}| = 1.07$ and $|\overline{SG}| = 1.12$, while the
+per-pair cancellation ratio $|\overline{\Sigma}|/|\overline{P}|$ has median
+\SI{6.8}{\percent} across the $448$ pairs. The median of $|\overline{\Sigma}|$
+is separately $0.091$; dividing the printed medians gives \SI{8.5}{\percent},
+a coarser summary of the same cancellation, and the two should not be
+conflated.
+
+\textbf{Direction: a local result, and its two boundary exceptions.} With
+$P > 0$ and $SG < 0$, Eq.~\eqref{eq:inversion_local} places the inferred
+temperature on the side the plasma came from wherever $\Sigma < 0$: colder
+than $\Te^{+}$ on heating, hotter on cooling. The exact root-find agrees with
+no exception, $172$ of $172$ heating pairs and $64$ of $64$ cooling pairs with
+$\Sigma(\Te^{+}) < 0$. Where $\Sigma(\Te^{+}) > 0$, above the fold, the same
+equation predicts a hotter branch on heating. There are $46$ such heating
+pairs in scope. At $44$ the tabulated ratio does not climb by the size of the
+offset before the table ends at \SI{10}{\electronvolt}, and the nearest root
+is a colder one reached across the fold, which is the fold-crossed class
+above; at the other $2$ a colder root lies inside the step interval itself. A
+local slope predicts the local direction and not the existence of a root over
+a finite interval, so that last statement is empirical and belongs to this
+table and this step.
+
+\textbf{Amplification: the ratio of the reservoir term to the residual
+slope.} A one-interval transient displaces the ratio by $|\overline{SG}|$
+while the table reads the displacement back at $|\overline{\Sigma}|$, so the
+finite-step prediction for the amplification is
+$|\overline{SG}|/|\overline{\Sigma}|$, large wherever the two channels nearly
+cancel. Against the exact root-find over the $238$ fold-free pairs it has a
+rank correlation of $0.93$ and overstates, the median of the pair-by-pair
+ratio being $1.26$; the local form $|\overline{SG}|/|\Sigma(\Te^{+})|$
+overstates by \SI{18}{\percent}. Per column the exact median amplification
+runs $8.2$, $10.2$, $12.7$, $12.7$, $10.7$ and $6.8$ across the six columns
+from $10^{12}$ to \SI{1.39e14}{\per\cubic\centi\metre} that carry a stationary
+point, then $3.4$ and $1.7$ on the two monotone columns above; over the $56$
+pairs at $\nel\ge\SI{3.73e14}{\per\cubic\centi\metre}$ the median
+inferred-temperature error is \SI{16}{\percent} and the largest
+\SI{19}{\percent}. The columns that carry the fold are the columns that carry
+the amplification because both are the same cancellation, one at its limit.
+The off-table cooling cases are the same physics again: at those $166$ pairs
+$|\overline{P}|$ exceeds $|\overline{\Sigma}|$ by a median factor $19.7$,
+against $4.8$ where a cooling root exists, and a ratio falling that much
+faster than the equilibrium curve leaves the curve's range.
+
+\textbf{Why $P > 0$: a decomposition, not a proof.} At fixed $u$ the shell
+populations are affine, so with $A_m = \partial\ln a_m/\partial\ln\Te$ and
+$C_m = \partial\ln c_m/\partial\ln\Te$,
+\begin{equation}
+  P \;=\; \underbrace{\ffrac{3}A_3 - \ffrac{4}A_4}_{P_a}
+        \;+\; \underbrace{(1-\ffrac{3})\,C_3 - (1-\ffrac{4})\,C_4}_{P_c},
+  \label{eq:P_channels}
+\end{equation}
+exactly. Over the step, with $A_m$ and $C_m$ as secants, the ground-fed
+coefficients rise with temperature and the recombination-fed coefficients fall
+at every pair: $A_m > 0$ and $C_m < 0$ at $448$ of $448$. Given those signs,
+$P_a > 0$ if and only if $(\ffrac{3}/\ffrac{4})\,/\,(A_4/A_3) > 1$, and it
+is, at $448$ of $448$, median $2.9$ and never below $1.2$: the ground-fed
+channel is the larger share of $n=3$ by more than $A_4$ exceeds $A_3$. And
+$P_c > 0$ if and only if
+$[(1-\ffrac{4})/(1-\ffrac{3})]\,/\,(|C_3|/|C_4|) > 1$, which holds at $426$
+of $448$, median $2.0$, and fails at $22$, all at
+$\nel = \SI{e15}{\per\cubic\centi\metre}$ between $2.0$ and
+\SI{3.4}{\electronvolt}, where both shells are almost entirely
+recombination-fed ($\ffrac{3} = 0.08$, $\ffrac{4} = 0.01$), the share factor
+is close to unity, and the sign is decided by $|C_3|$ exceeding $|C_4|$. The
+sum $P_a + P_c$ is positive at all $448$ and reproduces $\overline{P}$ to a
+median \SI{3.7}{\percent}, a 90th percentile of \SI{13}{\percent} and a worst
+case of \SI{35}{\percent}; the residual is the second-order part of the exact
+finite-step form, the logarithm of a mixture, which the script verifies to
+$10^{-14}$. So $P > 0$ is an empirical property of the present operator over
+the defended range, associated with the unequal supply fractions of the two
+shells, and not a general consequence of $\ffrac{3} > \ffrac{4}$ alone;
+twenty-two pairs already refuse the stronger channel-by-channel claim. Every
+number in this paragraph is stamped in
+\texttt{validation/operator\_slope\_decomposition/}.
+
+Three cautions travel with these numbers. They are single-parameter: $\nel$ is
+taken as known, and the two-parameter Jacobian of Eq.~\eqref{eq:inversion_2x2}
+is still not measured. They are plateau values and not the time averages of
+Section~\ref{sec:persistence}: they say what the table returns while the
+reservoir is displaced, not what an exposure of a given length records. And
+they inherit the frozen-reservoir conditional of Chapter~\ref{ch:limits}
+exactly as $\epsplat$ does, because they are $\epsplat$ pushed through the
+table. One definitional choice was tested and does not matter: interpolating
+the table linearly in $(\Te, R)$ instead of $(\ln\Te, \ln R)$ moves the
+fold-free median by \SI{0.01}{\percent}. Every figure in this subsection is
+stamped in \texttt{validation/inversion\_error/} against the same
+\texttt{L\_grid} and \texttt{S\_grid} hashes as the rest of the chapter.
 
 %-----------------------------------------------------------------------------
 \section{Where the error is largest, and why}
@@ -1251,10 +1444,10 @@ been separated here that this alternative ran together.
 \texttt{verify\_bundling\_psm20.py} has now been run
 (Section~\ref{sec:bundling_check}) and it answers a different question: whether
 the bundled shells would be statistical in $\ell$ if the mixing were present.
-They would, by three orders of magnitude. \emph{[UNVERIFIED: the sensitivity of
-the crest \emph{position} to $n_{\max}$ is still untested. What would close it
-is rebuilding $\Lmat$ at $n_{\max} = 12$ and $20$ and relocating the crest,
-which needs the rate pipeline rerun rather than a validation script.]}
+They would, by three orders of magnitude. The sensitivity of the crest \emph{position} to
+$n_{\max}$ is untested, and cannot be tested with the atomic data this model
+has: it is carried as the second of the five open questions in
+Section~\ref{sec:scope_open}.
 
 \emph{The population set.} Two of the scripts used here apply different filters:
 \texttt{verify\_plateau\_gridmap.py} excludes the $54$ points with no plateau
@@ -2081,13 +2274,18 @@ is exactly the displacement that makes the fixed-density assumption
 inconsistent.} Over the $392$ one-step operators, $68$ of them, \SI{17}{\percent},
 require $|\Delta\nel/\nel| > \SI{10}{\percent}$, and $36$, \SI{9}{\percent},
 require more than \SI{100}{\percent}. The model evaluates the post-step operator
-at the old $\nel$ at every one of them. Above \SI{2}{\electronvolt} the required
-correction never exceeds $5.4\times10^{-3}$, its largest value there sitting at
-\SI{2.02}{\electronvolt}, and it first falls below $10^{-3}$ above
-\SI{2.56}{\electronvolt} (\texttt{make\_story\_figures.py}). Five parts in a
-thousand is small beside the tens of percent this chapter reports, so the
-question does not arise above the boundary; it is not, however, the one part in
-a thousand an earlier draft claimed.
+at the old $\nel$ at every one of them. Above \SI{2}{\electronvolt} the
+heating-direction, fixed-$\nel$ inference never exceeds $5.4\times10^{-3}$, its
+largest value there sitting at \SI{2.02}{\electronvolt}, and it first falls
+below $10^{-3}$ above \SI{2.56}{\electronvolt}
+(\texttt{make\_story\_figures.py}). Taken over both step directions and solved
+self-consistently, the correction reaches $7.98\times10^{-3}$ at a cooling step
+at $\Te = \SI{2.024}{\electronvolt}$, $\nel = \SI{1e12}{\per\cubic\centi\metre}$,
+and moves $\epsplat$ there by \SI{2.4}{\percent}
+(\texttt{verify\_closed\_nuclei.py}). Eight parts in a thousand is still small
+beside the tens of percent this chapter reports, but the stronger claim that the
+correction is negligible in both directions is refuted, and it is not the one
+part in a thousand an earlier draft claimed.
 
 This closes a gap between two objections that this thesis has until now
 presented as separate and separately survivable. If the plasma parcel is closed,
@@ -2147,12 +2345,14 @@ every photon emitted escapes. For the Balmer lines that is a good assumption
 over the whole grid. For the Lyman series, which terminates on the ground state
 where essentially all the atoms are, it fails badly at the cold edge. Computing
 the Doppler line-centre optical depth from the model's own CRE solution gives a
-Lyman-$\alpha$ depth of $114$ per centimetre at $\Te = \SI{1.00}{\electronvolt}$,
-$\nel = \SI{5.18e13}{\per\cubic\centi\metre}$, falling to $0.036$ at
-\SI{2.02}{\electronvolt} and $0.0023$ at \SI{2.95}{\electronvolt}
-(\texttt{verify\_lyman\_trapping.py}). At the cold edge the Einstein
-coefficients in the matrix are wrong, as effective decay rates, by four to five
-orders of magnitude.
+Lyman-$\alpha$ depth of $80.3$ per centimetre at $\Te = \SI{1.00}{\electronvolt}$,
+$\nel = \SI{5.18e13}{\per\cubic\centi\metre}$, falling to $0.0255$ at
+\SI{2.02}{\electronvolt} and $0.00163$ at \SI{2.95}{\electronvolt}
+(\texttt{verify\_lyman\_optical\_depth.py}; Doppler width $\sqrt{2kT_n/m}$ with
+$T_n = \Te$). At the cold edge the Einstein coefficients in the matrix are
+wrong, as effective decay rates, by about $1.8$ orders of magnitude
+self-consistently at that point, reaching about three orders at the worst point
+on the grid.
 
 Rebuilding the matrix with self-consistent Lyman escape factors for all 14
 Lyman channels, over an assumed homogeneous slab of thickness $D$, and
@@ -2249,6 +2449,20 @@ tabulating and the percentage is not. In the small-step limit the diagnostic
 error per unit fractional temperature excursion is $|\overline{S}G|$: about
 $1.3$ at the benchmark point and about $3.5$ at the worst point in the defended
 range.
+
+Pushed through the table, that observable error becomes an inferred-temperature
+error an order of magnitude larger than the transient that caused it. Inverted
+at known density, the plateau ratio has no solution within the table's $1$ to
+\SI{10}{\electronvolt} domain for $166$ of the $448$ defended pairs, every one
+a cooling step, and over the $238$ pairs with a unique fold-free answer a
+\SI{4.81}{\percent} temperature step is read back with a median error of
+\SI{48}{\percent}, on the side the plasma came from at every pair. The
+amplification is the ratio of the reservoir term to the residual slope of the
+table, and it is large because the manifold's own response and the reservoir's
+nearly cancel, to \SI{6.8}{\percent} of either; the stationary point of
+Section~\ref{sec:inversion_jacobian} is that cancellation completed. At the
+two highest densities the median error is \SI{16}{\percent}. The
+two-parameter inversion is not measured.
 
 The sensitivity factor obeys a bound, $|\overline{S}| \le \tanh(|\Delta|/4) < 1$,
 that follows from the structure of the linear system and not from any rate

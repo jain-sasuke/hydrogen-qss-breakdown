@@ -1,0 +1,86 @@
+==============================================================================
+ION CLOSURE: tau_slow with the ion as a 44th state, open versus closed
+generated 2026-09-16 02:49  by verify_ion_closure.py
+interpreter /opt/anaconda3/envs/cr/bin/python   numpy 2.3.5
+repo root /Users/phi/Desktop/non_markovian_cr
+sha256 L_grid.npy         2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+sha256 S_grid.npy         7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+sha256 state_index.csv    23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+sha256 divertor_map.csv   5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+grid 50 Te x 8 ne x 43 states; ground index 0 (1S)
+==============================================================================
+
+1. PRECONDITIONS
+  column sums of L: max -6.5058e-03, min -1.1408e+11 s^-1 (all must be <= 0: the unbalanced loss is ionisation)
+  S >= 0 everywhere: True; sum(S)/ne at [0,0] 2.766e-11, at [0,7] 2.731e-08 cm^3 s^-1  (grows with ne: radiative + three-body; S is the rate per ion, units s^-1)
+  CRE with n_i = 1 at [0,0]: n(1S) = 40.4394 cm^-3 (neutral/ion ratio at 1 eV, 1e12; S is per unit ion density)
+
+2. BUILD L_c AT ALL POINTS, CHECK CONSERVATION, DIAGONALISE
+  400 points built. worst relative column-sum residual of L_c: 4.01e-16  (tolerance 1e-12)
+  worst |zero eigenvalue| / |lambda_0 closed|: 4.12e-06
+  open   lambda_0: eig(L) vs secular equation, worst rel. diff 1.05e-04 at [0,0]
+  closed lambda_0: eig(L_c) and eig(L - S 1^T) vs secular, worst rel. diff 5.94e-06
+  secular iteration: worst final relative change over all 800 solves 1.94e-14 (its round-off floor; the CSV carries it per point)
+  (tau_open_s / tau_closed_s below and in the CSV are the secular values)
+  closed tau_slow <= open tau_slow at every point: True (asserted)
+
+3. THE TABLE (chapter6.tex 933-941, chapter4.tex tab:closure)
+     point      Te         ne     tau open   tau closed  factor     recorded (open, closed, factor)  verdict
+  [ 0,0]  1.0000  1.000e+12  6.72404e+01  1.62262e+00   41.44  (67.23, 1.6226, 41.4)        !! rounds to record: open False closed True factor True
+         eig(L) tau 6.723334e+01   secular 6.724038e+01   mp40 open 6.724038e+01  mp40 closed 1.622620e+00  (secular/mp40 - 1: open +1.6e-14, closed +1.3e-15)
+  [ 1,4]  1.0481  5.179e+13  2.33244e-01  1.51729e-02   15.37  (0.23324, 0.015173, 15.4)        OK rounds to record: open True closed True factor True
+         eig(L) tau 2.332390e-01   secular 2.332436e-01   mp40 open 2.332436e-01  mp40 closed 1.517287e-02  (secular/mp40 - 1: open -1.9e-14, closed +5.6e-15)
+  [15,3]  2.0236  1.931e+13  2.02730e-03  1.99907e-03    1.01  (0.002027, 0.001999, 1.01)        OK rounds to record: open True closed True factor True
+         eig(L) tau 2.027304e-03   secular 2.027304e-03   mp40 open 2.027304e-03  mp40 closed 1.999073e-03  (secular/mp40 - 1: open +3.1e-15, closed -6.3e-15)
+  [23,5]  2.9471  1.389e+14  2.27280e-05  2.27080e-05    1.00  (2.2728e-05, 2.2708e-05, 1)        OK rounds to record: open True closed True factor True
+         eig(L) tau 2.272799e-05   secular 2.272799e-05   mp40 open 2.272799e-05  mp40 closed 2.270799e-05  (secular/mp40 - 1: open +1.5e-14, closed +2.4e-15)
+  L[0,4] open tau_slow: secular 0.421031 s, eig(L) 0.421012 s  (recorded 0.421012; secular rounds to record: False, eig rounds to record: True); closed 0.014359 s, factor 29.32
+         mp40 open 0.421031 s
+  derivation_07 cross-check at [0,0]: |lambda_0 open| / (K_ion(1S) ne) = 2.2860  (recorded 2.286); K_ion(1S) ne = -colsum(L)[1S] = 6.5058e-03 s^-1
+
+  GRID-WIDE closure factor tau_open/tau_closed:
+    min 1.0000  median 1.0007  max 41.44 (recorded 1.00 / 1.00 / 41.4)
+    maximum at [0,0]; 129 of 400 points have factor > 1.01, 47 have factor > 2, 19 > 10
+    where factor > 2, open tau_slow is at least 6.524e-04 s = 7 tau_d
+    where open tau_slow <  1 tau_d (182 points), the largest factor is 1.1113 at [9,7]
+    where open tau_slow <  3 tau_d (222 points), the largest factor is 1.5111 at [6,7]
+    where open tau_slow < 10 tau_d (263 points), the largest factor is 2.5779 at [4,7]
+
+4. THE ELM CENSUS WITH CLOSED tau_slow (divertor_map.csv, 100 us)
+  CSV header: fractional step 0.05, threshold 0.1; L_grid/S_grid sha match the files on disk
+  784 (point, direction) rows
+  window_ok rows: 680  (recorded 680)
+  breakdown count, lower bound > 10% at 100 us: open 202 -> closed 200  (recorded 202 -> 200)
+  worst case: open 0.38682 -> closed 0.38563  (recorded 0.38682 -> 0.38563); ratio 1.00308, one part in 324
+  same census with the secular open tau_slow instead of the CSV's numpy-eig value: 202, worst 0.38682
+  Te_pre >= 2 eV: open 45 -> closed 45  (recorded 45 -> 45); 448 window_ok rows there
+  window_ok is the open operator's (30 tau_relax < tau_slow/30), as in
+  verify_divertor_map.py; the closure leaves tau_relax alone and
+  shortens tau_slow, so re-deciding it with closed tau_slow could only
+  remove rows. Re-deciding it here:
+    window_ok rows with closed tau_slow: 680 (open: 680)
+  rows that leave the census under closure: 2
+    heat pre [1,7] post L[2,7]  Te_pre 1.0481 ne 1.000e+15  eps_plateau 0.11862  tau 1.7543e-03 -> 2.7494e-04 (x6.38)  lower bound 0.11530 -> 0.09944
+    heat pre [2,7] post L[3,7]  Te_pre 1.0985 ne 1.000e+15  eps_plateau 0.10722  tau 1.0573e-03 -> 2.7277e-04 (x3.88)  lower bound 0.10231 -> 0.08976
+  worst row: heat pre [0,4] post L[1,4], eps_plateau 0.386903, tau 2.33239e-01 -> 1.51729e-02
+
+5. THE '2300' FALSIFIER (chapter6.tex 905-912, 958-961)
+  tau_slow(open) / tau_d at the worst-case operator L[1,4]: 0.23324 s / 1e-04 s = 2332  (chapter: ~2300); measured closure factor there 15.37
+  if tau_slow were brought down to tau_d there, the lower bound would be eps_plateau*(1-1/e) = 0.2446, still above the 10% threshold
+  factor needed to push the worst point itself below threshold: tau_slow -> 2.645e-05 s, factor 8818 (3.8 x the 2300)
+  smallest uniform factor on tau_slow that changes the census count by one: 1.006  (row cool pre [22,3], lower bound 0.10008, measured factor there 1.002)
+  uniform factor that would empty the census: 279221
+  rows whose MEASURED closure factor reaches the factor they would need: 2  (these are the rows that left the census)
+  point-by-point, needed/measured factor at the 202 open breakdown rows: median needed 160.9, median measured 1.245
+  census if EVERY tau_slow were divided by 2300: 50 of 680, worst 0.3267; Te >= 2 eV: 0
+  census if EVERY tau_slow were divided by 1.006: 202 of 680, worst 0.3868; Te >= 2 eV: 45
+  census if EVERY tau_slow were divided by 8818: 30 of 680, worst 0.2368; Te >= 2 eV: 0
+  Reading: the chapter's 2300 is tau_slow/tau_d at L[1,4]. Dividing
+  tau_slow by 2300 there lands the slow clock on the ELM duration but
+  does not by itself take the worst point below the 10% threshold;
+  that needs 8818. The census count first moves at a factor
+  1.01, and the measured factors reach that only at 2 rows.
+
+wrote /Users/phi/Desktop/non_markovian_cr/validation/ion_closure/ion_closure.csv (400 rows)
+wrote /Users/phi/Desktop/non_markovian_cr/validation/ion_closure/ion_closure_census.csv (784 rows)
+wrote /Users/phi/Desktop/non_markovian_cr/validation/ion_closure/ion_closure_summary.csv (50 rows)

@@ -18,8 +18,8 @@ Repo `/Users/phi/Desktop/non_markovian_cr`, branch
 `backup/verification-session-2026-09-10`, remote
 `github.com/jain-sasuke/NonMarkovianCR` which is **PUBLIC**.
 
-**Current state: 190 pages, 0 LaTeX errors, 0 undefined references, 0 undefined
-citations, BibTeX clean, 0 em dashes, 66 bib entries.**
+**Current state (16 Sep 2026): 192 pages, 0 LaTeX errors, 0 undefined references,
+0 undefined citations, BibTeX clean, 0 em dashes, 66 bib entries.**
 Markers: 4 `\todo` (plus the front-matter personalise note), 1 `[UNVERIFIED]`,
 0 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT ESTABLISHED]`.
 
@@ -94,8 +94,12 @@ Key values, all reproducible:
 | line/shell eps ratio | 0.9482 to 0.9999, worst at heat [48,0] |
 | \|Sbar\| range | 0.0649 to 0.4822 |
 | \|G\| range | 2.64 to 14.52, negative everywhere |
+| inversion at known n_e, plateau, Te >= 2 eV (K8, 16 Sep) | 448 = 166 off-table + 44 fold-crossed + 238 clean; clean median Te error 47.7 %, amplification 8.3; slope cancellation \|Sigma\|/\|P\| 0.068 |
+| slope decomposition (K9, 16 Sep) | Sigma = P + SG (local, exact); Sigbar = Pbar + SGbar (secant, exact, 5e-15); Pbar > 0 and SGbar < 0 at 448/448, both MEASURED, not derived; P_a > 0 448/448, P_c > 0 426/448 |
 
-**Sign convention (settled, do not re-litigate).** `Dln u = ln(u+/u-)`,
+**Sign convention (settled, do not re-litigate).** *Trap found 16 Sep:* the K8/K9 column `SbarG` is the reservoir secant with the *natural* sign of S = f₃ − f₄ > 0, i.e. −S̄Ḡ in this convention; §5.5.2 uses natural-sign S for the local theorem and says so. Do not write "S̄G < 0" in thesis notation; S̄Ḡ > 0.
+
+**Original note:** `Dln u = ln(u+/u-)`,
 post-step over pre-step. Heating: `Dln u < 0`, `Sbar < 0`, `G < 0`, product
 positive. Cooling: `Dln u > 0`, `Sbar < 0`, `G < 0`, product negative. `eps` is
 positive in both because the equation takes a modulus. Verified on all 2288 rows.
@@ -233,7 +237,10 @@ Read `outputs/REMAINING.md` for the full register. The substantive items:
    `#c0392b`, dE 4.2 under deuteranopia).
 6. ~~Round 2's remaining items.~~ **Closed 11 Sep**; see §5b. The bridge test
    turned out to cost 9 s, not hours.
-7. Four `\todo`s are author-supplied citations or named-as-impossible work
+7. **The two-parameter inversion is not measured** (16 Sep). K8 measured the
+   single-parameter one at known n_e; the 2x2 Jacobian of `eq:inversion_2x2`
+   needs a second line ratio.
+8. Four `\todo`s are author-supplied citations or named-as-impossible work
    (SOLPS-coupled calculation, molecular matrix, the separatrix quantity, the
    n=15 ground-fed provenance).
 

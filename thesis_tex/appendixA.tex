@@ -1,0 +1,135 @@
+\chapter{State Ordering}
+\label{app:states}
+
+Every index that appears in this thesis -- $\Lmat_{ij}$, a shell sum, a figure
+axis labelled by state, the benchmark $\Lmat[23,5]$ -- refers to a position in
+one fixed 43-element ordering. This appendix records that ordering so any index
+in the text can be resolved without reading the code, states the one assumption
+the ordering embeds, and names the file that produces it.
+
+\section{What the state space is, and where it is cut}
+
+The model tracks 43 states of neutral hydrogen: the 36 orbital-angular-momentum
+resolved levels $n\ell$ for $n \le 8$, and seven $\ell$-bundled shells for
+$9 \le n \le 15$. The proton is not a forty-fourth state; it is held as an
+external reservoir of density $\nion$, which is the open-system boundary
+condition discussed in Section~\ref{sec:two_references}.
+
+The cut at $n=8$ is placed where it is because the observable is built from
+$n=3$ and $n=4$. Both are fully $\ell$-resolved and both sit well below the
+resolved/bundled boundary: $n=4$ five shells below it and eleven below the
+truncation at $n_{\max}=15$, $n=3$ six and twelve.
+Resolving $\ell$ costs states quadratically -- $n^2$ sublevels per shell -- and
+buys nothing above the shells the diagnostic reads, provided the bundled shells
+are $\ell$-statistical, which Section~\ref{sec:bundling_check} tests rather than
+assumes.
+
+Degeneracies are hydrogenic throughout: $g_{n\ell} = 2(2\ell+1)$ for a resolved
+sublevel and $g_n = 2n^2$ for a shell, the factor $2$ being electron spin.
+Summing the resolved sublevels of each shell returns $2n^2$ exactly for every
+$n$ from 1 to 8, which is as far as the resolved levels go; each bundled state
+carries $2n^2$ by construction. The degeneracies of all 43 states sum to
+$\sum_{n=1}^{15} 2n^2 = 2480$. Ionisation potentials are hydrogenic,
+$I_p = \chi_{\mathrm{H}}/p^2$ with $\chi_{\mathrm{H}} = \SI{13.6058}{\electronvolt}$;
+the product $I_p\,p^2$ runs from $13.6057995$ to $13.6058006$ across the table,
+constant to seven significant figures.
+
+\begin{table}[htbp]
+  \centering
+  \caption[The 43-state ordering]{The state ordering used throughout this
+    thesis, as written by \texttt{assemble\_K\_exc.py} to
+    \texttt{data/processed/collisions/K\_exc\_full/state\_index.csv}. Indices
+    are zero-based, matching the arrays. States 0--35 are $\ell$-resolved;
+    states 36--42 are $\ell$-bundled shells, for which $\ell$ is recorded as
+    $-1$ and $g = 2n^2$.}
+  \label{tab:state_ordering}
+  \small
+  \begin{tabular}{rlrrr@{\hskip 2em}rlrrr}
+    \toprule
+    idx & label & $n$ & $\ell$ & $g$ & idx & label & $n$ & $\ell$ & $g$ \\
+    \midrule
+     0 & 1S & 1 & 0 &  2 & 22 & 7P & 7 & 1 &  6 \\
+     1 & 2S & 2 & 0 &  2 & 23 & 7D & 7 & 2 & 10 \\
+     2 & 2P & 2 & 1 &  6 & 24 & 7F & 7 & 3 & 14 \\
+     3 & 3S & 3 & 0 &  2 & 25 & 7G & 7 & 4 & 18 \\
+     4 & 3P & 3 & 1 &  6 & 26 & 7H & 7 & 5 & 22 \\
+     5 & 3D & 3 & 2 & 10 & 27 & 7I & 7 & 6 & 26 \\
+     6 & 4S & 4 & 0 &  2 & 28 & 8S & 8 & 0 &  2 \\
+     7 & 4P & 4 & 1 &  6 & 29 & 8P & 8 & 1 &  6 \\
+     8 & 4D & 4 & 2 & 10 & 30 & 8D & 8 & 2 & 10 \\
+     9 & 4F & 4 & 3 & 14 & 31 & 8F & 8 & 3 & 14 \\
+    10 & 5S & 5 & 0 &  2 & 32 & 8G & 8 & 4 & 18 \\
+    11 & 5P & 5 & 1 &  6 & 33 & 8H & 8 & 5 & 22 \\
+    12 & 5D & 5 & 2 & 10 & 34 & 8I & 8 & 6 & 26 \\
+    13 & 5F & 5 & 3 & 14 & 35 & 8J & 8 & 7 & 30 \\
+    14 & 5G & 5 & 4 & 18 & \multicolumn{5}{c}{} \\
+    15 & 6S & 6 & 0 &  2 & \multicolumn{5}{l}{\emph{bundled shells}} \\
+    16 & 6P & 6 & 1 &  6 & 36 & n9  &  9 & -- & 162 \\
+    17 & 6D & 6 & 2 & 10 & 37 & n10 & 10 & -- & 200 \\
+    18 & 6F & 6 & 3 & 14 & 38 & n11 & 11 & -- & 242 \\
+    19 & 6G & 6 & 4 & 18 & 39 & n12 & 12 & -- & 288 \\
+    20 & 6H & 6 & 5 & 22 & 40 & n13 & 13 & -- & 338 \\
+    21 & 7S & 7 & 0 &  2 & 41 & n14 & 14 & -- & 392 \\
+       &    &   &   &    & 42 & n15 & 15 & -- & 450 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{The assumption the ordering embeds}
+
+Bundling shells $9 \le n \le 15$ into single states asserts that the population
+inside each of those shells is distributed statistically over $\ell$,
+$n_{n\ell} = (g_{n\ell}/g_n)\,n_n$. Nothing in the ordering enforces this; it is
+a modelling choice made when the rate coefficients were summed, and it is the
+reason no $\ell$-mixing rate appears among states 36--42. Whether it is
+justified is a physical question, tested in Section~\ref{sec:bundling_check} by
+comparing the intra-shell $\ell$-mixing rate against the processes that remove
+population from the shell.
+
+This assumption has a consequence that matters for Chapter~\ref{ch:validation}:
+the bundled sub-block of $\Lmat$ is, by construction, the statistical-$\ell$
+limit. A bundled operator cannot represent a non-statistical $\ell$
+distribution, so any comparison against a published tabulation that is itself
+bundled in $\ell$ is comparing two models that agree on this point by
+construction rather than by calculation.
+
+\section{Two hydrogen ionisation energies}
+
+Two slightly different values of the hydrogen ionisation energy appear in the
+rate pipeline, and the difference is physical rather than an inconsistency:
+
+\begin{itemize}
+  \item $\SI{13.605693122990}{\electronvolt}$, the Rydberg energy $R_\infty hc$,
+    is the threshold used by the collision datasets (CCC, TICS) and therefore
+    sets every collisional threshold energy.
+  \item $\SI{13.598434599702}{\electronvolt}$, the measured ionisation energy of
+    the hydrogen atom including reduced-mass and relativistic corrections, sets
+    the radiative transition energies.
+\end{itemize}
+
+\noindent Both are recorded in \texttt{L\_meta.csv} as
+\texttt{IH\_collision\_eV} and \texttt{IH\_radiative\_eV}
+(\texttt{assemble\_cr\_matrix.py}, lines 76--77). They differ by
+\SI{0.053}{\percent}. The hazard this creates is that a detailed-balance
+relation evaluated with one energy on one side and the other on the other side
+will fail at the few-tenths-of-a-percent level for reasons that look like a data
+error and are not. Both balance relations in this model use a single ladder
+throughout and close far below that level.
+
+\section{Provenance}
+
+The ordering is generated by \texttt{src/rates/assemble\_K\_exc.py} (line 361)
+and written to
+\texttt{data/processed/collisions/K\_exc\_full/state\_index.csv}. It is read by
+\texttt{src/validation/cr\_context.py}, which every verification script in this
+thesis imports rather than redeclaring the ordering locally; the number of
+states is taken as \texttt{L\_grid.shape[-1]} and the ground index as
+$\arg\min_p n_p$, so neither is hard-coded anywhere in the analysis.
+
+As a structural check on the assembled operator, the columns of $\Lmat$ sum to
+$-\nel K_{\mathrm{ion}}(p)$ -- ionisation is the only process that removes
+population from the 43-state manifold -- and this holds to a maximum relative
+deviation of $1.8\times10^{-12}$ across the 43 states at
+$\Te = \SI{10}{\electronvolt}$, $\nel = \SI{1e12}{\per\cubic\centi\metre}$, and
+$1.1\times10^{-12}$ at $\nel = \SI{1e15}{\per\cubic\centi\metre}$
+(\texttt{verify\_fujimoto\_bundle.py}, gate 2).

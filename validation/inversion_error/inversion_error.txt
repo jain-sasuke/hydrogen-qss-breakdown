@@ -1,0 +1,110 @@
+==============================================================================
+INVERSION ERROR -- what the table returns for Te during the plateau
+generated 2026-09-16 00:46  by verify_inversion_error.py
+repo root      /Users/phi/Desktop/non_markovian_cr
+L_grid sha256  2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256  7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state idx sha  23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+reproduction   validation/plateau_gridmap/plateau_gridmap.csv
+grid           50 Te x 8 ne; one Te interval = dlnTe 0.0469915
+==============================================================================
+
+stationary points of the tabulated ratio, per density column:
+   j=0 ne=1e+12  7.91 eV
+   j=1 ne=2.68e+12  5.96 eV
+   j=2 ne=7.2e+12  5.43 eV
+   j=3 ne=1.93e+13  5.96 eV
+   j=4 ne=5.18e+13  7.2 eV
+   j=5 ne=1.39e+14  9.1 eV
+   j=6 ne=3.73e+14  none
+   j=7 ne=1e+15  none
+monotone columns: [6, 7]
+
+check 1  reproduction of plateau_gridmap.csv: worst |diff| 0.000e+00
+check 2  sign identity on monotone columns: 0 bad of 180
+
+all window_ok pairs: 680 pairs
+   off-table 228  (above table max 48, below min 180)
+   solvable  452   multi-root 9   fold-crossed 44   clean 408
+   |err ln Te| solvable, nearest root         median 0.3846  90th 0.8736  max 1.4189   -> median Te error 46.9 %
+   amplification solvable, nearest root       median 8.18  90th 18.59  max 30.2
+   (Te,R)-linear variant, same pairs      median 0.3846  ratio to primary 0.9999
+   linearised Jacobian prediction         median 0.3966  ratio to exact 1.031
+   |err ln Te| clean (fold-crossed removed)   median 0.3443  90th 0.6875  max 1.3222   -> median Te error 41.1 %
+   amplification clean (fold-crossed removed) median 7.33  90th 14.63  max 28.1
+   (Te,R)-linear variant, same pairs      median 0.3446  ratio to primary 1.0009
+   linearised Jacobian prediction         median 0.3613  ratio to exact 1.049
+   sign of err: 162 inferred hotter than true, 290 colder
+
+window_ok, Te_old >= 2 eV (the defended scope): 448 pairs
+   off-table 166  (above table max 0, below min 166)
+   solvable  282   multi-root 2   fold-crossed 44   clean 238
+   |err ln Te| solvable, nearest root         median 0.4449  90th 0.9006  max 1.4189   -> median Te error 56.0 %
+   amplification solvable, nearest root       median 9.47  90th 19.17  max 30.2
+   (Te,R)-linear variant, same pairs      median 0.4449  ratio to primary 0.9999
+   linearised Jacobian prediction         median 0.5813  ratio to exact 1.306
+   |err ln Te| clean (fold-crossed removed)   median 0.3899  90th 0.6740  max 0.8921   -> median Te error 47.7 %
+   amplification clean (fold-crossed removed) median 8.30  90th 14.34  max 19.0
+   (Te,R)-linear variant, same pairs      median 0.3899  ratio to primary 1.0000
+   linearised Jacobian prediction         median 0.4590  ratio to exact 1.177
+   sign of err: 64 inferred hotter than true, 218 colder
+
+   heating only, Te_old >= 2 eV: 218 pairs
+   off-table 0  (above table max 0, below min 0)
+   solvable  218   multi-root 0   fold-crossed 44   clean 174
+   |err ln Te| solvable, nearest root         median 0.5109  90th 0.9834  max 1.4189   -> median Te error 66.7 %
+   amplification solvable, nearest root       median 10.87  90th 20.93  max 30.2
+   (Te,R)-linear variant, same pairs      median 0.5108  ratio to primary 0.9997
+   linearised Jacobian prediction         median 0.7630  ratio to exact 1.493
+   |err ln Te| clean (fold-crossed removed)   median 0.4393  90th 0.6743  max 0.8301   -> median Te error 55.2 %
+   amplification clean (fold-crossed removed) median 9.35  90th 14.35  max 17.7
+   (Te,R)-linear variant, same pairs      median 0.4390  ratio to primary 0.9993
+   linearised Jacobian prediction         median 0.6535  ratio to exact 1.488
+   sign of err: 0 inferred hotter than true, 218 colder
+
+   cooling only, Te_old >= 2 eV: 230 pairs
+   off-table 166  (above table max 0, below min 166)
+   solvable  64   multi-root 2   fold-crossed 0   clean 64
+   |err ln Te| solvable, nearest root         median 0.3210  90th 0.6062  max 0.8921   -> median Te error 37.9 %
+   amplification solvable, nearest root       median 6.83  90th 12.90  max 19.0
+   (Te,R)-linear variant, same pairs      median 0.3212  ratio to primary 1.0006
+   linearised Jacobian prediction         median 0.2668  ratio to exact 0.831
+   |err ln Te| clean (fold-crossed removed)   median 0.3210  90th 0.6062  max 0.8921   -> median Te error 37.9 %
+   amplification clean (fold-crossed removed) median 6.83  90th 12.90  max 19.0
+   (Te,R)-linear variant, same pairs      median 0.3212  ratio to primary 1.0006
+   linearised Jacobian prediction         median 0.2668  ratio to exact 0.831
+   sign of err: 64 inferred hotter than true, 0 colder
+
+   monotone columns only, Te_old >= 2 eV: 56 pairs
+   off-table 0  (above table max 0, below min 0)
+   solvable  56   multi-root 0   fold-crossed 0   clean 56
+   |err ln Te| solvable, nearest root         median 0.1501  90th 0.1656  max 0.1773   -> median Te error 16.2 %
+   amplification solvable, nearest root       median 3.19  90th 3.52  max 3.8
+   (Te,R)-linear variant, same pairs      median 0.1503  ratio to primary 1.0014
+   linearised Jacobian prediction         median 0.1377  ratio to exact 0.917
+   |err ln Te| clean (fold-crossed removed)   median 0.1501  90th 0.1656  max 0.1773   -> median Te error 16.2 %
+   amplification clean (fold-crossed removed) median 3.19  90th 3.52  max 3.8
+   (Te,R)-linear variant, same pairs      median 0.1503  ratio to primary 1.0014
+   linearised Jacobian prediction         median 0.1377  ratio to exact 0.917
+   sign of err: 30 inferred hotter than true, 26 colder
+
+check 3  interpolation-variant ratio of medians (defended scope): 0.9999
+
+REFUTER  median amplification, defended scope, clean: 8.30
+   not refuted: the true excursion is misread by this factor
+
+DERIVATION CHECKS  (Sigma = P + SbarG; on the plateau only P acts)
+   signs over the 448 pairs in scope:  P_bar>0 448   SbarG<0 448   Sigma_bar<0 359
+   theorem, Sigma<0 at Te_new: heating colder 172 of 172;  cooling hotter 64 of 64
+   heating with Sigma>0 at Te_new: 46; of those fold-crossed 44; fold-crossed with Sigma<0: 0
+   cancellation |Sigma|/|P| in scope: median 0.0676;  |P| 1.068  |SbarG| 1.123  |Sigma| 0.0907
+   secant prediction |SbarG|/|Sigma| vs exact amplification, 238 fold-free pairs: rank corr 0.925, pred/exact median 1.257 (10th 0.821, 90th 2.672)
+   cooling off-table 166 of 230: |P|/|Sigma| median 19.7 there, 4.8 where a root exists
+
+largest clean |err ln Te| in the defended scope:
+   cool Te 2.442->2.330 eV  ne 5.18e+13  err +0.8921  (+144 % in Te)  amp 19.0
+   heat Te 5.690->5.964 eV  ne 1.93e+13  err -0.8301  (-56 % in Te)  amp 17.7
+   heat Te 5.179->5.429 eV  ne 7.2e+12  err -0.8226  (-56 % in Te)  amp 17.5
+   cool Te 2.330->2.223 eV  ne 5.18e+13  err +0.8192  (+127 % in Te)  amp 17.4
+   heat Te 5.429->5.690 eV  ne 1.93e+13  err -0.7988  (-55 % in Te)  amp 17.0
+   heat Te 4.942->5.179 eV  ne 7.2e+12  err -0.7918  (-55 % in Te)  amp 16.8

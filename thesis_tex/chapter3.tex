@@ -562,8 +562,8 @@ Table~\ref{tab:spectrum} is one grid point. Across all 400,
   \label{eq:M_range}
 \end{equation}
 
-\noindent $\taurel$ varies by a factor of 45; $\tauslow$ by seven orders of
-magnitude. The separation is never small: in the hottest, densest corner of the
+\noindent $\taurel$ varies by a factor of 45; $\tauslow$ by nine orders of
+magnitude, from \SI{75.4}{\nano\second} to \SI{67.2}{\second}. The separation is never small: in the hottest, densest corner of the
 grid, where it is weakest, the excited states are almost ninety times faster
 than the ionisation balance.
 
@@ -1494,7 +1494,7 @@ temperature is
 \noindent Both derivatives are taken at fixed $\nel$, and the relation is a
 local linearisation: it is exact only in the limit of small $\delta\ln\bdep$,
 and Chapter~\ref{ch:results} uses the exact finite-step form in its place
-wherever a number is quoted. It also requires the denominator to be non-zero,
+wherever a number is quoted (Section~\ref{sec:inversion_measured}). It also requires the denominator to be non-zero,
 which is not a formality: Section~\ref{sec:inversion_jacobian} finds
 $\mathrm{d}\ln\Rcre/\mathrm{d}\ln\Te$ passing through zero inside the operating
 range on six of the eight density columns, and there the quotient diverges and
@@ -1598,9 +1598,9 @@ expansion, or an approximation: it is an exact rewriting of
 Eq.~\eqref{eq:qss_solution}, valid wherever $\Lmat_{FF}$ is invertible.
 Nor is it new. It is the standard population-coefficient decomposition of
 collisional--radiative theory, introduced by Bates, Kingston and
-McWhirter~\cite{Bates1962} % [KEY REQUIRED: Proc. Roy. Soc. A 267, 297 (1962)]
+McWhirter~\cite{Bates1962}
 and written by Fujimoto and
-McWhirter~\cite{FujimotoMcWhirter1990} % [KEY REQUIRED: Phys. Rev. A 42, 6588 (1990)]
+McWhirter~\cite{FujimotoMcWhirter1990}
 in the Saha-normalised form
 $b(p) = r_0(p) + r_1(p)\,b(1)$, with $r_0$ the recombining and $r_1$ the
 ionising population coefficient. Substituting
@@ -1625,17 +1625,20 @@ cannot be made level by level: $\bm{a}$ and $\bm{c}$ are instead summed against
 the ionisation rates to form the effective stage-to-stage coefficients, which
 \emph{are} tabulated, and compared with SCD96 and ACD96. The comparison,
 Gate~D of Chapter~\ref{ch:validation}, disagrees at every grid point, by a
-systematic factor between $9$ and $65$ that peaks near
-$\Te \approx \SI{2}{\electronvolt}$, and only its ionisation half is
-implemented, the recombination table being read and never used.
+systematic factor running from $5.73$ to $8346$ whose per-temperature mean peaks
+near $\Te \approx \SI{2}{\electronvolt}$, and as first written only its
+ionisation half was implemented, the recombination table being read and never
+used.
 Chapter~\ref{ch:validation} reports that failure and its diagnosis rather than
 repairing it. Two readings are open. ADAS tabulates SCD as the \emph{ionising}
 coefficient, whereas the sum formed here runs over the full steady state, so
 ionisation out of recombination-fed Rydberg levels enters the model's
 coefficient and belongs under ACD; and this model holds the ion as a fixed
 reservoir with no forty-fourth state (Section~\ref{sec:two_references}), so the
-two quantities are not defined on the same system. Neither reading has been
-demonstrated, and no agreement with ADAS is claimed anywhere in this thesis.
+two quantities are not defined on the same system. Chapter~\ref{ch:validation} tests both
+readings. The first is demonstrated: rebuilding the coefficients on the two feed
+channels separately brings the ionising half into agreement at $323$ of $400$
+points, and the recombination half, once implemented, agrees at all $400$.
 
 The contraction is severe in any case, since forty-two coefficients are
 collapsed into one and many incorrect $\bm{a}$ would contract correctly, but it

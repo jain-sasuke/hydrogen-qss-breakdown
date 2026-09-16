@@ -1596,3 +1596,129 @@ script docstrings. All eight are now stamped rather than deleted:
 Not stamped and therefore removed from the text: the −5.2e-5 / +3.0e-5
 decomposition of the [0,4] deficit (the net 2.2e-5 is stamped).
 
+### K7. Round 3 review (sections 5.10, 6.1 to 6.6) checked, 11 Sep 2026 evening 📐 Checked, not yet applied
+
+Three read-only subagent passes (skeptic on the optical depth, cr-physicist on the
+five physics arguments, evidence-auditor on the sentences and numbers). The
+reviewer is right on every substantive point; the passes found eight further
+defects. Nothing changed in the thesis yet.
+
+**Confirmed, with the mechanism located.**
+- √2 in the Lyman optical depth: chapter 5 (2150 to 2152) and chapter 6 (178 to
+  179) carry σ₀ from a hand calculation with √(kT/m) (findings_10:250-260); the
+  code (`escape_factor.py:167`, `verify_lyman_trapping.py:192`) and chapter 6's
+  table use the correct √(2kT/m). The citation `(verify_lyman_trapping.py)` at
+  chapter5:2153 is false: that script never emits an optical depth. The boundary
+  1.13 to 1.98 eV and the 45/448 census already use the correct σ₀; nothing
+  headline moves (the √2 is D = 5 → 7.07 cm, inside the factor-20 sweep).
+- "Four to five orders of magnitude" (ch5:2155, ch6:175, 199): Θ_P = 1.2e-3 is
+  2.9 orders one-shot; the self-consistent value at [0,4], D = 5 is 1.44e-2 (1.8
+  orders); the self-consistent minimum anywhere is 7.8e-4 (3.1 orders). The
+  descendant of the bogus τ = 7900 in findings_10.
+- §6.3 molecular sentence is false as written: with independent reservoirs R is
+  a ratio of affine forms in (u, v, ...); the tanh ceiling applies per reservoir
+  with Δ(v) (0.46 → 0.25 at the crest as the molecular fraction goes 0 → 1, sign
+  change in between) and bounds nothing about the v-term; H₂ at 2 eV is a 10 to
+  100 µs reservoir, a second slow mode.
+- "Factor 3 to 5": φ₄ = 0.30 is interpolated (Dγ is n = 5); the 0.201/0.054/
+  0.053/0.019 sensitivities match no point in any artifact; done properly with a
+  third channel the factor is 6 to 9 at the cold corner and the diluted
+  sensitivity changes sign near φ₃ ≈ 0.75. Emissivity = shell fraction IS
+  defensible here: intrashell ℓ-mixing exceeds radiative decay by ≥ 12 at every
+  grid point (checked from L_grid).
+- Transport "upper estimates" (ch6:593-595) does not survive: a recycling-fed
+  reservoir with fixed source turns the 0.18 transient at [15,3] into a 0.18
+  permanent offset; source ×2 gives 0.60. τ_esc < τ_slow means u relaxes fast to
+  the recycling-set value, not to local CRE.
+- Quasineutrality (ch5:2039) conflates two laws; the inferred Δn_e/n_e = 13.9 at
+  [0,4] is not a closed-parcel number: the self-consistent closed-nuclei solve
+  (L exactly linear in n_e, S exactly quadratic, so off-grid evaluation is
+  exact) gives n_e ×2.05 and Δln n_g = −0.038. Above 2 eV the correction is
+  ≤ 5.3e-3 in n_e and < 0.2 percent in ε_plat.
+- "Coincide" / "not a choice" (ch5:2193, 2221) and "It is not detachment"
+  (ch6:810): overstated as the reviewer says; the ridge comparison is local
+  divertor n_e against an upstream separatrix band.
+
+**Found beyond the review.**
+1. ch6:178-179 quotes 0.0023 "at the benchmark point (\benchTe, \benchne)"; that
+   is the n_e = 5.18e13 column with the wrong σ₀; the benchmark value is 0.0039.
+2. ch5:1551-1552 and ch6:192-193: "105 of 202 have τ(5 cm) > 1, 26 above 100"
+   reproduces only with the wrong σ₀ and full-path τ; correct σ₀ gives 100/23
+   (full path) or 85/15 (the repo's own half-slab definition).
+3. ch6:456 argues transport with "a deuterium atom" while the opacity uses m_H;
+   the isotope changes σ₀ by exactly √2 (the deuterium value IS 114).
+4. T_n = T_e never tested (`--t-at` flag exists, unused); T_n = 3 eV gives 46 per
+   cm, a 42 percent swing larger than the √2.
+5. ch6:286 "0.9999 at D = 1 cm" against the artifact's 0.99862.
+6. No artifact exists for §6.3, §6.4 (the n_g scaling 2.28e12/1.68e13/2.48e14) or
+   §6.6 (the ion-closure factors 41.4/15.4); all are markdown-only, though the
+   §6.6 numbers reproduce from L_grid/S_grid directly.
+7. ch6:843 "So the quantity is settled" sits above a `\todo` (859) asking to
+   confirm the same quantity.
+8. §6.5's "chiefly used to identify detachment" carries no citation.
+
+**Reviewer's one miss:** there is no `[1,4]` versus `[0,4]` TODO; ch6:972-983
+already resolves the labels.
+
+### K8. The inversion, measured: what the table returns for T_e on the plateau ✅ Verified (16 Sep 2026)
+
+**Why.** Chapter 1 asked for the error in an inversion; Chapter 5 measured the error in the observable. `eq:inversion_jacobian` (Ch. 3) defines the single-parameter inferred-temperature error at known n_e and says Chapter 5 uses "the exact finite-step form wherever a number is quoted". No script computed it. The Round-0 reviewer costed it as "another project"; it is one root-find per pair on the three solves the thesis already does.
+
+**Prediction, written before the run** (from a chained-`signed_step` reconstruction of the same solve, 11 Sep): scope 448 → ~166 off-table, ~282 solvable, median |Δln Te| ≈ 0.445, 90th ≈ 0.90, max ≈ 1.42, amplification ≈ 10. **Refuter:** median amplification of order 1.
+
+**Run.** `src/validation/verify_inversion_error.py` → `validation/inversion_error/{inversion_error.txt, .csv, _summary.csv}`; L_grid `2d92b58e…`, S_grid `7822f536…`; same step rule (nearest index to ±5 %), window rule (30/30) and three solves as `verify_plateau_gridmap.py`. Inversion = every Te* on the density column with R_cre(Te*) = R_pe, bracketed between nodes and interpolated; error = ln Te* − ln Te_new.
+
+| check | result |
+|---|---|
+| reproduces `plateau_gridmap.csv` signed_plateau and signed_step at all 784 pairs | worst diff 0.000e+00 |
+| sign identity on the two monotone columns, sign(err) = sign(d_pe)·sign(dlnR/dlnTe) | 0 bad of 180 |
+| interpolation in (ln Te, ln R) vs (Te, R), ratio of clean medians | 0.9999 |
+| refuter | median amplification 8.30; not refuted |
+
+**Result, Te_old ≥ 2 eV, window_ok, one grid interval (+4.81 % / −4.59 %).** 448 = **166 off-table** (all cooling, all below the column's minimum) + **44 fold-crossed** (all heating) + **238 clean**. Clean: median |Δln Te*| 0.3899 → **47.7 % in Te**, 90th 0.674 (96 %), max 0.892 (144 %); amplification median **8.30**, 90th 14.3, max 19.0. Solvable incl. fold-crossed at nearest root: 0.4449 (56.0 %), amp 9.47. Heating clean 174: 0.439 (55 %); cooling 64: 0.321 (38 %). Monotone columns (j = 6, 7; n_e ≥ 3.73e14): 56 pairs, median 0.150 (16.2 %), max 0.177 (19.4 %), amp 3.19 to 3.8. Multi-root in scope 2 (both cooling; 9 over all 680 window pairs). Prediction reproduced to four digits.
+
+**Derivation, then checked against the artifact.** Σ ≡ dlnR_cre/dlnTe = P + S̄G, P ≡ (∂lnR/∂lnTe)_u. As secants over the step from the same solves: S̄G = [ln R_pe − ln R_cre(new)]/Δ, Σ̄ = [ln R_cre(new) − ln R_cre(old)]/Δ, P̄ = Σ̄ − S̄G. Signs in scope: P̄ > 0 at 448/448 (measured, not derived from the rate structure), S̄G < 0 at 448/448 (= f₃ > f₄ times G < 0, both established), Σ̄ < 0 at 359/448. On the plateau only P acts; the table reads the offset back at Σ. **Theorem:** where Σ < 0, heating → colder and cooling → hotter: 172/172 and 64/64. Where Σ > 0 (46 heating pairs above the fold) a hotter root is predicted and the table does not climb enough before 10 eV at 44 of them: those are exactly the fold-crossed pairs. **Amplification = |S̄G|/|Σ̄| = 1/(residual cancellation):** medians |P̄| 1.068, |S̄G| 1.123, |Σ̄| 0.0907, |Σ̄|/|P̄| 0.0676; secant prediction vs exact over the 238 clean pairs: rank corr 0.925, pred/exact median 1.257. **The fold is Σ = 0, the cancellation completed**, so the columns with the fold are the columns with the amplification. Off-table cooling: |P̄|/|Σ̄| median 19.7 there vs 4.8 where a root exists. This is H12's |1 + D/A| cancellation (0.0858 over 680) seen from the inversion side; it was not in Chapter 5 before.
+
+**Sensitivity to definitions.** Interpolation variable 0.01 %. Fold masking: 0.445 → 0.390, the clean value is quoted. Nearest vs far root: 2 pairs. Linearised Jacobian quotient (central difference at Te_new) vs exact: overstates the clean median by 17.7 %, heating by 48.8 %, understates cooling by 16.9 %; the exact form is quoted.
+
+**Caveats, written.** Single-parameter, n_e known; the 2×2 Jacobian of `eq:inversion_2x2` is defined and not measured. Plateau values, not the ELM time averages of `sec:persistence`. Same frozen-reservoir conditional as ε_plateau; Ch. 6's transport selection applies verbatim. The table's 10 eV edge is a boundary condition on the 44 and 166 counts.
+
+**Thesis home.** New §5.5.2 `sec:inversion_measured` with `eq:slope_two_channels`; §5.5.1 tail ("reported and not pursued" withdrawn); §5.11; §1.7 and §1.8 reworded from "(T_e, n_e) inversion" to "temperature inferred at known density"; Ch. 3 pointer at `eq:inversion_jacobian`; §7.2.1 retitled "Five things", fold paragraph retitled from "unrelated to any of this" to the same cancellation at its limit, new paragraph; abstract, one sentence.
+
+**Addendum, 16 Sep 2026, after the reviewer's read of the draft §5.5.2.** Five corrections, all applied.
+(i) The direction rule is a *local* result of Eq. `eq:inversion_local` (Σ < 0 ⇒ inferred temperature on the pre-step side; 172/172, 64/64) plus an *empirical* boundary statement for the 46 heating pairs with Σ(Te⁺) > 0: 44 cross the fold to a colder root before the 10 eV edge, 2 find a colder root inside the step interval. The draft's "a theorem on 236 and the table's upper edge on the rest" overclaimed the 46 and is withdrawn; a local slope predicts local direction, not root existence over a finite interval.
+(ii) "Amplification is the inverse of a cancellation" was imprecise: it is |SG/Σ|, the ratio of the reservoir term to the residual slope, which becomes an inverse-cancellation measure only because |SG| varies far less than the near-zero denominator. Reworded in §5.5.2, §5.11, §7.2.
+(iii) "Returns no temperature at all" → "has no solution within the table's 1 to 10 eV domain" at every count (abstract, §5.5.2, §5.11, §7.2). The edges are part of the result.
+(iv) **Sign convention.** The K8 CSV column `SbarG` is ln(R_cre⁺/R_pe)/D, the reservoir secant with the *natural* sign of S = f₃ − f₄ > 0, hence negative. The thesis's S̄ (Eq. `Sbar_def`) integrates from u⁺ to u⁻ and is *negative*, so in thesis notation the column is −S̄Ḡ, and the draft's "S̄G < 0" was wrong in the thesis's own convention (S̄Ḡ > 0, both factors negative; only S̄Ḡ·Δln Te changes sign with direction, per HANDOFF §3). §5.5.2 now states the local theorem with natural-sign S, writes the secant as \overline{SG}, and reconciles the two in one sentence; the CSV header carries a SIGN NOTE; K9 check 3 verifies \overline{SG} = −S̄Ḡ to 4e-15.
+(v) Local versus secant: `eq:slope_two_channels` had mixed a local Σ with a barred S̄. It is now the unbarred local chain rule; the finite-step identity Σ̄ = P̄ + \overline{SG} is a separate equation `eq:slope_secants`, exact by telescoping, and the reviewer's caution about multiplying separately averaged factors is met by construction: by `eq:exact_decomposition` and `eq:gain_def` the thesis *integrates* the reservoir term, so S̄Ḡ D = ln(R_pe/R_cre⁺) exactly (K9 check 3).
+The scratch claim "both channels raise the ratio for the single reason f₃ > f₄" was never in the thesis and is refuted by K9. **P > 0 stays a measured property.**
+
+### K9. Why P > 0: the operator-slope decomposition by feed channel ✅ Verified (16 Sep 2026)
+
+**Why.** §5.5.2 rests on P > 0 and SG < 0 (both measured). The reviewer asked for a stamped script recording, pair by pair, why each feed channel has the sign it has, with the sufficient ratios, and for the additive split's residual to be measured rather than assumed. He also refuted the scratch conclusion from its own numbers.
+
+**Algebra.** P = f₃A₃ + (1−f₃)C₃ − f₄A₄ − (1−f₄)C₄ exactly (differential form); P_a = f₃A₃ − f₄A₄ > 0 ⟺ (f₃/f₄)/(A₄/A₃) > 1 when A > 0; P_c = (1−f₃)C₃ − (1−f₄)C₄ > 0 ⟺ ((1−f₄)/(1−f₃))/(B₃/B₄) > 1 when B = −C > 0. Over the finite step the exact form is the log-mixture P̄D = ln[f₃e^{A₃D} + (1−f₃)e^{C₃D}] − ln[f₄e^{A₄D} + (1−f₄)e^{C₄D}] with secant A, C and f at (Te⁻, u⁻); the additive split is its first-order part.
+
+**Prediction, written before the run** (scratch, 16 Sep): P_a > 0 at 448/448, P_c > 0 at ~426/448, A > 0 and C < 0 at 448/448. **Refuter:** P_a or P_c negative at a large fraction, or an additive residual comparable to the terms.
+
+**Run.** `src/validation/verify_operator_slope_decomposition.py` → `validation/operator_slope_decomposition/`; L_grid `2d92b58e…`, S_grid `7822f536…`. Same step, window and solves as K8.
+
+| check | result |
+|---|---|
+| two-channel superposition at all 400 nodes | 3.06e-14 |
+| reproduces K8's P̄, \overline{SG}, Σ̄ | 5.5e-12 |
+| Σ̄ − P̄ − \overline{SG} | 5.1e-15 |
+| \overline{SG} + S̄Ḡ (thesis sign convention) | 4.0e-15 |
+| log-mixture identity for P̄ | 1.1e-14 |
+| sign(P_a) ⟺ ratio_a > 1, sign(P_c) ⟺ ratio_c > 1 | 0 bad of 784, both |
+
+**Result, defended scope (448).** A₃, A₄ > 0 and C₃, C₄ < 0 at 448/448; A₄ > A₃ at 448/448; |C₄| > |C₃| at 340. f₃ > f₄ at 448 (medians 0.611, 0.190). **P_a > 0 at 448/448** (ratio_a median 2.87, min 1.23). **P_c > 0 at 426/448** (ratio_c median 2.00, min 0.955). **P_a + P_c > 0 at 448/448.** Medians A₃ +2.79, A₄ +2.90, C₃ −1.45, C₄ −1.60, P_a +0.62, P_c +0.48, P̄ +1.07. Additive residual |P̄ − P_a − P_c|/|P̄|: median 3.7 %, 90th 12.8 %, max 35.4 %. Cancellation |Σ̄|/|P̄| median 0.0676 (|P̄| 1.068, |\overline{SG}| 1.123, |Σ̄| 0.0907).
+
+**The 22 exceptions** (P_c < 0, sum still positive): all at nₑ = 10¹⁵ cm⁻³, Te 2.02 to 3.39 eV, 10 heating and 12 cooling. There f₃ = 0.077, f₄ = 0.012: both shells almost entirely recombination-fed, the share factor (1−f₄)/(1−f₃) ≈ 1.07 cannot compensate B₃/B₄ ≈ 1.11, and the channel sign is decided by |C₃| > |C₄|. Over all 784 pairs P_c < 0 at 80, all on the same column.
+
+**What may be said.** P > 0 (448/448) is an empirical property of this operator over the defended range, associated with the unequal supply fractions; the ground-fed contribution is positive everywhere, the recombination-fed one at 426, the sum everywhere. It is *not* a consequence of f₃ > f₄ alone: the sufficient conditions involve A₄/A₃ and B₃/B₄ as well as the shares, and the 22 pairs show the shares losing. Not written as a theorem.
+
+**Sensitivity.** The first-order additive split reproduces the exact secant P̄ to 3.7 % median, 35 % worst; the sign conclusions do not depend on it (P̄ > 0 and P_a + P_c > 0 agree at 448/448). Secant A, C over one grid interval; a finer grid would tighten the residual, not move the counts.
+
+**Thesis home.** §5.5.2 paragraph "Why P > 0: a decomposition, not a proof", Eq. `eq:P_channels`.
+

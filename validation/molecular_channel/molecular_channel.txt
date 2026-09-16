@@ -1,0 +1,277 @@
+==============================================================================
+MOLECULAR CHANNEL -- what a third supply channel does to the
+two-channel plateau-error machinery, computed on the model's operator
+generated 2026-09-11 21:28  by verify_molecular_channel.py
+interpreter    /opt/anaconda3/envs/cr/bin/python   numpy 2.3.5
+repo root      /Users/phi/Desktop/non_markovian_cr
+L_grid sha256  2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+S_grid sha256  7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+state idx sha  23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+radiative sha  389ab78a2a1449af0a18a95fe9a660d7bb7f1d1d313944b830253bc51e3d8aef  (data/processed/Radiative/radiative_rates.csv)
+grid 50 Te x 8 ne, 43 states, ground index 0 (1S)
+n=3 [3, 4, 5] ['3S', '3P', '3D'] deposit weights [1, 3, 5]
+n=4 [6, 7, 8, 9] ['4S', '4P', '4D', '4F'] deposit weights [1, 3, 5, 7]
+benchmark derived: nearest_point(2.947, 1.389e+14) = [23,5]  Te=2.9471 ne=1.3895e+14  (asserted == [23,5])
+  point cold_corner  [0,4]  Te=1.0000 eV  ne=5.1795e+13 cm^-3
+  point crest        [15,3]  Te=2.0236 eV  ne=1.9307e+13 cm^-3
+  point benchmark    [23,5]  Te=2.9471 eV  ne=1.3895e+14 cm^-3
+==============================================================================
+
+==============================================================================
+ITEM 1  intrashell l-mixing versus radiative decay, n = 3 and 4 sublevels
+==============================================================================
+A-values (s^-1), total radiative decay per sublevel from radiative_rates.csv (all res_to_res rows with that upper state;
+  the six Balmer rows agree with Balmer_transient_ratio.load_radiative_weights):
+  3S=6.3172e+06  3P=1.8981e+08  3D=6.4688e+07  4S=4.4161e+06  4P=8.1313e+07  4D=2.7679e+07  4F=1.3796e+07
+L affine in ne at fixed Te: worst relative residual of the two-column extrapolation over all 400 points 3.95e-16
+ne->0 limit of the downward column entries vs tabulated A: worst |ratio-1| = 2.22e-16 at Te index 2, 4D (L gives 2.767860e+07)
+
+minimum over the grid of (intrashell mixing out of the sublevel) / (its total radiative decay):
+  state    min mix/A  at [i,j]       Te         ne    mix s^-1    min mix/(all other loss)      at
+  3S          598.44    [49,0]   10.000  1.000e+12   3.780e+09                      387.01  [49,0]
+  3P           11.78    [49,0]   10.000  1.000e+12   2.236e+09                       11.54  [49,0]
+  3D            9.05    [49,0]   10.000  1.000e+12   5.855e+08                        8.41  [49,0]
+  4S         2252.70     [0,0]    1.000  1.000e+12   9.948e+09                      670.51  [49,0]
+  4P           85.93    [49,0]   10.000  1.000e+12   6.987e+09                       74.24  [49,0]
+  4D          134.84    [49,0]   10.000  1.000e+12   3.732e+09                       86.16  [49,0]
+  4F           86.03    [49,0]   10.000  1.000e+12   1.187e+09                       35.12  [49,0]
+  shell n=3 minimum 9.05 at [49,0]   shell n=4 minimum 85.93 at [49,0]
+  prediction: n=3 (3d) >= 12 at [15,0]; n=4 >= 100 everywhere  -> *** NOT REPRODUCED ***
+  (the prediction came from check1.py, which sampled five points; this is
+   the full 400-point scan. The grid minimum sits at the HOT low-density
+   corner [49,0], not at [15,0]. Value at [15,0]: 3D 12.54, 3P 15.69, n=4 min 100.39.)
+  The l-distribution is set by mixing to within ~1/(mix/A): worst ~11 percent
+  for 3d at [49,0], under 0.5 percent at the three points of items 2 to 4.
+  This ratio is what licenses 'molecular fraction of the emissivity = molecular fraction of the shell population': the l-distribution
+  inside n=3 and n=4 is set by mixing, not by where a channel deposits.
+  It is weakest at the low-density edge, where mixing is collisional and decay is not.
+  at cold_corner [0,4]: mix/A = 3S 39048.1, 3P 819.1, 3D 679.4, 4S 116677.9, 4P 4563.7, 4D 8288.5, 4F 5685.5
+  at crest [15,3]: mix/A = 3S 14913.0, 3P 303.0, 3D 242.2, 4S 52009.0, 4P 1938.2, 4D 3262.3, 4F 2157.4
+  at benchmark [23,5]: mix/A = 3S 104001.6, 3P 2090.6, 3D 1649.3, 4S 381067.1, 4P 13993.6, 4D 22982.4, 4F 15013.2
+
+==============================================================================
+ITEM 5  affine structure n_E = a u + c + d v with a, c, d >= 0, all points
+ITEM 4  per-reservoir ceiling tanh(|Delta(v)|/4), all points
+==============================================================================
+minimum entry over all 400 points of
+  a   6.0191e-13  at [0,0]  >= 0
+  c   8.8131e-12  at [49,0]  >= 0
+  d3  3.9591e-13  at [18,7]  >= 0
+  d4  8.6391e-13  at [17,7]  >= 0
+  prediction a, c, d >= 0 everywhere -> REPRODUCED
+affine check: worst relative residual of a u' + c + d v' against a direct solve at random (u', v'): 9.68e-16
+ceiling check: worst |max_u|F3-F4| / tanh(|Delta(v)|/4) - 1| by direct maximisation at v = v_sign/2: 2.66e-15
+d4/d3 (n=4 population per n=3 population, both per unit n=3 deposit): 0.0201 .. 0.1906, median 0.1249
+Delta_atomic  0.7113 .. 2.1987   cap_atomic 0.1760 .. 0.5003
+Delta_molinf  -3.4816 .. -0.3253   cap_molinf 0.0811 .. 0.7016
+points where Delta changes sign between v = 0 and v -> inf: 400/400
+molecular fraction of n=3 (at CRE u) at the sign change: 0.1602 .. 0.9448   as fraction of the non-ground supply c3+d3v: 0.5269 .. 0.9515
+
+ITEM 4 at the three points (point's own operator and CRE u):
+
+  cold_corner [0,4]  u_CRE=2.8321e+01  a3/a4=4.5639  c4/c3=1.8771  d4/d3=0.1090 (expected 0.109)
+    Delta(0)=+2.1479 cap 0.4907 (expected 0.491);  Delta(inf)=-0.6978 cap 0.1727 (expected 0.173)
+    sign change at v = 7.9718e+01 s^-1 per ion  (n=3 deposit flux 7.1746e+02 s^-1 per ion), where the molecular fraction of n=3 is 0.8423 at u_CRE, and 0.9377 of the non-ground supply
+     phi3(u_CRE)      v s^-1  Delta(v)     cap phi4(u_CRE)
+            0.00   0.000e+00   +2.1479  0.4907      0.0000
+            0.10   1.658e+00   +1.8934  0.4409      0.0148
+            0.20   3.731e+00   +1.6545  0.3915      0.0327
+            0.30   6.396e+00   +1.4234  0.3416      0.0547
+            0.40   9.949e+00   +1.1938  0.2899      0.0826
+            0.50   1.492e+01   +0.9594  0.2353      0.1190
+            0.60   2.239e+01   +0.7132  0.1764      0.1685
+            0.70   3.482e+01   +0.4461  0.1111      0.2397
+            0.80   5.969e+01   +0.1439  0.0360      0.3509
+            0.90   1.343e+02   -0.2187  0.0546      0.5488
+            0.99   1.477e+03   -0.6415  0.1590      0.9304
+            1.00         inf   -0.6978  0.1727      1.0000
+
+  crest [15,3]  u_CRE=1.4122e-02  a3/a4=3.1026  c4/c3=2.3622  d4/d3=0.1139 (expected 0.114)
+    Delta(0)=+1.9918 cap 0.4605 (expected 0.461);  Delta(inf)=-1.0401 cap 0.2543 (expected 0.254)
+    sign change at v = 2.9955e+00 s^-1 per ion  (n=3 deposit flux 2.6960e+01 s^-1 per ion), where the molecular fraction of n=3 is 0.7651 at u_CRE, and 0.9073 of the non-ground supply
+     phi3(u_CRE)      v s^-1  Delta(v)     cap phi4(u_CRE)
+            0.00   0.000e+00   +1.9918  0.4605      0.0000
+            0.10   1.022e-01   +1.7196  0.4052      0.0125
+            0.20   2.300e-01   +1.4670  0.3511      0.0277
+            0.30   3.942e-01   +1.2243  0.2969      0.0465
+            0.40   6.132e-01   +0.9842  0.2412      0.0705
+            0.50   9.198e-01   +0.7394  0.1828      0.1022
+            0.60   1.380e+00   +0.4822  0.1200      0.1458
+            0.70   2.146e+00   +0.2020  0.0505      0.2098
+            0.80   3.679e+00   -0.1176  0.0294      0.3128
+            0.90   8.279e+00   -0.5073  0.1262      0.5060
+            0.99   9.107e+01   -0.9761  0.2393      0.9185
+            1.00         inf   -1.0401  0.2543      1.0000
+
+  benchmark [23,5]  u_CRE=8.8039e-04  a3/a4=4.2315  c4/c3=1.6538  d4/d3=0.1408 (expected 0.141)
+    Delta(0)=+1.9456 cap 0.4514 (expected 0.451);  Delta(inf)=-0.5177 cap 0.1287 (expected 0.129)
+    sign change at v = 8.8345e+01 s^-1 per ion  (n=3 deposit flux 7.9511e+02 s^-1 per ion), where the molecular fraction of n=3 is 0.9166 at u_CRE, and 0.9369 of the non-ground supply
+     phi3(u_CRE)      v s^-1  Delta(v)     cap phi4(u_CRE)
+            0.00   0.000e+00   +1.9456  0.4514      0.0000
+            0.10   8.933e-01   +1.8185  0.4257      0.0120
+            0.20   2.010e+00   +1.6830  0.3976      0.0267
+            0.30   3.445e+00   +1.5370  0.3664      0.0448
+            0.40   5.360e+00   +1.3774  0.3314      0.0681
+            0.50   8.039e+00   +1.1998  0.2913      0.0987
+            0.60   1.206e+01   +0.9975  0.2443      0.1411
+            0.70   1.876e+01   +0.7598  0.1877      0.2036
+            0.80   3.216e+01   +0.4674  0.1163      0.3047
+            0.90   7.235e+01   +0.0793  0.0198      0.4964
+            0.99   7.959e+02   -0.4409  0.1098      0.9156
+            1.00         inf   -0.5177  0.1287      1.0000
+
+==============================================================================
+ITEM 2  frozen third reservoir across a heating step: plateau error
+        step +5% nominal, snapped to the grid; post-step operator;
+        eps = |R(u_old)/R(u_new) - 1| as in verify_divertor_map.py
+==============================================================================
+
+cold_corner [0,4] -> [1,4]  Te 1.0000 -> 1.0481 (+4.8113%)  ne=5.1795e+13
+  u_old=2.8321e+01  u_new=1.4373e+01  Lambda=ln(u_old/u_new)=+0.6783   superposition 1.2e-14
+  post-step: a3=3.1671e-08 a4=7.0187e-09 c3=2.6375e-07 c4=4.9579e-07
+  f3=0.7728 f4=0.2862  f3-f4=+0.4866  Sbar_atomic=+0.4822  Sbar*Lambda=+0.3271
+  eps_atomic = 0.386903  (divertor_map.csv heat row: 0.3869)  REPRODUCED
+  d4/d3 for a unit n=3 deposit: post-step operator 0.1101, pre-step operator 0.1090 (expected 0.109, own operator)
+
+  single source into n=3 (statistical), phi3 imposed at the plateau (post-step operator, u_old):
+      phi3      v s^-1 phi4 result   eps_mol  atom/mol  Sbar_mol   naive  F3-F4 loc Delta_mol    cap
+      0.30   9.157e+00      0.0731    0.1851      2.09   +0.2503    1.93    +0.2757    +1.183  0.287
+      0.60   3.205e+01      0.2162    0.0493      7.85   +0.0709    6.80    +0.0848    +0.436  0.109
+      0.70   4.985e+01      0.3003    0.0176     22.04   +0.0257   18.79    +0.0316    +0.187  0.047
+      0.80   8.546e+01      0.4239    0.0055     70.24   -0.0081  -59.21    -0.0103    -0.077  0.019
+
+  two sources (n=3 and n=4 deposits) hitting (phi3, phi4) exactly at the plateau:
+     (phi3,phi4)         w3         w4 real.  eps_mol atom/mol         exp. Sbar_mol  naive   F3-F4   Delta   cap | B: u_old     u_new     phi3,phi4   eps_B
+    (0.60,0.30)   3.146e+01  2.305e+00   yes   0.0632     6.12   0.0632/6.1  +0.0903   5.34 +0.1088  +0.580 0.144  1.116e+02 5.966e+01   0.314,0.189  0.0935
+    (0.70,0.45)   4.836e+01  5.873e+00   yes   0.0414     9.35       0.0414  +0.0598   8.07 +0.0744  +0.480 0.119  1.590e+02 8.541e+01   0.338,0.261  0.0763
+    (0.60,0.15)   3.243e+01 -1.501e+00    no  -- w4 < 0: an n=3 deposit alone at phi3=0.60 already puts phi4=0.216 > 0.15 into n=4 (collisional 3->4)
+    (0.80,0.30)   8.665e+01 -4.637e+00    no  -- w4 < 0: an n=3 deposit alone at phi3=0.80 already puts phi4=0.424 > 0.30 into n=4 (collisional 3->4)
+    'naive' = Sbar_atomic/Sbar_mol, the ratio chapter 6's 'linear in f3-f4' would predict; 'atom/mol' is the actual eps ratio. They
+    differ by the exponential nonlinearity eps = |exp(Sbar Lambda) - 1|.
+    B columns: same sources, ground reservoir recomputed as the full CRE with the molecular source (pre and post); phi3,phi4 are what the
+    fractions then become at the plateau, eps_B the error.
+
+  ITEM 3  sweep phi3 at phi4 = 0.30 (two-source):
+    analytic zero of f3(1-phi3) - f4(1-phi4): phi3* = 1 - f4(1-phi4)/f3 = 0.7408
+    realisable (both sources >= 0) for phi3 in [0.07, 0.69] (step 0.01); below, the n=4 deposit alone puts more than phi3 into n=3 (w3 < 0); above, the n=3 deposit alone puts more than 0.30 into n=4 (w4 < 0)
+    the local zero phi3* = 0.7408 lies ABOVE the realisable range: at phi4 = 0.30 the sign change cannot be reached with non-negative sources here
+    secant Sbar_mol does not cross zero in the realisable range
+      phi3         w3         w4  F3-F4 loc  Sbar_mol  eps_mol atom/mol   Delta    cap
+      0.00 -1.649e+00  6.470e+00    +0.5724   not realisable
+      0.10  8.037e-01  6.161e+00    +0.4952   +0.4651   0.3709     1.04  +2.210  0.502
+      0.20  3.870e+00  5.776e+00    +0.4179   +0.3822   0.2959     1.31  +1.866  0.435
+      0.30  7.811e+00  5.280e+00    +0.3406   +0.3036   0.2287     1.69  +1.548  0.369
+      0.40  1.307e+01  4.619e+00    +0.2633   +0.2290   0.1681     2.30  +1.239  0.300
+      0.50  2.042e+01  3.693e+00    +0.1861   +0.1581   0.1132     3.42  +0.922  0.226
+      0.60  3.146e+01  2.305e+00    +0.1088   +0.0903   0.0632     6.12  +0.580  0.144
+      0.70  4.986e+01 -8.800e-03    +0.0315   not realisable
+      0.75  6.457e+01 -1.860e+00    -0.0071   not realisable
+      0.80  8.665e+01 -4.637e+00    -0.0458   not realisable
+      0.90  1.970e+02 -1.852e+01    -0.1231   not realisable
+    prediction: zero near phi3 = 0.75 -> local zero 0.741
+
+crest [15,3] -> [16,3]  Te 2.0236 -> 2.1210 (+4.8113%)  ne=1.9307e+13
+  u_old=1.4122e-02  u_new=9.8039e-03  Lambda=ln(u_old/u_new)=+0.3649   superposition 1.4e-15
+  post-step: a3=3.5876e-06 a4=1.1621e-06 c3=1.8152e-08 c4=4.2578e-08
+  f3=0.7362 f4=0.2782  f3-f4=+0.4580  Sbar_atomic=+0.4552  Sbar*Lambda=+0.1661
+  eps_atomic = 0.180728  (divertor_map.csv heat row: 0.1807)  REPRODUCED
+  d4/d3 for a unit n=3 deposit: post-step operator 0.1153, pre-step operator 0.1139 (expected 0.114, own operator)
+
+  single source into n=3 (statistical), phi3 imposed at the plateau (post-step operator, u_old):
+      phi3      v s^-1 phi4 result   eps_mol  atom/mol  Sbar_mol   naive  F3-F4 loc Delta_mol    cap
+      0.30   4.644e-01      0.0545    0.0916      1.97   +0.2401    1.90    +0.2523    +1.092  0.266
+      0.60   1.625e+00      0.1679    0.0212      8.54   +0.0574    7.93    +0.0630    +0.326  0.081
+      0.70   2.528e+00      0.2389    0.0030     60.36   +0.0082   55.57    +0.0091    +0.054  0.013
+      0.80   4.334e+00      0.3499    0.0108     16.79   -0.0297  -15.35    -0.0336    -0.246  0.061
+
+  two sources (n=3 and n=4 deposits) hitting (phi3, phi4) exactly at the plateau:
+     (phi3,phi4)         w3         w4 real.  eps_mol atom/mol         exp. Sbar_mol  naive   F3-F4   Delta   cap | B: u_old     u_new     phi3,phi4   eps_B
+    (0.60,0.30)   1.583e+00  1.792e-01   yes   0.0335     5.39   0.0335/5.4  +0.0903   5.04 +0.0998  +0.546 0.136  3.696e-02 2.648e-02   0.406,0.228  0.0448
+    (0.70,0.45)   2.434e+00  3.984e-01   yes   0.0223     8.12       0.0223  +0.0603   7.55 +0.0679  +0.451 0.112  5.009e-02 3.605e-02   0.448,0.324  0.0361
+    (0.60,0.15)   1.630e+00 -2.000e-02    no  -- w4 < 0: an n=3 deposit alone at phi3=0.60 already puts phi4=0.168 > 0.15 into n=4 (collisional 3->4)
+    (0.80,0.30)   4.355e+00 -8.653e-02    no  -- w4 < 0: an n=3 deposit alone at phi3=0.80 already puts phi4=0.350 > 0.30 into n=4 (collisional 3->4)
+    'naive' = Sbar_atomic/Sbar_mol, the ratio chapter 6's 'linear in f3-f4' would predict; 'atom/mol' is the actual eps ratio. They
+    differ by the exponential nonlinearity eps = |exp(Sbar Lambda) - 1|.
+    B columns: same sources, ground reservoir recomputed as the full CRE with the molecular source (pre and post); phi3,phi4 are what the
+    fractions then become at the plateau, eps_B the error.
+
+  ITEM 3  sweep phi3 at phi4 = 0.30 (two-source):
+    analytic zero of f3(1-phi3) - f4(1-phi4): phi3* = 1 - f4(1-phi4)/f3 = 0.7355
+    realisable (both sources >= 0) for phi3 in [0.07, 0.76] (step 0.01); below, the n=4 deposit alone puts more than phi3 into n=3 (w3 < 0); above, the n=3 deposit alone puts more than 0.30 into n=4 (w4 < 0)
+    secant Sbar_mol crosses zero at phi3 = 0.7355
+      phi3         w3         w4  F3-F4 loc  Sbar_mol  eps_mol atom/mol   Delta    cap
+      0.00 -8.001e-02  3.386e-01    +0.5415   not realisable
+      0.10  4.319e-02  3.268e-01    +0.4679   +0.4521   0.1794     1.01  +2.094  0.480
+      0.20  1.972e-01  3.120e-01    +0.3942   +0.3759   0.1470     1.23  +1.779  0.418
+      0.30  3.952e-01  2.930e-01    +0.3206   +0.3016   0.1164     1.55  +1.481  0.354
+      0.40  6.592e-01  2.677e-01    +0.2470   +0.2294   0.0873     2.07  +1.185  0.288
+      0.50  1.029e+00  2.323e-01    +0.1734   +0.1590   0.0597     3.03  +0.879  0.216
+      0.60  1.583e+00  1.792e-01    +0.0998   +0.0903   0.0335     5.39  +0.546  0.136
+      0.70  2.507e+00  9.059e-02    +0.0261   +0.0234   0.0086    21.09  +0.159  0.040
+      0.75  3.246e+00  1.974e-02    -0.0107   -0.0095   0.0035    52.21  -0.070  0.017
+      0.80  4.355e+00 -8.653e-02    -0.0475   not realisable
+      0.90  9.899e+00 -6.179e-01    -0.1211   not realisable
+
+benchmark [23,5] -> [24,5]  Te 2.9471 -> 3.0888 (+4.8113%)  ne=1.3895e+14
+  u_old=8.8039e-04  u_new=6.7238e-04  Lambda=ln(u_old/u_new)=+0.2695   superposition 1.9e-15
+  post-step: a3=5.3420e-05 a4=1.2742e-05 c3=1.0460e-07 c4=1.7367e-07
+  f3=0.3102 f4=0.0607  f3-f4=+0.2495  Sbar_atomic=+0.2288  Sbar*Lambda=+0.0617
+  eps_atomic = 0.063612  (divertor_map.csv heat row: 0.0636)  REPRODUCED
+  d4/d3 for a unit n=3 deposit: post-step operator 0.1424, pre-step operator 0.1408 (expected 0.141, own operator)
+
+  single source into n=3 (statistical), phi3 imposed at the plateau (post-step operator, u_old):
+      phi3      v s^-1 phi4 result   eps_mol  atom/mol  Sbar_mol   naive  F3-F4 loc Delta_mol    cap
+      0.30   3.457e+00      0.0477    0.0397      1.60   +0.1444    1.58    +0.1593    +1.509  0.360
+      0.60   1.210e+01      0.1490    0.0176      3.61   +0.0648    3.53    +0.0724    +0.956  0.235
+      0.70   1.882e+01      0.2141    0.0110      5.80   +0.0404    5.66    +0.0454    +0.717  0.177
+      0.80   3.227e+01      0.3184    0.0050     12.83   +0.0183   12.47    +0.0207    +0.427  0.106
+
+  two sources (n=3 and n=4 deposits) hitting (phi3, phi4) exactly at the plateau:
+     (phi3,phi4)         w3         w4 real.  eps_mol atom/mol         exp. Sbar_mol  naive   F3-F4   Delta   cap | B: u_old     u_new     phi3,phi4   eps_B
+    (0.60,0.30)   1.122e+01  4.698e+00   yes   0.0199     3.20   0.0199/3.2  +0.0730   3.14 +0.0816  +1.161 0.282  1.540e-03 1.199e-03   0.549,0.291  0.0293
+    (0.70,0.45)   1.693e+01  1.012e+01   yes   0.0144     4.41       0.0144  +0.0531   4.31 +0.0597  +1.089 0.266  1.923e-03 1.504e-03   0.631,0.433  0.0256
+    (0.60,0.15)   1.210e+01  2.452e-02   yes   0.0176     3.60            -  +0.0649   3.53 +0.0725  +0.957 0.235  1.512e-03 1.177e-03   0.551,0.145  0.0256
+    (0.80,0.30)   3.240e+01 -7.136e-01    no  -- w4 < 0: an n=3 deposit alone at phi3=0.80 already puts phi4=0.318 > 0.30 into n=4 (collisional 3->4)
+    'naive' = Sbar_atomic/Sbar_mol, the ratio chapter 6's 'linear in f3-f4' would predict; 'atom/mol' is the actual eps ratio. They
+    differ by the exponential nonlinearity eps = |exp(Sbar Lambda) - 1|.
+    B columns: same sources, ground reservoir recomputed as the full CRE with the molecular source (pre and post); phi3,phi4 are what the
+    fractions then become at the plateau, eps_B the error.
+
+  ITEM 3  sweep phi3 at phi4 = 0.30 (two-source):
+    analytic zero of f3(1-phi3) - f4(1-phi4): phi3* = 1 - f4(1-phi4)/f3 = 0.8631
+    realisable (both sources >= 0) for phi3 in [0.15, 0.78] (step 0.01); below, the n=4 deposit alone puts more than phi3 into n=3 (w3 < 0); above, the n=3 deposit alone puts more than 0.30 into n=4 (w4 < 0)
+    the local zero phi3* = 0.8631 lies ABOVE the realisable range: at phi4 = 0.30 the sign change cannot be reached with non-negative sources here
+    secant Sbar_mol does not cross zero in the realisable range
+      phi3         w3         w4  F3-F4 loc  Sbar_mol  eps_mol atom/mol   Delta    cap
+      0.00 -1.486e+00  7.945e+00    +0.2677   not realisable
+      0.10 -5.449e-01  7.705e+00    +0.2367   not realisable
+      0.20  6.318e-01  7.404e+00    +0.2057   +0.1867   0.0516     1.23  +2.007  0.463
+      0.30  2.145e+00  7.018e+00    +0.1746   +0.1580   0.0435     1.46  +1.833  0.429
+      0.40  4.162e+00  6.502e+00    +0.1436   +0.1294   0.0355     1.79  +1.640  0.388
+      0.50  6.986e+00  5.781e+00    +0.1126   +0.1011   0.0276     2.30  +1.420  0.341
+      0.60  1.122e+01  4.698e+00    +0.0816   +0.0730   0.0199     3.20  +1.161  0.282
+      0.70  1.828e+01  2.894e+00    +0.0506   +0.0451   0.0122     5.21  +0.839  0.207
+      0.75  2.393e+01  1.451e+00    +0.0351   +0.0312   0.0084     7.54  +0.639  0.158
+      0.80  3.240e+01 -7.136e-01    +0.0196   not realisable
+      0.90  7.476e+01 -1.154e+01    -0.0115   not realisable
+
+==============================================================================
+WHAT REPLACES THE TWO SENTENCES IN SECTION 6.3
+==============================================================================
+(a) The factorisation and the tanh ceiling do NOT hold unchanged for a
+    matrix with a third reservoir. The excited block is affine in each
+    reservoir with non-negative coefficients (item 5); at fixed molecular
+    strength the ground-fed fraction is a logistic in ln u and
+    max_u|F3-F4| = tanh(|Delta(v)|/4) with Delta depending on v (item 4).
+    That is a bound on the response to the ground reservoir alone. It says
+    nothing about the response to the molecular reservoir, and Delta(v)
+    changes sign as the molecular fraction grows.
+(b) The dilution f_p -> f_p(1-phi_p) is exact for the LOCAL sensitivity at
+    the reservoir value where phi_p is measured, but the finite-step error
+    is exp(Sbar Lambda)-1, not linear, and the 0.201/0.054/0.053/0.019
+    sensitivities correspond to no point of this model. Computed values
+    for (0.6, 0.3) and the other targets are in the tables above.
+
+wrote /Users/phi/Desktop/non_markovian_cr/validation/molecular_channel/molecular_channel.csv  (400 rows)
+wrote /Users/phi/Desktop/non_markovian_cr/validation/molecular_channel/molecular_channel_summary.csv  (333 rows)
+wrote /Users/phi/Desktop/non_markovian_cr/validation/molecular_channel/molecular_channel.txt

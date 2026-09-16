@@ -1,0 +1,184 @@
+# generated 2026-09-11 21:24 by verify_lyman_optical_depth.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65  (data/processed/collisions/K_exc_full/state_index.csv)
+==============================================================================
+LYMAN-ALPHA OPTICAL DEPTH -- provenance
+==============================================================================
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  S_grid         : (50, 8, 43)
+  L_grid bytes   : sha256[:16] 806042b38a3acae9 (the hash convention lyman_trapping.txt uses)
+
+==============================================================================
+P1  sigma_0: escape_factor.lyman_alpha_sigma0 vs independent rebuild
+==============================================================================
+  T =  1.00 eV: module 5.473738e-14  independent 5.473738e-14  rel 0.00e+00
+  T =  1.50 eV: module 4.469289e-14  independent 4.469289e-14  rel 0.00e+00
+  T =  2.00 eV: module 3.870518e-14  independent 3.870518e-14  rel 0.00e+00
+  T =  3.00 eV: module 3.160264e-14  independent 3.160264e-14  rel 0.00e+00
+  T =  5.00 eV: module 2.447930e-14  independent 2.447930e-14  rel 0.00e+00
+  T = 10.00 eV: module 1.730948e-14  independent 1.730948e-14  rel 0.00e+00
+  [PASS] agree to 0.0e+00 (asserted < 1e-6)
+  sigma_0(1 eV, H) [cm^2] = 5.47374e-14   recorded 5.47e-14 [chapter 6 ~146; escape_factor.validate Test 4]  -> REPRODUCED, 3 digits, rel 6.83e-04
+  sqrt(kT/m) (WRONG) width at 1 eV: 7.7410e-14 cm^2 = 1.41421 x correct
+  deuterium at 1 eV: 7.7391e-14 cm^2 = 1.41386 x hydrogen (sqrt(m_D/m_H) = 1.41386; sqrt 2 = 1.41421)
+  T_n = 3 eV: 3.1603e-14 cm^2 = 0.57735 x the 1 eV value
+
+==============================================================================
+1   n(1s) = n_e [-L^{-1} S]_1s and kappa_0 = sigma_0 n(1s) on the grid
+==============================================================================
+  kappa_0 (H, T_n = Te) range: 1.896e-07 to 1.121e+03 per cm; max at [0,7]
+  n(1s)/n_ion range: 5.349e-06 to 4.044e+01
+
+==============================================================================
+2   kappa_0 per cm at the thesis's table points and the benchmark
+==============================================================================
+  benchmark (Te 2.947, ne 1.389e+14) -> [23,5] = Te 2.9471, ne 1.3895e+14   [asserted (23,5)]
+
+       pt      Te         ne       n(1s)   H (T_n=Te)    deuterium      T_n=3eV  sqrt(kT/m) WRONG
+  [ 0,4]   1.000  5.179e+13  1.4669e+15       80.294       113.53       46.358            113.55
+  [ 3,4]   1.151  5.179e+13  2.0858e+14        10.64       15.044       6.5918            15.048
+  [10,4]   1.600  5.179e+13  5.1853e+12       0.2244      0.31727      0.16387           0.31735
+  [15,4]   2.024  5.179e+13  6.6186e+11     0.025468     0.036008     0.020916          0.036017
+  [23,4]   2.947  5.179e+13  5.1174e+10    0.0016317     0.002307    0.0016172         0.0023076
+  [23,5]   2.947  1.389e+14  1.2233e+11    0.0039005    0.0055148     0.003866         0.0055162
+
+  P2  hydrogen vs chapter 6 table (~155-159):
+    kappa_0 H [0,4] per cm = 80.2943   recorded 80.3 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 7.10e-05
+    kappa_0 H [3,4] per cm = 10.6403   recorded 10.6 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 3.80e-03
+    kappa_0 H [10,4] per cm = 0.224398   recorded 0.224 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 1.78e-03
+    kappa_0 H [15,4] per cm = 0.0254676   recorded 0.0255 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 1.27e-03
+    kappa_0 H [23,4] per cm = 0.0016317   recorded 0.00163 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 1.04e-03
+  P3  sqrt(kT/m) WRONG width vs chapter 5 prose (~2148-2151):
+    kappa_0 WRONG-width [0,4] per cm = 113.553   recorded 114 [chapter5.tex sec:optical_depth]  -> REPRODUCED, 3 digits, rel 3.92e-03
+    kappa_0 WRONG-width [15,4] per cm = 0.0360166   recorded 0.036 [chapter5.tex sec:optical_depth]  -> REPRODUCED, 2 digits, rel 4.61e-04
+    kappa_0 WRONG-width [23,4] per cm = 0.00230757   recorded 0.0023 [chapter5.tex sec:optical_depth]  -> REPRODUCED, 2 digits, rel 3.29e-03
+  P3' deuterium at [0,4] (also reproduces 114 to 3 digits?):
+    kappa_0 deuterium [0,4] per cm = 113.525   recorded 113.6 [task expectation]  -> REPRODUCED, 3 digits, rel 6.59e-04
+    kappa_0 deuterium [0,4] vs ch5 114 = 113.525   recorded 114 [chapter5.tex]  -> REPRODUCED, 3 digits, rel 4.17e-03
+  P4  T_n = 3 eV at [0,4]:
+    kappa_0 H, T_n=3 eV [0,4] per cm = 46.3579   recorded 46.4 [task expectation]  -> REPRODUCED, 3 digits, rel 9.07e-04
+  benchmark [23,5] (chapter 6 ~177 calls the [23,4] value 'the benchmark point'; it is not):
+    kappa_0 H [23,5] per cm = 0.00390054
+    kappa_0 WRONG-width [23,5] per cm = 0.00551619
+    ratio of [23,4] to [23,5] hydrogen: 0.4183; neither the table's 0.00163 nor the prose's 0.0023 is the benchmark value
+
+==============================================================================
+3   tau_0 = 1 boundary per density column (log-log interpolation in Te)
+==============================================================================
+  columns:  1.00e+12  2.68e+12  7.20e+12  1.93e+13  5.18e+13  1.39e+14  3.73e+14  1.00e+15
+  D= 1.0 half-slab H:     1.007     1.071     1.142     1.223     1.313     1.416     1.532     1.667   -> 1.007 to 1.667 eV  (8 crossings, 0 above 2 eV)
+  D= 1.0 half-slab D:     1.030     1.097     1.172     1.257     1.352     1.460     1.584     1.727   -> 1.030 to 1.727 eV  (8 crossings, 0 above 2 eV)
+  D= 1.0 full-path H:     1.055     1.125     1.204     1.293     1.393     1.508     1.639     1.791   -> 1.055 to 1.791 eV  (8 crossings, 0 above 2 eV)
+  D= 1.0 full-path D:     1.080     1.154     1.237     1.330     1.437     1.558     1.697     1.860   -> 1.080 to 1.860 eV  (8 crossings, 0 above 2 eV)
+  D= 1.0 half-slab WRONG:     1.030     1.097     1.172     1.257     1.352     1.460     1.584     1.727   -> 1.030 to 1.727 eV
+  D= 5.0 half-slab H:     1.125     1.205     1.295     1.397     1.514     1.648     1.802     1.984   -> 1.125 to 1.984 eV  (8 crossings, 0 above 2 eV)
+  D= 5.0 half-slab D:     1.154     1.238     1.332     1.441     1.565     1.708     1.872     2.067   -> 1.154 to 2.067 eV  (8 crossings, 1 above 2 eV)
+  D= 5.0 full-path H:     1.185     1.272     1.372     1.487     1.618     1.771     1.947     2.156   -> 1.185 to 2.156 eV  (8 crossings, 1 above 2 eV)
+  D= 5.0 full-path D:     1.216     1.309     1.415     1.536     1.676     1.838     2.027     2.252   -> 1.216 to 2.252 eV  (8 crossings, 2 above 2 eV)
+  D= 5.0 half-slab WRONG:     1.154     1.238     1.332     1.441     1.565     1.708     1.872     2.067   -> 1.154 to 2.067 eV
+  D=20.0 half-slab H:     1.250     1.348     1.459     1.588     1.737     1.911     2.113     2.356   -> 1.250 to 2.356 eV  (8 crossings, 2 above 2 eV)
+  D=20.0 half-slab D:     1.285     1.388     1.507     1.643     1.803     1.989     2.207     2.469   -> 1.285 to 2.469 eV  (8 crossings, 2 above 2 eV)
+  D=20.0 full-path H:     1.322     1.431     1.557     1.703     1.873     2.073     2.308     2.592   -> 1.322 to 2.592 eV  (8 crossings, 3 above 2 eV)
+  D=20.0 full-path D:     1.362     1.477     1.610     1.765     1.948     2.163     2.417     2.726   -> 1.362 to 2.726 eV  (8 crossings, 3 above 2 eV)
+  D=20.0 half-slab WRONG:     1.285     1.388     1.507     1.644     1.803     1.989     2.207     2.469   -> 1.285 to 2.469 eV
+  P5  D = 5 cm half-slab hydrogen:
+    tau_half=1 boundary D=5 H, min Te [eV] = 1.12521   recorded 1.125 [make_story_figures.py; task]  -> REPRODUCED, 4 digits, rel 1.89e-04
+    tau_half=1 boundary D=5 H, max Te [eV] = 1.98404   recorded 1.984 [make_story_figures.py; task]  -> REPRODUCED, 4 digits, rel 1.91e-05
+    the sqrt(2) width error moves the D = 5 boundary by at most 4.17% in Te (1.154 to 2.067 eV)
+    half-slab hydrogen crossings above 2 eV over all D: 2 (make_story_figures reports these all lie at D = 20 cm)
+
+==============================================================================
+4   breakdown census against tau(5 cm), PRE-step (i, j) of each pair
+==============================================================================
+  source validation/divertor_map/divertor_map.csv; its header carries the live L_grid, S_grid and state_index hashes [checked]
+  convention: the csv's (i, j, Te, ne) are the pre-step point (verify_divertor_map.py:196, Te=Te[i]); the thesis counts pairs by that point, and so does this recount. The post-step point is 5% hotter and is not stored.
+  window_ok rows = 680   recorded 680 [chapter 5 table]  -> REPRODUCED, 3 digits, rel 0.00e+00
+  breakdown pairs (lo_ELM_crash > 0.10) = 202   recorded 202 [chapter 5 ~1549]  -> REPRODUCED, 3 digits, rel 0.00e+00
+  of which pre-step Te < 2 eV = 157   recorded 157 [chapter 5 ~1550]  -> REPRODUCED, 3 digits, rel 0.00e+00
+  (a) half-slab, hydrogen              tau(5 cm) > 1:   85   > 100:   15   expected 85/15: REPRODUCED/REPRODUCED
+  (b) full-path, hydrogen              tau(5 cm) > 1:  100   > 100:   23   expected 100/23: REPRODUCED/REPRODUCED
+  (c) full-path, sqrt(kT/m) WRONG      tau(5 cm) > 1:  105   > 100:   26   expected 105/26: REPRODUCED/REPRODUCED
+  (d) half-slab, sqrt(kT/m) WRONG      tau(5 cm) > 1:   93   > 100:   19
+  (e) half-slab, deuterium             tau(5 cm) > 1:   93   > 100:   19
+  (f) full-path, deuterium             tau(5 cm) > 1:  105   > 100:   26
+  (g) half-slab, hydrogen, T_n=3 eV    tau(5 cm) > 1:   78   > 100:   12
+  the thesis's 105/26 (chapter 5 ~1551, chapter 6 ~192) is reproduced by: ['(c) full-path, sqrt(kT/m) WRONG', '(f) full-path, deuterium']
+
+==============================================================================
+5   escape factors: one-shot (thin n(1s)) vs self-consistent (log)
+==============================================================================
+  validation/lyman_trapping/lyman_trapping.csv columns carry Theta? False  -> reading the run log instead
+  validation/lyman_trapping/lyman_trapping.txt: L_grid (canon) hash matches live array [checked]; D runs found: [1.0, 5.0, 20.0]
+  P7  [0,4], D = 5 cm:
+    tau_half [0,4] D=5 H = 200.736   recorded 200.7 [task]  -> REPRODUCED, 4 digits, rel 1.78e-04
+    tau_half [0,4] D=5 H vs ch6 '201' = 200.736   recorded 201 [chapter 6 ~166]  -> REPRODUCED, 3 digits, rel 1.31e-03
+    one-shot Theta_P [0,4] D=5 = 0.00117811   recorded 0.001178 [task]  -> REPRODUCED, 4 digits, rel 9.57e-05
+    one-shot Theta_P vs ch6 '1.2e-3' = 0.00117811   recorded 0.0012 [chapter 6 ~167]  -> REPRODUCED, 2 digits, rel 1.82e-02
+    self-consistent Theta_Lya [0,4] D=5 (log) = 0.014401   recorded 0.0144 [task; lyman_trapping.txt]  -> REPRODUCED, 3 digits, rel 6.94e-05
+    one-shot: A_eff(2p->1s) reduced by 2.93 orders; self-consistent: 1.84 orders (trapping depletes n(1s) by 9.36x, which is why the self-consistent factor is 12.2x larger)
+    self-consistent grid minimum Theta_Lya (D=20) = 0.00077968   recorded 0.00078 [task; lyman_trapping.txt]  -> REPRODUCED, 2 digits, rel 4.10e-04
+    grid minimum over D: D=1: 1.1112e-02 (1.95 orders), D=5: 2.9165e-03 (2.54 orders), D=20: 7.7968e-04 (3.11 orders)
+  [0,7] (Te 1.000, ne 1.000e+15) one-shot -- a different grid point from [0,4], quoted for the chapter-3 '3e-5' comparison:
+    one-shot Theta_P [0,7] D=5 (tau_half 2801.7) = 6.95497e-05   recorded 7e-05 [task '~']  -> REPRODUCED, 2 digits, rel 6.43e-03
+    one-shot Theta_P [0,7] D=10 (tau_half 5603.4) = 3.34034e-05   recorded 3.7e-05 [task '~']  -> NOT REPRODUCED, 0 digits, rel 9.72e-02
+
+==============================================================================
+6   benchmark [23,5] self-consistent Theta_Lya from lyman_trapping.txt
+==============================================================================
+  self-consistent Theta_Lya [23,5] D=1 = 0.99862   recorded 0.9999 [chapter 6 ~286-287]  -> NOT REPRODUCED, 2 digits, rel 1.28e-03
+  self-consistent Theta_Lya [23,5] D=20 = 0.97304   recorded 0.973 [chapter 6 ~286-287]  -> REPRODUCED, 3 digits, rel 4.11e-05
+  Theta_Lya [23,5] D=1 vs artifact 0.99862 = 0.99862   recorded 0.99862 [task; lyman_trapping.txt]  -> REPRODUCED, 5 digits, rel 0.00e+00
+  1 - Theta at D = 1 cm: 1.38e-03 (chapter 6's 0.9999 implies 1e-4; the log says 1.4e-03, a factor 14 more absorption)
+
+  wrote /Users/phi/Desktop/non_markovian_cr/validation/lyman_optical_depth/lyman_optical_depth.csv
+  wrote /Users/phi/Desktop/non_markovian_cr/validation/lyman_optical_depth/lyman_optical_depth_summary.csv
+  wrote /Users/phi/Desktop/non_markovian_cr/validation/lyman_optical_depth/lyman_optical_depth.txt
+
+==============================================================================
+VERDICT on the predictions
+==============================================================================
+  P1  sigma_0(1 eV, H) [cm^2]                              5.473738377576607e-14 vs 5.47e-14   REPRODUCED (3 digits)
+  P2  kappa_0 H [0,4] per cm                               80.29430014504123 vs 80.3       REPRODUCED (3 digits)
+  P2  kappa_0 H [3,4] per cm                               10.640257423326306 vs 10.6       REPRODUCED (3 digits)
+  P2  kappa_0 H [10,4] per cm                              0.22439787916998005 vs 0.224      REPRODUCED (3 digits)
+  P2  kappa_0 H [15,4] per cm                              0.025467568422406543 vs 0.0255     REPRODUCED (3 digits)
+  P2  kappa_0 H [23,4] per cm                              0.0016316977152169136 vs 0.00163    REPRODUCED (3 digits)
+  P3  kappa_0 WRONG-width [0,4] per cm                     113.55328824637331 vs 114.0      REPRODUCED (3 digits)
+  P3  kappa_0 WRONG-width [15,4] per cm                    0.0360165806636321 vs 0.036      REPRODUCED (2 digits)
+  P3  kappa_0 WRONG-width [23,4] per cm                    0.0023075690385529505 vs 0.0023     REPRODUCED (2 digits)
+  P3  kappa_0 deuterium [0,4] per cm                       113.52511061953315 vs 113.6      REPRODUCED (3 digits)
+  P3  kappa_0 deuterium [0,4] vs ch5 114                   113.52511061953315 vs 114.0      REPRODUCED (3 digits)
+  P4  kappa_0 H, T_n=3 eV [0,4] per cm                     46.35793580313216 vs 46.4       REPRODUCED (3 digits)
+  P5  tau_half=1 boundary D=5 H, min Te [eV]               1.1252127820686835 vs 1.125      REPRODUCED (4 digits)
+  P5  tau_half=1 boundary D=5 H, max Te [eV]               1.9840379721660302 vs 1.984      REPRODUCED (4 digits)
+  P6  window_ok rows                                                  680 vs 680        REPRODUCED (3 digits)
+  P6  breakdown pairs (lo_ELM_crash > 0.10)                           202 vs 202        REPRODUCED (3 digits)
+  P6  of which pre-step Te < 2 eV                                     157 vs 157        REPRODUCED (3 digits)
+  P6  census (a) half-slab, hydrogen n(tau>1)                          85 vs 85         REPRODUCED
+  P6  census (a) half-slab, hydrogen n(tau>100)                        15 vs 15         REPRODUCED
+  P6  census (b) full-path, hydrogen n(tau>1)                         100 vs 100        REPRODUCED
+  P6  census (b) full-path, hydrogen n(tau>100)                        23 vs 23         REPRODUCED
+  P6  census (c) full-path, sqrt(kT/m) WRONG n(tau>1)                 105 vs 105        REPRODUCED
+  P6  census (c) full-path, sqrt(kT/m) WRONG n(tau>100)                26 vs 26         REPRODUCED
+  P6  variants reproducing thesis 105/26                                2 vs 1          (c) full-path, sqrt(kT/m) WRONG; (f) full-path, deuterium
+  P7  tau_half [0,4] D=5 H                                 200.73575036260308 vs 200.7      REPRODUCED (4 digits)
+  P7  tau_half [0,4] D=5 H vs ch6 '201'                    200.73575036260308 vs 201.0      REPRODUCED (3 digits)
+  P7  one-shot Theta_P [0,4] D=5                           0.0011781127443720638 vs 0.001178   REPRODUCED (4 digits)
+  P7  one-shot Theta_P vs ch6 '1.2e-3'                     0.0011781127443720638 vs 0.0012     REPRODUCED (2 digits)
+  P7  self-consistent Theta_Lya [0,4] D=5 (log)                  0.014401 vs 0.0144     REPRODUCED (3 digits)
+  P7  self-consistent grid minimum Theta_Lya (D=20)            0.00077968 vs 0.00078    REPRODUCED (2 digits)
+  5   one-shot Theta_P [0,7] D=5 (tau_half 2801.7)         6.954974301468668e-05 vs 7e-05      REPRODUCED (2 digits)
+  5   one-shot Theta_P [0,7] D=10 (tau_half 5603.4)        3.340335488049559e-05 vs 3.7e-05    NOT REPRODUCED (0 digits)
+  P8  self-consistent Theta_Lya [23,5] D=1                        0.99862 vs 0.9999     NOT REPRODUCED (2 digits)
+  P8  self-consistent Theta_Lya [23,5] D=20                       0.97304 vs 0.973      REPRODUCED (3 digits)
+  P8  Theta_Lya [23,5] D=1 vs artifact 0.99862                    0.99862 vs 0.99862    REPRODUCED (5 digits)
+  2 of 35 recorded comparisons NOT reproduced

@@ -162,16 +162,21 @@ supervision and that it has not been submitted elsewhere for a degree.
 \thispagestyle{empty}
 
 The work reported in this thesis is my own. Every numerical result is produced
-by a script in the accompanying repository, and each such result is quoted in
-the text with the script and the data file that produced it. Where a value is
-taken from the literature it is cited. Where a value is recorded in this
-project's own notes without a producing script, the text says so rather than
-presenting it as reproduced.
+by a script in the accompanying repository, and results are quoted in the text
+with the script and the data file that produced them. Where a value is taken
+from the literature it is cited.
+
+That standard is not met uniformly. A number of values in the text trace to this
+project's working notes rather than to a stamped artifact under
+\texttt{validation/}; where that is so the text says so, and
+Section~\ref{sec:reproducibility} records what has been reproduced, by what
+means, and which provenance defects remain unrepaired. Stating the defect is not
+the same as having none.
 
 Two errors found during the audit of this work, one in the $\ell$-mixing
-Coulomb logarithm and one in an eigenvalue filter, are reported in
-Chapter~\ref{ch:atoms} and Chapter~\ref{ch:validation} together with their
-effect on the results, rather than corrected silently.
+Coulomb logarithm and one in an eigenvalue filter, were corrected. Their size
+and their effect on the results are reported in Chapter~\ref{ch:atoms} and
+Chapter~\ref{ch:validation}, rather than the corrections being made silently.
 
 \vspace{3cm}
 \noindent
@@ -240,7 +245,11 @@ the count near a tenth of the pairs
 available and raises the worst case to \SI{22.1}{\percent}, so the
 fixed-density map understates it. At
 citable detached-divertor densities nothing breaks down at either duration, and
-the worst case is \SI{7.2}{\percent}. Timescale
+the worst case is \SI{7.2}{\percent}. Inverted for temperature at known
+density, the plateau ratio has no solution within the table's $1$ to
+\SI{10}{\electronvolt} domain for $166$ of those $448$ pairs, and where it has
+one, a \SI{4.81}{\percent} step is read back with a median error of
+\SI{48}{\percent}, on the side the plasma came from at every pair. Timescale
 separation does not predict any of it: the ratio of the two clocks is $9982$ at
 the reference point, and the density at which that ratio is largest sits a
 factor $52$ away from the density at which the error is largest.
@@ -365,12 +374,9 @@ Chapter~\ref{ch:atoms}, whose work this thesis rearranges rather than replaces.
 \input{chapter7}
 %=============================================================================
 \appendix
-\chapter{State Ordering}
-\label{app:states}
-\chapter{Atomic Data Sources}
-\label{app:data}
-\chapter{Numerical Methods and Convergence}
-\label{app:numerics}
+\input{appendixA}
+\input{appendixB}
+\input{appendixC}
 
 \bibliographystyle{unsrtnat}
 \bibliography{references}

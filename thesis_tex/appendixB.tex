@@ -1,0 +1,132 @@
+\chapter{Atomic Data Sources}
+\label{app:data}
+
+Chapter~\ref{ch:atoms} explains what each rate in $\Lmat$ represents and why it
+matters. This appendix records where each one came from, which script converted
+it, and what it is stored in, so that any coefficient in the matrix can be
+traced to a published source without reading the code. It also states which
+coefficients are \emph{not} independent measurements, because that is the single
+most important thing to know when reading a validation table: a check between
+two quantities derived from one another cannot fail.
+
+\section{The stack, end to end}
+
+\begin{table}[htbp]
+  \centering
+  \caption[Provenance of every rate in the matrix]{Every coefficient entering
+    $\Lmat$ or $\Svec$, with its source, the script that produced it, and the
+    file it is stored in. Paths are relative to \texttt{data/processed/}.}
+  \label{tab:data_provenance}
+  \small
+  \begin{tabular}{@{}p{2.6cm}p{3.5cm}p{3.2cm}p{4.3cm}@{}}
+    \toprule
+    quantity & source & script & stored in \\
+    \midrule
+    Excitation, \newline $n_{\rm upper} \le 10$
+      & Convergent close-coupling cross sections
+        \cite{BrayStelbovics1992,Bray2002}
+      & \texttt{compute\_K\_CCC.py}
+      & \texttt{collisions/ccc/} \newline \texttt{K\_CCC\_exc\_table.npy} \\
+    \addlinespace
+    Excitation, \newline $n = 11$--$15$
+      & Vriens \& Smeets semi-empirical formula
+        \cite{VriensSmeets1980}, in the form implemented by
+        \cite{Hartgers2001}
+      & \texttt{compute\_K\_VS.py}
+      & \texttt{collisions/vs/} \newline \texttt{K\_VS\_exc\_table.npy} \\
+    \addlinespace
+    De-excitation
+      & \emph{not independent}: detailed balance applied to the excitation
+        rates above
+      & \texttt{compute\_K\_CCC.py}, \newline \texttt{compute\_K\_VS.py}
+      & \texttt{K\_deexc\_full.npy} \\
+    \addlinespace
+    Ionisation
+      & CCC total ionisation cross sections, Maxwell-averaged, for
+        $n \le 9$; Lotz's formula \cite{Lotz1968} for the bundled
+        $n = 10$--$15$, which overestimates CCC by a factor $4$--$8$
+      & \texttt{compute\_K\_TICS.py}, \newline \texttt{ionization\_rates.py}
+      & \texttt{collisions/tics/} \newline \texttt{K\_ion\_final.npy} \\
+    \addlinespace
+    Radiative \newline recombination
+      & Johnson's three-term Gaunt-factor formula \cite{Johnson1972},
+        after \cite{Seaton1959}
+      & \texttt{recombination\_rates.py}
+      & \texttt{recombination/} \newline \texttt{alpha\_RR\_resolved.npy} \\
+    \addlinespace
+    Three-body \newline recombination
+      & \emph{not independent}: detailed balance applied to the ionisation
+        rates above
+      & \texttt{recombination\_rates.py}
+      & \texttt{recombination/} \newline \texttt{alpha\_3BR\_resolved.npy} \\
+    \addlinespace
+    Einstein $A$ \newline coefficients
+      & Hoang-Binh's exact hydrogenic radial integrals \cite{HoangBinh1990},
+        distributed as \textsc{aduu} \cite{HoangBinh2005}. The producing script
+        names a 1993 paper, for which this project holds no reference; the
+        discrepancy is unresolved
+      & \texttt{radiative\_rates.py}
+      & \texttt{Radiative/} \newline \texttt{A\_resolved.npy} \\
+    \addlinespace
+    Proton-impact \newline $\ell$-mixing
+      & PSM20 Debye-cutoff formula \cite{Badnell2021}
+      & \texttt{compute\_lmix.py}
+      & \texttt{lmix/K\_lmix.npy} \\
+    \addlinespace
+    Assembled \newline operator
+      & the eight rows above
+      & \texttt{assemble\_cr\_matrix.py}
+      & \texttt{cr\_matrix/L\_grid.npy}, \newline \texttt{S\_grid.npy},
+        \texttt{L\_meta.csv} \\
+    \addlinespace
+    \midrule
+    ADAS SCD96, \newline ACD96
+      & \emph{comparison only; does not enter $\Lmat$}
+        \cite{Summers2006,ADAS}
+      & \texttt{parser\_adasf11.py}, \newline \texttt{prepare\_adas.py}
+      & \texttt{adas/} \newline \texttt{SCD96\_interpolated.csv} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Which checks can fail, and which cannot}
+
+Two rows of Table~\ref{tab:data_provenance} are marked \emph{not independent},
+and the consequence is worth stating plainly rather than leaving for a reader to
+infer. De-excitation is obtained from excitation by detailed balance, and
+three-body recombination from ionisation by detailed balance. A numerical test
+that those relations hold therefore tests the arithmetic that imposed them and
+nothing else. Chapter~\ref{ch:validation} grades Gate~A \emph{tautological} for
+exactly this reason: it passes at better than \SI{0.01}{\percent}, and it would
+pass on corrupted input.
+
+The checks that can fail are those between quantities with independent origins:
+the excitation rates against R-matrix-with-pseudostates calculations, the raw
+cross sections against microscopic reversibility, the assembled operator's
+effective coefficients against ADAS, and the population coefficients against
+Fujimoto's tabulation. The first two are graded \emph{severe} in
+Table~\ref{tab:ladder} and the last two are among its four external
+comparisons; of those four, one fails and one is an open disagreement.
+
+\section{The seam at \texorpdfstring{$n = 10$}{n = 10}}
+
+The excitation data change character between $n_{\rm upper} = 10$ and
+$n_{\rm upper} = 11$: quantum close-coupling below, a semi-empirical formula
+above. The seam is a property of the available data and not a modelling choice.
+Its consequence for this thesis is confined to the bundled shells, which the
+observable does not read: $\ffrac{3}-\ffrac{4}$ is built from $n = 3$ and
+$n = 4$, seven and six shells below the seam.
+
+\section{Two constants, and why both appear}
+
+The hydrogen ionisation energy enters the pipeline twice, with two different
+values, and this is deliberate. Collisional thresholds use the Rydberg energy
+$R_\infty hc = \SI{13.605693122990}{\electronvolt}$, because that is the energy
+scale on which the CCC and TICS cross sections are tabulated. Radiative
+transition energies use the measured ionisation energy of the hydrogen atom,
+$\SI{13.598434599702}{\electronvolt}$, which includes the reduced-mass and
+relativistic corrections. Both are recorded in \texttt{L\_meta.csv} as
+\texttt{IH\_collision\_eV} and \texttt{IH\_radiative\_eV}. They differ by
+\SI{0.053}{\percent}. Appendix~\ref{app:states} states the hazard this creates for
+detailed-balance tests, and Chapter~\ref{ch:atoms} the physics of why both are
+correct in their own place.

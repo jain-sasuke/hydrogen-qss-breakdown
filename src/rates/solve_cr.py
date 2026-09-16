@@ -266,7 +266,7 @@ class CRSolver:
         Returns dict with tau_QSS, tau_relax, M, all eigenvalues.
         """
         eigs = np.sort(np.linalg.eigvals(L).real)[::-1]   # descending
-        eigs_neg = eigs[eigs < -1.0]   # exclude near-zero numerical noise
+        eigs_neg = eigs[eigs < 0.0]    # all decaying modes; see qss_analysis.py
 
         if len(eigs_neg) < 2:
             return {'M': np.nan, 'tau_QSS': np.nan, 'tau_relax': np.nan}

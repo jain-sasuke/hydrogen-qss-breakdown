@@ -1,0 +1,178 @@
+==============================================================================
+OPEN-RESERVOIR TEST OF THE 'UPPER ESTIMATE' INFERENCE (ch6 sec 6.2)
+generated 2026-09-11 21:26  by verify_open_reservoir.py
+interpreter /opt/anaconda3/envs/cr/bin/python   numpy 2.3.5
+repo root /Users/phi/Desktop/non_markovian_cr
+  sha256 L_grid.npy               2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+  sha256 S_grid.npy               7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+  sha256 state_index.csv          23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+  sha256 divertor_map.csv         5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+  sha256 transport_selection.csv  07d4a87299d866da3999f9baef57595720bd10d9c78ddaa7c63599d88580eb72
+state ordering data/processed/collisions/K_exc_full/state_index.csv; n=3 ['3S', '3P', '3D']  n=4 ['4S', '4P', '4D', '4F']
+==============================================================================
+divertor_map.csv provenance matches the operator on disk; fractional step 0.05
+defended breakdown set (window_ok, Te >= 2.0 eV, lo_ELM_crash > 0.1): 45 pairs, 22 heating, 23 cooling; identical in both files
+benchmark pair ('heat', 23, 5): Te = 2.9471 eV, ne = 1.3895e+14 cm^-3, in the breakdown set: False
+
+==============================================================================
+STEP 1  Schur reduction against the full operator
+==============================================================================
+  columns: pair | M | alpha/S vs u_CRE (rel) | 1/S_eff+ vs tau_QSS (rel) | eps_plateau recomputed vs csv (rel)
+  cool [15,1] -> [14,1]  M=1.412e+06   1.9e-15   1.2e-06   5.0e-14
+  cool [15,2] -> [14,2]  M=7.770e+05   4.0e-14   3.4e-06   2.4e-14
+  cool [15,3] -> [14,3]  M=3.690e+05   3.2e-14   7.5e-06   1.2e-13
+  cool [15,4] -> [14,4]  M=1.641e+05   3.0e-14   1.7e-05   3.8e-13
+  cool [16,1] -> [15,1]  M=1.025e+06   1.5e-14   1.9e-06   2.2e-13
+  cool [16,2] -> [15,2]  M=5.692e+05   2.4e-14   4.2e-06   9.1e-14
+  cool [16,3] -> [15,3]  M=2.708e+05   1.3e-14   9.4e-06   3.9e-13
+  cool [16,4] -> [15,4]  M=1.220e+05   2.5e-14   2.1e-05   4.8e-14
+  cool [17,1] -> [16,1]  M=7.548e+05   1.5e-14   2.3e-06   1.7e-13
+  cool [17,2] -> [16,2]  M=4.227e+05   1.2e-14   5.1e-06   1.8e-13
+  cool [17,3] -> [16,3]  M=2.015e+05   1.4e-14   1.2e-05   8.5e-14
+  cool [17,4] -> [16,4]  M=9.192e+04   4.6e-14   2.6e-05   4.6e-13
+  cool [18,2] -> [17,2]  M=3.179e+05   1.6e-14   6.4e-06   2.6e-13
+  cool [18,3] -> [17,3]  M=1.519e+05   1.8e-14   1.5e-05   2.7e-13
+  cool [19,2] -> [18,2]  M=2.421e+05   2.1e-14   7.9e-06   1.9e-13
+  cool [19,3] -> [18,3]  M=1.159e+05   4.7e-14   1.8e-05   1.7e-13
+  cool [20,2] -> [19,2]  M=1.865e+05   2.1e-14   9.7e-06   9.7e-14
+  cool [20,3] -> [19,3]  M=8.948e+04   4.7e-14   2.2e-05   4.5e-13
+  cool [21,2] -> [20,2]  M=1.452e+05   1.5e-14   1.2e-05   1.8e-13
+  cool [21,3] -> [20,3]  M=6.987e+04   1.6e-15   2.7e-05   1.9e-13
+  cool [22,2] -> [21,2]  M=1.143e+05   2.0e-14   1.4e-05   2.3e-13
+  cool [22,3] -> [21,3]  M=5.515e+04   7.8e-15   3.2e-05   2.1e-13
+  cool [23,2] -> [22,2]  M=9.086e+04   2.8e-14   1.7e-05   5.0e-13
+  heat [15,1] -> [16,1]  M=7.548e+05   1.5e-14   2.3e-06   2.1e-13
+  heat [15,2] -> [16,2]  M=4.227e+05   2.4e-14   5.1e-06   2.1e-13
+  heat [15,3] -> [16,3]  M=2.015e+05   1.3e-14   1.2e-05   9.5e-14
+  heat [15,4] -> [16,4]  M=9.192e+04   2.5e-14   2.6e-05   4.4e-13
+  heat [16,2] -> [17,2]  M=3.179e+05   1.2e-14   6.4e-06   3.0e-13
+  heat [16,3] -> [17,3]  M=1.519e+05   1.4e-14   1.5e-05   2.9e-13
+  heat [16,4] -> [17,4]  M=7.014e+04   4.6e-14   3.3e-05   3.2e-13
+  heat [17,2] -> [18,2]  M=2.421e+05   1.6e-14   7.9e-06   2.1e-13
+  heat [17,3] -> [18,3]  M=1.159e+05   1.8e-14   1.8e-05   1.8e-13
+  heat [17,4] -> [18,4]  M=5.417e+04   4.6e-14   4.0e-05   1.4e-13
+  heat [18,2] -> [19,2]  M=1.865e+05   2.1e-14   9.7e-06   1.1e-13
+  heat [18,3] -> [19,3]  M=8.948e+04   4.7e-14   2.2e-05   4.7e-13
+  heat [18,4] -> [19,4]  M=4.232e+04   3.6e-14   4.8e-05   3.3e-13
+  heat [19,2] -> [20,2]  M=1.452e+05   2.1e-14   1.2e-05   2.1e-13
+  heat [19,3] -> [20,3]  M=6.987e+04   4.7e-14   2.7e-05   2.0e-13
+  heat [20,2] -> [21,2]  M=1.143e+05   1.5e-14   1.4e-05   2.6e-13
+  heat [20,3] -> [21,3]  M=5.515e+04   1.6e-15   3.2e-05   2.1e-13
+  heat [21,2] -> [22,2]  M=9.086e+04   2.0e-14   1.7e-05   5.5e-13
+  heat [21,3] -> [22,3]  M=4.397e+04   7.8e-15   3.8e-05   2.1e-13
+  heat [22,2] -> [23,2]  M=7.293e+04   2.8e-14   2.0e-05   5.5e-13
+  heat [22,3] -> [23,3]  M=3.541e+04   2.1e-14   4.5e-05   1.3e-13
+  heat [23,2] -> [24,2]  M=5.907e+04   2.8e-14   2.4e-05   2.2e-13
+  heat [23,5] -> [24,5]  M=8.243e+03   3.7e-14   2.4e-04   3.6e-15   <-- 1/S_eff misses tau_QSS at 4 digits
+
+  worst alpha/S vs u_CRE         4.66e-14   (identity; raise if > 1e-8)
+  worst 1/S_eff+ vs tau_QSS       2.42e-04   (1 of 46 pairs beyond 1e-4)
+  worst eps_plateau vs csv        5.52e-13
+  worst frac_achieved vs csv      0.00e+00
+  P2 check: rel discrepancy x M ranges 1.405 .. 2.785  (O(1) means the discrepancy is the expected 1/M QSS correction)
+
+==============================================================================
+STEP 2  Open reservoir: escape sink + recycling source
+==============================================================================
+  du/dt = alpha_eff + m*Gamma_0 - (S_eff + nu_esc) u,  Gamma_0 = (S_eff- + nu_esc) u_CRE- - alpha_eff-
+  steady error = |R(u_open+)/R(u_CRE+) - 1| with post-step two-channel coefficients
+  P1 check: worst |Gamma_0/(nu_esc u_CRE-) - 1| = 4.26e-13
+  pre-step open steady state equals pre-step CRE at every pair (asserted to 1e-10)
+
+==============================================================================
+STEP 3  Reproduction of the physicist's scratch (check3.py (d)) at heat [15,3], L = 10 cm
+==============================================================================
+    S_eff pre  [s^-1]            got 493.271        scratch 493        agrees at 3 sig. fig.
+    S_eff post [s^-1]            got 669.454        scratch 669        agrees at 3 sig. fig.
+    u_CRE pre                    got 0.0141218      scratch 0.014122   agrees at 5 sig. fig.
+    u_CRE post                   got 0.0098039      scratch 0.0098039  agrees at 5 sig. fig.
+    tau_esc [us]                 got 13.3149        scratch 13.3       agrees at 3 sig. fig.
+    eps_plateau (closed parcel)  got 0.180728       scratch 0.181      agrees at 3 sig. fig.
+    m=1  u_open+                 got 0.0140836      scratch 0.01408    agrees at 4 sig. fig.
+    m=1  steady error            got 0.179266       scratch 0.179      agrees at 3 sig. fig.
+    m=2  steady error            got 0.599997       scratch 0.6        agrees at 2 sig. fig.
+    m=5  steady error            got 1.19996        scratch 1.2        agrees at 3 sig. fig.
+    m=0  steady error            got 0.562158       scratch 0.56       agrees at 2 sig. fig.
+  scratch reproduced at the stated digits: True
+  1/S_eff+ = 1.4938 ms vs tau_QSS 1.4938 ms   relax time at L=10 cm 13.20 us
+
+==============================================================================
+STEP 4  Summary over the defended breakdown set
+==============================================================================
+     L    m   n |          steady err          |      err / eps_plateau       |    >1 |     err / lo_ELM     |      relax [us]      |  ln(u+/uCRE+) 
+                |   median       min       max |   median       min       max |       |    median        max |    median        max |         median
+    10    0  45 |   0.5762    0.3381    0.6544 |   4.3210    2.4589    6.1459 | 45/45 |     4.479      6.166 |      9.22      34.23 |        -4.8499
+    10    1  45 |   0.1277    0.1024    0.1793 |   0.9929    0.8674    0.9997 |  0/45 |     1.034      1.174 |      9.22      34.23 |        -0.2780
+    10    2  45 |   0.1896    0.0877    0.6000 |   1.6714    0.7925    4.0037 | 39/45 |     1.894      4.871 |      9.22      34.23 |        +0.4111
+    10    5  45 |   0.7508    0.2975    1.3039 |   5.7462    2.6884    9.0146 | 45/45 |     6.094     11.522 |      9.22      34.23 |        +1.3250
+    20    0  45 |   0.5682    0.2327    0.6530 |   4.1341    1.7717    6.1399 | 45/45 |     4.400      6.160 |     33.17     121.63 |        -3.9715
+    20    1  45 |   0.1195    0.0815    0.1750 |   0.9799    0.6205    0.9994 |  0/45 |     1.007      1.064 |     33.17     121.63 |        -0.2597
+    20    2  45 |   0.1779    0.0877    0.5888 |   1.6248    0.7924    3.7150 | 36/45 |     1.778      4.484 |     33.17     121.63 |        +0.4090
+    20    5  45 |   0.7251    0.2975    1.1863 |   5.4536    2.6881    8.3031 | 45/45 |     5.827     10.101 |     33.17     121.63 |        +1.3205
+
+  Rows with m > 1 whose steady error stays BELOW the closed-parcel plateau (P3 said none):
+    cool [15,1] L=  10 m=2  ln(u+/uCRE+)=+0.3121 (closed parcel: ln(uCRE-/uCRE+)=-0.3809)  err=0.0877  eps_plateau=0.1107  ratio=0.793
+    cool [15,2] L=  10 m=2  ln(u+/uCRE+)=+0.3128 (closed parcel: ln(uCRE-/uCRE+)=-0.3801)  err=0.1322  eps_plateau=0.1469  ratio=0.900
+    cool [15,3] L=  10 m=2  ln(u+/uCRE+)=+0.3123 (closed parcel: ln(uCRE-/uCRE+)=-0.3796)  err=0.1548  eps_plateau=0.1548  ratio=1.000
+    cool [16,1] L=  10 m=2  ln(u+/uCRE+)=+0.3268 (closed parcel: ln(uCRE-/uCRE+)=-0.3663)  err=0.0922  eps_plateau=0.1065  ratio=0.866
+    cool [16,2] L=  10 m=2  ln(u+/uCRE+)=+0.3274 (closed parcel: ln(uCRE-/uCRE+)=-0.3655)  err=0.1384  eps_plateau=0.1410  ratio=0.982
+    cool [17,1] L=  10 m=2  ln(u+/uCRE+)=+0.3408 (closed parcel: ln(uCRE-/uCRE+)=-0.3522)  err=0.0965  eps_plateau=0.1025  ratio=0.942
+    cool [15,1] L=  20 m=2  ln(u+/uCRE+)=+0.3121 (closed parcel: ln(uCRE-/uCRE+)=-0.3809)  err=0.0877  eps_plateau=0.1107  ratio=0.792
+    cool [15,2] L=  20 m=2  ln(u+/uCRE+)=+0.3124 (closed parcel: ln(uCRE-/uCRE+)=-0.3801)  err=0.1320  eps_plateau=0.1469  ratio=0.898
+    cool [15,3] L=  20 m=2  ln(u+/uCRE+)=+0.3085 (closed parcel: ln(uCRE-/uCRE+)=-0.3796)  err=0.1528  eps_plateau=0.1548  ratio=0.987
+    cool [15,4] L=  20 m=2  ln(u+/uCRE+)=+0.2729 (closed parcel: ln(uCRE-/uCRE+)=-0.3794)  err=0.1161  eps_plateau=0.1257  ratio=0.924
+    cool [16,1] L=  20 m=2  ln(u+/uCRE+)=+0.3267 (closed parcel: ln(uCRE-/uCRE+)=-0.3663)  err=0.0922  eps_plateau=0.1065  ratio=0.866
+    cool [16,2] L=  20 m=2  ln(u+/uCRE+)=+0.3269 (closed parcel: ln(uCRE-/uCRE+)=-0.3655)  err=0.1382  eps_plateau=0.1410  ratio=0.980
+    cool [16,4] L=  20 m=2  ln(u+/uCRE+)=+0.2751 (closed parcel: ln(uCRE-/uCRE+)=-0.3647)  err=0.1155  eps_plateau=0.1196  ratio=0.966
+    cool [17,1] L=  20 m=2  ln(u+/uCRE+)=+0.3407 (closed parcel: ln(uCRE-/uCRE+)=-0.3522)  err=0.0965  eps_plateau=0.1025  ratio=0.941
+    cool [17,4] L=  20 m=2  ln(u+/uCRE+)=+0.2745 (closed parcel: ln(uCRE-/uCRE+)=-0.3507)  err=0.1136  eps_plateau=0.1138  ratio=0.998
+    15 rows, 15 of them cooling steps. On a cooling step u_CRE rises, so a source that
+    rises by a similar factor moves u_open+ past u_CRE+ by less than the stale value fell short of it.
+
+  Reading: at m = 1 the ratio err/eps_plateau is 1 - O(S_eff+ tau_esc)
+  (the plateau persists as a permanent offset; since it never decays,
+  the time-averaged error over the event is the plateau itself, i.e.
+  above the lo_ELM_crash bound that produced the census). At m >= 2 it
+  exceeds the plateau. At m = 0 the reservoir empties and the error is
+  |(c3/c4)/R_CRE+ - 1|, the pure-recombination ratio.
+  L = 10 cm: relaxation time of the open reservoir 5.89 .. 34.23 us; 45/45 pairs reach steady state inside a 100 us ELM
+  L = 20 cm: relaxation time of the open reservoir 11.68 .. 121.63 us; 41/45 pairs reach steady state inside a 100 us ELM
+
+==============================================================================
+STEP 5  Benchmark pair heat [23,5]  (Te = 2.9471 eV, ne = 1.3895e+14 cm^-3)
+==============================================================================
+  in defended breakdown set: False   lo_ELM_crash = 0.0117   eps_plateau = 0.06361
+  M = 8243   tau_QSS = 18.494 us   1/S_eff+ = 18.490 us   rel diff 2.42e-04  (1/M = 1.21e-04)
+  S_eff pre/post = 4.4008e+04 / 5.4084e+04 s^-1   u_CRE pre/post = 8.80394e-04 / 6.72379e-04
+  L=  10 cm  tau_esc=  65.80 us (tau_esc/tau_QSS=3.558)  m=0: u_open+=5.2488e-04  ln(u+/uCRE+)=-0.2476  steady err=0.0462  /eps_plateau=0.727  relax=14.43 us
+  L=  10 cm  tau_esc=  65.80 us (tau_esc/tau_QSS=3.558)  m=1: u_open+=7.1801e-04  ln(u+/uCRE+)=+0.0657  steady err=0.0141  /eps_plateau=0.222  relax=14.43 us
+  L=  10 cm  tau_esc=  65.80 us (tau_esc/tau_QSS=3.558)  m=2: u_open+=9.1114e-04  ln(u+/uCRE+)=+0.3039  steady err=0.0729  /eps_plateau=1.145  relax=14.43 us
+  L=  10 cm  tau_esc=  65.80 us (tau_esc/tau_QSS=3.558)  m=5: u_open+=1.4905e-03  ln(u+/uCRE+)=+0.7961  steady err=0.2401  /eps_plateau=3.774  relax=14.43 us
+  L=  20 cm  tau_esc= 263.19 us (tau_esc/tau_QSS=14.231)  m=0: u_open+=6.2824e-04  ln(u+/uCRE+)=-0.0679  steady err=0.0137  /eps_plateau=0.216  relax=17.28 us
+  L=  20 cm  tau_esc= 263.19 us (tau_esc/tau_QSS=14.231)  m=1: u_open+=6.8603e-04  ln(u+/uCRE+)=+0.0201  steady err=0.0042  /eps_plateau=0.067  relax=17.28 us
+  L=  20 cm  tau_esc= 263.19 us (tau_esc/tau_QSS=14.231)  m=2: u_open+=7.4382e-04  ln(u+/uCRE+)=+0.1010  steady err=0.0221  /eps_plateau=0.347  relax=17.28 us
+  L=  20 cm  tau_esc= 263.19 us (tau_esc/tau_QSS=14.231)  m=5: u_open+=9.1719e-04  ln(u+/uCRE+)=+0.3105  steady err=0.0747  /eps_plateau=1.174  relax=17.28 us
+  Note: at the benchmark tau_esc is NOT short against tau_QSS (ratio 3.6 and 14), so the
+  reservoir is closer to closed there; the m = 1 error falls below the plateau by the
+  fraction S_eff+ tau_esc, which is no longer small. That is what the toy predicts
+  when the chapter 6 condition tau_esc < tau_slow does not hold.
+
+==============================================================================
+VERDICT
+==============================================================================
+  m = 1: smallest median err/eps_plateau over the lengths = 0.9799; refuter (median < 0.5) did not appear
+  m > 1: err/eps_plateau > 1 at 165/180 (pair, L, m) rows and <= 1 at 15; refuter (stays below at most pairs) did not appear
+  P3 as written ('at every pair') is refuted by the 15 rows listed in STEP 4; the direction of the
+  effect (rising source -> larger error) holds at every heating pair and at m = 5 everywhere.
+  A fast-exchanging reservoir with a steady source freezes the closed-
+  parcel error rather than removing it; a rising source enlarges it at
+  the heating pairs and at large multipliers everywhere. 'Upper estimate'
+  is therefore not what tau_esc < tau_slow implies. The chapter 5
+  magnitudes are conditional on the reservoir history.
+
+  Assumptions of this toy (all stated, none tested here): 0-D parcel;
+  one escape time per pair, taken at the pre-step Te and held through
+  the step; recycling source independent of u; no ionisation-front
+  motion, no molecular channel, no spatial source profile; source
+  multipliers illustrative. The toy fixes the sign of the inference,
+  not the magnitude of the divertor error.

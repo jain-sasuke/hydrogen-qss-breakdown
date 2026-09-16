@@ -1,0 +1,139 @@
+\chapter{Numerical Methods and Convergence}
+\label{app:numerics}
+
+This appendix states how the linear algebra and the time integration in this
+thesis are actually performed, and collects the convergence and conditioning
+evidence that has a producing script and a stamped artifact. Results quoted in
+the body that lack one are identified as such here rather than repeated.
+
+\section{How the systems are solved}
+
+\paragraph{Steady states.} Every quasi-steady and collisional--radiative
+equilibrium population in this thesis is obtained by a direct dense solve of
+$\Lmat_{EE}\,\nvec_E = -\Svec_E$ or
+$\Lmat_{EE}\,\nvec_E = -\Lmat_{E,g}\,\ngs$, using LAPACK's general solver
+through \texttt{numpy.linalg.solve}. No iterative method and no preconditioner
+is used, and none is needed: the excited-state block is $42 \times 42$. The two
+feed channels are solved separately and their sum checked against the full solve
+rather than assumed (Section~\ref{sec:superposition}).
+
+\paragraph{Timescales.} The relaxation spectrum is the eigenvalue spectrum of
+$\Lmat$, computed with \texttt{numpy.linalg.eigvals}, sorted descending on the
+real part. $\tauslow$ and $\taurel$ are the reciprocals of the two least
+negative eigenvalues, and $\Msep = \tauslow/\taurel$.
+
+The selection of ``negative'' eigenvalues is a place where this thesis has
+already been bitten once. An earlier version of the filter discarded every
+eigenvalue with $\lambda > -1\,\mathrm{s^{-1}}$, on the reasoning that such
+values were numerical noise near zero. They are not: at the cold corner of the
+grid the true slowest mode has $|\lambda| \approx \SI{0.0149}{\per\second}$,
+corresponding to $\tauslow = \SI{67.2}{\second}$, and the filter discarded it and
+returned the second mode in its place, wrong by nine orders of magnitude. The
+filter is now $\lambda < 0$, which admits every decaying mode. Chapter~\ref{ch:atoms}
+reports the error and its effect; the point here is the method, which is that no
+magnitude threshold is applied to an eigenvalue whose magnitude is the quantity
+being measured.
+
+\paragraph{Time integration.} Transient solutions are obtained two ways, and the
+two are compared rather than trusted separately. The spectral route
+diagonalises $\Lmat$ and propagates the deviation from the post-step steady
+state analytically. The direct route integrates
+$\dot{\nvec} = \Lmat\nvec + \Svec\nion$ with the implicit Radau method at
+relative tolerance $10^{-10}$ and absolute tolerance
+$10^{-12}\max|\nvec_{\rm old}|$, chosen because the system is stiff: the
+spectrum spans between eight and fifteen orders of magnitude in $|\lambda|$
+depending on the grid point.
+
+\section{Conditioning}
+
+Non-normality matters here more than conditioning does. The operator's
+numerical abscissa $\mu(\Lmat)$, which bounds the initial growth rate of
+$\|\nvec\|$, is positive everywhere on the grid while the spectral abscissa is
+negative everywhere: the solution can grow before it decays, even though every
+mode decays. Measured over all $400$ grid points
+(\texttt{verify\_operator\_conditioning.py},
+\texttt{validation/operator\_conditioning/}):
+
+\begin{table}[htbp]
+  \centering
+  \caption[Conditioning and non-normality over the grid]{Conditioning of the
+    excited-state block and the two abscissae, over all $400$ grid points.}
+  \label{tab:conditioning}
+  \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    quantity & minimum & maximum & at the benchmark \\
+    \midrule
+    $\kappa(\Lmat_{FF})$              & $1.48\times10^{3}$  & $1.74\times10^{5}$  & $4.20\times10^{4}$ \\
+    $\mu(\Lmat)$ \si{\per\second}     & $3.40\times10^{8}$  & $1.51\times10^{12}$ & $1.28\times10^{11}$ \\
+    spectral abscissa \si{\per\second} & $-1.33\times10^{7}$ & $-1.49\times10^{-2}$ & $-4.40\times10^{4}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent A condition number of $1.7\times10^{5}$ at its worst leaves roughly
+eleven significant figures in double precision, against results quoted here to
+three or four. Conditioning is not a threat to any number in this thesis. The
+positive numerical abscissa is not a numerical problem either, but it is a
+physical statement, and Chapter~\ref{ch:theory} uses it.
+
+\section{Convergence tests with a stamped artifact}
+
+\begin{table}[htbp]
+  \centering
+  \caption[Reproducible numerical checks]{Numerical checks that have a
+    producing script and a stamped artifact under \texttt{validation/}.}
+  \label{tab:numerical_checks}
+  \small
+  \begin{tabular}{@{}p{5.2cm}p{3.1cm}p{5.0cm}@{}}
+    \toprule
+    check & result & artifact \\
+    \midrule
+    Two-channel superposition: $\nzero + \none$ against the full solve, $784$ pairs
+      & $3.08\times10^{-14}$
+      & \texttt{divertor\_map/} \\
+    Column-sum closure: $\sum_i \Lmat_{ij} = -\nel K_{\rm ion}(j)$, all $43$ states, at two operators
+      & $1.75\times10^{-12}$
+      & \texttt{fujimoto\_bundle/} \\
+    Integrator tolerance at two grid points, $\mathrm{rtol}=10^{-9}$ against $10^{-12}$
+      & $1.20\times10^{-8}$
+      & \texttt{plateau\_slowmode/} \\
+    Direct integration against matrix exponential, $20$ log-spaced times
+      & $1.14\times10^{-9}$ at the benchmark, worst $3.24\times10^{-8}$ in $\|\Delta\nvec\|/\|\nvec\|$
+      & \texttt{ramp\_plateau/} \\
+    Statistical-$\ell$ projector identity $\mathsf{P}\mathsf{R} = \mathsf{I}$
+      & $0$ exactly
+      & \texttt{fujimoto\_bundle/} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent Each of these is a check on the numerics, not on the physics. They
+establish that the answers reported are the answers the equations give; whether
+the equations are the right ones is the subject of Chapter~\ref{ch:validation}
+and Chapter~\ref{ch:limits}.
+
+\section{State-space convergence, and what is not established}
+
+Truncation of the level ladder was tested downward, by rebuilding $\Lmat$ at
+successively lower $n_{\max}$ with the loss channels of the removed states
+returned to the diagonal of the survivors, and the result is reported in
+Section~\ref{sec:convergence}. Two limitations of that result belong here rather
+than in the body.
+
+First, it is a convergence test of one quantity, $\ffrac{3}-\ffrac{4}$, and not
+of the state space in general. Quantities that depend on the Rydberg population
+directly, among them the effective ionisation coefficient, are not covered by
+it.
+
+Second, the numbers reported in Section~\ref{sec:convergence} were recorded in
+this project's working notes and no script in the repository regenerates them.
+They are therefore not reproducible in the sense the rest of this appendix uses,
+and they are not repeated here. Closing that gap requires writing the truncation
+scan as a stamped script; the methodological trap it must avoid is recorded in
+Section~\ref{sec:convergence}, since an earlier attempt that dropped states
+without returning their loss channels to the diagonal produced a spurious
+\SIrange{22}{37}{\percent} jump that looked like a finding.
+
+Convergence \emph{upward}, at $n_{\max} = 18$ or $20$, is not attempted and
+cannot be, because the atomic data stop at $n = 15$. That is the second of the
+five open questions of Section~\ref{sec:scope_open}.

@@ -172,11 +172,13 @@ slab thickness and a different density, so the two are not the same quantity and
 the agreement in order of magnitude should not be read as a reproduction of
 one by the other.
 The blunt reading is that the effective $A_{2p\to1s}$ belonging in $\Lmat$ at
-that point is wrong by four to five orders of magnitude.
+that point is wrong, self-consistently, by about $1.8$ orders of magnitude, or
+$2.9$ orders on the thin one-shot estimate
+(\texttt{verify\_lyman\_optical\_depth.py}).
 
 Two rows down the same table the problem has evaporated. At
-\SI{2.02}{\electronvolt} the depth per centimetre is $0.036$ and at the
-benchmark point (\benchTe, \benchne) it is $0.0023$; a photon there crosses
+\SI{2.02}{\electronvolt} the depth per centimetre is $0.0255$, and at the
+benchmark point (\benchTe, \benchne) it is $0.0039$; a photon there crosses
 metres of plasma before anything happens to it. \textbf{The measured quantity
 is not ``how opaque is this plasma'' but ``how fast does opacity switch on as
 the plasma cools'',} and the answer is a factor of $5\times10^{4}$ between
@@ -196,7 +198,8 @@ $\tau_{\rm Ly\alpha}(\SI{5}{\centi\metre}) > 1$, and $26$ have it above $100$.
 
 The expectation, stated before the calculation was run, was that trapping would
 demolish the map. The reasoning was straightforward and it was wrong: an
-effective $A$ coefficient wrong by five orders of magnitude at the worst point
+effective $A$ coefficient wrong by about three orders of magnitude at the worst
+point
 ought to invalidate everything computed there and, by continuity, a good deal of
 what was computed nearby. The project's own records contained a matching
 warning, that under strong trapping the fast relaxation time $\taurel$ rises
@@ -283,7 +286,7 @@ this thesis, and it is the opposite of what was expected.
 $45$ of $448$ points in every run, and the worst case within that set
 moves by \SI{0.5}{\percent}, from $0.1748$ to $0.1740$, across a twentyfold
 range in assumed slab thickness.} The escape factor at the benchmark point
-(\benchTe, \benchne) runs from $0.9999$ at $D = \SI{1}{\centi\metre}$ to
+(\benchTe, \benchne) runs from $0.9986$ at $D = \SI{1}{\centi\metre}$ to
 $0.973$ at $D = \SI{20}{\centi\metre}$. Even at the thickest slab tested,
 \SI{97}{\percent} of Lyman-$\alpha$ photons still leave: the plasma is optically
 thin there in the sense that actually matters, and assuming so costs less than
@@ -591,8 +594,13 @@ a secant along the CRE curve and therefore assumes the ground
 state responds through collisional--radiative balance alone; $\epsplat$, which
 is built from it; the breakdown census; and every time-averaged magnitude in
 Chapter~\ref{ch:results}. If recycling renews $\ngs$ on a timescale shorter than
-$\tauslow$, $G$ is not the gain the plasma has, and these numbers are upper
-estimates of an error whose true size this model cannot compute.
+$\tauslow$, $G$ is not the gain the plasma has. These numbers are not upper
+estimates. A fast-exchanging reservoir with a steady source freezes the
+closed-parcel error rather than removing it, and a rising source enlarges it: over
+the defended set the true error exceeds the closed-parcel plateau at $165$ of the
+$180$ (pair, $L$, source-multiplier) combinations tested
+(\texttt{verify\_open\_reservoir.py}). The closed-parcel value is a reference
+magnitude conditional on the reservoir's history, not a bound on it.
 
 The thesis therefore leads with the structure and the bound, which survive, and
 reports the magnitudes as conditional, which is what Chapter~\ref{ch:results}
@@ -625,8 +633,6 @@ edge code such as SOLPS (Scrape-Off Layer Plasma Simulation) supplying $\ngs$
 from a recycling influx, instead of $\ngs$ being solved for from
 $\Lmat\nvec + \Svec\nion = 0$. That is outside the scope of this thesis and is
 named in Chapter~\ref{ch:conclusions} as the first item of further work.
-\todo{Two-region or SOLPS-coupled calculation with recycling-set $\ngs$. Not
-attempted; cannot be bounded from within a 0-D model.}
 
 %-----------------------------------------------------------------------------
 \section{No molecular channels, in a gas that is mostly molecules}
@@ -721,9 +727,6 @@ referee drawn from the divertor spectroscopy community, and the correct answer
 is the honest one: this is an atomic model, its cold-edge numbers are
 atomic-model numbers, and the bound above is an estimate of how wrong they are
 rather than a correction to them.
-\todo{Molecular channels are not in $\Lmat$. The dilution bound above is
-constructed from published emissivity fractions rather than computed here, and
-should be replaced by a calculation if molecular states are ever added.}
 
 %-----------------------------------------------------------------------------
 \section{Where the ridge sits depends on what the model assumed about neutrals}
@@ -856,9 +859,6 @@ wrong. Checked against the publisher record, it is Nuclear Fusion \textbf{63}(1)
 016017, published online December 2022 and in the January 2023 print issue, with
 companion part A at 63(1) 016016 \cite{Stangeby2023a}. The confusion came from
 \cite{Lore2022} in the same block of that file, which genuinely is volume 62.
-\todo{The separatrix band: confirm which quantity, outboard midplane or
-X-point, the factor $1.6$ was computed against, and cite \cite{Pitts2019} as
-the primary source once its full text is available.}
 
 \subsection{What that leaves}
 
@@ -1028,31 +1028,37 @@ a normalisation error is excluded by $r_0$ itself: $r_0$ and $r_1$ carry the
 same $p$-dependent factor $Z(p)$, so an error large enough to move $r_1$ by a
 factor of $8$ would have moved $r_0$ with it.
 
-\subsection{The source resolves it: the tabulation is bundled in $\ell$}
+\subsection{The source's closure, imposed and tested}
 
 Table~4.1(b) is indexed by $p = 2, 3, 4, 5, 7, 10, 15$. Those are principal
 quantum numbers, and the table carries no $\ell$ label anywhere. The published
 coefficients are shell quantities computed with the $\ell$~substructure
 bundled.
 
-This model resolves $\ell$ below $n=9$. That difference is not a detail at this
-density. Recomputing the model with proton $\ell$-mixing removed moves $r_1(2)$
-by a factor $118$ and $r_1(3)$ by a factor $3.35$ at exactly
-$\nel = 10^{12}\,\si{\per\cubic\centi\metre}$, and the two variants bracket
-the tabulated $r_1(2)$ almost symmetrically, one a factor $10.9$ high and the
-other a factor $10.8$ low. A comparison whose own treatment of one process
-spans two orders of magnitude cannot adjudicate a factor of $8$.
+This model resolves $\ell$ below $n=9$, so the closures differ. An earlier
+draft of this section treated that difference as the explanation, on the
+evidence that recomputing the model with proton $\ell$-mixing removed moves
+$r_1(2)$ by a factor $118$ and $r_1(3)$ by a factor $3.35$ at
+$\nel = 10^{12}\,\si{\per\cubic\centi\metre}$. That argument does not survive
+its own test. Removing $\ell$-mixing is the limit in which the process is
+absent; the tabulation assumes the limit in which it is infinitely fast, and
+those are opposite ends rather than a bracket. Imposing the source's own closure
+directly, by bundling this model's operator under statistical $\ell$~weights,
+moves $r_1(3)$ by \SI{0.42}{\percent} and makes the $p=2$ agreement worse
+(\texttt{verify\_fujimoto\_bundle.py}, stamped in
+\texttt{validation/fujimoto\_bundle/}).
 
-The disagreement therefore measures the $\ell$~closure. It is a real difference
-between two models and it is not evidence that either is wrong about
-$\ffrac{3} - \ffrac{4}$, which is a ratio of responses within a single
-$\ell$-resolved calculation and never passes through the bundled quantity.
+The disagreement therefore does \emph{not} measure the $\ell$~closure, and this
+thesis does not explain it. What the section does establish is that it is not
+evidence of an error in $\ffrac{3} - \ffrac{4}$, which is a ratio of responses
+within a single $\ell$-resolved calculation and never passes through the bundled
+quantity. The open status is carried in Section~\ref{sec:scope_open}.
 
 \subsection{Two limitations of the benchmark, stated precisely}
 
 Table~4.1(b) is computed at $T_\mathrm{e} = \SI{1.28e5}{\kelvin}$, which is
 \SI{11.03}{\electronvolt}. The grid used here reaches \SI{10}{\electronvolt},
-so the comparison is made at the grid edge and \SI{10.3}{\percent} below the
+so the comparison is made at the grid edge and \SI{9.3}{\percent} below the
 tabulated temperature.
 
 There is no second usable case. The companion Table~4.1(a) is at
@@ -1108,9 +1114,6 @@ that picture predicts. Any result resting on the top shell is an upper bound
 rather than an estimate. \emph{No result in this thesis rests on it}: the
 observable is built from $n = 3$ and $n = 4$, both fully $\ell$-resolved and
 both far from the truncation.
-\todo{Provenance: the $4.9$--$6.2\times$ and $4$--$20\,\%$ figures are recorded
-with the Chapter~\ref{ch:validation} benchmark but their run artifact is not
-stamped in \texttt{validation/}. Stamp before submission.}
 
 \paragraph{The bundling nonetheless enters the result indirectly.}
 Section~\ref{sec:ridge_alternatives} listed truncation among the alternative
@@ -1271,6 +1274,84 @@ the threshold; the worst case is.} Any sentence of the form ``$N$ points break
 down'' must carry both its threshold and its denominator, or it is not a result.
 
 %-----------------------------------------------------------------------------
+\section{Scope: five questions this thesis leaves open}
+\label{sec:scope_open}
+% QUESTION: which questions are open, why can none of them be closed from
+% inside a 0-D atomic model, and what would close each?
+
+The objections computed in this chapter were all answerable from inside a
+$0$-D collisional--radiative matrix. Five are not, and they are gathered here
+rather than left scattered so that a reader can see at once what this thesis
+does not determine. Each is stated with the reason it is out of reach and with
+the calculation that would settle it. None is a defect of the implementation;
+each is a boundary of the model class.
+
+\paragraph{1. The $r_1$ deficit is unexplained.} This model's ground-fed
+population coefficient sits a factor $8.3$ below Fujimoto's Table~4.1(b) at
+$p=3$, the shell the mechanism runs on, and a factor $1.8$ to $2.0$ below it at
+$\log_{10}(\nel/\si{\per\cubic\metre}) = 21$. Three candidate causes have been
+tested and none accounts for it: truncation moves $r_1(3)$ by
+\SI{1.2}{\percent}; Lyman trapping repairs $p=2$ only by driving $r_0(2)$ above
+Saha equilibrium; and imposing the source's own statistical-$\ell$ closure moves
+$r_1(3)$ by \SI{0.42}{\percent} and makes $p=2$ worse
+(Section~\ref{sec:r1_deficit}). What would settle it is an $\ell$-resolved
+published tabulation to compare against, or the atomic data underlying the
+tabulated values, neither of which was available. The deficit is reported as
+open, and Section~\ref{sec:r1_deficit} records why it does not propagate into
+$\ffrac{3}-\ffrac{4}$.
+
+\paragraph{2. There is no convergence study above $n_{\max} = 15$.} The state
+space is cut at $n = 15$ because the atomic data stop there: the quantum
+cross sections extend to $n = 10$, shells $11$ to $15$ are already semiclassical
+Vriens--Smeets values, and no radiative or recombination coefficients exist
+above $15$ in any form. Truncation has been tested downward, and it moves
+$\ffrac{3}-\ffrac{4}$ by about \SI{1}{\percent} with the sign changing across
+the grid (Section~\ref{sec:convergence}). What is untested is the sensitivity of
+the ridge \emph{position} to $n_{\max}$, which would require rebuilding the rate
+pipeline at $n_{\max} = 20$ rather than running a validation script: new
+excitation, ionisation, radiative and recombination coefficients for five
+further shells, and a re-indexing of every array built on the $43$-state layout.
+That is a rate-generation exercise, not an analysis one.
+
+\paragraph{3. The ground-state population is solved for, not supplied.} Every
+magnitude in Chapter~\ref{ch:results} is conditional on $\ngs$ coming from
+$\Lmat\nvec + \Svec\nion = 0$. In a divertor it is set by recycling, on a
+transport timescale four orders of magnitude shorter than the local ionisation
+balance (Section~\ref{sec:open_system}). No eigenvalue analysis inside a $0$-D
+matrix can validate that, and the open-boundary test of
+Section~\ref{sec:attacks} bounds the sensitivity without removing the
+conditional. What would settle it is a two-region or transport-coupled
+calculation with an edge code supplying $\ngs$ from a recycling influx.
+
+\paragraph{4. There are no molecular channels in $\Lmat$.} At the onset of
+detachment a large fraction of the Balmer light is molecular in origin, and this
+model contains only atomic hydrogen. The dilution estimate of
+Section~\ref{sec:molecules} is arithmetic on two published emissivity fractions,
+not a solution of a matrix containing molecular states, and it says how far the
+cold-corner number would move under one specific dilution picture rather than
+what a molecular model would give. What would settle it is a state space
+containing $\mathrm{H}_2$, $\mathrm{H}_2^+$ and $\mathrm{H}^-$ with their rate
+set, which is a different model rather than an extension of this one.
+
+\paragraph{5. The electrons are assumed Maxwellian.} Every rate coefficient is
+an average over a Maxwell--Boltzmann distribution, and ionisation and excitation
+are driven by its high-energy tail. A \SI{1}{\electronvolt} plasma beside a
+recycling surface has no guarantee of that tail. The rate integrals as built do
+not accept an arbitrary electron energy distribution, so this is not a parameter
+that can be varied within the present code. It is stated among the remaining
+assumptions of Section~\ref{sec:other_assumptions}, together with the
+$T_i = \Te$ assumption in the $\ell$-mixing rates, which is untested for the
+same reason.
+
+\medskip
+
+\noindent Items 3 and 4 are named in Chapter~\ref{ch:conclusions} as the first
+two pieces of further work. Items 1 and 2 are bounded in their consequences
+rather than in their causes: the thesis states what each would change if it went
+the wrong way, and neither touches the difference of two responses inside one
+$\ell$-resolved operator on which the central result rests.
+
+%-----------------------------------------------------------------------------
 \section{What is left standing}
 \label{sec:limits_summary}
 % QUESTION: after all of that, what may this thesis actually claim?
@@ -1301,13 +1382,14 @@ divertor band, and belongs to neither.
 And it cannot establish the absolute normalisation of its ground-fed
 population coefficient against an independent calculation. It sits a factor
 $8.3$ below the standard tabulation at $p = 3$, the coefficient the mechanism
-runs on. That disagreement is explained rather than outstanding: the
-tabulation is bundled in $n$ and this model resolves $\ell$, and the model's
-own $r_1(2)$ moves by a factor $118$ when the proton $\ell$-mixing is switched
-off, so the comparison measures the $\ell$~closure and cannot adjudicate a
-factor of $8$ (Section~\ref{sec:r1_deficit}). Explaining a disagreement is not
-the same as passing a test, and no $\ell$-resolved tabulation was available to
-put in its place.
+runs on. That disagreement is outstanding, not explained. The
+tabulation is bundled in $\ell$ and this model resolves it, but imposing that
+same closure on this model's operator moves $r_1(3)$ by \SI{0.42}{\percent} and
+makes the $p=2$ agreement worse, so the closure difference is not the cause
+(Section~\ref{sec:r1_deficit}). Truncation and Lyman trapping have been
+eliminated too. No $\ell$-resolved tabulation was available to put in its place,
+and the deficit is carried as an open external disagreement in
+Section~\ref{sec:scope_open}.
 
 \subsection{What this model can say, with the objections computed}
 

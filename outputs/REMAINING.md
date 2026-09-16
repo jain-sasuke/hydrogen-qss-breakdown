@@ -27,6 +27,25 @@ marked CLOSED is closed in the thesis text, not only in this file.
 
 ---
 
+## A3. 16 September 2026
+
+| item | how it closed |
+|---|---|
+| The thesis question (§1.7, §1.8) promised an inversion error; only the observable error was measured | `verify_inversion_error.py`, backlog K8. Of 448 defended pairs, 166 return no temperature from the table (all cooling), 44 reach one only across the fold (all heating), 238 are clean with median inferred-Te error 47.7 % for a 4.81 % step, amplification 8.3. §1.7 and §1.8 reworded to the object measured: temperature at known density |
+| §7.2 called the fold "unrelated to any of this" | It is the same cancellation. Σ = P + S̄G with P > 0 and S̄G < 0 at 448/448 pairs, \|Σ\|/\|P\| median 0.068; the fold is Σ = 0 and the amplification is \|S̄G\|/\|Σ\| (rank corr 0.925 against the exact root-find). Eq. `eq:slope_two_channels` |
+
+Left open by this: the **two-parameter (T_e, n_e) Jacobian** of `eq:inversion_2x2` is defined and not measured; it needs a second line ratio. Added as C.7.
+
+Same day, after the reviewer's read of the draft §5.5.2 (backlog K8 addendum, K9):
+
+| item | how it closed |
+|---|---|
+| Draft §5.5.2 called the direction rule a theorem on 236 pairs "and the table's edge on the rest" | Split into the local result of `eq:inversion_local` (Σ < 0 ⇒ pre-step side, 172/172 and 64/64) and an empirical boundary statement for the 46 Σ > 0 heating pairs (44 fold-crossed, 2 with a colder root inside the step) |
+| "Amplification is the inverse of a cancellation" | It is \|SG/Σ\|, the reservoir term over the residual slope; reworded in §5.5.2, §5.11, §7.2 |
+| "Returns no temperature at all" | "No solution within the table's 1 to 10 eV domain", at every count |
+| `eq:slope_two_channels` mixed a local Σ with a barred S̄; "S̄G < 0" contradicted the thesis's own sign convention (S̄ < 0 by `Sbar_def`'s limits) | Local chain rule written unbarred with natural-sign S; finite-step identity Σ̄ = P̄ + \overline{SG} as `eq:slope_secants`; \overline{SG} = −S̄Ḡ verified to 4e-15; K8 CSV header carries a SIGN NOTE |
+| Why P > 0 | `verify_operator_slope_decomposition.py`, K9: P_a > 0 at 448/448, P_c > 0 at 426/448 (the 22 all at 10¹⁵ cm⁻³ where both shells are recombination-fed), sum > 0 at 448/448; the sufficient ratios recorded per pair; additive residual 3.7 % median. **P > 0 stays a measured property**, not a theorem |
+
 ## A. Closed this session
 
 | item | how it closed |
@@ -169,6 +188,11 @@ takes a modulus.
 
 6. **The crest position's sensitivity to n_max.** Needs the rate pipeline rerun
    at n_max = 12 and 20, not a validation script.
+
+7. **The two-parameter inversion.** `eq:inversion_2x2` is defined; only the
+   single-parameter inversion at known n_e is measured (K8). Measuring the
+   2×2 Jacobian needs a second observable, e.g. a higher Balmer ratio, on the
+   same grid.
 
 ---
 

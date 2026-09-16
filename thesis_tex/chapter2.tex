@@ -132,7 +132,7 @@ What $\ell$-mixing will do is not obvious in advance.
   Table~\ref{tab:data_sources} at temperature index 23; a rate in
   \si{\per\second} is the coefficient times $\nel$, except for spontaneous
   emission, which needs no partner. The recombination entry is a feed per unit
-  proton density, not a rate an atom experiences. The spread is fourteen orders
+  proton density, not a rate an atom experiences. The spread is ten orders
   of magnitude, which is why the problem is numerically stiff.}
   \label{tab:process_rates}
   \begin{tabular}{llrr}
@@ -157,7 +157,7 @@ both as anticipated, but $\ell$-mixing empties $2s$ in under
 \SI{7}{\pico\second}, two hundred times faster than the fastest radiative decay
 in the atom. That number is why Section~\ref{sec:lmixing} exists. It is also the
 first sight of the difficulty: a chemical engineer recognises a rate spread of
-fourteen decades as a stiff network, of exactly the kind that motivates the
+ten decades as a stiff network, of exactly the kind that motivates the
 steady-state approximation for intermediates in the first place.
 
 %-----------------------------------------------------------------------------
@@ -900,7 +900,7 @@ $n$, writing $\ell_> = \max(\ell,\ell')$,
 \end{equation}
 
 \noindent with $a_0$ the Bohr radius, $\tau_0 = a_0/\alpha c$ the atomic unit of
-time, $\mu = m_{\mathrm H}/m_e = 918.08$, $\omega_\ell = 2\ell_>-1$ the weight of
+time, $\mu = m_p/2m_e = 918.08$, $\omega_\ell = 2\ell_>-1$ the weight of
 the lower sublevel, and $D_{ji}$ the dimensionless dipole coupling. The
 prefactor $a_0^{3}/\tau_0$ carries the units and everything else is
 dimensionless, so $q_{ji}$ is a rate coefficient. Note $D_{ji} \sim 6n^{4}$ for
@@ -1202,13 +1202,17 @@ bit-for-bit. The filtered outputs were kept rather than deleted, under names
 ending \texttt{\_FILTERED\_20260721}, so the comparison remains reproducible.
 
 Honesty requires the last statement to be precise rather than tidy. The filter
-was removed from the analysis scripts that write the timescale grids, which now
-select on \texttt{eigs < 0.0}. The literal \texttt{eigs[eigs < -1.0]} is still
-present in two other files: \texttt{src/rates/solve\_cr.py} line 269 and
-\texttt{src/rates/check\_mz.py} line 10. Neither produces any number quoted in
-this thesis, the first being a superseded solver and the second a diagnostic
-print, but the repository has not been swept clean, and a reader who searches for
-the literal will find it. Saying so is cheaper than being caught.
+was first removed from the analysis scripts that write the timescale grids, which
+select on \texttt{eigs < 0.0}. The literal \texttt{eigs[eigs < -1.0]} survived
+for some weeks afterwards in two other files, \texttt{src/rates/solve\_cr.py}
+line 269 and \texttt{src/rates/check\_mz.py} line 10, neither of which produces
+any number quoted in this thesis: the first is a superseded solver and the second
+a diagnostic print. Both were corrected on 16 September 2026, once it had been
+established that nothing imported either, and the literal no longer appears
+anywhere in \texttt{src/}. The gap between the two repairs is recorded rather
+than smoothed over, because during it a reader who searched the repository for
+the literal would have found it and been entitled to ask which numbers passed
+through it.
 
 \subsection{What both errors have in common}
 

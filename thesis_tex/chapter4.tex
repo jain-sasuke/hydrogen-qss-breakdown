@@ -476,6 +476,7 @@ is short by design: a small number of severe checks is worth more than a long
 list of consistency tests, and these are the ones the thesis leans on.
 
 \subsection{The superposition residual}
+\label{sec:superposition}
 
 The entire mechanism of Chapter~\ref{ch:results} rests on one structural claim:
 that the excited populations $\nF$ of Section~\ref{sec:qss} split exactly into a
@@ -1069,7 +1070,7 @@ Those are precisely the two shells whose difference is the mechanism of
 Chapter~\ref{ch:results}, so the discrepancy cannot be dismissed as peripheral,
 and it was for some time carried in this thesis as a failure of the model.
 
-That reading is no longer supportable, for five reasons, and the honest status
+That reading is no longer supportable, for six reasons, and the honest status
 is now an open comparison whose \emph{target} is unverified.
 
 \begin{enumerate}
@@ -1108,23 +1109,38 @@ $K_{\rm exc}(1s\to n{=}2) = \SI{1.44e-7}{\cubic\centi\metre\per\second}$ at
 \SI{11.03}{\electronvolt}, fifteen times the accepted value. No error in this
 model's implementation produces that number; only a different input does.
 
-\item \textbf{The two obvious explanations are eliminated quantitatively.}
+\item \textbf{Three candidate explanations are eliminated quantitatively.}
 Truncation moves $r_1(3)$ by \SI{1.2}{\percent} between $n_{\max}=10$ and
 $n_{\max}=15$, which is a factor $8$ short. Lyman trapping at an escape factor
 of $0.1$ brings $r_1(2)$ to $0.92$ of the table but leaves $r_1(3)$ at $0.26$ of
 it and drives $r_0(2)$ to $8.2$, a population above Saha equilibrium and
-therefore unphysical.
+therefore unphysical. The third candidate, the $\ell$~closure, is eliminated in
+the item below.
 
-\item \textbf{The source settles it: the tabulation is bundled in $\ell$.}
-Table~4.1(b) is indexed by $p = 2, 3, 4, 5, 7, 10, 15$, principal quantum
-numbers, and carries no $\ell$ label. The published coefficients are shell
-quantities computed with the $\ell$~substructure bundled, while this model
-resolves $\ell$ below $n=9$. Removing proton $\ell$-mixing from this model moves
-$r_1(2)$ by a factor $118$ and $r_1(3)$ by a factor $3.35$ at exactly this
-density, and the two variants bracket the tabulated $r_1(2)$ almost
-symmetrically, one a factor $10.9$ high and the other a factor $10.8$ low. A
-comparison whose own treatment of one process spans two orders of magnitude
-cannot adjudicate a factor of $8$.
+\item \textbf{The $\ell$~closure is a real difference, and it does not account
+for the gap.} Table~4.1(b) is indexed by $p = 2, 3, 4, 5, 7, 10, 15$, principal
+quantum numbers, and carries no $\ell$ label: the published coefficients are
+shell quantities computed with the $\ell$~substructure bundled, while this model
+resolves $\ell$ below $n=9$. That difference is real, and an earlier draft of
+this section treated it as the explanation. It is not. Imposing the source's own
+closure directly, by bundling this model's operator under statistical
+$\ell$~weights as $\Lmat_{\rm bundle} = \mathsf{P}\,\Lmat\,\mathsf{R}$ with
+$\mathsf{P}_{ki} = 1$ for $i$ in shell $k$ and $\mathsf{R}_{ik} = g_i/g_k$,
+moves $r_1(3)$ by \SI{0.42}{\percent}: the factor $8.29$ becomes $8.26$
+(\texttt{verify\_fujimoto\_bundle.py}, stamped in
+\texttt{validation/fujimoto\_bundle/}). At
+$p=2$ the agreement becomes \emph{worse}, from a factor $10.8$ low to a factor
+$11.8$ low, and $r_0(2)$ moves from $0.7392$, which agrees with the tabulated
+$0.730$, to $0.6459$, which does not. The reason is structural: the bundling
+projector annihilates the $\ell$-mixing operator identically, $\max|\mathsf{P}
+\mathsf{B} \mathsf{R}| = 8.5\times10^{-7}$ against a matrix scale of
+$1.0\times10^{11}$, so bundling cannot express what $\ell$-mixing does; and the
+production model is already at the statistical-$\ell$ limit for $p \ge 3$, its
+sublevel populations sitting within \SI{5}{\percent} of $g_{n\ell}/g_n$. The
+$\ell$-resolved calculation was therefore already the like-for-like comparison.
+Removing proton $\ell$-mixing altogether moves $r_1(2)$ by a factor $118$, but
+that is the opposite limit from a statistical closure rather than a proxy for
+it, and the two do not bracket the tabulated value.
 
 \item \textbf{The transcription and the row labels are correct.} Both were
 checked against the printed table. The $\log_{10}\nel = 18$ row reads
@@ -1145,12 +1161,22 @@ would tabulate. An earlier draft of this section proposed a one-decade offset in
 the density rows; that explanation is withdrawn.
 \end{enumerate}
 
-\textbf{Status.} The $r_1$ comparison at low $p$ is withdrawn as a statement
-about this model. It is a real difference between an $\ell$-resolved
-calculation and a bundled one, and it measures the $\ell$~closure rather than
-the physics of Chapter~\ref{ch:results}. Nothing in that chapter passes through
-a bundled coefficient: $\ffrac{3} - \ffrac{4}$ is a difference of two responses
-within one $\ell$-resolved operator.
+\textbf{Status.} The $r_1$ deficit at low $p$ is an open external
+disagreement, and this thesis does not explain it. Three candidate causes have
+each been tested and each fails to account for a factor of $8$: truncation
+(\SI{1.2}{\percent}), Lyman trapping (which fixes $p=2$ only by driving $r_0(2)$
+above Saha), and the $\ell$~closure (\SI{0.42}{\percent} at $p=3$, and in the
+wrong direction at $p=2$; \texttt{verify\_fujimoto\_bundle.py}). That last test
+imposes the source's own closure rather than approximating it, and it carries a
+severity check: bundling an operator whose $\ell$~distribution is deliberately
+non-statistical moves $r_1(2)$ by a factor $129$, so the null result at $p=3$ is
+a measurement and not a blind instrument. What the section does establish is that the
+disagreement is not evidence of an error in the quantity Chapter~\ref{ch:results}
+uses. Nothing in that chapter passes through a bundled coefficient:
+$\ffrac{3} - \ffrac{4}$ is a difference of two responses within one
+$\ell$-resolved operator, eleven shells below the truncation and five below the
+bundling boundary. An unexplained disagreement in an absolute population
+coefficient is reported here as unexplained.
 
 \textbf{What the benchmark does establish.} The recombination-fed channel
 agrees, to \SI{1.3}{\percent} at $p=2$ and \SIrange{12}{14}{\percent} at $p=3$
@@ -1283,7 +1309,8 @@ Section~\ref{sec:attacks} has already shown that the boundary condition moves
 $\tauslow$ by up to a factor of $41$. \textbf{The ACD result argues against this
 being the dominant effect.} ACD is extracted from the same open system, through
 the same fixed-ion reservoir, and it agrees with ADAS to within
-\SI{6}{\percent} at the benchmark and within a factor of two at every point. An
+\SI{9.3}{\percent} at the benchmark, \SI{5.7}{\percent} at the grid median, and
+within a factor of two at every point. An
 open-system artifact large enough to produce $\eta$ of $8346$ in SCD would not
 leave ACD intact.
 
@@ -1349,7 +1376,8 @@ What the gate's failure costs is less than it first appeared. It was read, in
 earlier drafts, as costing the thesis its only comparison of absolute effective
 coefficients against an external database. That comparison exists after all: it
 was hidden by the definition, and the recombination side of it agrees to
-\SI{6}{\percent} at the benchmark. The failure does not touch the structural results
+\SI{9.3}{\percent} at the benchmark and to a median \SI{5.7}{\percent} across the
+grid. The failure does not touch the structural results
 of Chapter~\ref{ch:theory}, which are statements about whatever $\Lmat$ is
 supplied and would hold for the ADAS-consistent matrix equally. It does not
 touch the level-resolved comparison of Section~\ref{sec:fujimoto}, which
@@ -1472,11 +1500,18 @@ it is computed from steady states rather than from the spectrum, and the benchma
 The filtered outputs were preserved rather than overwritten, as
 \texttt{*\_FILTERED\_20260721}.
 
-\textbf{The literal survives in two files.} It is still present at
+\textbf{The literal survived in two further files, and has now been
+removed.} After the production filter was corrected it remained at
 \texttt{src/rates/solve\_cr.py}:269 and \texttt{src/rates/check\_mz.py}:10. Both
-were confirmed to be imported by nothing, so no number in this thesis passes
-through them. That is luck rather than design, and it is recorded here because a
+were confirmed to be imported by nothing, so no number in this thesis ever passed
+through them; that was luck rather than design, and it is recorded here because a
 commit message claiming the filter had been removed is part of the same history.
+Both were corrected on 16 September 2026, once the absence of any consumer had
+been established, and the literal no longer appears anywhere in \texttt{src/}.
+The correction changes no number in this thesis: at the benchmark the two filters
+return the same $\tauslow$ to every digit, and they differ only where the slow
+mode is slower than $1\,\si{\per\second}$, which is the cold corner the filter was
+silently truncating in the first place.
 
 \subsection{The central quantity was misnamed}
 
@@ -1680,44 +1715,55 @@ Table~\ref{tab:ladder} collects the checks in the order a reader should weight
 them, with the grade of Section~\ref{sec:gate_philosophy} attached to each.
 
 \begin{table}[tbp]
-  \centering
-  \caption[The validation ladder, graded by severity]{Every check run on this
-  model, with what it tests, its severity grade, and the measured outcome.
-  \emph{Tautological} means the check cannot fail except on an arithmetic bug
-  because the quantity tested was constructed from the relation being tested;
-  \emph{weak} means it can fail but only for an error far larger than any
-  plausible one; \emph{severe} means a plausible wrong version of this model
-  fails it. Of the fifteen internal checks, nine are severe, four are
-  tautological and two are weak; of the four external comparisons, two pass,
-  one measures the $\ell$~closure rather than this model, and one fails.}
-  \label{tab:ladder}
-  \small
-  \begin{tabular}{p{4.3cm}p{2.0cm}p{5.6cm}}
-    \toprule
-    check & grade & measured \\
-    \midrule
-    Atomic-data provenance (Ch.~\ref{ch:atoms})  & severe & every coefficient traces to a named dated source; tallies exact \\
-    Excitation rates against RMPS (Ch.~\ref{ch:atoms}) & severe & \SI{82.1}{\percent} within \SI{20}{\percent} for $n_{\rm upper}\le4$; $n=5$ disagrees and the direction is not established \\
-    Raw cross sections, microscopic reversibility & severe & ratio $0.9995 \pm 0.0032$, \SI{98.7}{\percent} within \SI{1}{\percent} \\
-    One energy ladder on both sides & severe & Saha ratio $0.999997$ for all $43$ states to eight identical digits \\
-    Superposition of the two channels & severe & $3.075\times10^{-14}$ over $784$ pairs; catches a $3\leftrightarrow4$ swap \\
-    Reduced against full $\Robs$ & severe & $0.777768$ by three routes; catches the same swap \\
-    Pinned input hashes & severe & both SHA-256 match byte for byte \\
-    Recomputation guards on the figures & severe & every plotted row rebuilt from $\Lmat$ at $10^{-9}$, raises \\
-    State-space convergence in $n_{\max}$ & severe & increments geometric at ratio $0.75$; extrapolated \SI{+0.9}{\percent} at the benchmark, \SI{-1.4}{\percent} at the cold corner, \SI{-0.55}{\percent} at the ridge \\
-    Gate~A, detailed balance & tautological & $<\SI{0.01}{\percent}$, but $K_{\rm deexc}$ was derived from $K_{\rm exc}$ \\
-    Column-sum conservation & tautological & $3.61\times10^{-11}$; three of four injected faults undetected \\
-    The $\tanh$ bound & tautological & holds at all $248$ points, and holds on corrupted input \\
-    Gate~E, timescale hierarchy & tautological & $\Msep \ge 86.8$ against a threshold of $1$ \\
-    Gate~B, coronal limit & weak & worst convergence $0.0034$ against a tolerance of $0.5$ \\
-    Gate~C, Saha ceiling & weak & monotone and below Saha; approach fraction \SI{1.5}{\percent}, excluded from the flag \\
-    \midrule
-    Fujimoto App.~4B timescales & external, passes & $0.34\times$ and $1.77\times$ at a grid point his example lands on \\
-    Fujimoto Table~4.1, $r_0$ & external, passes & \SIrange{0.1}{1}{\percent} for $n\ge4$; $r_0(2) = 0.7392$ against $0.730$ \\
-    Fujimoto Table~4.1(b), $r_1$ & external, tests the $\ell$~closure & $8.3\times$ low at $p=3$; transcription verified against the printed table, which is bundled in $n$ (\S\ref{sec:fujimoto}) \\
-    Gate~D against ADAS & \textbf{FAIL} & $\eta \in [5.73,\ 8346]$, $0$ of $400$ within a factor $2$ \\
-    \bottomrule
-  \end{tabular}
+\centering
+\caption[The validation ladder, graded by severity and provenance]{Every check
+this chapter grades, with what it tests, its severity, whether its result can be
+regenerated, and the measured outcome. \emph{Tautological} means the check
+cannot fail except on an arithmetic bug, because the quantity tested was
+constructed from the relation being tested; \emph{weak} means it can fail but
+only for an error far larger than any plausible one; \emph{severe} means a
+plausible wrong version of this model fails it. The provenance column is the
+more uncomfortable of the two: \emph{stamped} means a script in the repository
+regenerates the number into an artifact under \texttt{validation/};
+\emph{notes} means the number is recorded in this project's working files with
+no producing script, so it cannot be re-executed and cannot fail anything today.
+Four of the checks graded severe are in that condition, which is a statement
+about this thesis's record-keeping rather than about the model. Of the eighteen
+internal checks, eleven are severe, one is documented but not re-executable,
+four are tautological and two are weak; of the five external comparisons, two
+pass, one passes only at the higher densities, one fails, and one is open.}
+\label{tab:ladder}
+\footnotesize
+\begin{tabular}{p{3.9cm}p{1.8cm}p{1.3cm}p{5.6cm}}
+\toprule
+check & grade & record & measured \\
+\midrule
+Atomic-data provenance (Ch.~\ref{ch:atoms})  & severe & stamped & every coefficient traces to a named dated source; tallies exact \\
+Excitation rates against RMPS (Ch.~\ref{ch:atoms}) & severe & stamped & \SI{82.1}{\percent} within \SI{20}{\percent} for $n_{\rm upper}\le4$; $n=5$ disagrees and the direction is not established \\
+Raw cross sections, microscopic reversibility & severe & figure & ratio $0.9995 \pm 0.0032$, \SI{98.7}{\percent} within \SI{1}{\percent} \\
+One energy ladder on both sides & severe & notes & Saha ratio $0.999997$ for all $43$ states \\
+Superposition of the two channels & severe & stamped & $3.075\times10^{-14}$ over $784$ pairs; catches a $3\leftrightarrow4$ swap \\
+Reduced against full $\Robs$ & severe & stamped & $0.777768$ by three routes; catches the same swap \\
+Deliberate fault injection & severe & stamped & three of four injected faults invisible to the conservation residual; the fourth moves it by thirteen orders \\
+Line-weighted against shell ratio & severe & stamped & ratio $0.948$ to $1.000$ over $784$ pairs, below unity at every one; census $44$ against $45$ \\
+Escape-factor cross-check & severe & stamped & $\sigma_0$ against an independent module, \SI{0.059}{\percent} apart against a \SI{1}{\percent} raising tolerance \\
+Pinned input hashes & severe & stamped & both SHA-256 match byte for byte \\
+Recomputation guards on the figures & severe & code & every plotted row rebuilt from $\Lmat$ at $10^{-9}$, raises \\
+Truncation convergence of $\ffrac{3}-\ffrac{4}$ & documented, not re-executable & notes & increments geometric at ratio $0.75$; extrapolated \SI{+0.9}{\percent} at the benchmark, \SI{-1.4}{\percent} at the cold corner. Tests one quantity, not the state space; no script regenerates it \\
+Gate~A, detailed balance & tautological & stamped & $<\SI{0.01}{\percent}$, but $K_{\rm deexc}$ was derived from $K_{\rm exc}$ \\
+Column-sum conservation & tautological & stamped & $3.61\times10^{-11}$; see the fault-injection row for what it cannot see \\
+The $\tanh$ bound & tautological & notes & holds at all $248$ points, and holds on corrupted input \\
+Gate~E, timescale hierarchy & tautological & stamped & $\Msep \ge 86.8$ against a threshold of $1$ \\
+Gate~B, coronal limit & weak & stamped & worst convergence $0.0034$ against a tolerance of $0.5$ \\
+Gate~C, Saha ceiling & weak & stamped & monotone and below Saha; approach fraction \SI{1.5}{\percent}, excluded from the flag \\
+\midrule
+Fujimoto App.~4B timescales & external, passes & stamped & $0.34\times$ and $1.77\times$ at a grid point his example lands on \\
+ACD96 against this model's recombination coefficient & external, passes & stamped & all $400$ points within a factor two; $\eta$ from $0.729$ to $1.042$, median $0.943$, \SI{9.3}{\percent} at the benchmark \\
+Fujimoto Table~4.1, $r_0$ & external, passes at $\lg\nel = 21$ & stamped & \SIrange{0.1}{1}{\percent} for $n\ge4$ at the higher density; \SIrange{12}{14}{\percent} at $p=3,4$ at $\lg\nel = 18$; $r_0(2) = 0.7392$ against $0.730$ \\
+Fujimoto Table~4.1(b), $r_1$ & external, \textbf{open} & stamped & $8.3\times$ low at $p=3$. Truncation, Lyman trapping and the $\ell$~closure each tested and each eliminated; unexplained (\S\ref{sec:fujimoto}) \\
+Gate~D, SCD96 against ADAS & \textbf{FAIL} & stamped & $\eta \in [5.73,\ 8346]$, $0$ of $400$ within a factor $2$. Rebuilt on the ground-fed channel alone it reaches $323$ of $400$; the gate itself is unchanged \\
+\bottomrule
+\end{tabular}
 \end{table}
 
 \subsection{What the model may be used for}

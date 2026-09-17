@@ -1003,9 +1003,14 @@ $0.38682$ to $0.38563$, about one part in $325$. Restricted to
 $\Te \ge \SI{2}{\electronvolt}$ the count is $45$ before and $45$ after.
 
 \textbf{The falsifier did not appear.} A factor of $2300$ was needed at the
-worst point; the measured factor there is $15$. The attack was survived by two
-orders of magnitude, and this belongs in the defence of the result rather than
-in a list of caveats.
+worst point; the measured factor there is $15$. Both numbers belong to
+$[0,4]$, at \SI{1}{\electronvolt}, so the two orders of magnitude between them
+are a cold-corner margin. Inside the defended range the margin is smaller and
+the conclusion is the same: at the ridge the factor needed is $20$, since
+$\tauslow$ there is \SI{2.027}{\milli\second} against a
+\SI{100}{\micro\second} event, and the measured closure factor is $1.01$; at
+the benchmark $\tauslow$ moves by one part in $10^{3}$. The attack was survived everywhere it was pressed, and this
+belongs in the defence of the result rather than in a list of caveats.
 
 \subsection{The caveat that must not be softened}
 
@@ -1281,10 +1286,18 @@ idealisation is safe by five orders of magnitude. \textbf{That ratio is about
 the wrong quantity.} It describes the suppression of the fast
 \emph{excited-manifold} step error, which is not what the maps report. The
 plateau error is governed by the slow ground-state response, for which the
-relevant ratio at the worst point is $\tauslow/\taudrive = 2332$, an
-unambiguous step by a wide margin. Any finite ramp with
-$\taurel \ll t_{\rm ramp} \ll \tauslow$ reaches the same plateau, so the
-idealisation \emph{is} safe; it is safe because of the slow ratio, and the fast
+relevant ratio is $\tauslow/\taudrive$. At the worst point of the grid that
+ratio is $2332$, but that point sits at \SI{1}{\electronvolt} and the figure is
+not the margin this result runs on. Over the $448$ defended pairs the ratio has
+median $0.815$, and over the $45$ that break down it runs from $1.95$ to $288$,
+median $11.2$ (\texttt{validation/divertor\_map/}). The step idealisation is
+therefore safe by one to two orders of magnitude where a plateau is reported,
+not by three. The governing quantity is in any case
+$D_{\rm e} = \tauslow/t_{\rm ramp}$ rather than $\tauslow/\taudrive$: a linear
+ramp reaches $D_{\rm e}(1-\mathrm{e}^{-1/D_{\rm e}})$ of the step's plateau
+(\texttt{validation/ramp\_plateau/}), so any ramp with
+$\taurel \ll t_{\rm ramp} \ll \tauslow$ reaches the same plateau and the
+idealisation \emph{is} safe. It is safe because of the slow ratio, and the fast
 ratio must never be quoted for or against this result.
 
 \paragraph{The step is in temperature only: tested, and the correction goes the
@@ -1412,10 +1425,16 @@ depends on a slab thickness the model does not contain; and below
 
 It cannot say what a real divertor does, because the ground-state population
 there is renewed by recycling on a transport timescale of order
-\SI{72}{\micro\second},
-against a local ionisation balance of \SI{233}{\milli\second} at the worst
-point. Four orders of magnitude separate the two, and the model contains only
-the slower one.
+\SI{72}{\micro\second} across \SI{10}{\centi\metre}, against a local ionisation
+balance the model computes for itself. At the worst point the two are
+\SI{72}{\micro\second} against \SI{233}{\milli\second}, a factor
+$3.2\times10^{3}$, but that point lies below the scope boundary. Inside the
+defended range the separation is smaller and does not always keep its sign:
+over the $45$ defended breakdown pairs $\tauesc/\tauslow$ has median $0.0079$
+and reaches $0.159$ at its largest (Table~\ref{tab:transport_selection}), one
+to three orders rather than four, and at the benchmark it is $3.6$, so there
+transport is the \emph{slower} of the two. What the model contains is the
+ionisation clock alone, whichever way the comparison runs.
 
 It cannot say what an instrument records at the onset of detachment, because a
 large fraction of that light is molecular in origin and there are no molecules
@@ -1447,8 +1466,10 @@ now.
 
 Closing the open boundary, the objection most naturally assumed to be fatal,
 moves the census by two points out of $680$ and the worst case by one part
-in $325$. A factor of $2300$ would have been required to refute the result. The
-measured factor at that point is $15$.
+in $325$; above \SI{2}{\electronvolt} the count is $45$ before and after. At
+the cold corner a factor of $2300$ would have been required to refute the
+result and the measured factor is $15$; at the ridge, inside the defended
+range, the factor required is $20$ and the measured one is $1.01$.
 
 The ridge mechanism was verified over $\Te \ge \SI{2}{\electronvolt}$, which is
 exactly the range in which trapping has now been shown to be irrelevant, so the

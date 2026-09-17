@@ -436,8 +436,12 @@ non-relativistic degeneracy in the CCC calculation. All $\Delta n = 0$
 transitions are excluded from the database.'' The reason is that in a strictly
 non-relativistic treatment the $\ell$ sublevels of a shell are exactly
 degenerate, the transition energy is zero, and the long-range dipole interaction
-gives a divergent cross section. After the exclusion 1740 transitions remain,
-all with $\Delta n \ne 0$. The stated accuracy for what remains is
+gives a divergent cross section. After the exclusion 2190 blocks remain, all
+with $\Delta n \ne 0$: 1320 in the excitation direction and 870 in the
+de-excitation direction. The Week-2 acquisition report for the same dataset
+records 1740, which is 870 of each; the parse was subsequently extended to the
+$n=9$ and $n=10$ final states noted below, and the difference is stated here
+rather than reconciled. The stated accuracy for what remains is
 $\sim$\SI{5}{\percent}, which the benchmark of
 Section~\ref{sec:atomic_uncertainty} is able to test.
 
@@ -1031,66 +1035,260 @@ $3.6\times10^{-11}$ because every transition entered as a loss also entered as a
 gain. Both would hold for a dataset uniformly wrong by a factor of three. The
 only test with real severity is comparison against an independent calculation.
 
-That comparison is against Anderson \emph{et al.}~\cite{Anderson2000,Anderson2002},
-who computed effective collision strengths for all $n \le 5$, $\Delta n \ne 0$
-transitions in hydrogen using the R-matrix with pseudostates (RMPS) method, a
-different formulation, basis and code from CCC. Their collision strengths are
-converted to rate coefficients and compared point by point in
-\texttt{src/validation/anderson\_benchmark\_qc.py}, with the 340-row comparison
-stored in \texttt{collisions/anderson\_benchmark\_full.csv}.
-Table~\ref{tab:anderson} gives the outcome. For the two transitions this thesis
-leans on hardest the agreement is better than the aggregate: $1s \to 2p$ differs
-by \SI{-14.5}{\percent} at \SI{1}{\electronvolt} and \SI{-2.2}{\percent} at
-\SI{10}{\electronvolt}; $2p \to 3d$ by \SI{-6.7}{\percent} and
-\SI{-0.7}{\percent}.
+That comparison is against Anderson \emph{et al.}, who computed effective
+collision strengths $\Upsilon$ for all $n \le 5$, $\Delta n \ne 0$ transitions in
+hydrogen using the R-matrix with pseudostates (RMPS) method, a different
+formulation, basis and code from CCC. Two papers carry that calculation and they
+are not interchangeable. The original tabulation~\cite{Anderson2000} was
+superseded by a corrigendum~\cite{Anderson2002} after Dere and Mason pointed out
+that its dipole effective collision strengths did not approach the correct
+high-energy asymptotic form. The underlying collision strengths were sound; the
+fault was in the Maxwell averaging. The high-energy tail had been fitted by least
+squares using the infinite-energy limit point, but RMPS collision strengths
+oscillate shallowly at all energies because of high-lying pseudo-thresholds, so
+the fit degraded progressively beyond the last computed energy. The corrigendum
+recomputes $\Upsilon$ from the same collision strengths using linear
+interpolation of the reduced collision strength between the highest finite energy
+and the infinite-energy limit. \textbf{This work uses the corrigendum values
+throughout.}
+
+How much that choice matters depends entirely on temperature. Comparing the two
+tabulations transition by transition, the mean change over $\Te = 1$ to
+\SI{10}{\electronvolt} is \SI{1.4}{\percent} and no transition moves by more
+than \SI{13.1}{\percent}; at \SI{15}{\electronvolt} the largest change is
+\SI{33}{\percent} and at \SI{25}{\electronvolt} it reaches \SI{86}{\percent},
+on $1s \to 3p$ in both cases. The revision is therefore almost irrelevant to
+this thesis, which never leaves $\Te \le \SI{10}{\electronvolt}$, and decisive
+for any extension of this model to attached-divertor or scrape-off-layer
+temperatures. The distinction is recorded here because the superseded table
+remains in circulation, and because an earlier version of this benchmark used
+it.
+
+The comparison itself is done in
+\texttt{src/validation/anderson2002\_benchmark.py}, which reads $\Upsilon$
+directly from the published corrigendum table rather than from a transcription,
+and converts it to a rate coefficient through the authors' Eq.~(3). That
+conversion has one trap worth naming: the statistical weight in the denominator
+is that of the \emph{lower} state and is $(2S+1)(2L+1) = 2(2\ell+1)$ for
+hydrogen doublets, so using $2\ell+1$ introduces a systematic factor of two. The
+table's row convention, upper state first, is verified at run time rather than
+assumed, by checking that the radiative rate listed against the $2p$--$1s$ row is
+$\SI{6.27e8}{\per\second}$. Comparison is made at all 50 temperatures of the
+working grid, with $\Upsilon$ interpolated logarithmically in $\Te$; since the
+grid spans \SIrange{1}{10}{\electronvolt} and the RMPS table spans
+\SIrange{0.5}{25}{\electronvolt}, this interpolates and never extrapolates.
+Table~\ref{tab:anderson} gives the outcome over the resulting 4250 comparisons.
 
 \begin{table}[tbp]
   \centering
   \caption[CCC benchmarked against Anderson RMPS]{The CCC excitation rate
   coefficients used in this model, compared against the R-matrix with
-  pseudostates (RMPS) calculation of Anderson \emph{et al.}, over 85 matched
-  transitions at $\Te = 1, 3, 5$ and \SI{10}{\electronvolt} (340 comparisons).
-  Source: \texttt{data/processed/collisions/anderson\_benchmark\_full.csv} and
-  the report \texttt{ccc\_anderson.md}. Transitions with
-  $n_{\text{upper}} \le 4$ dominate collisional--radiative kinetics in this
-  range; the disagreement is concentrated entirely in $n_{\text{upper}} = 5$.}
+  pseudostates calculation of Anderson \emph{et al.}~\cite{Anderson2000}
+  as revised by the corrigendum~\cite{Anderson2002}, over 85 matched transitions
+  at all 50 temperatures of the working grid (4250 comparisons). The error is
+  $(K_{\mathrm{CCC}}/K_{\mathrm{RMPS}} - 1)$; a negative median means CCC is the
+  smaller of the two. Source:
+  \texttt{data/processed/collisions/ccc\_vs\_anderson2002\_thesis\_Te\_grid.csv}
+  and the report \texttt{ccc\_anderson.md}. The agreement degrades smoothly with
+  the upper shell rather than failing abruptly at $n=5$.}
   \label{tab:anderson}
-  \begin{tabular}{lrrr}
+  \begin{tabular}{lrrrr}
     \toprule
-    Subset & comparisons & within \SI{20}{\percent} & mean $|$error$|$ \\
+    Subset & comparisons & within \SI{20}{\percent} & mean $|$error$|$ & median error \\
     \midrule
-    all transitions                         & 340 & \SI{42.4}{\percent} & \SI{29.0}{\percent} \\
-    $n_{\text{upper}} \le 4$                & 140 & \SI{82.1}{\percent} & \SI{12.7}{\percent} \\
-    excited-state, $n_{\text{upper}} \le 4$ & 104 & \SI{86.5}{\percent} & \SI{10.7}{\percent} \\
-    $n_{\text{upper}} = 5$ only             & 200 & \SI{14.5}{\percent} & \SI{40.4}{\percent} \\
+    $n_{\text{upper}} = 2$     &  100 & \SI{100.0}{\percent} & \SI{10.9}{\percent} & \SI{-10.5}{\percent} \\
+    $n_{\text{upper}} = 3$     &  450 & \SI{96.9}{\percent}  & \SI{8.5}{\percent}  & \SI{-5.6}{\percent} \\
+    $n_{\text{upper}} = 4$     & 1200 & \SI{74.0}{\percent}  & \SI{14.9}{\percent} & \SI{-9.9}{\percent} \\
+    $n_{\text{upper}} = 5$     & 2500 & \SI{12.3}{\percent}  & \SI{41.1}{\percent} & \SI{-34.2}{\percent} \\
+    \midrule
+    $n_{\text{upper}} \le 4$   & 1750 & \SI{81.4}{\percent}  & \SI{13.0}{\percent} & \SI{-8.8}{\percent} \\
+    all transitions            & 4250 & \SI{40.7}{\percent}  & \SI{29.5}{\percent} & \SI{-21.5}{\percent} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Taken at face value the first row is a failure: fewer than half the comparisons
-agree within \SI{20}{\percent}. The disagreement is not spread out. It sits
-entirely in transitions reaching $n=5$, which supply 200 of the 340 comparisons,
-and has two modes with opposite signs. Where the transition is dipole-allowed
-between nearly degenerate shells, as for $4s \to 5p$ with its gap of
-\SI{0.31}{\electronvolt}, CCC gives rates 2 to 3 times larger than RMPS. Where
-it is a high-multipole transition with no dipole matrix element, as for
-$1s \to 5g$ in which $\ell$ changes by four, CCC gives rates 3 to 5 times
-smaller.
+Taken at face value the last row is a failure: fewer than half the comparisons
+agree within \SI{20}{\percent}. Most of that sits in transitions reaching $n=5$,
+which supply 2500 of the 4250 comparisons. But the degradation with upper shell
+is graded rather than abrupt, and saying that the disagreement lies
+\emph{entirely} at $n=5$ would overstate the case: $n_{\text{upper}} = 4$ already
+falls to \SI{74.0}{\percent} within \SI{20}{\percent} against
+\SI{96.9}{\percent} for $n_{\text{upper}} = 3$. Within the $n_{\text{upper}}=4$
+block the spread is carried by $\Delta n = 1$ and $\Delta n = 3$; the $\Delta n =
+2$ transitions agree within \SI{20}{\percent} at every point tested. Nor is the
+agreement uniform in temperature. For $n_{\text{upper}} \le 4$ the mean absolute
+deviation runs from \SI{7.2}{\percent} at \SI{1}{\electronvolt} to
+\SI{17.9}{\percent} at \SI{10}{\electronvolt}, so the figure of
+\SI{13}{\percent} in Table~\ref{tab:anderson} is a grid average and not a bound.
 
-The temptation is to declare one of them right. The honest position is that we
-cannot. Both are approximate, and both face the same difficulty at $n=5$: the
-orbitals are large and diffuse. Anderson \emph{et al.} state that $n=6$ orbitals
-would have needed an R-matrix box of $140\,a_0$, too large to include, and that
-constraint affects how their $n=5$ states couple to the continuum. \textbf{The
-direction of the error is not established}, and this thesis does not claim it
-is. What can be said is where the disagreement lands: kinetics in this range is
-driven by $n \le 4$ processes, ground-state excitation to $2p$ and $3p$ and
-stepwise transitions such as $2p \to 3d$ and $2s \to 3p$, while $n=5$
-contributes to cascades but not to the supply of the Balmer-emitting levels. A
-factor of three in a weak cascade channel is not a factor of three in the
-observable. That is an argument, not a measurement; it would be strengthened by
-scaling the $n=5$ block and recomputing the observable, and that test was not
-performed.
+At $n=5$ the disagreement has two modes with opposite signs. Where the
+transition is dipole-allowed between nearly degenerate shells, as for
+$4s \to 5p$ with its gap of \SI{0.31}{\electronvolt}, CCC gives the larger rate,
+by up to a factor of three; all ten comparisons in the whole benchmark that
+differ by more than a factor of two are of this kind. Where the transition is a
+high-multipole one with no dipole matrix element, as for $1s \to 5g$ in which
+$\ell$ changes by four, CCC gives rates several times smaller, and this second
+mode dominates the aggregate, which is why the median error at
+$n_{\text{upper}}=5$ is \SI{-34.2}{\percent}.
+
+\subsection{Which calculation is anomalous at \texorpdfstring{$n=5$}{n=5}}
+\label{sec:n5_anomaly}
+
+Both calculations are approximate and neither is a measurement, so the
+disagreement cannot be settled by preferring one author. It can, however, be
+\emph{localised}, using an asymmetry between the two datasets: the RMPS
+tabulation stops at $n=5$, while CCC continues to $n=10$. Only one of them can
+be asked what happens next.
+
+The test uses a property of hydrogen that holds regardless of which code
+computes it. Along a Rydberg series of dipole transitions $n_{\mathrm{lo}} \to
+n_{\mathrm{up}}$ the absorption oscillator strength falls as
+$f \sim C/n_{\mathrm{up}}^{3}$ as $n_{\mathrm{up}} \to \infty$, and at a
+temperature well above threshold the rate coefficient is dominated by the Bethe
+term --- the leading high-energy contribution to a dipole-allowed cross section,
+which is proportional to $f$ --- and inherits that scaling. The reduced quantity
+\begin{equation}
+  R(n_{\mathrm{up}}) = K(n_{\mathrm{lo}} \to n_{\mathrm{up}})\, n_{\mathrm{up}}^{3}
+  \label{eq:rydberg_reduced}
+\end{equation}
+must therefore flatten as the series is climbed. Equation~\eqref{eq:rydberg_reduced}
+does not say what the constant is, and it is not used to compute anything; its
+only role is that a dataset tracking hydrogenic behaviour produces a smooth
+$R(n_{\mathrm{up}})$, so a dataset that kinks at one particular
+$n_{\mathrm{up}}$ is departing from that behaviour there. Table~\ref{tab:rydberg}
+gives the successive changes in $R$ for three series at
+\SI{1}{\electronvolt}.
+
+\begin{table}[tbp]
+  \centering
+  \caption[Rydberg-series test of the $n=5$ disagreement]{Successive percentage
+  changes in the reduced rate coefficient $R(n_{\mathrm{up}})$ of
+  Eq.~\eqref{eq:rydberg_reduced} along three dipole series at $\Te =
+  \SI{1}{\electronvolt}$. CCC continues smoothly toward the hydrogenic limit;
+  the RMPS values track it until the step into $n=5$, the top shell of their
+  target basis, where all three series kink. Dashes mark shells the RMPS
+  tabulation does not contain. Source:
+  \texttt{data/processed/collisions/anderson\_validity\_dipole\_series.csv}.}
+  \label{tab:rydberg}
+  \begin{tabular}{llrrrrr}
+    \toprule
+    Series & Source & $2\!\to\!3$ & $3\!\to\!4$ & $4\!\to\!5$ & $5\!\to\!6$ & $6\!\to\!7$ \\
+    \midrule
+    $1s \to np$ & CCC  & $-87.8$ & $-53.1$ & $-41.5$ & $-16.3$ & $-11.8$ \\
+                & RMPS & $-87.9$ & $-53.5$ & $\mathbf{-5.4}$  & --- & --- \\
+    $2p \to nd$ & CCC  & ---     & $-70.4$ & $-46.5$ & $-28.0$ & $-17.0$ \\
+                & RMPS & ---     & $-70.4$ & $\mathbf{-17.3}$ & --- & --- \\
+    $2s \to np$ & CCC  & ---     & $-63.1$ & $-44.2$ & $-24.0$ & $-18.6$ \\
+                & RMPS & ---     & $-63.8$ & $\mathbf{-17.5}$ & --- & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The two datasets agree on the shape of each series until the last step the RMPS
+calculation can take. At that step the RMPS reduced rate barely falls, while CCC
+continues the smooth approach it maintains through $n=10$. The kink lands on the
+top physical shell of the RMPS target basis in all three series, at both
+\SI{1}{\electronvolt} and \SI{10}{\electronvolt}, and its sign matches the bulk
+sign of the disagreement in Table~\ref{tab:anderson}: the RMPS $n=5$ rates sit
+high, so CCC reads low against them. That is consistent with the topmost shell of
+a truncated close-coupling expansion absorbing flux that physically belongs to
+$n \ge 6$ and the continuum, and it is consistent with the authors' own remark
+that $n=6$ orbitals would have needed an R-matrix box of $140\,a_0$, too large to
+include.%
+% [UNVERIFIED] The 140 a_0 statement is attributed to Anderson et al. (2000),
+% which is cited but is NOT held in refs/ -- only the 2002 corrigendum is.
+% Confirm this sentence against the 2000 paper before submission. The Rydberg
+% argument above does not depend on it.
+
+
+This localises the anomaly; it does not prove CCC correct. The scaling argument
+is asymptotic, and \SI{1}{\electronvolt} is not a temperature at which the Bethe
+term cleanly dominates, so the test is suggestive rather than decisive. What it
+establishes is narrower and still useful: the departure from hydrogenic
+behaviour occurs at one specific shell of one specific calculation, rather than
+being distributed through the CCC dataset. \textbf{This work therefore treats
+the $n=5$ disagreement as a limitation of the benchmark rather than as a
+measured error in the data being benchmarked}, and claims no more than that.
+
+\subsection{Does any of it reach the result?}
+\label{sec:atomic_propagation}
+
+The preceding argument is about rate coefficients. A discrepancy in a rate
+coefficient matters only insofar as it moves something the thesis reports, and
+the way to find out is to make the substitution and look. Because the CR matrix
+is linear in electron density --- verified, not assumed, to a relative
+$3\times10^{-16}$ --- it separates exactly into a radiative part and a
+collisional part,
+\begin{equation}
+  \Lmat(\Te, \nel) = \Lmat_{\mathrm{rad}}(\Te) + \nel\,\Lmat_{\mathrm{coll}}(\Te),
+  \label{eq:L_split}
+\end{equation}
+so the collisional rate coefficients can be replaced without disturbing
+anything else. For all 85 transitions the RMPS calculation covers, the CCC rate
+coefficient in $\Lmat_{\mathrm{coll}}$ was replaced by the RMPS one and the eigenvalue problem
+of Chapter~\ref{ch:theory} re-solved at every one of the 400 grid points.
+Excitation and de-excitation were scaled by the same factor, so detailed balance
+survives the substitution, and the diagonal was compensated so that column sums,
+and with them the loss to the continuum, are unchanged. Before any substitution
+the procedure reproduces the unperturbed spectrum, including all three ranges of
+Eq.~\eqref{eq:M_range}, which is the check that makes the perturbed numbers
+worth reading.
+
+Replacing every rate coefficient the benchmark covers changes $\tauslow$ by
+\SI{11.4}{\percent} on average across the grid and by at most
+\SI{18.7}{\percent}; $\taurel$ moves by \SI{2.4}{\percent}; and $\Msep$, which
+inherits both, moves by \SI{11.1}{\percent} on average. At the benchmark point
+$\Msep$ falls from 9982 to 8855. This is the test that
+Section~\ref{sec:n5_anomaly} could not perform and that an earlier draft of this
+chapter identified as missing.
+
+Its outcome is not the expected one, and the useful part is the disagreement
+with what was expected. Decomposing the substitution by which transitions are
+replaced:
+
+\begin{table}[tbp]
+  \centering
+  \caption[Which transitions carry the atomic-data sensitivity]{Change in the
+  timescale separation $\Msep$ when the CCC rate coefficients are replaced by
+  the RMPS values, for subsets of the 85 benchmarked transitions. The
+  50~transitions reaching $n=5$, which carry almost all of the benchmark
+  disagreement, move $\Msep$ by under \SI{1}{\percent}; the 14~ground-state
+  transitions, which carry much less of it, move $\Msep$ by more than the full
+  substitution does. Source:
+  \texttt{data/processed/collisions/ccc\_anderson\_grid\_impact.csv}.}
+  \label{tab:atomic_sensitivity}
+  \begin{tabular}{lrrr}
+    \toprule
+    Transitions replaced & count & mean $|\Delta\tauslow|$ & $\Delta\Msep$ at benchmark \\
+    \midrule
+    all benchmarked ($n_{\text{upper}} \le 5$) & 85 & \SI{11.4}{\percent} & \SI{-11.3}{\percent} \\
+    $n_{\text{upper}} = 5$ only                & 50 & \SI{4.7}{\percent}  & \SI{-0.9}{\percent} \\
+    $n_{\text{upper}} \le 4$ only              & 35 & \SI{7.2}{\percent}  & \SI{-10.8}{\percent} \\
+    ground-state $1s \to n\ell$ only           & 14 & \SI{10.4}{\percent} & \SI{-12.4}{\percent} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Fifty transitions reaching $n=5$, disagreeing by factors of two to five, move
+$\Msep$ by \SI{0.9}{\percent}. Fourteen ground-state transitions, agreeing far
+better, move it by \SI{12.4}{\percent}. The reason is structural rather than
+numerical: $\tauslow$ is the timescale of the slowest mode, and
+Section~\ref{sec:two_clocks} identifies that mode as the depletion of the ground
+state, so the rates out of $1s$ set it almost by themselves. Rates into $n=5$
+enter only through cascades that have already been diluted by everything they
+pass through.
+
+The conclusion of the earlier draft survives and its reasoning does not. It is
+true that the $n=5$ disagreement does not affect this thesis, but not because
+$n=5$ channels are weak in some general sense --- it is because they are weak
+\emph{in the specific eigenvalue the thesis reports}, and that had to be
+computed rather than asserted. The same calculation shows that the transitions
+which do matter are the ones the benchmark constrains least well among
+$n_{\text{upper}} \le 4$: ground-state excitation agrees within
+\SI{20}{\percent} in only \SI{61.8}{\percent} of comparisons at
+$n_{\text{upper}} \le 4$, against \SI{81.4}{\percent} for that block as a whole.
+Chapter~\ref{ch:theory} carries the consequence, which is that $\Msep$ is
+reported with an atomic-data systematic of \SI{11}{\percent}.
 
 Three further soft spots are worth naming rather than leaving to be discovered.
 \emph{Detailed balance in the raw cross sections}: separately from the enforced
@@ -1111,7 +1309,9 @@ link has not been done, so the connection is a hypothesis, not a finding.
 \emph{Vriens--Smeets for the bundled block}: 201 of the 819 excitation pairs
 come from a semi-empirical fit of quoted accuracy $\sim$\SI{20}{\percent} rather
 than a close-coupling calculation, which is the price of the ladder reaching
-$n=15$.
+$n=15$. And one gap that the benchmark simply cannot close: the RMPS tabulation
+stops at $n=5$, so every CCC transition reaching $n \ge 6$ --- the whole upper
+half of the ladder --- has no independent check in this thesis at all.
 
 %-----------------------------------------------------------------------------
 \section{Two errors found by audit}
@@ -1364,8 +1564,12 @@ $\ell$-mixing is structural}: it carries at least \SI{99.92}{\percent} of the
 loss from $2s$ everywhere on the grid. \textbf{The data are good where it
 matters}: the $n_{\text{upper}} \le 4$ transitions that drive the kinetics agree
 with an independent RMPS calculation at a mean absolute error of
-\SI{12.7}{\percent}, and the factor 2--5 disagreement is confined to $n=5$,
-where neither method establishes the direction of the error. And \textbf{two
+\SI{13.0}{\percent}. The agreement degrades smoothly with the upper shell
+rather than holding and then failing, and the factor 2--5 disagreement at $n=5$
+is localised to the top shell of the RMPS target basis by a test those data
+cannot perform on themselves. Substituting the RMPS rates wholesale moves the
+timescale separation of Chapter~\ref{ch:theory} by \SI{11}{\percent}, carried
+by ground-state excitation and not by $n=5$. And \textbf{two
 implementation errors were found by audit and both were bounded}.
 
 What none of this has done is put the atoms in motion. We have $43 \times 43$

@@ -185,10 +185,23 @@ integrating over any excursion gives $|\Delta\ln\Robs| \le |\Delta\ln\bdep|$, so
 reservoir left stale by a factor of two cannot put the line ratio out by more
 than a factor of two. A stale reservoir is attenuated in logarithmic space,
 never amplified. That protection holds for every shell pair, every
-$(\Te,\nel)$ and every atomic dataset, and it is thinnest where the error is
-largest: at $[23,3]$, one column into the crest, the measured sensitivity
-already sits at \SI{97}{\percent} of the ceiling (Section~\ref{sec:bound}), so
-no refinement of the rate coefficients can move it far in either direction.
+$(\Te,\nel)$ and every atomic dataset, because the width of the logistic is
+unity whatever the rates are. The \emph{height} of the ceiling is not
+dataset-independent in the same way: it is $\tanh(|\Delta|/4)$, and $\Delta$ is
+built from rate coefficients. The ceiling is approached most closely where the
+error is largest: at $[23,3]$, one column into the crest, the measured
+sensitivity already sits at \SI{97}{\percent} of it
+(Section~\ref{sec:bound}). That is a statement about the headroom beneath the
+ceiling and not about where the ceiling sits, and the two must not be run
+together. Substituting an independent excitation dataset moves the ceiling
+while leaving the headroom nearly where it was, the median sensitivity falling
+from \SI{80.4}{\percent} to \SI{78.2}{\percent} of its own cap over the $338$
+heating pairs of the map (Sections~\ref{sec:atomic_propagation}
+and~\ref{sec:bound}). Substituting the ionisation data instead does the
+opposite, moving the sensitivity inside a cap that barely shifts. Running at
+\SI{97}{\percent} of the cap is therefore not an artefact of this rate set, but
+neither does it bound where a refinement would put the cap itself, and the two
+refinements this thesis can perform move the two quantities separately.
 
 \paragraph{The clock is $\tauslow$, and it is far too slow to average away.} The
 temptation is to assume that an error introduced by a fast disturbance decays
@@ -221,15 +234,26 @@ and low temperature together.
 \paragraph{Timescale separation gives no warning.} A modeller deciding whether
 to trust a QSS-based inversion reaches for $\Msep = \tauslow/\taurel$, which is
 the ratio that licenses eliminating the fast variables in the first place. It
-carries no information about the diagnostic error once the operating point is
-controlled for (Section~\ref{sec:M_does_not_predict}). The two maxima are
-$52\times$ apart in density; at the point of largest $\Msep$ the plateau error
-is \SI{12.0}{\percent}, the 75th percentile of its distribution and a factor
-$3.2$ below the worst. The reason is visible in Eq.~\eqref{eq:recipe}. $\Msep$
+does not locate the error. Inside the defended range
+$\Te\ge\SI{2}{\electronvolt}$ the two maxima sit on the same temperature row
+$19.3\times$ apart in density: at the point of largest $\Msep$ the plateau error
+is \SI{7.4}{\percent}, the 71st percentile of the $448$ defended pairs and a
+factor $2.5$ below the worst
+(Section~\ref{sec:M_does_not_predict}). What survives once the operating point
+is controlled for is not an absence of information but information with the
+wrong sign: residualising both $\log\Msep$ and $\log\epsplat$ on saturated
+two-way fixed effects in $\Te$ and $\nel$ leaves a partial correlation of
+$-0.617$, so the little that $\Msep$ carries about the error it carries
+backwards, and it is a second-order statement about the $\Te$--$\nel$
+interaction rather than a ranking. The reason is visible in Eq.~\eqref{eq:recipe}. $\Msep$
 compares two rates, and $\epsplat$ measures a distance, the product of a
 sensitivity with a displacement, neither of which appears in $\Msep$. A large
 $\Msep$ certifies that the excited states have equilibrated with the reservoir.
-It says nothing about whether the reservoir is in the right place.
+It says nothing about whether the reservoir is in the right place. Nor is this an
+artefact of how well $\Msep$ is known: replacing the excitation rate
+coefficients with an independent calculation moves it by \SI{11}{\percent}
+while leaving its ordering across the grid intact, rank correlation $0.99993$
+(Section~\ref{sec:M_does_not_predict}).
 
 \paragraph{A second failure, and it is the same cancellation at its limit.} The bound of
 Eq.~\eqref{eq:Sbar_bound} constrains the error in the ratio, and a
@@ -376,9 +400,10 @@ eigenvectors rather than eigenvalues, and are not related to the equilibrium
 timescales, is Greenland's, in two papers of the same year and separately
 attributable \cite{Greenland2001a, Greenland2001b}. This work does not improve
 on either statement. It quantifies them for one diagnostic and maps where the
-criterion misleads: the $52\times$ separation of the two maxima, the sign
-reversal of the association once the operating point is controlled for, and the
-census of Section~\ref{sec:M_does_not_predict}. Turning a general criterion into
+criterion misleads: the $19.3\times$ separation of the two maxima inside the
+defended range, the sign reversal of the association once the operating point
+is controlled for, and the census of
+Section~\ref{sec:M_does_not_predict}. Turning a general criterion into
 a number is a smaller contribution than stating the criterion, and it is the one
 available here.
 
@@ -497,17 +522,42 @@ a property of the atomic system and needs no divertor geometry to produce it.
 
 \paragraph{There are no molecular channels, in a gas that is largely
 molecular.} A third supply feeding $n=3$ preferentially would change
-$\ffrac{3}-\ffrac{4}$. Since $\epsplat$ is linear in that difference, taking
-molecular emissivity fractions of $0.60$ and $0.30$ at $n=3$ and $n=4$ reduces
-the cold-corner plateau error by a factor of $3$ to $5$
-(\texttt{findings\_10}~ADDENDUM~D.4). That bound applies to the cold corner,
-which lies outside the defended range in any case.
-The bound is built in Section~\ref{sec:molecules} from the emissivity
-fractions cited there, not computed from a matrix containing molecules, and it
+$\ffrac{3}-\ffrac{4}$. Imposing molecular emissivity fractions of $0.60$ at
+$n=3$ and $0.30$ at $n=4$ on the model's own operator reduces the cold-corner
+plateau error by a factor of $6.1$, and the upper end of the reported ranges,
+$(0.70,0.45)$, by a factor of $9.4$
+(\texttt{validation/molecular\_channel/}). Those figures apply to the cold
+corner, which lies outside the defended range in any case; at the crest the
+same two targets give $5.4$ and $8.1$. The reduction is larger than a dilution
+linear in $\ffrac{3}-\ffrac{4}$ suggests, because $\epsplat$ is exponential in
+the sensitivity, and it is not monotone: the diluted difference passes through
+zero near $\phi_3 = 0.74$, past which the error grows again with the
+sensitivity reversed.
+The estimate is built in Section~\ref{sec:molecules} from the emissivity
+fractions cited there, driven through this thesis's atomic operator rather than
+computed from a matrix containing molecules, and it
 inherits every uncertainty in those fractions. An earlier draft of this chapter
 recorded the two chapters as contradicting each other on whether a bound could
 be constructed at all; Section~\ref{sec:molecules} constructs one, and this
 paragraph quotes it with the same caveats.
+
+\paragraph{The atomic-data systematic rests on one substitution, not on a
+survey of rate sets.} Two of the three input
+channels have been swapped for independent calculations and carried through to
+the observable: the excitation coefficients for R-matrix values, and the
+ionisation coefficients --- and with them the three-body recombination that
+detailed balance builds from them --- for Lotz. Together they move $\epsplat$
+by \SI{15.5}{\percent} over the defended range and at most
+\SI{25.8}{\percent}, and $\Msep$ by \SI{11}{\percent}
+(Sections~\ref{sec:atomic_propagation} and~\ref{sec:bound}). Those figures are
+the difference between two calculations, not an uncertainty: they say how far
+the answer moves between the datasets that happen to exist, and a third dataset
+could lie outside the interval the two define. Three gaps remain in the bound.
+Excitation transitions reaching $n\ge6$ have no independent counterpart.
+Ionisation above $n=9$ is Lotz in both the model and the substitution, so those
+shells are compared with nothing. And radiative recombination has one source
+only, tested at its own quoted accuracy rather than against a rival, which is a
+weaker statement even though the \SI{1.1}{\percent} it produces is small.
 
 \paragraph{The density maximum is a range, not a density.} It lies between
 $7\times10^{12}$ and \SI{5e13}{\per\cubic\centi\metre}, resolved to about a
@@ -522,8 +572,9 @@ Balmer series' (Section~\ref{sec:ridge_conditional}).
 % QUESTION: which unfinished calculations would change what may be claimed?
 %=============================================================================
 
-Three calculations would change the standing of a result in this thesis. The
-first costs days. The other two are different projects.
+Four calculations would change the standing of a result in this thesis. The
+first two are bounded work on the model as it stands; the other two are
+different projects.
 
 \paragraph{A density grid fine enough to name an ELM.} The joint map of
 Section~\ref{sec:joint_step} crosses temperature steps with density steps of one
@@ -538,6 +589,20 @@ number. Regenerating $\Lmat$ on a density grid spaced like the temperature grid
 would let the joint census be quoted at a realistic ELM density excursion, and
 it is the one remaining calculation that would move a number this thesis
 reports. It costs the same as the map that already exists.
+
+\paragraph{An ionisation dataset that reaches the top of the ladder.} The
+substitutions of Sections~\ref{sec:atomic_propagation} and~\ref{sec:bound}
+bound $\epsplat$ against independent data wherever independent data exist,
+which is $n\le5$ for excitation and $n\le9$ for ionisation. Above $n=9$ the
+model and the substitution both use Lotz, so the six shells whose feed is
+essentially all three-body are the shells with no independent check at all ---
+and they are the shells where Section~\ref{sec:atomic_uncertainty} records Lotz
+exceeding CCC by a factor of four to eight, and where
+Chapter~\ref{ch:limits} finds the terminal shell over-populated by
+4.9--6.2 times. Extending a close-coupling ionisation calculation to
+$n=10$--$15$, or bounding those coefficients some other way, would both close
+the last gap in the atomic-data bound and test whether those two observations
+are the same one. As it stands the link between them remains a hypothesis.
 
 \paragraph{A two-region or transport-coupled calculation.} The single conditional
 on which all of Section~\ref{sec:criterion} rests is that $\ngs$ is frozen for

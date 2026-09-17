@@ -649,6 +649,72 @@ picture rather than assuming it. The formal argument for separability is made
 in Section~\ref{sec:qss} and rests on the Schur complement, not on this
 comparison.
 
+\subsection{How much of the separation is atomic data?}
+\label{sec:M_atomic_systematic}
+
+The previous subsection asked whether $\Msep$ survives a change of definition.
+It does. A separate question is whether it survives a change of \emph{input},
+and the two are not related: both definitions of $\taurel$ read the same matrix,
+so both would move together if the matrix were wrong. Every number in
+Eq.~\eqref{eq:M_range} descends from rate coefficients that
+Chapter~\ref{ch:atoms} shows are known to about \SI{13}{\percent} for the
+transitions that dominate, and a separation quoted to four figures from data
+known to two is quoting the arithmetic rather than the physics.
+
+Section~\ref{sec:atomic_propagation} measures the sensitivity directly, by
+substituting the independent R-matrix rate coefficients for the CCC ones
+wherever the independent calculation exists and re-solving the spectrum at all
+400 grid points. The result is that $\tauslow$ shifts by \SI{11.4}{\percent} on
+average and $\Msep$ by \SI{11.1}{\percent}, while $\taurel$ shifts by only
+\SI{2.4}{\percent}. At the benchmark point $\Msep$ falls from 9982 to 8855.
+That displacement must not be confused with the $\Msep^+ = 8243$ of
+Eq.~\eqref{eq:M_pre_post}, which is the same atomic data evaluated at a
+different temperature. Here the temperature is held fixed and the data are
+changed instead, so the two numbers measure unrelated things and neither
+constrains the other.
+
+The asymmetry between the two clocks is the informative part. $\taurel$ is set
+by excited-state relaxation, and at these densities that budget is dominated by
+radiative decay, which the substitution does not touch: swapping collisional
+rate coefficients moves a term that is not in control. $\tauslow$ is set by
+ground-state depletion, which is collisional almost entirely, so it absorbs the
+full change. The fast clock is anchored by spontaneous emission and the slow
+clock is not, and that is why an atomic-data uncertainty of \SI{13}{\percent} in
+the rates becomes \SI{11}{\percent} in $\Msep$ rather than cancelling between
+numerator and denominator.
+
+The sensitivity is not uniform over the grid, and it runs opposite to where the
+rate coefficients are best known. It grows with density, from
+\SI{6.3}{\percent} at \SI{e12}{\per\cubic\centi\metre} to
+\SI{13.7}{\percent} at \SI{e15}{\per\cubic\centi\metre}, saturating above
+$\nel \approx \SI{e13}{\per\cubic\centi\metre}$ where the collisional part of
+$\Lmat$ has taken over from the radiative part and the rate uncertainty passes
+through undiluted. It falls with temperature, from \SI{17.0}{\percent} at
+\SI{1}{\electronvolt} to \SI{5.6}{\percent} at \SI{10}{\electronvolt} --- even
+though Chapter~\ref{ch:atoms} finds the \emph{rates} best constrained at the
+cold end. At \SI{1}{\electronvolt} the excitation rates sit deep in the
+Boltzmann exponential, where a given fractional change in a rate coefficient
+produces a larger fractional change in the eigenvalue it feeds. Good data in a
+sensitive regime is not the same as a robust answer.
+
+What this does and does not disturb is worth separating. $\Msep$ spans more
+than seven orders of magnitude across the grid, so a shift of \SI{11}{\percent}
+changes no statement about its order of magnitude anywhere: the weakest
+separation on the grid moves from $86.8$ to $80.8$, and the two-clock picture is
+not in question at any grid point. \textbf{$\Msep$ is therefore reported
+throughout this thesis with an atomic-data systematic of \SI{11}{\percent}}, and
+values such as the benchmark $9982$ should be read as $\sim\!10^{4}$ rather than
+as four significant figures.
+
+One consequence is sharper and less comfortable. The plateau-window criterion of
+Chapter~\ref{ch:results} admits a grid point to the transient analysis only if
+$\Msep > 900$, and six of the 400 points change side under the substitution.
+The analysed set is therefore itself weakly dependent on which atomic database
+was used, by about \SI{2}{\percent} of its membership. That does not affect any
+conclusion drawn from the 346 points, all of which sit far from the cut, but it
+does mean the cut is not a property of the plasma alone, and it should not be
+described as one.
+
 \subsection{What the separation does and does not license}
 
 A separation of $10^{4}$ invites an obvious simplification: treat the excited

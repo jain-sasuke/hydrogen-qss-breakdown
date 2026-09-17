@@ -974,12 +974,58 @@ two specific perturbations of the rate set. Rebuilding $\Lmat$ with a
 density-consistent Debye cutoff at every grid point moves $\ffrac{3}-\ffrac{4}$
 by at most \SI{0.42}{\percent}, and scaling every $\ell$-mixing rate over a range
 of $\times0.1$ to $\times10$ moves it by under \SI{0.3}{\percent}
-(Section~\ref{sec:lmixing}). Both concern $\ell$-mixing. \textbf{No test in this
-thesis bounds $\Delta$ under a refinement of the excitation or recombination
-datasets}, which are the coefficients $\Delta$ is actually built from, and where
-Chapter~\ref{ch:validation} records agreement with RMPS only at the
-\SI{20}{\percent} level for $n_{\rm upper}\le4$. The \SI{97}{\percent} is a
-statement about the present rate set and should be read as one.
+(Section~\ref{sec:lmixing}). Both concern $\ell$-mixing.
+
+One refinement of the excitation dataset is now tested, and it is the one the
+benchmark of Section~\ref{sec:atomic_uncertainty} makes available. Substituting
+the RMPS rate coefficients wherever they exist and re-solving the steady state
+moves $\Delta$ by \SI{7.1}{\percent} on average and by at most
+\SI{17.8}{\percent}, and moves the cap with it, by \SI{6.5}{\percent} on
+average (\texttt{src/validation/verify\_reservoir\_gain\_anderson.py}). So the
+cap does move, by about the size the withdrawn claim ignored.
+
+What does not move is the \emph{headroom}. $|\overline{S}|$ and its cap fall
+together: the median of $|\overline{S}|$ as a fraction of its own cap goes from
+\SI{80.4}{\percent} to \SI{78.2}{\percent}, and its maximum from
+\SI{99.9}{\percent} to \SI{99.7}{\percent}. The bound is violated at none of
+the $338$ points under either rate set. Running at \SI{97}{\percent} of the cap
+is therefore not an artefact of this particular rate set, which is more than the
+withdrawn claim was entitled to and less than it asserted.
+
+The recombination channel can be substituted too, and it behaves differently
+enough to be worth separating. $\alpha_{\mathrm{3BR}}$ is not independent
+data: Eq.~\eqref{eq:alpha_3BR} builds it from the ionisation coefficient by
+detailed balance, so substituting the ionisation dataset substitutes the
+three-body recombination with it. The model takes ionisation from CCC TICS
+below $n=9$ and from Lotz above it, so Lotz is an independent dataset already
+in hand, and running the whole table from Lotz instead replaces both at once.
+Over the states where CCC supplies the model, Lotz is larger by a factor
+between $1.16$ and $5.32$, median $2.13$ --- a far bigger perturbation than the
+excitation substitution, and one that changes the ionisation loss on the
+diagonal of $\Lmat$ as well as the source vector.
+
+It moves $\Delta$ by \SI{1.9}{\percent} and the cap with it, and $\epsplat$
+by \SI{16.7}{\percent}. The disparity is the point. Taking the two
+substitutions on one set of points, the excitation swap moves
+$|\overline{S}|$ and its cap almost together, so the ratio
+$|\overline{S}|/\tanh(|\Delta|/4)$ changes by only \SI{-1.4}{\percent};
+the ionisation swap moves $|\overline{S}|$ by \SI{-7.6}{\percent} inside a cap
+that has barely moved, changing the ratio by \SI{-8.3}{\percent}. The two
+datasets act on different objects. $\Delta$ is a ratio of ratios,
+$(a_3/a_4)/(c_3/c_4)$, and a change in the ionisation coefficients that is
+similar at $n=3$ and $n=4$ largely cancels in it; what such a change moves is
+where the reservoir sits, which is the variable
+Section~\ref{sec:ridge_conditional} identifies as the one that controls
+$|\overline{S}|$. \textbf{Refining the excitation data moves the cap;
+refining the ionisation data moves the operating point underneath it.}
+Under all four rate sets the bound is violated at none of the $338$ points.
+
+Radiative recombination is the one input with no second dataset here. It is
+Johnson's Eq.~(7), quoted as accurate to \SI{5}{\percent} against exact
+Karzas--Latter Gaunt factors, and scaling it by that much --- a sensitivity
+test, not a substitution, and not to be quoted as a dataset comparison ---
+moves $\epsplat$ by \SI{1.1}{\percent} and at most \SI{2.4}{\percent}.
+Radiative recombination is not where this uncertainty lives.
 
 \subsection{What the bound does not constrain}
 \label{sec:inversion_jacobian}
@@ -1741,8 +1787,10 @@ is not a measurement model of an ELM. Each row states the set it counts over.}
 
 \textbf{The middle row is the result.} Of the $202$ pairs in the first row,
 $157$ lie below \SI{2}{\electronvolt}, inside the region
-Section~\ref{sec:scope} excludes, and $105$ of them have a
-Lyman-$\alpha$ optical depth above unity over a \SI{5}{\centi\metre} slab. The
+Section~\ref{sec:scope} excludes, and $85$ of them have a Lyman-$\alpha$
+line-centre optical depth above unity over the half of a \SI{5}{\centi\metre}
+slab, the convention Section~\ref{sec:opacity} uses throughout
+(\texttt{validation/lyman\_optical\_depth/}, census (a)). The
 defensible statement is $45$ of $448$ pairs above \SI{2}{\electronvolt}, worst
 \SI{17.5}{\percent} at $\Te = \SI{2.02}{\electronvolt}$,
 $\nel = \SI{1.93e13}{\per\cubic\centi\metre}$, at the
@@ -2186,11 +2234,26 @@ $95$ of the $98$ and one column higher in the other three
 (\texttt{validation/divertor\_map/divertor\_map.csv}). A monotone function
 cannot share its maximum with a unimodal one, so $\Msep$ cannot rank the error
 across density at all: in no row of either direction does the largest $\Msep$
-coincide with the largest $\epsplat$. The row-wise Spearman correlation of
-$\Msep$ with $\epsplat$ across the density columns has median $+0.07$ pooled at
-$\Te\ge\SI{2}{\electronvolt}$, with $49$ percent of rows negative, and its
-value in a given row is set by where the crest sits relative to the grid
-columns, not by any predictive skill (\texttt{validation/m\_rank\_test/}).
+coincide with the largest $\epsplat$, $0$ of $50$ rows pooled and $0$ of $35$
+in the defended range (\texttt{validation/m\_rank\_test/}, Part~3).
+
+That argmax result is the evidence for the claim, and it is worth separating
+from a weaker test that goes the other way. If the negative partial above were
+a ranking, the row-wise Spearman correlation of $\Msep$ with $\epsplat$ across
+the density columns would be negative in most rows. It is not. Taken over all
+$50$ temperature rows of the analysed grid the median is $+0.23$, with only
+$36$ percent of rows negative, and the artifact records the prediction it was written to test as
+\textbf{refuted}; restricted to $\Te\ge\SI{2}{\electronvolt}$ the median falls
+to $+0.07$ with $49$ percent of rows negative, which is not refutation but is
+not support either. The adverse figure is the whole-grid one and it is stated
+here because quoting only the defended subset would hide it. The two results
+are consistent, and the reason they are is the sentence above: the row-wise
+correlation is set by where the crest sits relative to the grid columns, which
+is a fact about the sampling rather than about predictive skill, whereas the
+partial is a statement about residuals after the operating point is removed and
+the argmax comparison is a statement about location. Only the last of the three
+is what a modeller reaching for $\Msep$ would actually need, and it fails at
+every row.
 
 The negative result itself is not new as a general statement.
 Greenland concluded, for arbitrary collisional--radiative systems, that
@@ -2199,6 +2262,23 @@ time-scales''~\cite{Greenland2001b} and that ``the eigenvalues have secondary
 importance''~\cite{Greenland2001a}. What this work adds is a quantification for one diagnostic and a
 map of where the criterion misleads, which is a smaller claim than discovery and
 a more useful one than assertion.
+
+One objection to all of this is that $\Msep$ is computed from rate
+coefficients known to about \SI{13}{\percent}
+(Section~\ref{sec:atomic_uncertainty}), so a criterion might appear to fail only
+because the quantity being tested is noisy. It does not.
+Section~\ref{sec:atomic_propagation} substitutes the independent R-matrix rate
+coefficients wherever they exist and re-solves the spectrum, which shifts
+$\Msep$ by \SI{11}{\percent} on average. Against a quantity spanning
+\num{7.30} decades that is a displacement of \SI{1.08}{\percent} of the span at
+its largest, and it is very nearly a common factor: the Spearman rank
+correlation between the two versions of $\Msep$ over the 400 grid operators is
+$0.99993$, $\Msep$ still falls monotonically with density in all $50$
+temperature rows, and the fraction of $\log\Msep$ explained by
+$(\log\Te, \log\nel)$ alone is unchanged at \SI{93.7}{\percent}. Every
+statement in this section is about the \emph{ordering} of $\Msep$ and about its
+structure in $(\Te,\nel)$, and the substitution preserves both. The criterion
+fails for a structural reason, not a numerical one.
 
 The reason the criterion fails here is visible in
 Eq.~\eqref{eq:eps_plateau_exact}. $\Msep$ compares two \emph{rates}; $\epsplat$
@@ -2464,6 +2544,26 @@ Section~\ref{sec:inversion_jacobian} is that cancellation completed. At the
 two highest densities the median error is \SI{16}{\percent}. The
 two-parameter inversion is not measured.
 
+Every timescale in this chapter inherits an atomic-data systematic of
+\SI{11}{\percent}, measured in Section~\ref{sec:atomic_propagation} by
+substituting an independent rate set and re-solving. It is too small to move any
+conclusion drawn here, all of which rest on the ordering of $\Msep$ rather than
+its value. Carried through the steady state to the observable, and
+combined with the substitution of the ionisation dataset that
+Section~\ref{sec:bound} describes, the two move $\epsplat$ by
+\SI{15.5}{\percent} on average over the defended range and by at most
+\SI{25.8}{\percent}, always downward at the points this chapter quotes:
+\SI{6.36}{\percent} to \SI{4.80}{\percent} at the benchmark,
+\SI{18.1}{\percent} to \SI{16.4}{\percent} at the ridge. The ionisation
+dataset is the larger of the two levers, at \SI{16.7}{\percent} against
+\SI{9.7}{\percent}, and the benchmark point is the least robust of the three. The split
+between the two structural coefficients is sharp. The reservoir gain $G$ is
+nearly invariant, moving \SI{0.95}{\percent} on average, while the sensitivity
+$\overline{S}$ carries almost all of the change at \SI{7.6}{\percent}: $G$ is a
+property of how the reservoir responds to temperature, and $\overline{S}$ is
+built from the ratios $a_3/a_4$ and $c_3/c_4$, which are the excitation data
+themselves.
+
 The sensitivity factor obeys a bound, $|\overline{S}| \le \tanh(|\Delta|/4) < 1$,
 that follows from the structure of the linear system and not from any rate
 coefficient. A line ratio cannot respond to its ground-state reservoir faster,
@@ -2500,8 +2600,9 @@ $\nel$. The cold-edge numbers are asymptotic values of a model outside its own
 domain, and this chapter reports them as such and builds nothing on them.
 
 Finally, the criterion a modeller would reach for does not see any of this
-coming. Timescale separation and diagnostic error have their maxima $52\times$
-apart in density, and their apparent correlation reverses sign once the
+coming. Within the defended range, timescale separation and diagnostic error
+have their maxima $19.3\times$ apart in density, \SI{7.4}{\percent} against
+\SI{18.1}{\percent}, and their apparent correlation reverses sign once the
 operating point is controlled for. $\Msep$ compares rates; the diagnostic error
 is a distance.
 

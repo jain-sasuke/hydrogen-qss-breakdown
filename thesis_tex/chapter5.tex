@@ -979,10 +979,13 @@ of $\times0.1$ to $\times10$ moves it by under \SI{0.3}{\percent}
 One refinement of the excitation dataset is now tested, and it is the one the
 benchmark of Section~\ref{sec:atomic_uncertainty} makes available. Substituting
 the RMPS rate coefficients wherever they exist and re-solving the steady state
-moves $\Delta$ by \SI{7.1}{\percent} on average and by at most
-\SI{17.8}{\percent}, and moves the cap with it, by \SI{6.5}{\percent} on
-average (\texttt{src/validation/verify\_reservoir\_gain\_anderson.py}). So the
-cap does move, by about the size the withdrawn claim ignored.
+moves $\Delta$ by \SI{9.1}{\percent} on average over the $448$ defended pairs
+and by at most \SI{17.8}{\percent}, and moves the cap with it, by
+\SI{8.4}{\percent} on average
+(\texttt{src/validation/verify\_reservoir\_gain\_anderson.py}; an earlier draft
+quoted \SI{7.1}{\percent} and \SI{6.5}{\percent}, which are means over every
+row of the file, all three step sizes and the cold edge included). So the cap
+does move, by about the size the withdrawn claim ignored.
 
 What does not move is the \emph{headroom}. $|\overline{S}|$ and its cap fall
 together: the median of $|\overline{S}|$ as a fraction of its own cap goes from
@@ -1005,19 +1008,28 @@ excitation substitution, and one that changes the ionisation loss on the
 diagonal of $\Lmat$ as well as the source vector.
 
 It moves $\Delta$ by \SI{1.9}{\percent} and the cap with it, and $\epsplat$
-by \SI{16.7}{\percent}. The disparity is the point. Taking the two
-substitutions on one set of points, the excitation swap moves
-$|\overline{S}|$ and its cap almost together, so the ratio
-$|\overline{S}|/\tanh(|\Delta|/4)$ changes by only \SI{-1.4}{\percent};
-the ionisation swap moves $|\overline{S}|$ by \SI{-7.6}{\percent} inside a cap
-that has barely moved, changing the ratio by \SI{-8.3}{\percent}. The two
+by \SI{16.4}{\percent}, over the same $448$ pairs. The disparity is the point,
+and it is sharpest in what each swap does to the headroom. Over the $338$
+heating pairs on which the bound was checked, the excitation swap moves
+$|\overline{S}|$ by \SI{8.4}{\percent} and the cap by \SI{6.7}{\percent} on
+average, in absolute terms, and moves them together: the ratio
+$|\overline{S}|/\tanh(|\Delta|/4)$ changes by \SI{4.3}{\percent} on average
+and by \SI{-1.4}{\percent} at the median pair. The ionisation swap moves
+$|\overline{S}|$ by \SI{17.8}{\percent} on average inside a cap that moves by
+\SI{1.5}{\percent}, and it does so in both directions: the ratio changes by
+\SI{17.7}{\percent} on average, downward at $62$ percent of the pairs and by
+\SI{-8.3}{\percent} at the median pair, while the median of the headroom
+distribution itself is unchanged, \SI{80.4}{\percent} before and
+\SI{80.5}{\percent} after. The ionisation data do not push the operating
+point one way; they scramble where each pair sits beneath its cap. The two
 datasets act on different objects. $\Delta$ is a ratio of ratios,
 $(a_3/a_4)/(c_3/c_4)$, and a change in the ionisation coefficients that is
 similar at $n=3$ and $n=4$ largely cancels in it; what such a change moves is
 where the reservoir sits, which is the variable
 Section~\ref{sec:ridge_conditional} identifies as the one that controls
 $|\overline{S}|$. \textbf{Refining the excitation data moves the cap;
-refining the ionisation data moves the operating point underneath it.}
+refining the ionisation data moves the operating point beneath it, pair by
+pair and in both directions.}
 Under all four rate sets the bound is violated at none of the $338$ points.
 
 Radiative recombination is the one input with no second dataset here. It is
@@ -2551,15 +2563,16 @@ conclusion drawn here, all of which rest on the ordering of $\Msep$ rather than
 its value. Carried through the steady state to the observable, and
 combined with the substitution of the ionisation dataset that
 Section~\ref{sec:bound} describes, the two move $\epsplat$ by
-\SI{15.5}{\percent} on average over the defended range and by at most
-\SI{25.8}{\percent}, always downward at the points this chapter quotes:
+\SI{15.5}{\percent} on average over the $448$ defended pairs and by at most
+\SI{25.4}{\percent}, always downward at the points this chapter quotes:
 \SI{6.36}{\percent} to \SI{4.80}{\percent} at the benchmark,
 \SI{18.1}{\percent} to \SI{16.4}{\percent} at the ridge. The ionisation
-dataset is the larger of the two levers, at \SI{16.7}{\percent} against
-\SI{9.7}{\percent}, and the benchmark point is the least robust of the three. The split
-between the two structural coefficients is sharp. The reservoir gain $G$ is
-nearly invariant, moving \SI{0.95}{\percent} on average, while the sensitivity
-$\overline{S}$ carries almost all of the change at \SI{7.6}{\percent}: $G$ is a
+dataset is the larger of the two levers, at \SI{16.4}{\percent} against
+\SI{9.8}{\percent}, and the benchmark point is the least robust of the three.
+The split between the two structural coefficients is sharp. Under the
+excitation substitution the reservoir gain $G$ is nearly invariant, moving
+\SI{1.1}{\percent} on average, while the sensitivity $\overline{S}$ carries
+almost all of the change at \SI{9.1}{\percent}: $G$ is a
 property of how the reservoir responds to temperature, and $\overline{S}$ is
 built from the ratios $a_3/a_4$ and $c_3/c_4$, which are the excitation data
 themselves.

@@ -223,8 +223,10 @@
   datasets looks perfect on a $1{:}1$ log--log plot. Colour is the upper
   shell. Transitions into $n' \le 3$ sit inside the band almost everywhere;
   those into $n'=5$ scatter from a factor $0.2$ to a factor $3$, in both
-  directions, and the spread is not a function of the size of the rate, which
-  rules out a threshold or interpolation artefact in the Maxwell averaging.
+  directions. The size of the spread is not a function of the size of the
+  rate, which rules out a threshold or interpolation artefact in the Maxwell
+  averaging; its sign is, CCC reading low at the smallest rates and high at
+  the largest.
   (b) Mean absolute deviation against temperature, over the full range the
   RMPS table covers. Agreement degrades smoothly with the upper shell rather
   than holding and then failing: $n'=4$ crosses $20\%$ inside the range this
@@ -235,20 +237,23 @@
 
 \newcommand{\CapFigRydberg}{%
   \textbf{Which of the two calculations is anomalous at $n=5$.}
-  The reduced rate coefficient $K n_{\mathrm{upper}}^{3}$ along three dipole
-  series. For hydrogen the oscillator strength falls as
-  $n_{\mathrm{upper}}^{-3}$ asymptotically, so above threshold this quantity
+  The reduced rate coefficient
+  $K n_{\mathrm{upper}}^{3}\,\mathrm{e}^{\Delta E/T_e}$ of
+  Eq.~\eqref{eq:rydberg_reduced} along three dipole series, with the threshold
+  factor the two calculations share divided out. For hydrogen the oscillator
+  strength falls as $n_{\mathrm{upper}}^{-3}$ asymptotically, so this quantity
   must flatten as the series is climbed; the constant it approaches is not
   used, only the smoothness. Dark curves are $T_e = \SI{1}{\electronvolt}$,
-  faded curves \SI{10}{\electronvolt}. CCC continues smoothly to $n=10$. The
-  RMPS values track it until the step into $n=5$, the top shell of their
-  target basis, where all three series flatten early -- the signature of a
-  truncated close-coupling expansion accumulating in its highest physical
-  shell flux that belongs to $n \ge 6$ and the continuum. This localises the
-  departure from hydrogenic behaviour at one shell of one calculation. It does
-  not prove CCC correct: the scaling is asymptotic and weakest at
-  \SI{1}{\electronvolt}, which is where the kink is largest. From
-  \texttt{anderson\_validity\_dipole\_series.csv}.}
+  faded curves \SI{10}{\electronvolt}. CCC continues to $n=10$. At
+  \SI{1}{\electronvolt} the RMPS values track CCC to $n=4$ and then
+  \emph{rise} into $n=5$, the top shell of their target basis, in all three
+  series; at \SI{10}{\electronvolt} neither calculation kinks and the RMPS
+  values are uniformly the flatter. The kink belongs to the temperatures at
+  which the Maxwell average samples the cross section close to the $n=5$
+  threshold. It localises the departure from hydrogenic behaviour at one shell
+  of one calculation without proving CCC correct, which is not smooth there
+  either. From \texttt{anderson\_validity\_dipole\_series.csv}, columns
+  \texttt{R\_CCC\_bz} and \texttt{R\_And\_bz}.}
 
 \newcommand{\CapFigAtomicPropagation}{%
   \textbf{What the atomic-data disagreement costs, and which coefficient each
@@ -263,13 +268,15 @@
   excitation rates sit deep in the Boltzmann exponential, so a given
   fractional change in a rate produces a larger one in the eigenvalue.
   (b) Mean absolute change in each structural coefficient under the two
-  substitutions, over the defended range. The two datasets act on different
+  substitutions, over the $448$ defended pairs ($T_e \ge \SI{2}{\electronvolt}$,
+  window-resolvable, one grid interval). The two datasets act on different
   objects. Replacing the excitation data moves $\Delta$ and with it the cap
   $\tanh(|\Delta|/4)$, and $\overline{S}$ follows the cap. Replacing the
   ionisation data barely moves the cap -- $\Delta$ is the ratio of ratios
   $(a_3/a_4)/(c_3/c_4)$, in which a change similar at $n=3$ and $n=4$ largely
-  cancels -- and instead moves the operating point underneath it, which is
-  what carries $\overline{S}$ and $\epsplat$. The reservoir gain $G$ is
+  cancels -- and instead moves the operating point beneath it, pair by pair
+  and in both directions, which is what carries $\overline{S}$ and
+  $\epsplat$. The reservoir gain $G$ is
   robust to both, at under $2\%$, which is a second reason to tabulate it
   rather than a percentage error. From
   \texttt{ccc\_anderson\_grid\_impact.csv} and

@@ -1,0 +1,45 @@
+# generated 2026-09-17 22:11 by verify_anderson_subset_impact.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# Te_grid_L.npy   sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# ne_grid_L.npy   sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# ratio csv       sha256 00705fb54e6ba5c9f617be3a79c504521cb681a9f96481a28e2e47341eb7ccbc  (data/processed/collisions/ccc_vs_anderson2002_thesis_Te_grid.csv)
+# benchmark point [23,5]  Te=2.9471 eV  ne=1.3895e+14 cm^-3
+==============================================================================
+ANDERSON SUBSET IMPACT -- which transitions move the timescale separation
+generated 2026-09-17 22:11  by verify_anderson_subset_impact.py
+interpreter   /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  ratio source : data/processed/collisions/ccc_vs_anderson2002_thesis_Te_grid.csv
+==============================================================================
+
+L = R + ne*C exact to 3.12e-16 (relative)
+benchmark nearest_point(2.947, 1.389e+14) = [23,5]  Te=2.9471 ne=1.3895e+14
+P0  tau_slow 22.728 us (recorded 22.73), tau_relax 2.2769 ns (2.277), M 9981.9 (9982)
+    P0 REPRODUCED
+
+85 transitions with a ratio on all 50 temperatures
+
+------------------------------------------------------------------------------
+  subset                                   n  mean|dtau|  max|dtau|  dM@bench  mean|dM|   recorded
+  all benchmarked (n_upper <= 5)          85      11.42%     18.75%   -11.29%    11.08%   11.42 / -11.29  REPRODUCED
+  n_upper = 5 only                        50       4.72%     13.06%    -0.94%     4.26%   4.72 / -0.94  REPRODUCED
+  n_upper <= 4 only                       35       7.25%     14.35%   -10.82%     7.35%   7.25 / -10.82  REPRODUCED
+  ground state 1s -> nl only              14      10.45%     15.23%   -12.36%    10.43%   10.45 / -12.36  REPRODUCED
+  n_upper <= 3 only                       11       4.54%     12.52%    -6.97%     4.40%   4.54 / -6.97  REPRODUCED
+  n_upper = 4 only                        24       2.97%      4.94%    -4.37%     3.22%   2.97 / -4.37  REPRODUCED
+  1s -> 5l only (ground-fed n=5)           5       3.98%     11.69%    -3.27%     3.98%   (not previously recorded)
+  nl -> 5l', n >= 2 (excited-fed n=5)     45       0.94%      4.36%    +2.37%     1.33%   (not previously recorded)
+------------------------------------------------------------------------------
+
+NOTE  n_upper = 5 is a net of two opposing parts: the five 1s -> 5l transitions alone and the forty-five excited-fed ones pull dM in opposite directions (last two rows).
+
+VERDICT: 0 of 6 recorded rows not reproduced

@@ -1722,3 +1722,31 @@ The scratch claim "both channels raise the ratio for the single reason f₃ > f�
 
 **Thesis home.** §5.5.2 paragraph "Why P > 0: a decomposition, not a proof", Eq. `eq:P_channels`.
 
+
+### K10. Chapter 2 figures audited against their CSVs: the n=5 Rydberg test, the propagation figure, and the subset table ✅ Verified (17 Sep 2026)
+
+**Why.** The author reported the Chapter 2 figures wrong. Every number the three CCC/RMPS figures and their tables draw was rebuilt from the CSVs the figure script reads, and each claim the text makes about them was tested against the same files.
+
+**What was wrong.** (1) `fig2_3` and §2.x claimed the RMPS kink at n=5 "at both 1 eV and 10 eV". At 10 eV there is none: RMPS is 3 to 7 points flatter than CCC at every step and the step into n=5 is where the two differ *least* (RMPS/CCC along 1s→np 1.06, 1.19, 1.29, 1.34). The tabulated quantity K n³ was also dominated at 1 eV by the shared threshold factor e^(−ΔE/T): −26, −15, −10 % at 4→5, 5→6, 6→7 out of CCC's "smooth" −41, −16, −12. (2) `fig2_4(a)` drew the 8 density rows with arithmetic midpoints on a log axis: 1.06 decades for the 10¹² row, 0.28 for 10¹⁵. (3) `fig2_4(b)` plotted the defended range pooled over k = 1, 2, 4 while ch5 quoted Δ 7.1 / cap 6.5 / S̄ 7.6 / G 0.95 %, which are means over all 2288 rows; the ion-swap "−7.6 / −8.3 / −1.4 %" were unlabelled medians over 338 heating pairs whose means are −1.7 / −3.1 / −1.5. (4) ch2 said "all ten comparisons beyond a factor of two" have CCC larger; the plotted file has 105 above 2 and 275 below 0.5. (5) `tab:atomic_sensitivity` cited a CSV with no subset rows; the rows lived only in `ccc_anderson.md` §7.5. The 140 a₀ attribution to Anderson 2000 was in live text with a `%`-comment flag.
+
+**Prediction, written before the runs.** Subset substitution: n=5-only ≈ −0.9 %, n≤4 ≈ −10.8 %, ground-state ≈ −12.4 %, all ≈ −11.3 % at [23,5]. **Refuter:** n=5-only of several percent, or ground-state-only far below the full set.
+
+**Runs.** `anderson_validity_range.py` extended with `R_CCC_bz`, `R_And_bz` = K n³ e^(+ΔE/T) (IH = 13.6058 eV, the threshold the Maxwell average uses) and rerun. New `verify_anderson_subset_impact.py --write` → `validation/anderson_subset_impact/`; L_grid `2d92b58e…`, ratio from `ccc_vs_anderson2002_thesis_Te_grid.csv`; P0 (22.73 µs, 2.277 ns, 9982) asserted.
+
+| check | result |
+|---|---|
+| K_CCC_stored ≡ recomputed K_CCC (170 joined rows) | ratio 1.0000 |
+| tab:anderson from the CSV, all six rows | exact |
+| Υ→K with g = 2(2ℓ+1) at ℓ = 0, 1, 2 | 0.9999 |
+| corrigendum 1.44 / 13.1 / 33.1 / 86.2 % on 1s→3p | reproduced |
+| L = R + nₑC | 3.1e-16 |
+| six recorded subset rows | 6/6 reproduced to the digit |
+| Fig 2.1: 2s→2p share of 2s loss 99.972 % / min 99.921 %; A(2p→1s) 6.2684e8 | reproduced |
+
+**Result.** In the corrected quantity the RMPS step into n=5 at 1 eV is *positive* in all three series (+28.4, +12.4, +12.0 %) while every other step of either code is negative; CCC is not smooth there either (−20.6 % on 1s→np between −9 and −1). The kink is a 1 eV feature, which points to a near-threshold basis artefact rather than the high-energy flux-absorption mechanism the text gave. n=5's −0.94 % is a net: ground-fed −3.27 %, excited-fed +2.37 %. Unified scope for every substitution figure: the 448 defended pairs (k = 1): exc Δ 9.1, cap 8.4, S̄ 9.1, G 1.1, ε 9.8 (max 25.7); ion ε 16.4; both ε 15.5, max 25.4. Under the ionisation swap the per-pair headroom moves 17.7 % in absolute terms, 62 % downward, median −8.3 %, while the distribution median is unchanged (80.4 → 80.5 %): it scrambles the operating point, not shifts it.
+
+**What may be said.** The localisation to RMPS survives on the sign of the 1 eV step; the 10 eV claim is withdrawn; the temperature dependence is now stated as evidence about mechanism, held as an argument not a computation. Table 2.x's numbers were right and now have a producing script.
+
+**Sensitivity.** Pooling k = 1, 2, 4 moves the fig 2.4(b) bars by < 0.3 points; 13.598 vs 13.6058 eV moves the R_bz steps by < 0.1 point. The Lotz range quotes 1.16 / 2.13 where the pooled n<9 file gives 1.17 / 2.11 (2.13 is the Tₑ = 2.95 eV column); left as is.
+
+**Thesis home.** §2.x `sec:atomic_uncertainty`, `sec:n5_anomaly`, `sec:atomic_propagation`; `tab:rydberg`, `tab:atomic_sensitivity`; `fig2_3`, `fig2_4`; ch5 `sec:bound` and summary; ch7 atomic-data paragraph.

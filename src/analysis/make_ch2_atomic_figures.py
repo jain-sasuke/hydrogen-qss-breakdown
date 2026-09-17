@@ -121,16 +121,24 @@ def fig_rydberg():
               ("2p->nd", r"$2p \rightarrow nd$"),
               ("2s->np", r"$2s \rightarrow np$")]
 
+    # The Boltzmann-corrected reduced rate R_bz = K n^3 exp(+dE/Te), which is
+    # proportional to Upsilon n^3 / g. In plain K n^3 the 1 eV curves are
+    # dominated by exp(-dE/Te), which both codes share, and the "smooth
+    # approach" is that factor rather than the n^-3 scaling being tested.
+    for c in ("R_CCC_bz", "R_And_bz"):
+        if c not in d.columns:
+            raise KeyError(f"{c} missing: rerun src/validation/"
+                           "anderson_validity_range.py to regenerate the CSV")
     fig, axes = plt.subplots(1, 3, figsize=(6.6, 2.5), sharex=True)
     for ax, (key, lab) in zip(axes, series):
         for Te, alpha, ls in ((1.0, 1.0, "-"), (10.0, 0.45, "-")):
             s = d[(d.series == key) & (d.Te_eV == Te)].sort_values("n_upper")
             if len(s) == 0:
                 continue
-            ax.plot(s.n_upper, s.R_CCC, "o" + ls, ms=3.4, color="#0072B2",
+            ax.plot(s.n_upper, s.R_CCC_bz, "o" + ls, ms=3.4, color="#0072B2",
                     alpha=alpha, label="CCC" if Te == 1.0 else None)
-            a = s.dropna(subset=["R_And"])
-            ax.plot(a.n_upper, a.R_And, "s--", ms=3.8, color="#D55E00",
+            a = s.dropna(subset=["R_And_bz"])
+            ax.plot(a.n_upper, a.R_And_bz, "s--", ms=3.8, color="#D55E00",
                     alpha=alpha, label="RMPS" if Te == 1.0 else None)
         # mark the last shell the RMPS basis contains
         ax.axvline(5, color="0.6", ls=":", lw=0.8, zorder=0)
@@ -138,13 +146,13 @@ def fig_rydberg():
         ax.set_xlabel(r"$n_{\mathrm{upper}}$")
         ax.set_title(lab, loc="left")
         ax.set_xticks(range(2, 11, 2))
-    axes[0].set_ylabel(r"$K \, n_{\mathrm{upper}}^{3}$  [cm$^3$/s]")
+    axes[0].set_ylabel(r"$K \, n_{\mathrm{upper}}^{3}\, e^{\Delta E/T_e}$  [cm$^3$/s]")
     axes[0].legend(frameon=False, handletextpad=0.4, labelspacing=0.25,
                    loc="upper right")
     axes[2].text(5.2, axes[2].get_ylim()[1] * 0.5,
                  "top of the\nRMPS basis", fontsize=7, color="0.4", va="top")
-    axes[1].text(0.97, 0.94, r"upper curves $T_e=10$ eV," "\n"
-                 r"lower $T_e=1$ eV", transform=axes[1].transAxes,
+    axes[1].text(0.97, 0.94, r"dark: $T_e=1$ eV" "\n"
+                 r"faded: $T_e=10$ eV", transform=axes[1].transAxes,
                  fontsize=6.5, color="0.4", ha="right", va="top")
     fig.tight_layout(pad=0.4)
     save(fig, "fig2_3_rydberg_series")
@@ -163,8 +171,18 @@ def fig_propagation():
     ne = np.sort(gi.ne_cm3.unique())
     Z = (gi.pivot_table(index="ne_cm3", columns="Te_eV",
                         values="pct_d_M").abs().values)
-    pc = axa.pcolormesh(Te, ne, Z, shading="nearest", cmap="magma",
-                        rasterized=True)
+
+    def log_edges(x):
+        # cell boundaries at geometric midpoints, so that on a log axis every
+        # node sits at the centre of its cell. shading="nearest" would use
+        # arithmetic midpoints, which on the 8-point density grid makes the
+        # 1e12 row 1.06 decades tall and the 1e15 row 0.28.
+        lx = np.log10(x)
+        mid = 0.5 * (lx[:-1] + lx[1:])
+        return 10 ** np.r_[2 * lx[0] - mid[0], mid, 2 * lx[-1] - mid[-1]]
+
+    pc = axa.pcolormesh(log_edges(Te), log_edges(ne), Z, shading="flat",
+                        cmap="magma", rasterized=True)
     axa.plot(2.947, 1.3895e14, "*", ms=9, mfc="none", mec="w", mew=1.0)
     axa.text(3.4, 1.3895e14, "benchmark", color="w", fontsize=7, va="center")
     axa.set(yscale="log", xscale="log", xlabel=r"$T_e$  [eV]",
@@ -177,7 +195,12 @@ def fig_propagation():
     cb.ax.tick_params(labelsize=7)
 
     # (b) which coefficient each dataset moves
-    ok = rs[rs.window_ok & (rs.Te >= 2.0)]
+    # the 448 defended pairs: window-resolvable, Te >= 2 eV, one grid interval.
+    # Pooling k = 1, 2, 4 changes the bars by < 0.3 points but is not the
+    # scope the text quotes.
+    ok = rs[rs.window_ok & (rs.Te >= 2.0) & (rs.k == 1)]
+    if len(ok) != 448:
+        raise ValueError(f"expected the 448 defended pairs, got {len(ok)}")
     quants = [("Delta", r"$\Delta$"), ("cap", "cap"),
               ("Sbar", r"$\overline{S}$"), ("G", "$G$"),
               ("eps", r"$\epsilon_{\mathrm{plateau}}$")]

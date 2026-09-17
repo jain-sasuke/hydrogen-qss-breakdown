@@ -499,7 +499,11 @@ responsive to a given fractional change in K.
 
 ### 7.5 Which transitions carry the impact
 
-Substituting only selected subsets:
+Substituting only selected subsets (producing script, added 2026-09-17:
+`src/validation/verify_anderson_subset_impact.py --write`, stamped to
+`validation/anderson_subset_impact/`; it reproduces every row below to the
+digit and adds the ground-fed / excited-fed split of n_upper = 5, which
+shows the −0.94% is a net of −3.27% and +2.37%):
 
 | Scenario | transitions | mean \|Δτ_QSS\| | ΔM at benchmark point |
 |---|---|---|---|

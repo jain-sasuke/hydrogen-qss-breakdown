@@ -1129,19 +1129,32 @@ deviation runs from \SI{7.2}{\percent} at \SI{1}{\electronvolt} to
 \SI{13}{\percent} in Table~\ref{tab:anderson} is a grid average and not a
 bound. Figure~\ref{fig:ccc_rmps} shows both features: the $n'=5$ points
 scatter over more than a factor of ten while the $n' \le 3$ points stay inside
-the \SI{20}{\percent} band, and the scatter is independent of the size of the
-rate coefficient, which rules out a near-threshold or interpolation artefact in
-the Maxwell averaging as the cause.
+the \SI{20}{\percent} band, and the size of the scatter is independent of the
+size of the rate coefficient (rank correlation of $|$error$|$ with $\log K$ of
+$0.02$ over the $2500$ comparisons at $n'=5$), which rules out a near-threshold
+or interpolation artefact in the Maxwell averaging as the cause. Its sign is
+not: CCC reads low at the smallest rates and high at the largest, which are
+the two modes described next.
 
 At $n=5$ the disagreement has two modes with opposite signs. Where the
-transition is dipole-allowed between nearly degenerate shells, as for
-$4s \to 5p$ with its gap of \SI{0.31}{\electronvolt}, CCC gives the larger rate,
-by up to a factor of three; all ten comparisons in the whole benchmark that
-differ by more than a factor of two are of this kind. Where the transition is a
+transition is dipole-allowed between the nearly degenerate $n=4$ and $n=5$
+shells, as for $4s \to 5p$ with its gap of \SI{0.31}{\electronvolt}, CCC gives
+the larger rate, by up to a factor of $2.97$; every one of the $105$
+comparisons in which CCC exceeds RMPS by more than a factor of two belongs to
+the four transitions $4s \to 5p$, $4p \to 5s$, $4p \to 5d$ and $4d \to 5f$,
+and the excess grows with temperature, from $1.4$ at \SI{1}{\electronvolt} to
+$3.0$ at \SI{5}{\electronvolt} for $4s \to 5p$. Where the transition is a
 high-multipole one with no dipole matrix element, as for $1s \to 5g$ in which
-$\ell$ changes by four, CCC gives rates several times smaller, and this second
-mode dominates the aggregate, which is why the median error at
-$n_{\text{upper}}=5$ is \SI{-34.2}{\percent}.
+$\ell$ changes by four, CCC gives rates several times smaller: a factor of $5$
+for $1s \to 5g$ at every temperature on the grid, and $275$ comparisons across
+eleven transitions fall below half the RMPS value. This second mode dominates
+the aggregate, which is why the median error at $n_{\text{upper}}=5$ is
+\SI{-34.2}{\percent}. The dipole transitions out of the ground state sit
+between the two, with CCC low by a factor that shrinks with temperature,
+$0.54$ at \SI{1}{\electronvolt} to $0.75$ at \SI{10}{\electronvolt} for
+$1s \to 5p$. An earlier draft counted ten comparisons beyond a factor of two,
+all with CCC the larger; that was a count over four temperatures of one
+direction only, and the figure plots all fifty.
 
 \subsection{Which calculation is anomalous at \texorpdfstring{$n=5$}{n=5}}
 \label{sec:n5_anomaly}
@@ -1158,40 +1171,63 @@ n_{\mathrm{up}}$ the absorption oscillator strength falls as
 $f \sim C/n_{\mathrm{up}}^{3}$ as $n_{\mathrm{up}} \to \infty$, and at a
 temperature well above threshold the rate coefficient is dominated by the Bethe
 term --- the leading high-energy contribution to a dipole-allowed cross section,
-which is proportional to $f$ --- and inherits that scaling. The reduced quantity
+which is proportional to $f$ --- and inherits that scaling. The rate
+coefficient also carries the threshold factor $\mathrm{e}^{-\Delta E/\Te}$,
+with $\Delta E$ the excitation energy of the transition, which both
+calculations share and which at \SI{1}{\electronvolt} dominates everything
+else: along $1s \to np$ it alone falls by $26$, $15$ and \SI{10}{\percent} at
+the steps into $n = 5$, $6$ and $7$. Dividing it out leaves the reduced
+quantity
 \begin{equation}
-  R(n_{\mathrm{up}}) = K(n_{\mathrm{lo}} \to n_{\mathrm{up}})\, n_{\mathrm{up}}^{3}
+  R(n_{\mathrm{up}}) = K(n_{\mathrm{lo}} \to n_{\mathrm{up}})\,
+  n_{\mathrm{up}}^{3}\, \mathrm{e}^{\Delta E/\Te},
   \label{eq:rydberg_reduced}
 \end{equation}
-must therefore flatten as the series is climbed. Equation~\eqref{eq:rydberg_reduced}
-does not say what the constant is, and it is not used to compute anything; its
-only role is that a dataset tracking hydrogenic behaviour produces a smooth
-$R(n_{\mathrm{up}})$, so a dataset that kinks at one particular
-$n_{\mathrm{up}}$ is departing from that behaviour there. Table~\ref{tab:rydberg}
-gives the successive changes in $R$ for three series at
-\SI{1}{\electronvolt}.
+proportional to $\Upsilon\,n_{\mathrm{up}}^{3}$ over the weight of the lower
+state, which must flatten as the series is climbed.
+Equation~\eqref{eq:rydberg_reduced} does not say what the constant is, and it
+is not used to compute anything; its only role is that a dataset tracking
+hydrogenic behaviour produces a smooth $R(n_{\mathrm{up}})$, so a dataset that
+kinks at one particular $n_{\mathrm{up}}$ is departing from that behaviour
+there. An earlier draft tabulated $K n_{\mathrm{up}}^{3}$ with the threshold
+factor left in; at \SI{1}{\electronvolt} that quantity is smooth for either
+dataset because the Boltzmann factor is, and the $-41$, $-16$ and
+\SI{-12}{\percent} it recorded for CCC were the threshold factor rather than
+the scaling under test. Table~\ref{tab:rydberg} gives the successive changes
+in $R$ for three series at both ends of the temperature range.
 
 \begin{table}[tbp]
   \centering
   \caption[Rydberg-series test of the $n=5$ disagreement]{Successive percentage
   changes in the reduced rate coefficient $R(n_{\mathrm{up}})$ of
-  Eq.~\eqref{eq:rydberg_reduced} along three dipole series at $\Te =
-  \SI{1}{\electronvolt}$. CCC continues smoothly toward the hydrogenic limit;
-  the RMPS values track it until the step into $n=5$, the top shell of their
-  target basis, where all three series kink. Dashes mark shells the RMPS
+  Eq.~\eqref{eq:rydberg_reduced}, threshold factor removed, along three dipole
+  series at \SI{1}{\electronvolt} and \SI{10}{\electronvolt}. At
+  \SI{1}{\electronvolt} the RMPS step into $n=5$, the top shell of their
+  target basis, is a \emph{rise} in all three series, the only positive
+  entries in the table; at \SI{10}{\electronvolt} neither calculation kinks
+  and the RMPS steps are uniformly the flatter. Dashes mark shells the RMPS
   tabulation does not contain. Source:
-  \texttt{data/processed/collisions/anderson\_validity\_dipole\_series.csv}.}
+  \texttt{data/processed/collisions/anderson\_validity\_dipole\_series.csv},
+  columns \texttt{R\_CCC\_bz} and \texttt{R\_And\_bz}.}
   \label{tab:rydberg}
-  \begin{tabular}{llrrrrr}
+  \begin{tabular}{lllrrrrr}
     \toprule
-    Series & Source & $2\!\to\!3$ & $3\!\to\!4$ & $4\!\to\!5$ & $5\!\to\!6$ & $6\!\to\!7$ \\
+    Series & $\Te$ & Source & $2\!\to\!3$ & $3\!\to\!4$ & $4\!\to\!5$ & $5\!\to\!6$ & $6\!\to\!7$ \\
     \midrule
-    $1s \to np$ & CCC  & $-87.8$ & $-53.1$ & $-41.5$ & $-16.3$ & $-11.8$ \\
-                & RMPS & $-87.9$ & $-53.5$ & $\mathbf{-5.4}$  & --- & --- \\
-    $2p \to nd$ & CCC  & ---     & $-70.4$ & $-46.5$ & $-28.0$ & $-17.0$ \\
-                & RMPS & ---     & $-70.4$ & $\mathbf{-17.3}$ & --- & --- \\
-    $2s \to np$ & CCC  & ---     & $-63.1$ & $-44.2$ & $-24.0$ & $-18.6$ \\
-                & RMPS & ---     & $-63.8$ & $\mathbf{-17.5}$ & --- & --- \\
+    $1s \to np$ & \SI{1}{\electronvolt}  & CCC  & $-19.5$ & $-9.2$  & $-20.6$          & $-1.2$  & $-2.5$ \\
+                &                        & RMPS & $-19.6$ & $-9.9$  & $\mathbf{+28.4}$ & ---     & --- \\
+                & \SI{10}{\electronvolt} & CCC  & $-41.4$ & $-17.9$ & $-9.9$           & $-5.2$  & $-3.8$ \\
+                &                        & RMPS & $-34.0$ & $-10.9$ & $-6.9$           & ---     & --- \\
+    \midrule
+    $2p \to nd$ & \SI{1}{\electronvolt}  & CCC  & ---     & $-42.6$ & $-27.3$          & $-14.9$ & $-8.3$ \\
+                &                        & RMPS & ---     & $-42.6$ & $\mathbf{+12.4}$ & ---     & --- \\
+                & \SI{10}{\electronvolt} & CCC  & ---     & $-64.6$ & $-33.2$          & $-18.5$ & $-11.8$ \\
+                &                        & RMPS & ---     & $-59.1$ & $-29.3$          & ---     & --- \\
+    \midrule
+    $2s \to np$ & \SI{1}{\electronvolt}  & CCC  & ---     & $-28.5$ & $-24.2$          & $-10.2$ & $-10.1$ \\
+                &                        & RMPS & ---     & $-29.8$ & $\mathbf{+12.0}$ & ---     & --- \\
+                & \SI{10}{\electronvolt} & CCC  & ---     & $-54.4$ & $-26.6$          & $-14.4$ & $-9.6$ \\
+                &                        & RMPS & ---     & $-47.1$ & $-21.5$          & ---     & --- \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1203,33 +1239,46 @@ gives the successive changes in $R$ for three series at
   \label{fig:rydberg}
 \end{figure}
 
-Figure~\ref{fig:rydberg} plots the same quantity against shell, at both ends of
-the temperature range, which Table~\ref{tab:rydberg} does not show: the
-disagreement is largest at \SI{1}{\electronvolt} and the two calculations
-close on each other by \SI{10}{\electronvolt}.
+Figure~\ref{fig:rydberg} plots the same quantity against shell at both ends
+of the temperature range.
 
-The two datasets agree on the shape of each series until the last step the RMPS
-calculation can take. At that step the RMPS reduced rate barely falls, while CCC
-continues the smooth approach it maintains through $n=10$. The kink lands on the
-top physical shell of the RMPS target basis in all three series, at both
-\SI{1}{\electronvolt} and \SI{10}{\electronvolt}, and its sign matches the bulk
-sign of the disagreement in Table~\ref{tab:anderson}: the RMPS $n=5$ rates sit
-high, so CCC reads low against them. That is consistent with the topmost shell of
-a truncated close-coupling expansion absorbing flux that physically belongs to
-$n \ge 6$ and the continuum, and it is consistent with the authors' own remark
-that $n=6$ orbitals would have needed an R-matrix box of $140\,a_0$, too large to
-include.%
-% [UNVERIFIED] The 140 a_0 statement is attributed to Anderson et al. (2000),
-% which is cited but is NOT held in refs/ -- only the 2002 corrigendum is.
-% Confirm this sentence against the 2000 paper before submission. The Rydberg
-% argument above does not depend on it.
+The two datasets agree on the shape of each series until the last step the
+RMPS calculation can take, and what happens at that step depends on the
+temperature. At \SI{1}{\electronvolt} the RMPS reduced rate \emph{rises} into
+$n=5$, by $28$, $12$ and \SI{12}{\percent} in the three series, while every
+other step of either calculation in Table~\ref{tab:rydberg} is a fall; the
+ratio of the RMPS rate to the CCC rate along $1s \to np$ is $1.15$, $1.15$,
+$1.14$ and then $1.85$. CCC is not smooth there either, dropping by
+\SI{20.6}{\percent} into $n=5$ on $1s \to np$ between neighbouring steps of
+$-9$ and \SI{-1}{\percent}, so both calculations carry structure at that shell
+and the localisation rests on the sign: a rise in
+$\Upsilon\,n_{\mathrm{up}}^{3}$ along a Rydberg series is what a truncated
+basis produces, and a smooth continuation is not. At \SI{10}{\electronvolt}
+there is no kink. The RMPS steps are three to seven points flatter than the
+CCC ones at $3 \to 4$ and $4 \to 5$ alike, the step into $n=5$ is where the
+two calculations differ \emph{least}, and the same ratio climbs steadily,
+$1.06$, $1.19$, $1.29$, $1.34$. An earlier draft placed the kink at both
+temperatures; it is a \SI{1}{\electronvolt} feature, and at
+\SI{10}{\electronvolt} the disagreement is a trend with $n$ rather than a
+step at one shell.
 
+The sign at \SI{1}{\electronvolt} matches the bulk sign of the disagreement
+in Table~\ref{tab:anderson}: the RMPS $n=5$ rates sit high, so CCC reads low
+against them. The temperature dependence constrains the mechanism. A top
+shell that absorbed flux belonging to $n \ge 6$ and the continuum would do so
+at every collision energy, and the excess would appear at every temperature;
+it appears only where the Maxwell average samples the cross section within
+about an electron-volt of the $n=5$ threshold, which is where the $n \ge 6$
+thresholds, the ionisation limit and the pseudo-state thresholds of a
+truncated expansion crowd together. The evidence points to a near-threshold
+artefact of the basis rather than a high-energy one.
 
-This localises the anomaly; it does not prove CCC correct. The scaling argument
-is asymptotic, and \SI{1}{\electronvolt} is not a temperature at which the Bethe
-term cleanly dominates, so the test is suggestive rather than decisive. What it
-establishes is narrower and still useful: the departure from hydrogenic
-behaviour occurs at one specific shell of one specific calculation, rather than
+This localises the anomaly; it does not prove CCC correct. The scaling
+argument is asymptotic, and \SI{1}{\electronvolt} is not a temperature at
+which the Bethe term cleanly dominates, so the test is suggestive rather than
+decisive. What it establishes is narrower and still useful: the departure
+from hydrogenic behaviour occurs at one specific shell of one specific
+calculation, at the temperatures where the two disagree most, rather than
 being distributed through the CCC dataset. \textbf{This work therefore treats
 the $n=5$ disagreement as a limitation of the benchmark rather than as a
 measured error in the data being benchmarked}, and claims no more than that.
@@ -1294,7 +1343,8 @@ replaced:
   disagreement, move $\Msep$ by under \SI{1}{\percent}; the 14~ground-state
   transitions, which carry much less of it, move $\Msep$ by more than the full
   substitution does. Source:
-  \texttt{data/processed/collisions/ccc\_anderson\_grid\_impact.csv}.}
+  \texttt{validation/anderson\_subset\_impact/}, which repeats the
+  substitution of \texttt{ccc\_anderson\_grid\_impact.py} for each subset.}
   \label{tab:atomic_sensitivity}
   \begin{tabular}{lrrr}
     \toprule
@@ -1315,7 +1365,11 @@ numerical: $\tauslow$ is the timescale of the slowest mode, and
 Section~\ref{sec:two_clocks} identifies that mode as the depletion of the ground
 state, so the rates out of $1s$ set it almost by themselves. Rates into $n=5$
 enter only through cascades that have already been diluted by everything they
-pass through.
+pass through. The \SI{0.9}{\percent} is also a net: the five $1s \to 5\ell$
+transitions alone move $\Msep$ by \SI{-3.3}{\percent} and the forty-five
+excited-fed transitions into $n=5$ by \SI{+2.4}{\percent}, so part of the
+reason $n=5$ does not reach the result is that its two halves pull in opposite
+directions (\texttt{validation/anderson\_subset\_impact/}).
 
 The conclusion of the earlier draft survives and its reasoning does not. It is
 true that the $n=5$ disagreement does not affect this thesis, but not because

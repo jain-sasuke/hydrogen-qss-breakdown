@@ -27,6 +27,19 @@ series is internally consistent; one that kinks at a single n is the anomalous
 one at that n. This does not prove which dataset is right in absolute terms --
 it localizes where one of them stops behaving like hydrogen.
 
+BOLTZMANN CORRECTION (added 2026-09-17). At Te = 1 eV the successive changes
+in R are dominated by exp(-dE/Te), which both codes share: for 1s->np the
+threshold factor alone gives -26%, -15%, -10% at 4->5, 5->6, 6->7, which is
+nearly all of the CCC "smooth approach". The quantity the Rydberg argument is
+actually about is Upsilon n^3 / g, so the script also writes
+
+        R_bz(n_up) = K n_up^3 exp(+dE/Te)
+
+with dE the hydrogenic threshold used in the Maxwell average. In R_bz the
+RMPS 4->5 step is POSITIVE at 1 eV in all three series while every other step
+of either code is negative; at 10 eV neither code kinks. Chapter 2 tabulates
+R_bz.
+
 Run:  python src/validation/anderson_validity_range.py
 """
 
@@ -102,14 +115,19 @@ for name, n_lo, l_lo, l_up in series:
     n_ups = [n for n in range(max(n_lo + 1, l_up + 1), ccc_nmax + 1)]
     for Te in (1.0, 10.0):
         rc, ra = [], []
+        rcb, rab = [], []
         for n_up in n_ups:
             kc = K_ccc(n_lo, l_lo, n_up, l_up, Te)
             ka = K_and(n_lo, l_lo, n_up, l_up, Te)
+            dE = bm.threshold_eV(n_lo, n_up)          # same threshold as the average
+            bz = np.exp(dE / Te)                      # removes the shared Boltzmann factor
             rc.append(kc * n_up**3 if np.isfinite(kc) else np.nan)
             ra.append(ka * n_up**3 if np.isfinite(ka) else np.nan)
+            rcb.append(rc[-1] * bz); rab.append(ra[-1] * bz)
             out.append({"series": name, "Te_eV": Te, "n_upper": n_up,
                         "K_CCC": kc, "K_And": ka,
-                        "R_CCC": rc[-1], "R_And": ra[-1]})
+                        "R_CCC": rc[-1], "R_And": ra[-1],
+                        "dE_eV": dE, "R_CCC_bz": rcb[-1], "R_And_bz": rab[-1]})
         hdr = "  ".join(f"n={n:<11d}" for n in n_ups)
         print(f"    Te={Te:4.1f} eV   {hdr}")
         print("      R_CCC      " +
@@ -130,6 +148,11 @@ for name, n_lo, l_lo, l_up in series:
               "  ".join(f"{v:<13.1f}" if np.isfinite(v) else f"{'--':<13}" for v in sc))
         print("      ΔR_And %   " +
               "  ".join(f"{v:<13.1f}" if np.isfinite(v) else f"{'--':<13}" for v in sa))
+        scb, sab = steps(rcb), steps(rab)
+        print("      ΔR_bz CCC %" +
+              "  ".join(f"{v:<13.1f}" if np.isfinite(v) else f"{'--':<13}" for v in scb))
+        print("      ΔR_bz And %" +
+              "  ".join(f"{v:<13.1f}" if np.isfinite(v) else f"{'--':<13}" for v in sab))
 
 df = pd.DataFrame(out)
 p = os.path.join(ROOT, "data", "processed", "collisions",

@@ -1129,12 +1129,25 @@ deviation runs from \SI{7.2}{\percent} at \SI{1}{\electronvolt} to
 \SI{13}{\percent} in Table~\ref{tab:anderson} is a grid average and not a
 bound. Figure~\ref{fig:ccc_rmps} shows both features: the $n'=5$ points
 scatter over more than a factor of ten while the $n' \le 3$ points stay inside
-the \SI{20}{\percent} band, and the size of the scatter is independent of the
-size of the rate coefficient (rank correlation of $|$error$|$ with $\log K$ of
-$0.02$ over the $2500$ comparisons at $n'=5$), which rules out a near-threshold
-or interpolation artefact in the Maxwell averaging as the cause. Its sign is
-not: CCC reads low at the smallest rates and high at the largest, which are
-the two modes described next.
+the \SI{20}{\percent} band. The horizontal axis is $\Delta E/\Te$, how far
+below threshold the Maxwell average is sampling the cross section, because
+that is the one variable on which a defect in the averaging would have to
+show: an interpolation or integration error near threshold would grow with
+$\Delta E/\Te$ for every transition alike. It does not. Over the $25$
+transitions into $n=5$ from $n=2$ and $n=3$ the disagreement grows toward
+threshold in every one (rank correlation of $|$error$|$ with $\Delta E/\Te$
+of $+0.65$ and $+0.73$ for the two lower shells); over the $24$ transitions
+into $n=4$ it shrinks toward threshold in $17$ and grows in $3$ (pooled $-0.3$
+to $-0.5$); and the $20$ transitions between the nearly degenerate $n=4$ and
+$n=5$ shells split ten to seven. Opposite signs in neighbouring shells are not
+what a shared averaging defect produces. They are what a difference in the
+cross sections themselves produces, and the class in which the disagreement
+grows toward threshold is the class whose upper shell is the top of the RMPS
+basis, which is where Section~\ref{sec:n5_anomaly} finds that basis
+misbehaving. An earlier draft plotted the same ratio against the size of the
+rate coefficient and read the absence of a trend there as ruling out a
+threshold artefact; the rate mixes strength, threshold and temperature, and
+the flat correlation it gave, $0.02$, was two opposing trends cancelling.
 
 At $n=5$ the disagreement has two modes with opposite signs. Where the
 transition is dipole-allowed between the nearly degenerate $n=4$ and $n=5$

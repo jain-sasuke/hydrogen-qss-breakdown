@@ -66,29 +66,48 @@ def save(fig, stem):
 def fig_benchmark():
     g = pd.read_csv(COL / "ccc_vs_anderson2002_thesis_Te_grid.csv")
     f = pd.read_csv(COL / "ccc_vs_anderson2002_full_Te_range.csv")
+    # threshold energy of each transition, from the benchmark file the
+    # pipeline wrote (hydrogenic, I_H = 13.6058 eV): joined, not recomputed
+    b = pd.read_csv(COL / "ccc_vs_anderson2002_benchmark.csv")
+    dE = b.drop_duplicates("label").set_index("label").dE_eV
+    missing = sorted(set(g.label) - set(dE.index))
+    if missing:
+        raise KeyError(f"no threshold energy in benchmark.csv for {missing}")
+    g = g.assign(x=dE.reindex(g.label).values / g.Te_eV)
 
     fig, (axa, axb) = plt.subplots(1, 2, figsize=(6.6, 2.9))
 
-    # (a) the RATIO, not the two values against each other: over twelve
-    #     decades a +-20% band is thinner than the plotted line, and every
-    #     dataset looks perfect on a 1:1 log-log plot.
-    xlim = [g.K_And2002.min() * 0.4, g.K_And2002.max() * 2.5]
+    # (a) the RATIO against dE/Te. The ratio, because over twelve decades of
+    #     K a +-20% band is thinner than the plotted line. dE/Te on the x
+    #     axis, because it has one meaning: how far below threshold the
+    #     Maxwell average is sampling. Each transition spans one decade
+    #     (Te from 1 to 10 eV); its position is its threshold, its shape is
+    #     the temperature dependence of the disagreement. K on this axis
+    #     mixed strength, threshold and temperature and said nothing.
+    xlim = [g.x.min() * 0.7, g.x.max() * 1.5]
     axa.fill_between(xlim, 0.8, 1.2, color="0.86", lw=0, zorder=1,
                      label="within 20%")
     axa.axhline(1.0, color="0.35", lw=0.8, zorder=2)
     for n in (2, 3, 4, 5):
         s = g[g.n_upper == n]
-        axa.scatter(s.K_And2002, s.K_CCC_stored / s.K_And2002, s=2.0,
+        axa.scatter(s.x, s.K_CCC_stored / s.K_And2002, s=2.0,
                     alpha=0.55, color=CSHELL[n], lw=0, label=f"$n'={n}$",
                     zorder=6 - n)
     axa.set(xscale="log", yscale="log", xlim=xlim, ylim=(0.18, 4.0),
-            xlabel=r"$K$ from RMPS  [cm$^3$/s]",
+            xlabel=r"$\Delta E \, / \, T_e$",
             ylabel=r"$K_{\mathrm{CCC}} \, / \, K_{\mathrm{RMPS}}$")
+    axa.set_xticks([0.03, 0.1, 0.3, 1, 3, 10])
+    axa.set_xticklabels(["0.03", "0.1", "0.3", "1", "3", "10"])
     axa.set_yticks([0.25, 0.5, 1, 2, 4])
     axa.set_yticklabels(["0.25", "0.5", "1", "2", "4"])
     axa.set_title("(a) all 85 transitions, 50 temperatures", loc="left")
+    # the two n'=5 modes, named where they sit
+    axa.text(0.033, 3.35, r"$4\to5$, $\Delta n=1$", fontsize=6.5, color="0.35",
+             ha="left", va="center")
+    axa.text(1.5, 0.215, r"$1s\to5g$", fontsize=6.5, color="0.35",
+             ha="left", va="center")
     h, l = axa.get_legend_handles_labels()
-    axa.legend(h[1:] + h[:1], l[1:] + l[:1], loc="upper left", markerscale=3.2,
+    axa.legend(h[1:] + h[:1], l[1:] + l[:1], loc="upper right", markerscale=3.2,
                handletextpad=0.3, borderpad=0.3, labelspacing=0.22,
                frameon=False, ncol=2, columnspacing=0.8)
 

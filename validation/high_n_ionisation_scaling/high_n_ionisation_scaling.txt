@@ -1,0 +1,89 @@
+# generated 2026-09-17 23:53 by verify_high_n_ionisation_scaling.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# scales [0.5, 0.25, 0.125] on Lotz rows n = 10-15; tau_d = 0.0001 s; window 30.0/30.0
+==============================================================================
+HIGH-n IONISATION / 3BR SCALING -- what the Lotz block does to the reservoir
+generated 2026-09-17 23:53  by verify_high_n_ionisation_scaling.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==============================================================================
+
+Lotz-sourced rows: 6, n = [10, 11, 12, 13, 14, 15]
+  A  Lotz reproduces the stored K_ion on those rows: max rel diff 0.000e+00
+  B  S_grid reconstructs from the alpha arrays: max rel diff 2.062e-16
+  C  alpha_3BR / K_ion against the analytic Saha factor: max rel diff 5.439e-07
+  E  column sums of every scaled L equal -K'_ion ne (ionisation identity): OK
+  D' baseline u_CRE reproduces molecular_channel.csv: max rel diff 6.717e-13
+  D  baseline reproduces reservoir_gain.csv (k=1, 784 rows): max rel diff 1.312e-14
+  D' baseline ELM estimate reproduces divertor_map.csv lo_ELM_crash (784 rows): max rel diff 2.562e-16;  window_ok agrees at 784/784
+
+  ALL GATES PASSED.
+
+==============================================================================
+RESULT over the 448 defended pairs (window_ok, Te >= 2 eV, k = 1);  baseline census 45
+==============================================================================
+
+  scale 0.5 on n = 10-15 ionisation and its 3BR
+    u_CRE (pre-step point)   median   +0.02%   mean|.|   0.03%   max|.|   0.11%  (at [49,0] cool)
+    tau_slow (post-step)     median   +0.03%   mean|.|   0.06%   max|.|   0.29%  (at [15,0] cool)
+    Delta ln u               median   -0.00%   mean|.|   0.00%   max|.|   0.00%  (at [48,0] heat)
+    eps_plateau              median   -0.12%   mean|.|   0.19%   max|.|   0.68%  (at [48,0] heat)
+    ELM estimate             median   -0.09%   mean|.|   0.18%   max|.|   0.64%  (at [48,0] heat)
+    Sbar                     median   -0.11%   mean|.|   0.19%   max|.|   0.67%  (at [48,0] heat)
+    G                        median   -0.00%   mean|.|   0.00%   max|.|   0.00%  (at [48,0] heat)
+    cap                      median   -0.16%   mean|.|   0.19%   max|.|   0.52%  (at [48,0] heat)
+    u_CRE over all 400 grid points: max|.| 0.11%;  over ne >= 1e14: max|.| 0.00%
+    u_CRE max|.| by density column: 1e+12:0.11%  3e+12:0.06%  7e+12:0.03%  2e+13:0.02%  5e+13:0.01%  1e+14:0.00%  4e+14:0.00%  1e+15:0.00%
+    defended census (ELM estimate > 0.10): 45 of 448  (baseline 45)
+      benchmark [23,5]: eps   6.361% ->   6.360%   tau_slow    18.494 ->    18.496 us   u_CRE 8.8039e-04 -> 8.8042e-04
+          ridge [15,3]: eps  18.073% ->  18.056%   tau_slow  1493.772 ->  1494.325 us   u_CRE 1.4122e-02 -> 1.4123e-02
+     cold corner [0,4]: eps  38.690% ->  38.666%   tau_slow 233238.956 -> 233308.472 us   u_CRE 2.8321e+01 -> 2.8323e+01
+
+  scale 0.25 on n = 10-15 ionisation and its 3BR
+    u_CRE (pre-step point)   median   +0.05%   mean|.|   0.09%   max|.|   0.30%  (at [49,0] cool)
+    tau_slow (post-step)     median   +0.09%   mean|.|   0.18%   max|.|   0.80%  (at [15,0] cool)
+    Delta ln u               median   -0.00%   mean|.|   0.00%   max|.|   0.01%  (at [49,0] cool)
+    eps_plateau              median   -0.32%   mean|.|   0.54%   max|.|   1.89%  (at [48,0] heat)
+    ELM estimate             median   -0.26%   mean|.|   0.51%   max|.|   1.78%  (at [48,0] heat)
+    Sbar                     median   -0.32%   mean|.|   0.54%   max|.|   1.86%  (at [48,0] heat)
+    G                        median   -0.00%   mean|.|   0.00%   max|.|   0.01%  (at [49,0] cool)
+    cap                      median   -0.44%   mean|.|   0.54%   max|.|   1.44%  (at [48,0] heat)
+    u_CRE over all 400 grid points: max|.| 0.30%;  over ne >= 1e14: max|.| 0.01%
+    u_CRE max|.| by density column: 1e+12:0.30%  3e+12:0.18%  7e+12:0.10%  2e+13:0.05%  5e+13:0.03%  1e+14:0.01%  4e+14:0.01%  1e+15:0.00%
+    defended census (ELM estimate > 0.10): 44 of 448  (baseline 45)
+      benchmark [23,5]: eps   6.361% ->   6.356%   tau_slow    18.494 ->    18.498 us   u_CRE 8.8039e-04 -> 8.8046e-04
+          ridge [15,3]: eps  18.073% ->  18.026%   tau_slow  1493.772 ->  1495.324 us   u_CRE 1.4122e-02 -> 1.4126e-02
+     cold corner [0,4]: eps  38.690% ->  38.623%   tau_slow 233238.956 -> 233425.393 us   u_CRE 2.8321e+01 -> 2.8325e+01
+
+  scale 0.125 on n = 10-15 ionisation and its 3BR
+    u_CRE (pre-step point)   median   +0.10%   mean|.|   0.19%   max|.|   0.63%  (at [49,0] cool)
+    tau_slow (post-step)     median   +0.19%   mean|.|   0.38%   max|.|   1.68%  (at [15,0] cool)
+    Delta ln u               median   -0.00%   mean|.|   0.01%   max|.|   0.03%  (at [49,0] cool)
+    eps_plateau              median   -0.69%   mean|.|   1.14%   max|.|   3.91%  (at [48,0] heat)
+    ELM estimate             median   -0.56%   mean|.|   1.07%   max|.|   3.70%  (at [48,0] heat)
+    Sbar                     median   -0.69%   mean|.|   1.14%   max|.|   3.84%  (at [48,0] heat)
+    G                        median   -0.00%   mean|.|   0.01%   max|.|   0.03%  (at [49,0] cool)
+    cap                      median   -0.93%   mean|.|   1.13%   max|.|   2.99%  (at [48,0] heat)
+    u_CRE over all 400 grid points: max|.| 0.63%;  over ne >= 1e14: max|.| 0.03%
+    u_CRE max|.| by density column: 1e+12:0.63%  3e+12:0.37%  7e+12:0.21%  2e+13:0.11%  5e+13:0.06%  1e+14:0.03%  4e+14:0.01%  1e+15:0.01%
+    defended census (ELM estimate > 0.10): 43 of 448  (baseline 45)
+      benchmark [23,5]: eps   6.361% ->   6.351%   tau_slow    18.494 ->    18.503 us   u_CRE 8.8039e-04 -> 8.8054e-04
+          ridge [15,3]: eps  18.073% ->  17.974%   tau_slow  1493.772 ->  1497.082 us   u_CRE 1.4122e-02 -> 1.4132e-02
+     cold corner [0,4]: eps  38.690% ->  38.549%   tau_slow 233238.956 -> 233637.649 us   u_CRE 2.8321e+01 -> 2.8328e+01
+
+PREDICTIONS: P1-P4 all reproduced
+REFUTER (eps_plateau or tau_slow moving > 10 % at any defended pair): did not appear
+
+This is a scan, not a substitution: no second dataset exists above n = 9. The scale is applied uniformly in
+Te and to all six Lotz rows; the 3BR is rebuilt with the same Saha factor, so detailed balance is preserved.

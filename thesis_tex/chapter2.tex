@@ -1469,7 +1469,25 @@ Chapter~\ref{ch:limits} reports, from an independent comparison against
 published population coefficients, that the terminal shell is over-populated by
 4.9--6.2 times while $n=10$ agrees to \SIrange{4}{20}{\percent}. The two
 observations agree in size and location, but the test that would establish the
-link has not been done, so the connection is a hypothesis, not a finding.
+link has not been done, so the connection is a hypothesis, not a finding. What
+is measured is what the block does to the reservoir, which is what a reader of
+Chapter~\ref{ch:results} needs. Scaling the six Lotz coefficients and the
+three-body recombination built from them together by $1/2$, $1/4$ and $1/8$,
+the far end of the metadata's own factor, moves $u^{\mathrm{CRE}}$ by at most
+\SI{0.63}{\percent} (at \SI{e12}{\per\cubic\centi\metre}, and by
+\SI{0.03}{\percent} above \SI{e14}{\per\cubic\centi\metre}), $\tauslow$ by at
+most \SI{1.7}{\percent}, the reservoir displacement $\Delta\ln u$ by
+\SI{0.03}{\percent}, and $\epsplat$ by \SI{0.7}{\percent} at the median and
+\SI{3.9}{\percent} at worst over the $448$ defended pairs, with the census
+moving from $45$ to $43$
+(\texttt{verify\_high\_n\_ionisation\_scaling.py},
+\texttt{validation/high\_n\_ionisation\_scaling/}). Scaling both directions
+of the exchange preserves the Saha ratio of those shells with the continuum
+and only slows it, and the block is weakly coupled where three-body
+recombination is small, which is why the reservoir does not see it; the
+over-population of the terminal shell is a separate question this scan does
+not answer. No second dataset exists above $n=9$, so this is a scan and not a
+substitution.
 \emph{Vriens--Smeets for the bundled block}: 201 of the 819 excitation pairs
 come from a semi-empirical fit of quoted accuracy $\sim$\SI{20}{\percent} rather
 than a close-coupling calculation, which is the price of the ladder reaching

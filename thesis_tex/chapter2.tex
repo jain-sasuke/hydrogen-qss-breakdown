@@ -298,11 +298,18 @@ grid was tested and gives $\sim\SI{17}{\percent}$ error at
 \SI{1}{\electronvolt}, so the grid density is measured, not defaulted. The
 threshold is taken from Eq.~\eqref{eq:binding} rather than from the data file,
 avoiding the noisy near-threshold region. Interpolation returns zero outside the
-tabulated range. And the integral stops at the top of the data
-(\SIrange{100}{968}{\electronvolt}) rather than at infinity; since
-$\mathrm{e}^{-E/k_B\Te} = 4.5\times10^{-5}$ at \SI{100}{\electronvolt} and
-$\Te = \SI{10}{\electronvolt}$, the missing tail is below \SI{0.01}{\percent}
-over the range used here.
+tabulated range. And the integral stops at the top of the data rather than at infinity. Every
+one of the $1320$ excitation blocks is tabulated to between $955$ and
+\SI{969}{\electronvolt}; with the integrand $\sigma E\,\mathrm{e}^{-E/k_B\Te}$
+and $\sigma E$ allowed to grow logarithmically beyond the data, the largest
+missing tail at \SI{10}{\electronvolt} is $3\times10^{-41}$ of the integral
+(\texttt{validation/maxwell\_tail/}). An earlier draft gave the range as
+$100$ to \SI{968}{\electronvolt} and bounded the tail by the Boltzmann factor
+alone; neither was right. No block stops at \SI{100}{\electronvolt}, and had
+one done so its tail at \SI{10}{\electronvolt} would have been
+\SI{0.05}{\percent} for a ground-state dipole transition, five times the
+\SI{0.01}{\percent} then claimed, because $\sigma E$ and not the Boltzmann
+factor sets it.
 
 \subsection{Detailed balance, and why de-excitation is never computed directly}
 
@@ -411,9 +418,14 @@ until the answer stops moving. The ``convergent'' is the claim that the limit
 is reached rather than estimated. The dataset is the 3115 raw files supplied by
 Prof.\ Igor Bray (personal communication, 22 February 2026) in
 \texttt{data/raw/ccc/e-H\_XSEC\_LS/}, parsed by
-\texttt{src/parsers/parse\_ccc.py}. The acquisition report for the same dataset
-records 3117 files; 3115 are on disk, and the difference is noted here rather
-than reconciled.
+\texttt{src/parsers/parse\_ccc.py}. The acquisition report describes the
+database requested as 3117 files; 3115 arrived, and they are the 3115 the
+provider's own \texttt{file\_list.txt} names, so which two are absent cannot be
+settled without the provider's manifest and is left open. Everything downstream
+of the files is counted and asserted in \texttt{validation/ccc\_accounting/}:
+2025 files carry two resolved-state labels, of which 870 are excitation, 870
+de-excitation and 285 the excluded $\Delta n = 0$, and the remaining 1090 carry
+a bundled-shell label.
 
 Three instructions came with the data and all three are load-bearing.
 
@@ -438,12 +450,20 @@ non-relativistic treatment the $\ell$ sublevels of a shell are exactly
 degenerate, the transition energy is zero, and the long-range dipole interaction
 gives a divergent cross section. After the exclusion 2190 blocks remain, all
 with $\Delta n \ne 0$: 1320 in the excitation direction and 870 in the
-de-excitation direction. The Week-2 acquisition report for the same dataset
-records 1740, which is 870 of each; the parse was subsequently extended to the
-$n=9$ and $n=10$ final states noted below, and the difference is stated here
-rather than reconciled. The stated accuracy for what remains is
-$\sim$\SI{5}{\percent}, which the benchmark of
-Section~\ref{sec:atomic_uncertainty} is able to test.
+de-excitation direction. The Week-2 acquisition report recorded 1740, the 870
+of each direction among the resolved-state files, and the 450 the extended
+parse added are exactly the excitation blocks with $n=10$ as final state, $45$
+initial states times ten sublevels; the $324$ with $n=9$ final, $36$ times
+nine, were already among the 870. Collapsed over $\ell$, the 1320 become the
+$546 + 36 + 36 = 618$ CCC pairs of Table~\ref{tab:exc_coverage}, and with the
+201 Vriens--Smeets pairs, $36 \times 5$ resolved-to-bundled and $\binom{7}{2}$
+bundled-to-bundled, make the 819, which is also $\binom{36}{2}$ less the 84
+same-shell pairs plus $36 \times 7$ plus $\binom{7}{2}$ for 36 resolved and 7
+bundled states. Every integer in that chain is asserted by the script; an
+earlier draft stated the two differences rather than reconciling them. The
+accuracy the provider states for what remains is $\sim$\SI{5}{\percent}, which
+the benchmark of Section~\ref{sec:atomic_uncertainty} tests and does not
+confirm: it measures \SI{13}{\percent} for $n_{\text{upper}} \le 4$.
 
 That exclusion has a consequence which is easy to miss and which
 Section~\ref{sec:lmixing} turns into the central argument of this chapter. With
@@ -458,9 +478,10 @@ involving higher bundled shells are filled from the semi-empirical formulae of
 Vriens and Smeets~\cite{VriensSmeets1980}, coded in \texttt{compute\_K\_VS.py};
 the implemented expressions are their Eqs.~(17)--(19) directly, not the
 equivalent rearrangement of Hartgers \emph{et al.}~\cite{Hartgers2001} that the
-file's header docstring describes. Their accuracy is $\sim$\SI{20}{\percent}
-against $\sim$\SI{5}{\percent} for CCC, so the merge uses CCC wherever it
-exists. Those formulae need one further input, the shell-to-shell absorption
+file's header docstring describes. Their stated accuracy is $\sim$\SI{20}{\percent} against the
+$\sim$\SI{5}{\percent} CCC states for itself, so the merge uses CCC wherever it
+exists; neither figure is one this thesis has measured, and the one it can test
+comes out at \SI{13}{\percent} (Section~\ref{sec:atomic_uncertainty}). Those formulae need one further input, the shell-to-shell absorption
 oscillator strength, built from the same Einstein coefficients used in
 Section~\ref{sec:radiative}, with a Kramers fallback where a value is missing
 that is recorded per transition in the metadata.
@@ -483,7 +504,7 @@ Vriens--Smeets.
   \label{tab:exc_coverage}
   \begin{tabular}{llrl}
     \toprule
-    Block & Source & Pairs & Stated accuracy \\
+    Block & Source & Pairs & Stated accuracy (provider's) \\
     \midrule
     res $\to$ res, $n \le 8$      & CCC                        & 546 & $\sim$\SI{5}{\percent} \\
     res $\to$ $n=9$ bundled       & CCC, collapsed over $\ell$ &  36 & $\sim$\SI{5}{\percent} \\
@@ -564,16 +585,33 @@ exponential integrals and $g_0,g_1,g_2$ the Gaunt polynomials of Johnson's
 Table~1 (\texttt{recombination\_rates.py}). $y$ and the bracket are
 dimensionless and $D$ carries the units, so both sides are
 \si{\cubic\centi\metre\per\second}. Physically, capture into a shell is easiest
-so capture is favoured at low electron energy. Over the range used here
-$\alpha_{\mathrm{RR}}(n,\Te)$ decreases monotonically with $\Te$ for every
-level, with no interior maximum: Eq.~\eqref{eq:alpha_RR} gives
-$\alpha \propto \Te^{-1/2}$ at high energy and drives $\alpha \to 0$ at low
-energy, so the maximum lies below \SI{1}{\electronvolt} for the shells that
-matter here. The shell total is split over
+so capture is favoured at low electron energy. $\alpha_{\mathrm{RR}}(n,\Te)$ decreases monotonically with $\Te$ for every
+level and has no maximum at any temperature. The two limits follow from the
+exponential integrals in Eq.~\eqref{eq:alpha_RR}. As $\Te \to 0$,
+$y \to \infty$ and $\mathrm{e}^{y}E_k(y) \to 1/y$ for every $k$, so
+$\alpha \to D\,(g_0+g_1+g_2)\,y^{1/2} \propto \Te^{-1/2}$ with a positive
+coefficient, $g_0+g_1+g_2 = 0.876$, $0.908$ and $0.925$ at $n = 2$, $3$ and
+$4$; as $\Te \to \infty$, $y \to 0$ and
+$\mathrm{e}^{y}E_1(y) \to -\gamma - \ln y$, so
+$\alpha \propto \Te^{-3/2}\ln(\Te/I_n) \to 0$. Evaluating the module's own
+function at fixed $y$ gives a logarithmic slope of $-0.50$ at $y = 340$ and
+$-1.36$ at $y = 3.4\times10^{-4}$ for every shell from $n=2$ to $8$
+(\texttt{validation/rr\_limits/}). An earlier draft had the two limits
+exchanged, $\Te^{-1/2}$ at high temperature and zero at low, and placed a
+maximum below \SI{1}{\electronvolt}; the code was right and the sentence
+describing it was not. The shell total is split over
 $\ell$ statistically, $\alpha_{\mathrm{RR}}(n,\ell) =
-\alpha_{\mathrm{RR}}(n)(2\ell+1)/n^{2}$~\cite{MaoKaastra2016}, a step requiring
-$\nel \gtrsim \SI{e10}{\per\cubic\centi\metre}$, two decades below our lowest
-density.
+\alpha_{\mathrm{RR}}(n)(2\ell+1)/n^{2}$~\cite{MaoKaastra2016}. Radiative
+capture itself favours low $\ell$, so the split is not a statement about
+capture; it is justified by what happens next. Proton $\ell$-mixing
+redistributes a captured population within its shell faster than any
+competing loss: over the whole grid the mixing rate out of a sublevel exceeds
+its total radiative decay by at least a factor $9$ at $n=3$ and $86$ at $n=4$,
+the two shells the observable is built from
+(\texttt{validation/molecular\_channel/}, item~1), so the $\ell$-distribution
+is set by mixing to within about one part in that ratio whatever the capture
+distribution was. An earlier draft justified the split by a density threshold
+of \SI{e10}{\per\cubic\centi\metre}; the timescale ratio is the condition.
 
 One property of Eq.~\eqref{eq:alpha_RR} needed checking rather than assuming.
 $g_1(n)$ is negative and grows with $n$, so the three-term sum can in principle
@@ -957,12 +995,30 @@ $\ell$-mixing is saturated, so the frozen table costs nothing that can be
 measured. The
 stored table has no density axis at all, so the linear $\propto\nel$ scaling
 applied at assembly is exact while the Coulomb-logarithm factor inside it is
-frozen at mid-grid. One item is left open rather than settled: Badnell's
-formulation offers competing cut-offs to the Debye radius, one set by the level
-lifetime and one by any residual splitting of the $\ell$ degeneracy, and the
-correct $R_c$ is the smallest of the three. Only the Debye cut-off is
-implemented. At these densities it is expected to be the binding one, but that
-has not been tested across the grid.
+frozen at mid-grid. Badnell's formulation offers two competing cut-offs to the Debye radius, one
+set by the level lifetime and one by any residual splitting of the $\ell$
+degeneracy, and the correct $R_c$ is the smallest of the three. Only the Debye
+cut-off is implemented, and the cost of that choice is now measured rather than
+expected (\texttt{verify\_lmix\_cutoffs.py},
+\texttt{validation/lmix\_cutoffs/}). The cut-off enters only through the
+Coulomb-logarithm factor $F(U_m)$ with $U_m \propto R_c^{-2}$, so a competing
+radius smaller than $\lambda_D$ by a factor $r$ changes $F$ by about $\ln r$.
+The lifetime radius $v\tau$ exceeds $\lambda_D$ at every channel and grid
+point, by a factor $6.7$ at its closest, and never binds. The splitting radius
+$\hbar v/\Delta E$, taken conservatively at the largest fine-structure
+splitting between the two coupled sublevels, does bind at low density: for
+the $2s \leftrightarrow 2p$ channel it is smaller than $\lambda_D$ at $300$ of
+the $400$ grid points, everywhere below $\nel = \SI{3.7e14}{\per\cubic\centi\metre}$,
+and at $\SI{e12}{\per\cubic\centi\metre}$ it would reduce $F$ from about $9$
+to $14$ down to $0.41$ of that value; if the smaller Lamb-shift splitting were
+the relevant one instead, the reduction is to $0.90$. The same cut-off binds
+at $n=3$ and $n=4$ at the lowest densities, reducing $F$ to $0.56$ and $0.72$
+of the Debye value at worst, and never above $n=5$ or above
+\SI{3.7e14}{\per\cubic\centi\metre}. The smallest factor anywhere on the grid
+is $0.41$, inside the $\times0.1$ to $\times10$ scan above that moves
+$\ffrac{3}-\ffrac{4}$ by less than \SI{0.3}{\percent}, so which cut-off is
+correct is an open question about the mixing rate and a closed one for the
+result.
 
 \subsection{Without it, \texorpdfstring{$n=2$}{n=2} is not a physical manifold}
 
@@ -1169,7 +1225,7 @@ $1s \to 5p$. An earlier draft counted ten comparisons beyond a factor of two,
 all with CCC the larger; that was a count over four temperatures of one
 direction only, and the figure plots all fifty.
 
-\subsection{Which calculation is anomalous at \texorpdfstring{$n=5$}{n=5}}
+\subsection{Where the \texorpdfstring{$n=5$}{n=5} disagreement is localised}
 \label{sec:n5_anomaly}
 
 Both calculations are approximate and neither is a measurement, so the
@@ -1265,8 +1321,8 @@ $1.14$ and then $1.85$. CCC is not smooth there either, dropping by
 \SI{20.6}{\percent} into $n=5$ on $1s \to np$ between neighbouring steps of
 $-9$ and \SI{-1}{\percent}, so both calculations carry structure at that shell
 and the localisation rests on the sign: a rise in
-$\Upsilon\,n_{\mathrm{up}}^{3}$ along a Rydberg series is what a truncated
-basis produces, and a smooth continuation is not. At \SI{10}{\electronvolt}
+$\Upsilon\,n_{\mathrm{up}}^{3}$ along a Rydberg series is consistent with a
+truncated basis, and a smooth continuation is not. At \SI{10}{\electronvolt}
 there is no kink. The RMPS steps are three to seven points flatter than the
 CCC ones at $3 \to 4$ and $4 \to 5$ alike, the step into $n=5$ is where the
 two calculations differ \emph{least}, and the same ratio climbs steadily,
@@ -1283,8 +1339,9 @@ at every collision energy, and the excess would appear at every temperature;
 it appears only where the Maxwell average samples the cross section within
 about an electron-volt of the $n=5$ threshold, which is where the $n \ge 6$
 thresholds, the ionisation limit and the pseudo-state thresholds of a
-truncated expansion crowd together. The evidence points to a near-threshold
-artefact of the basis rather than a high-energy one.
+truncated expansion crowd together. If the kink is a basis artefact, the
+evidence places it near threshold rather than at high energy; that it is one
+has not been shown.
 
 This localises the anomaly; it does not prove CCC correct. The scaling
 argument is asymptotic, and \SI{1}{\electronvolt} is not a temperature at
@@ -1394,7 +1451,8 @@ $n_{\text{upper}} \le 4$: ground-state excitation agrees within
 \SI{20}{\percent} in only \SI{61.8}{\percent} of comparisons at
 $n_{\text{upper}} \le 4$, against \SI{81.4}{\percent} for that block as a whole.
 Chapter~\ref{ch:theory} carries the consequence, which is that $\Msep$ is
-reported with an atomic-data systematic of \SI{11}{\percent}.
+reported with the \SI{11}{\percent} by which the R-matrix substitution moves
+it: the sensitivity to one dataset substitution, not an uncertainty.
 
 Three further soft spots are worth naming rather than leaving to be discovered.
 \emph{Detailed balance in the raw cross sections}: separately from the enforced

@@ -1,0 +1,48 @@
+# generated 2026-09-17 23:44 by verify_lmix_cutoffs.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# compute_lmix.py sha256 da9831c201cdd7b170b7b48d1a0f7eb8c83046856292030d5275bd51da7f4f5e
+# gamma_resolved.npy sha256 fbb35684e0fe0c995df5873c967a7098f81acdb0efce56e5353d91bb9201767e
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# ne_grid_L.npy sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# constants CODATA 2018; Lamb shift 1057.845 MHz; v = sqrt(8kT/pi mu), mu = m_p m_H/(m_p+m_H)
+==============================================================================
+PROTON l-MIXING CUT-OFFS -- Debye against lifetime and fine-structure splitting
+generated 2026-09-17 23:44  by verify_lmix_cutoffs.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  compute_lmix.py sha256 da9831c201cdd7b1;  MU = 918.07635;  gamma_resolved.npy (36 states)
+==============================================================================
+
+P1  lifetime cut-off binds at 0 of 11200 (channel, point) rows;  min R_tau/lambda_D = 6.7
+P2  n = 2: splitting cut-off (dE = 4.528e-05 eV, the 2s1/2-2p3/2 fine structure) binds at 300 of 400 points;
+      ne = 1.00e+12: lambda_D/R_dE =  16.38 (Te-independent);  F'/F min 0.406  max 0.601;  F 9.39..14.00
+      ne = 2.68e+12: lambda_D/R_dE =  10.00 (Te-independent);  F'/F min 0.454  max 0.646;  F 8.41..13.01
+      ne = 7.20e+12: lambda_D/R_dE =   6.10 (Te-independent);  F'/F min 0.514  max 0.699;  F 7.42..12.02
+      ne = 1.93e+13: lambda_D/R_dE =   3.73 (Te-independent);  F'/F min 0.593  max 0.762;  F 6.43..11.04
+      ne = 5.18e+13: lambda_D/R_dE =   2.28 (Te-independent);  F'/F min 0.700  max 0.836;  F 5.45..10.05
+      ne = 1.39e+14: lambda_D/R_dE =   1.39 (Te-independent);  F'/F min 0.854  max 0.927;  F 4.47..9.06
+      ne = 3.73e+14: lambda_D/R_dE =   0.85 (Te-independent);  F'/F min 1.000  max 1.000;  F 3.49..8.08
+      ne = 1.00e+15: lambda_D/R_dE =   0.52 (Te-independent);  F'/F min 1.000  max 1.000;  F 2.54..7.09
+      least restrictive alternative, the Lamb shift 4.375e-06 eV: lambda_D/R_Lamb = 1.58 at 1e+12, F'/F there = 0.902 (min over Te)
+P3  minimum F'/F per shell (over channels and points):
+      n = 2: min F'/F = 0.406  at ne = 1e+12;  non-Debye binding at 75 % of rows
+      n = 3: min F'/F = 0.560  at ne = 1e+12;  non-Debye binding at 50 % of rows
+      n = 4: min F'/F = 0.715  at ne = 1e+12;  non-Debye binding at 25 % of rows
+      n = 5: min F'/F = 0.889  at ne = 1e+12;  non-Debye binding at 6 % of rows
+      n = 6: min F'/F = 1.000  at ne = 1e+12;  non-Debye binding at 0 % of rows
+      n = 7: min F'/F = 1.000  at ne = 1e+12;  non-Debye binding at 0 % of rows
+      n = 8: min F'/F = 1.000  at ne = 1e+12;  non-Debye binding at 0 % of rows
+P4  global minimum F'/F = 0.406  (refuter: < 0.1)
+
+PREDICTIONS: not reproduced as written: P3. P3 assumed the splitting falls as n^-3; the p-d channel's most-split pair carries a larger j-factor, so the cut-off still binds at n = 3 and 4 at the lowest densities (minima above).
+REFUTER (F'/F < 0.1 anywhere): did not appear; global minimum 0.406, inside the x0.1 to x10 scan of sec:lmixing.
+Assumptions: v is the mean relative speed at T_i = Te; the splitting is the most-split fine-structure pair
+(conservative); baseline F uses the local Debye length, not the frozen 1e14 of the production table.

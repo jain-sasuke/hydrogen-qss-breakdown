@@ -1,0 +1,20 @@
+# generated 2026-09-17 23:45 by verify_rr_limits.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# recombination_rates.py sha256 6b4ce6bcba030f99db65d38b47222d2f90d0ea0eacd8177c41538ca9c8e47b03
+# y = I_n/kT from 340 to 3.4e-4, 601 log points per shell; slopes by np.gradient of ln alpha vs ln T
+==============================================================================
+RADIATIVE-RECOMBINATION LIMITS -- from the model's own alpha_RR_shell
+generated 2026-09-17 23:45  by verify_rr_limits.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+module src/rates/recombination_rates.py  sha256 6b4ce6bcba030f99
+==============================================================================
+   n  g0+g1+g2  slope@y=340  slope@y=3e-4  monotone   alpha(1eV)  alpha(10eV)
+   2    0.8761      -0.5024       -1.3615      True   6.9889e-14   1.1385e-14
+   3    0.9075      -0.5025       -1.3625      True   4.0670e-14   5.1184e-15
+   4    0.9248      -0.5026       -1.3631      True   2.6091e-14   2.7553e-15
+   5    0.9358      -0.5027       -1.3634      True   1.7850e-14   1.6629e-15
+   6    0.9436      -0.5027       -1.3637      True   1.2805e-14   1.0860e-15
+   7    0.9494      -0.5027       -1.3639      True   9.5290e-15   7.5131e-16
+   8    0.9539      -0.5028       -1.3640      True   7.3022e-15   5.4307e-16
+
+VERDICT: all predictions reproduced: alpha ~ T^-1/2 at LOW T with a positive coefficient, ~ T^-3/2 ln T at HIGH T, monotone, no maximum

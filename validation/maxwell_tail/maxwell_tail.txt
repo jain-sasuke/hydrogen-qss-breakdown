@@ -1,0 +1,21 @@
+# generated 2026-09-17 23:39 by verify_maxwell_tail.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# weighting sigma*E ~ ln(E/dE); tail evaluated at Te_max = 10 eV
+==============================================================================
+MAXWELL-AVERAGE TAIL -- what stopping at the top of the CCC data costs
+generated 2026-09-17 23:39  by verify_maxwell_tail.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+blocks 1320;  Te_max on the grid 10 eV;  weighting sigma*E ~ ln(E/dE)
+==============================================================================
+P1  E_max over blocks: min 955.2  max 968.6 eV;  blocks with E_max < 900 eV: 0
+P2  largest tail fraction at 10 eV over all blocks: 2.91e-41  (block [1, 0, 10, 0])
+P3  the hypothetical the chapter argued from, E_max = 100 eV at 10 eV:
+      ground-state dipole, dE = 10.20 eV     tail = 0.0508 %   (above the 0.01 % claimed)
+      n=2 -> 3, dE = 1.89 eV                 tail = 0.0145 %   (above the 0.01 % claimed)
+      n=4 -> 5, dE = 0.31 eV                 tail = 0.0091 %   (below the 0.01 % claimed)
+
+VERDICT: no block stops at 100 eV; every block reaches 955-969 eV and the missing tail is below 1e-35.
+The chapter's '(100-968 eV)' understated its own margin, and its 0.01 % bound would not have held
+for a 100 eV ceiling, because sigma*E, not the Boltzmann factor alone, sets the tail.

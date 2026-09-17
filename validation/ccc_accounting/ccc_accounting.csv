@@ -1,0 +1,29 @@
+# generated 2026-09-17 23:42 by verify_ccc_accounting.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# K_exc_meta.csv sha256 7de5845a432b0fb405b48fc876e2626eb1b1386c6fa16b1275961b312e7a507e
+# file_list.txt sha256 9c812ce926b1ea42947d100653fca08f611474be011b5c0b746c8219e5b746b2
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# raw directory data/raw/ccc/e-H_XSEC_LS (3115 files, gitignored)
+step,value,expected,ok
+P1 files on disk in e-H_XSEC_LS,3115,3115,True
+P1 lines in file_list.txt,3115,3115,True
+P2 STATE.STATE excitation (FINAL > INITIAL),870,870,True
+P2 STATE.STATE de-excitation,870,870,True
+P2 Week-2 count = exc + de-exc,1740,1740,True
+P3 metadata excitation blocks,1320,1320,True
+P4 blocks with n_final <= 8,546,546,True
+P4 blocks with n_final = 9,324,324,True
+P4 blocks with n_final = 10,450,450,True
+P3 1320 - 1740/2 = blocks the extended parse added,450,450,True
+P4 distinct initial states feeding n=9,36,36,True
+P4 distinct initial states feeding n=10,45,45,True
+P5 CCC resolved pairs (source CCC),546,546,True
+P5 CCC pairs collapsed to n=9 (source CCC_n9),36,36,True
+P5 CCC pairs collapsed to n=10 (source CCC_n10),36,36,True
+"P5 CCC pairs in the merged table, all sources",618,618,True
+P5 Vriens-Smeets pairs (source VS),201,201,True
+P5 total excitation pairs,819,819,True
+P6 resolved states,36,36,True
+P6 bundled states,7,7,True
+"P6 C(36,2) - same-shell + 36*7 + C(7,2)",819,819,True

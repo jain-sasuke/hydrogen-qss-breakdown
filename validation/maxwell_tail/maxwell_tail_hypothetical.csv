@@ -1,0 +1,9 @@
+# generated 2026-09-17 23:39 by verify_maxwell_tail.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# weighting sigma*E ~ ln(E/dE); tail evaluated at Te_max = 10 eV
+case,dE_eV,E_max_eV,Te_eV,tail
+"ground-state dipole, dE = 10.20 eV",10.20435,100.0,10.0,0.0005083346553212862
+"n=2 -> 3, dE = 1.89 eV",1.88905,100.0,10.0,0.00014520143412089274
+"n=4 -> 5, dE = 0.31 eV",0.30613,100.0,10.0,9.08228513028978e-05

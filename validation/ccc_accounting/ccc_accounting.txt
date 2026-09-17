@@ -1,0 +1,48 @@
+# generated 2026-09-17 23:42 by verify_ccc_accounting.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# K_exc_meta.csv sha256 7de5845a432b0fb405b48fc876e2626eb1b1386c6fa16b1275961b312e7a507e
+# file_list.txt sha256 9c812ce926b1ea42947d100653fca08f611474be011b5c0b746c8219e5b746b2
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# raw directory data/raw/ccc/e-H_XSEC_LS (3115 files, gitignored)
+==============================================================================
+CCC DATASET ACCOUNTING -- raw files to matrix pairs
+generated 2026-09-17 23:42  by verify_ccc_accounting.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==============================================================================
+  P1 files on disk in e-H_XSEC_LS                              3115  (expected 3115)  OK
+  P1 lines in file_list.txt                                    3115  (expected 3115)  OK
+  STATE.STATE files 2025: excitation 870, de-excitation 870, dn=0 285; other labels 1090
+  P2 STATE.STATE excitation (FINAL > INITIAL)                   870  (expected 870)  OK
+  P2 STATE.STATE de-excitation                                  870  (expected 870)  OK
+  P2 Week-2 count = exc + de-exc                               1740  (expected 1740)  OK
+  P3 metadata excitation blocks                                1320  (expected 1320)  OK
+  P4 blocks with n_final <= 8                                   546  (expected 546)  OK
+  P4 blocks with n_final = 9                                    324  (expected 324)  OK
+  P4 blocks with n_final = 10                                   450  (expected 450)  OK
+  P3 1320 - 1740/2 = blocks the extended parse added            450  (expected 450)  OK
+  P4 distinct initial states feeding n=9                         36  (expected 36)  OK
+  P4 distinct initial states feeding n=10                        45  (expected 45)  OK
+  K_exc_meta sources: {'CCC': 546, 'VS': 201, 'CCC_n9': 36, 'CCC_n10': 36}
+  P5 CCC resolved pairs (source CCC)                            546  (expected 546)  OK
+  P5 CCC pairs collapsed to n=9 (source CCC_n9)                  36  (expected 36)  OK
+  P5 CCC pairs collapsed to n=10 (source CCC_n10)                36  (expected 36)  OK
+  P5 CCC pairs in the merged table, all sources                 618  (expected 618)  OK
+  P5 Vriens-Smeets pairs (source VS)                            201  (expected 201)  OK
+  P5 total excitation pairs                                     819  (expected 819)  OK
+  P6 resolved states                                             36  (expected 36)  OK
+  P6 bundled states                                               7  (expected 7)  OK
+  P6 C(36,2) - same-shell + 36*7 + C(7,2)                       819  (expected 819)  OK
+
+OPEN: the acquisition report records 3117 files as the size of the database requested; 3115 arrived.
+      Which two are absent needs the provider's manifest and is not settled here.
+
+VERDICT: every integer in the chain closes; the only unreconciled number is the 3117, which is not a count of files received.

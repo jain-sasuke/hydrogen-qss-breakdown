@@ -1,0 +1,55 @@
+# generated 2026-09-17 23:15 by verify_fujimoto_r1_consequence.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# fujimoto_table41.csv sha256 8742edcb393846e8f1624b05d0c83a9fc80f54334ee0ec882c31171deda98da8
+# molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd  (P0 gate)
+# benchmark point [23,5]  Te=2.9471 eV  ne=1.3895e+14 cm^-3
+==============================================================================
+FUJIMOTO r_1 CONSEQUENCE -- what the deficit would do to Delta, the cap, the crest and S
+generated 2026-09-17 23:15  by verify_fujimoto_r1_consequence.py
+interpreter   /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==============================================================================
+
+P0  reproduction of molecular_channel.csv at all 400 points (worst relative / absolute):
+    a3     8.36e-13
+    a4     8.74e-13
+    c3     1.22e-15
+    c4     1.44e-15
+    u_CRE  6.72e-13
+    Delta  1.55e-15
+    P0 REPRODUCED
+
+benchmark [23,5]: Delta 1.9456  cap 0.4514  u_CRE 8.8039e-04  u_peak 6.6406e-03  S(u_CRE) +0.2119
+
+------------------------------------------------------------------------------
+SCENARIO lg n_e = 18 (1e+12 cm^-3, model at 10 eV): r1 model/Fujimoto  p=3 0.1206 (x8.3 low)  p=4 0.2276 (x4.4 low)
+  P1  Delta' - Delta: +0.6353 .. +0.6353  (predicted ln(r4/r3) = +0.6353)
+  P2  cap at benchmark: 0.4514 -> 0.5684  (+25.9 %)
+  P3  u_peak'/u_peak: [0.165653]  (predicted sqrt(r3 r4) = 0.1657, a factor 6.0 lower in u)
+  P4  [all 400 points]  cap change: median +27.7 %  range +21.9 .. +84.4 %   |S(u_CRE)| change: median +17.8 %  range -67.4 .. +524.1 %   |S| up at 56 % of points
+  P4  [Te >= 2 eV (280 points)]  cap change: median +28.6 %  range +24.6 .. +84.4 %   |S(u_CRE)| change: median +29.5 %  range -58.0 .. +524.1 %   |S| up at 60 % of points
+      benchmark S(u_CRE): +0.2119 -> +0.5637  (+166.0 %)
+------------------------------------------------------------------------------
+SCENARIO lg n_e = 21 (1e+15 cm^-3, model at 10 eV): r1 model/Fujimoto  p=3 0.5565 (x1.8 low)  p=4 0.5148 (x1.9 low)
+  P1  Delta' - Delta: -0.0779 .. -0.0779  (predicted ln(r4/r3) = -0.0779)
+  P2  cap at benchmark: 0.4514 -> 0.4357  (-3.5 %)
+  P3  u_peak'/u_peak: [0.535223]  (predicted sqrt(r3 r4) = 0.5352, a factor 1.9 lower in u)
+  P4  [all 400 points]  cap change: median -3.7 %  range -10.8 .. -2.9 %   |S(u_CRE)| change: median +6.2 %  range -42.8 .. +68.2 %   |S| up at 57 % of points
+  P4  [Te >= 2 eV (280 points)]  cap change: median -3.8 %  range -10.8 .. -3.3 %   |S(u_CRE)| change: median +10.8 %  range -38.1 .. +68.2 %   |S| up at 60 % of points
+      benchmark S(u_CRE): +0.2119 -> +0.2979  (+40.6 %)
+------------------------------------------------------------------------------
+
+READING: the cap and the sensitivity at the operating point both move by far more than the
+8.4 % / 9.1 % of the RMPS excitation substitution if Fujimoto's coefficients are the truth.
+Whether they are is the open question of sec:fujimoto; this fixes what is at stake, not who is right.
+Assumption: a deficit measured at Te = 10 eV and two densities is applied at every grid point.

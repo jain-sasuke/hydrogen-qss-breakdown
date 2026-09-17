@@ -1528,20 +1528,25 @@ def main():
                 f"than 0.2 percent from the laboratory value {want} nm. The "
                 f"energies in {sip} are not what this schematic assumes")
 
-    fig, ax = plt.subplots(figsize=(7.2, 3.05))
+    fig, ax = plt.subplots(figsize=(7.2, 3.3))
     ax.axis("off")
     ax.set_xlim(0, 100)
-    ax.set_ylim(0, 42)
+    ax.set_ylim(0, 46)
 
+    # One ratio is one constraint on two unknowns (chapter 1, sec 1.4); the
+    # table's density axis is fixed from an independent measurement and the
+    # inversion returns a temperature. An earlier version of this schematic
+    # drew one ratio returning the pair (Te, ne), which is not what the
+    # thesis measures (chapter 5 inverts at known density).
     BOXY, BOXH, BOXW = 21.0, 15.0, 19.5
     xs_box = [2.0, 27.0, 52.0, 77.0]
     titles = ["measured spectrum",
               r"line ratio $I_{{\rm H}\alpha}/I_{{\rm H}\beta}$",
-              r"lookup table $R(T_e,n_e)$", r"inferred $T_e$, $n_e$"]
+              r"lookup table $R(T_e,n_e)$", r"inferred $T_e$"]
     subs = [rf"${lam_a:.1f}$ nm and ${lam_b:.1f}$ nm",
             "one number per\nline of sight",
-            "invert for the pair\nthat reproduces it",
-            "the reported\nplasma conditions"]
+            "at the measured $n_e$,\nfind the $T_e$ that\nreproduces it",
+            "the reported\ntemperature"]
     for q, (x, t, sb) in enumerate(zip(xs_box, titles, subs)):
         ax.add_patch(FancyBboxPatch(
             (x, BOXY), BOXW, BOXH, boxstyle="round,pad=0.6,rounding_size=1.2",
@@ -1591,7 +1596,15 @@ def main():
     ax.add_patch(FancyArrowPatch(
         (62.0, 14.9), (xs_box[2] + BOXW / 2, BOXY - 0.9),
         arrowstyle="-|>", mutation_scale=11, lw=1.4, color=C_VERM, zorder=4))
-    ax.text(1.0, 38.5, "schematic: no measured or computed quantity is shown "
+    # the second input: the density comes from elsewhere
+    ax.text(xs_box[2] + BOXW / 2, 41.6,
+            "$n_e$ from an independent\nmeasurement",
+            ha="center", va="center", fontsize=6.8, color="0.25",
+            linespacing=1.3, zorder=4)
+    ax.add_patch(FancyArrowPatch(
+        (xs_box[2] + BOXW / 2, 39.4), (xs_box[2] + BOXW / 2, BOXY + BOXH + 0.9),
+        arrowstyle="-|>", mutation_scale=11, lw=1.3, color=C_INK, zorder=4))
+    ax.text(1.0, 44.6, "schematic: no measured or computed quantity is shown "
                        "on this figure", fontsize=6.4, color="0.45",
             va="top", ha="left", style="italic")
     provenance(fig, y=0.02)
@@ -2018,14 +2031,17 @@ def main():
   The inference runs left to right. A spectrometer records the Balmer
   emission; the ratio of two line intensities, here
   $I_{{\rm H}\alpha}/I_{{\rm H}\beta}$ at $@LAMA@$ and $@LAMB@$~nm, reduces
-  the spectrum to a single number per line of sight; that number is looked up
-  in a table of the ratio computed as a function of $(T_e, n_e)$; and the
-  pair that reproduces it is reported as the plasma conditions.
+  the spectrum to a single number per line of sight; with the electron
+  density supplied by an independent measurement, that number is looked up
+  in a table of the ratio computed as a function of $(T_e, n_e)$, and the
+  temperature that reproduces it is reported. One ratio is one constraint,
+  so the table's second axis is fixed from outside; Chapter~\ref{ch:results}
+  measures this inversion at known density.
   The step that is rarely stated is the third. The table is built from the
   CR-equilibrium populations, so it assumes the ionisation balance has
   already settled, $n_g/n_{\rm ion} = u^{\rm CRE}(T_e, n_e)$. A plasma still
   in transit after a change in temperature does not satisfy that, and the
-  inversion then returns a temperature and a density that no plasma had.
+  inversion then returns a temperature that no plasma had.
   This thesis is about the size of that error and about which of the
   approximations in the chain is actually responsible for it.
   This is a schematic. No measured or computed quantity is plotted; the two
@@ -2065,6 +2081,82 @@ def main():
   The state list, including which levels are bundled and every ionisation
   energy, is read from the model's own state index, not written into this
   figure.}
+% ===========================================================================
+%  Chapter 2, the CCC / RMPS comparison
+% ===========================================================================
+
+\newcommand{\CapFigCCCRMPS}{%
+  \textbf{The CCC excitation rate coefficients benchmarked against the
+  independent R-matrix-with-pseudostates calculation.}
+  (a) The ratio of the two, rather than one against the other: over twelve
+  decades a $\pm20\%$ band is thinner than the plotted line, and any pair of
+  datasets looks perfect on a $1{:}1$ log--log plot. The horizontal axis is
+  $\Delta E/T_e$, how far below threshold the Maxwell average samples the
+  cross section; each transition spans one decade, its position is its
+  threshold and its shape the temperature dependence of the disagreement.
+  Colour is the upper shell. Transitions into $n' \le 3$ sit inside the band
+  almost everywhere; those into $n'=5$ scatter from a factor $0.2$ to a
+  factor $3$ in two modes, the near-degenerate $4 \to 5$ set high at small
+  $\Delta E/T_e$ and the ground-state set low at large. The disagreement
+  grows toward threshold for every transition into $n=5$ from $n=2$ and $3$
+  and shrinks toward it for most into $n=4$; opposite signs in neighbouring
+  shells rule out a defect in the averaging, which would act on all alike,
+  and place the difference in the cross sections.
+  (b) Mean absolute deviation against temperature, over the full range the
+  RMPS table covers. Agreement degrades smoothly with the upper shell rather
+  than holding and then failing: $n'=4$ crosses $20\%$ inside the range this
+  work uses, which is why the $13\%$ quoted for $n' \le 4$ is a grid average
+  and not a bound. From
+  \texttt{ccc\_vs\_anderson2002\_thesis\_Te\_grid.csv} with thresholds from
+  \texttt{ccc\_vs\_anderson2002\_benchmark.csv}, and
+  \texttt{ccc\_vs\_anderson2002\_full\_Te\_range.csv}.}
+
+\newcommand{\CapFigRydberg}{%
+  \textbf{Which of the two calculations is anomalous at $n=5$.}
+  The reduced rate coefficient
+  $K n_{\mathrm{upper}}^{3}\,\mathrm{e}^{\Delta E/T_e}$ of
+  Eq.~\eqref{eq:rydberg_reduced} along three dipole series, with the threshold
+  factor the two calculations share divided out. For hydrogen the oscillator
+  strength falls as $n_{\mathrm{upper}}^{-3}$ asymptotically, so this quantity
+  must flatten as the series is climbed; the constant it approaches is not
+  used, only the smoothness. Dark curves are $T_e = \SI{1}{\electronvolt}$,
+  faded curves \SI{10}{\electronvolt}. CCC continues to $n=10$. At
+  \SI{1}{\electronvolt} the RMPS values track CCC to $n=4$ and then
+  \emph{rise} into $n=5$, the top shell of their target basis, in all three
+  series; at \SI{10}{\electronvolt} neither calculation kinks and the RMPS
+  values are uniformly the flatter. The kink belongs to the temperatures at
+  which the Maxwell average samples the cross section close to the $n=5$
+  threshold. It localises the departure from hydrogenic behaviour at one shell
+  of one calculation without proving CCC correct, which is not smooth there
+  either. From \texttt{anderson\_validity\_dipole\_series.csv}, columns
+  \texttt{R\_CCC\_bz} and \texttt{R\_And\_bz}.}
+
+\newcommand{\CapFigAtomicPropagation}{%
+  \textbf{What the atomic-data disagreement costs, and which coefficient each
+  dataset moves.}
+  (a) Shift in the timescale separation $\Msep$ when the RMPS rate
+  coefficients replace the CCC ones at every transition the RMPS calculation
+  covers, over all 400 grid operators. The shift grows with density and
+  saturates above $n_e \approx \SI{e13}{\per\cubic\centi\metre}$, where the
+  collisional part of $\Lmat$ has taken over from the radiative part, and it
+  is largest at the cold end even though Section~\ref{sec:atomic_uncertainty}
+  finds the rates best constrained there: at \SI{1}{\electronvolt} the
+  excitation rates sit deep in the Boltzmann exponential, so a given
+  fractional change in a rate produces a larger one in the eigenvalue.
+  (b) Mean absolute change in each structural coefficient under the two
+  substitutions, over the $448$ defended pairs ($T_e \ge \SI{2}{\electronvolt}$,
+  window-resolvable, one grid interval). The two datasets act on different
+  objects. Replacing the excitation data moves $\Delta$ and with it the cap
+  $\tanh(|\Delta|/4)$, and $\overline{S}$ follows the cap. Replacing the
+  ionisation data barely moves the cap -- $\Delta$ is the ratio of ratios
+  $(a_3/a_4)/(c_3/c_4)$, in which a change similar at $n=3$ and $n=4$ largely
+  cancels -- and instead moves the operating point beneath it, pair by pair
+  and in both directions, which is what carries $\overline{S}$ and
+  $\epsplat$. The reservoir gain $G$ is
+  robust to both, at under $2\%$, which is a second reason to tabulate it
+  rather than a percentage error. From
+  \texttt{ccc\_anderson\_grid\_impact.csv} and
+  \texttt{recombination\_substitution.csv}.}
 """
     tok["@NDCOL@"] = str(nN)
     tok["@NFAST@"] = str(ctx.n_states - 1)

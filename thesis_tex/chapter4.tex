@@ -1170,13 +1170,36 @@ wrong direction at $p=2$; \texttt{verify\_fujimoto\_bundle.py}). That last test
 imposes the source's own closure rather than approximating it, and it carries a
 severity check: bundling an operator whose $\ell$~distribution is deliberately
 non-statistical moves $r_1(2)$ by a factor $129$, so the null result at $p=3$ is
-a measurement and not a blind instrument. What the section does establish is that the
-disagreement is not evidence of an error in the quantity Chapter~\ref{ch:results}
-uses. Nothing in that chapter passes through a bundled coefficient:
-$\ffrac{3} - \ffrac{4}$ is a difference of two responses within one
-$\ell$-resolved operator, eleven shells below the truncation and five below the
-bundling boundary. An unexplained disagreement in an absolute population
-coefficient is reported here as unexplained.
+a measurement and not a blind instrument. What the section does \emph{not}
+establish is that the disagreement leaves the quantity
+Chapter~\ref{ch:results} uses untouched, and an earlier draft said it did.
+Equation~\eqref{eq:fujimoto_correspondence} makes
+$a_p = r_1(p)\,\Zsb{p}/\Zsb{1}$: $r_1$ is the ground-fed coefficient from which
+$\ffrac{p}$ is built, so a deficit in $r_1(3)$ and $r_1(4)$ is a deficit in
+$a_3$ and $a_4$ themselves. Bundling is not the protection, since neither shell
+passes through a bundled coefficient; the only protection is that $\Delta$ and
+the cap depend on the ratio $a_3/a_4$, in which a deficit common to both shells
+cancels. At \SI{e12}{\per\cubic\centi\metre} the deficit is not common, $8.3$
+at $p=3$ against $4.4$ at $p=4$; at \SI{e15}{\per\cubic\centi\metre} it nearly
+is, $1.8$ against $1.9$. Dividing the model's $a_3$ and $a_4$ by those ratios,
+so that they become what Fujimoto's coefficients would give, and recomputing
+at every grid point (\texttt{verify\_fujimoto\_r1\_consequence.py},
+\texttt{validation/fujimoto\_r1\_consequence/}) moves $\Delta$ by $+0.64$
+under the first pair and by $-0.08$ under the second. Over the $280$ points
+above \SI{2}{\electronvolt} the cap then moves by \SI{+29}{\percent} at the
+median under the first and \SI{-4}{\percent} under the second; the crest
+$u^{\mathrm{peak}}$ falls by a factor $6.0$ and $1.9$; and the sensitivity at
+the operating point, $\ffrac{3}-\ffrac{4}$ evaluated at $u^{\mathrm{CRE}}$,
+moves by \SI{+30}{\percent} and \SI{+11}{\percent} at the median, with ranges
+across the points of $-58$ to \SI{+524}{\percent} and $-38$ to
+\SI{+68}{\percent}. Both exceed the \SIrange{8}{9}{\percent} that the R-matrix
+excitation substitution of Chapter~\ref{ch:atoms} produces. The disagreement
+is therefore direct evidence about the coefficients Chapter~\ref{ch:results}
+uses; what is open is whether the deficit lies in this model or in the
+tabulation, and the scenario applies a deficit measured at
+\SI{10}{\electronvolt} at every temperature, which is its stated assumption.
+An unexplained disagreement in an absolute population coefficient is reported
+here as unexplained, with its stake stated.
 
 \textbf{What the benchmark does establish.} The recombination-fed channel
 agrees, to \SI{1.3}{\percent} at $p=2$ and \SIrange{12}{14}{\percent} at $p=3$

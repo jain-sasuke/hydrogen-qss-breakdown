@@ -383,8 +383,9 @@ directly rather than derived.
 
 What is left, and what this thesis claims, is the \emph{assembly}: that these
 are one object; that it bounds the diagnostic error of a hydrogen Balmer ratio
-with respect to its ground-state reservoir, uniformly over every atomic dataset;
-and that the bound is near-tight exactly where the error is largest. The claim
+with respect to its ground-state reservoir, below unity for every positive
+two-channel dataset and by $\tanh(|\Delta|/4)$ for a given one; and that the
+bound is near-tight exactly where the error is largest. The claim
 is deliberately written so that finding an older statement of any single part
 costs it nothing, because that has now happened four times.
 
@@ -474,7 +475,7 @@ makes the comparison a comparison rather than an analogy.
 closure hidden inside a two-parameter Balmer table is now a computable number at
 an arbitrary operating point, expressed through two structural coefficients that
 are properties of the plasma rather than of the disturbance, together with a
-ceiling on it that no atomic dataset can raise and a map of where in
+ceiling on it whose form no atomic dataset changes and a map of where in
 $(\Te,\nel)$ the coefficients are large. That is the contribution, and it is
 smaller than the question Chapter~\ref{ch:intro} asked.
 
@@ -489,20 +490,29 @@ they bound every statement in Section~\ref{sec:criterion}.
 
 \paragraph{Everything quantitative is conditional on a frozen reservoir, and the
 condition is measured to fail.} If neutral transport and recycling renew $\ngs$
-faster than the local atomic physics does, the ground state is not stale and the
-error mechanism does not operate. Comparing a charge-exchange-limited neutral
+faster than the local atomic physics does, the ground state is not the stale
+closed-parcel one and the reservoir gain $G$ is not the gain the plasma has.
+Comparing a charge-exchange-limited neutral
 escape time with $\tauslow$ pair by pair, not one of the $45$ breakdown pairs
 above \SI{2}{\electronvolt} satisfies $\tauesc > \tauslow$, at either
 \SI{10}{\centi\metre} or \SI{20}{\centi\metre} to the boundary, while $27$ to
 \SI{36}{\percent} of the other $635$ analysed pairs do
 (Section~\ref{sec:transport_selection}). The selection is structural: a pair
 enters the census because $\tauslow$ is long, and a long $\tauslow$ is exactly the
-condition under which transport rather than ionisation sets $\ngs$. The
-magnitudes of Chapter~\ref{ch:results} are therefore upper estimates conditional
-on an assumption this model cannot satisfy at the points that carry them. The
-structural results of Section~\ref{sec:criterion}, being properties of
-$\Lmat(\Te,\nel)$ at fixed conditions, are untouched by it
-(Section~\ref{sec:transport_partition}).
+condition under which transport rather than ionisation sets $\ngs$. What
+follows is not that the magnitudes of Chapter~\ref{ch:results} are upper
+estimates. Section~\ref{sec:transport_partition} opens the reservoir to an
+escape sink and a recycling source and finds that a fast-exchanging reservoir
+with a steady source freezes the closed-parcel error rather than removing it,
+and that a rising source enlarges it, the true error exceeding the
+closed-parcel plateau at $165$ of the $180$ combinations tested. The mechanism,
+a ratio that depends on $u$ with $u$ away from its equilibrium value, operates
+whatever sets $u$; what transport removes is this model's prediction of $u(t)$.
+The magnitudes of Chapter~\ref{ch:results} are therefore reference values
+conditional on the closed-parcel reservoir history, neither bounds on the
+divertor error nor estimates of it. The structural results of
+Section~\ref{sec:criterion}, being properties of $\Lmat(\Te,\nel)$ at fixed
+conditions, are untouched by it.
 
 \paragraph{It is not a divertor result below two electron-volts, and the
 restriction is not a hedge.} Holding $\nel$ fixed while the ground-state
@@ -515,7 +525,7 @@ $\Te\ge\SI{2}{\electronvolt}$ is the only self-consistent region of the grid,
 not a cautious subset of it, and the cold-edge numbers are asymptotic values of
 a model outside its own domain.
 
-\paragraph{It is not detachment.} The density crest sits a factor $5.2$ below
+\paragraph{The crest is not a detachment criterion.} The density crest sits a factor $5.2$ below
 the detached band, and at citable detached densities the \SI{100}{\micro\second} time-averaged estimate
 never reaches \SI{10}{\percent} (Section~\ref{sec:not_detachment}). The crest is
 a property of the atomic system and needs no divertor geometry to produce it.

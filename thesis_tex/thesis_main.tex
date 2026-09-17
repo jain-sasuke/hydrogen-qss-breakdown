@@ -191,15 +191,15 @@ Chapter~\ref{ch:validation}, rather than the corrections being made silently.
 \addcontentsline{toc}{chapter}{Abstract}
 
 A Balmer line-ratio measurement in a tokamak divertor is inverted for electron
-temperature and density against a table computed from a collisional--radiative
-model at fixed $(\Te,\nel)$. Indexing that table on two axes requires the
+temperature, at a density supplied by an independent measurement, against a
+table computed from a collisional--radiative model at fixed $(\Te,\nel)$. Indexing that table on two axes requires the
 neutral-to-ion ratio to be a function of those two axes alone, which holds only
 once the ionisation balance has settled. A divertor during an edge-localised
 mode has not settled. Careful practice avoids the difficulty rather than
 assuming it away, by choosing high Balmer lines in detached conditions where one
 supply channel dominates and the neutral-to-ion ratio cancels; that escape is
 not available for $H_\alpha$ and $H_\beta$, where neither channel dominates.
-\textbf{What follows is the cost of the closure that must then be adopted, not a
+\textbf{What follows is the cost of that closure where it is adopted, not a
 demonstration that divertor spectroscopy fails.}
 
 This thesis measures what that closure costs. A $43$-state time-dependent
@@ -227,9 +227,10 @@ point rather than of the disturbance. Across a fourfold change in step size $G$
 moves by at most \SI{6.74}{\percent}, a drift that is itself the secant closing
 on its tangent, while $\epsplat$ moves by a factor $8.44$; so the
 two coefficients rather than a percentage are the reportable object. The
-sensitivity obeys a ceiling that no atomic dataset can raise,
-$\max|f_3-f_4| = \tanh(|\Delta|/4) < 1$, which follows from the structure of the
-linear system and not from any rate coefficient.
+sensitivity obeys a ceiling, $|f_3-f_4| < 1$, that no atomic dataset can
+exceed, because it follows from the structure of the linear system and not
+from any rate coefficient; for a given dataset the sharper form is
+$\max|f_3-f_4| = \tanh(|\Delta|/4)$, and $\Delta$ is atomic data.
 
 Averaged over an event of the duration extrapolated to the ITER pedestal,
 \SI{506}{\micro\second}, $24$ of the $448$ point-and-direction pairs above
@@ -242,15 +243,15 @@ worst case is not, falling by \SI{18}{\percent} across a factor $7.5$ in it.
 Those are fixed-density figures. Stepping density up with temperature, as a
 two-parameter stress test rather than a model of an edge-localised mode, leaves
 the count near a tenth of the pairs
-available and raises the worst case to \SI{22.1}{\percent}, so the
-fixed-density map understates it. At
-citable detached-divertor densities nothing breaks down at either duration, and
-the worst case is \SI{7.2}{\percent}. Inverted for temperature at known
+available and raises the worst case to \SI{22.1}{\percent}, so for that perturbation the
+fixed-density map understates it. At citable detached-divertor densities none
+of the $108$ pairs exceeds \SI{10}{\percent} at either duration, and the worst
+case is \SI{7.2}{\percent}. Inverted for temperature at known
 density, the plateau ratio has no solution within the table's $1$ to
 \SI{10}{\electronvolt} domain for $166$ of those $448$ pairs, and where it has
 one, a \SI{4.81}{\percent} step is read back with a median error of
 \SI{48}{\percent}, on the side the plasma came from at every pair. Timescale
-separation does not predict any of it: the ratio of the two clocks is $9982$ at
+separation licenses the reduction and predicts none of this: the ratio of the two clocks is $9982$ at
 the reference point, and within the defended range the density at which that
 ratio is largest sits a factor $19.3$ away from the density at which the error
 is largest, which is \SI{18.1}{\percent} against \SI{7.4}{\percent} there.

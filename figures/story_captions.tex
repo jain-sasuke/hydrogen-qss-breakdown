@@ -210,3 +210,67 @@
   The state list, including which levels are bundled and every ionisation
   energy, is read from the model's own state index, not written into this
   figure.}
+
+% ---------------------------------------------------------------------------
+%  Chapter 2 -- the CCC / RMPS comparison
+% ---------------------------------------------------------------------------
+
+\newcommand{\CapFigCCCRMPS}{%
+  \textbf{The CCC excitation rate coefficients benchmarked against the
+  independent R-matrix-with-pseudostates calculation.}
+  (a) The ratio of the two, rather than one against the other: over twelve
+  decades a $\pm20\%$ band is thinner than the plotted line, and any pair of
+  datasets looks perfect on a $1{:}1$ log--log plot. Colour is the upper
+  shell. Transitions into $n' \le 3$ sit inside the band almost everywhere;
+  those into $n'=5$ scatter from a factor $0.2$ to a factor $3$, in both
+  directions, and the spread is not a function of the size of the rate, which
+  rules out a threshold or interpolation artefact in the Maxwell averaging.
+  (b) Mean absolute deviation against temperature, over the full range the
+  RMPS table covers. Agreement degrades smoothly with the upper shell rather
+  than holding and then failing: $n'=4$ crosses $20\%$ inside the range this
+  work uses, which is why the $13\%$ quoted for $n' \le 4$ is a grid average
+  and not a bound. From
+  \texttt{ccc\_vs\_anderson2002\_thesis\_Te\_grid.csv} and
+  \texttt{ccc\_vs\_anderson2002\_full\_Te\_range.csv}.}
+
+\newcommand{\CapFigRydberg}{%
+  \textbf{Which of the two calculations is anomalous at $n=5$.}
+  The reduced rate coefficient $K n_{\mathrm{upper}}^{3}$ along three dipole
+  series. For hydrogen the oscillator strength falls as
+  $n_{\mathrm{upper}}^{-3}$ asymptotically, so above threshold this quantity
+  must flatten as the series is climbed; the constant it approaches is not
+  used, only the smoothness. Dark curves are $T_e = \SI{1}{\electronvolt}$,
+  faded curves \SI{10}{\electronvolt}. CCC continues smoothly to $n=10$. The
+  RMPS values track it until the step into $n=5$, the top shell of their
+  target basis, where all three series flatten early -- the signature of a
+  truncated close-coupling expansion accumulating in its highest physical
+  shell flux that belongs to $n \ge 6$ and the continuum. This localises the
+  departure from hydrogenic behaviour at one shell of one calculation. It does
+  not prove CCC correct: the scaling is asymptotic and weakest at
+  \SI{1}{\electronvolt}, which is where the kink is largest. From
+  \texttt{anderson\_validity\_dipole\_series.csv}.}
+
+\newcommand{\CapFigAtomicPropagation}{%
+  \textbf{What the atomic-data disagreement costs, and which coefficient each
+  dataset moves.}
+  (a) Shift in the timescale separation $\Msep$ when the RMPS rate
+  coefficients replace the CCC ones at every transition the RMPS calculation
+  covers, over all 400 grid operators. The shift grows with density and
+  saturates above $n_e \approx \SI{e13}{\per\cubic\centi\metre}$, where the
+  collisional part of $\Lmat$ has taken over from the radiative part, and it
+  is largest at the cold end even though Section~\ref{sec:atomic_uncertainty}
+  finds the rates best constrained there: at \SI{1}{\electronvolt} the
+  excitation rates sit deep in the Boltzmann exponential, so a given
+  fractional change in a rate produces a larger one in the eigenvalue.
+  (b) Mean absolute change in each structural coefficient under the two
+  substitutions, over the defended range. The two datasets act on different
+  objects. Replacing the excitation data moves $\Delta$ and with it the cap
+  $\tanh(|\Delta|/4)$, and $\overline{S}$ follows the cap. Replacing the
+  ionisation data barely moves the cap -- $\Delta$ is the ratio of ratios
+  $(a_3/a_4)/(c_3/c_4)$, in which a change similar at $n=3$ and $n=4$ largely
+  cancels -- and instead moves the operating point underneath it, which is
+  what carries $\overline{S}$ and $\epsplat$. The reservoir gain $G$ is
+  robust to both, at under $2\%$, which is a second reason to tabulate it
+  rather than a percentage error. From
+  \texttt{ccc\_anderson\_grid\_impact.csv} and
+  \texttt{recombination\_substitution.csv}.}

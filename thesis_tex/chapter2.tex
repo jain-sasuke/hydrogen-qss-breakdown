@@ -1107,6 +1107,13 @@ Table~\ref{tab:anderson} gives the outcome over the resulting 4250 comparisons.
   \end{tabular}
 \end{table}
 
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{fig2_2_ccc_rmps_benchmark}
+  \caption[CCC benchmarked against RMPS]{\CapFigCCCRMPS}
+  \label{fig:ccc_rmps}
+\end{figure}
+
 Taken at face value the last row is a failure: fewer than half the comparisons
 agree within \SI{20}{\percent}. Most of that sits in transitions reaching $n=5$,
 which supply 2500 of the 4250 comparisons. But the degradation with upper shell
@@ -1119,7 +1126,12 @@ block the spread is carried by $\Delta n = 1$ and $\Delta n = 3$; the $\Delta n 
 agreement uniform in temperature. For $n_{\text{upper}} \le 4$ the mean absolute
 deviation runs from \SI{7.2}{\percent} at \SI{1}{\electronvolt} to
 \SI{17.9}{\percent} at \SI{10}{\electronvolt}, so the figure of
-\SI{13}{\percent} in Table~\ref{tab:anderson} is a grid average and not a bound.
+\SI{13}{\percent} in Table~\ref{tab:anderson} is a grid average and not a
+bound. Figure~\ref{fig:ccc_rmps} shows both features: the $n'=5$ points
+scatter over more than a factor of ten while the $n' \le 3$ points stay inside
+the \SI{20}{\percent} band, and the scatter is independent of the size of the
+rate coefficient, which rules out a near-threshold or interpolation artefact in
+the Maxwell averaging as the cause.
 
 At $n=5$ the disagreement has two modes with opposite signs. Where the
 transition is dipole-allowed between nearly degenerate shells, as for
@@ -1184,6 +1196,18 @@ gives the successive changes in $R$ for three series at
   \end{tabular}
 \end{table}
 
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{fig2_3_rydberg_series}
+  \caption[Which calculation is anomalous at $n=5$]{\CapFigRydberg}
+  \label{fig:rydberg}
+\end{figure}
+
+Figure~\ref{fig:rydberg} plots the same quantity against shell, at both ends of
+the temperature range, which Table~\ref{tab:rydberg} does not show: the
+disagreement is largest at \SI{1}{\electronvolt} and the two calculations
+close on each other by \SI{10}{\electronvolt}.
+
 The two datasets agree on the shape of each series until the last step the RMPS
 calculation can take. At that step the RMPS reduced rate barely falls, while CCC
 continues the smooth approach it maintains through $n=10$. The kink lands on the
@@ -1241,6 +1265,21 @@ inherits both, moves by \SI{11.1}{\percent} on average. At the benchmark point
 $\Msep$ falls from 9982 to 8855. This is the test that
 Section~\ref{sec:n5_anomaly} could not perform and that an earlier draft of this
 chapter identified as missing.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\textwidth]{fig2_4_atomic_propagation}
+  \caption[What the atomic-data disagreement costs]{\CapFigAtomicPropagation}
+  \label{fig:atomic_propagation}
+\end{figure}
+
+Figure~\ref{fig:atomic_propagation}(a) maps that shift over the grid. It grows
+with density and saturates above $\nel \approx
+\SI{e13}{\per\cubic\centi\metre}$, and it is largest at the cold end --- the
+opposite of where the rate coefficients are best known, because at
+\SI{1}{\electronvolt} the excitation rates sit deep in the Boltzmann
+exponential and a given fractional change in a rate produces a larger one in
+the eigenvalue it feeds.
 
 Its outcome is not the expected one, and the useful part is the disagreement
 with what was expected. Decomposing the substitution by which transitions are

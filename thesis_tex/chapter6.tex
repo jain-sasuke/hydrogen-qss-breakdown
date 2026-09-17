@@ -191,8 +191,23 @@ headline was living. Recounting the \SI{100}{\micro\second} breakdown census aga
 rather than against temperature: of the $202$ points at which the
 \SI{100}{\micro\second} time-averaged estimate of the error exceeds \SI{10}{\percent}, an extremum count over
 the $680$ window-resolvable points of the full grid, $157$ lie below
-\SI{2}{\electronvolt}, $105$ have
-$\tau_{\rm Ly\alpha}(\SI{5}{\centi\metre}) > 1$, and $26$ have it above $100$.
+\SI{2}{\electronvolt}, $85$ have
+$\tau_{\rm Ly\alpha}(\SI{5}{\centi\metre}) > 1$, and $15$ have it above $100$,
+on the half-slab depth used above.
+
+Those two counts were $105$ and $26$ in an earlier draft, and the difference is
+worth recording because it is a convention error rather than a recomputation.
+The $105$ and $26$ are reproduced only by combining the full-path depth
+$\kappa_0 D$ with a Doppler width $\sqrt{kT_n/m}$, which is short of the
+correct $\sqrt{2kT_n/m}$ by $\sqrt{2}$; with the correct width the census is
+$85$ and $15$ on the half-slab depth this section quotes, and $100$ and $23$ on
+the full-path depth. A deuterium cross-section with the full-path depth also
+returns $105$ and $26$, because the isotope mass enters the width as the same
+$\sqrt{2}$, so the two errors are indistinguishable from the counts alone. All
+seven conventions are tabulated in
+\texttt{validation/lyman\_optical\_depth/}. Nothing in the defended range
+depends on the choice: every crossing lies below \SI{2}{\electronvolt} except
+two, both at $D = \SI{20}{\centi\metre}$.
 
 \subsection{What we expected trapping to do, and what it did}
 
@@ -703,10 +718,41 @@ transition probability, and molecular-assisted recombination bypasses the ground
 state entirely, so it dilutes the ground-fed fraction as
 $\ffrac{p} \to \ffrac{p}(1-\phi_p)$. Taking $\phi_3 = 0.60$ and $\phi_4 = 0.30$
 from the reported \SIrange{60}{70}{\percent} of $\mathrm{D}\alpha$ and
-\SIrange{10}{20}{\percent} of $\mathrm{D}\gamma$, the sensitivity at the cold
-corner falls from $0.201$ to $0.054$ and at the density maximum from $0.053$ to
-$0.019$. Since $\epsplat$ is linear in $\ffrac{3}-\ffrac{4}$, that is a
-\textbf{factor of three to five reduction} of the cold-corner plateau error.
+\SIrange{10}{20}{\percent} of $\mathrm{D}\gamma$, the difference of ground-fed
+fractions at the cold corner falls from $0.4866$ to $0.1088$ and at the density
+crest from $0.4580$ to $0.0998$, and the secant sensitivity $\overline{S}$
+falls with it, from $0.4822$ to $0.0903$ and from $0.4552$ to $0.0903$.
+
+The plateau error does not fall in the same proportion, because
+$\epsplat = |\mathrm{e}^{\overline{S}\Lambda}-1|$ is not linear in
+$\overline{S}$; treating it as linear understates the reduction. Imposing the
+same fractions on the model's own operator, with a non-negative source
+depositing into $n=3$ and $n=4$ so that $(\phi_3,\phi_4)$ is reached exactly at
+the plateau, the cold-corner plateau error falls from \SI{38.7}{\percent} to
+\SI{6.3}{\percent}, a \textbf{factor of $6.1$}; at the upper end of the
+reported ranges, $(\phi_3,\phi_4) = (0.70,0.45)$, it falls to \SI{4.1}{\percent},
+a factor of $9.4$. At the crest the same two targets give factors of $5.4$ and
+$8.1$, and at the benchmark $3.2$ and $4.4$
+(\texttt{validation/molecular\_channel/}).
+
+Two features of that calculation are worth stating, because neither is visible
+in the dilution formula. The two fractions cannot be chosen independently: a
+source large enough to make $\phi_3 = 0.60$ already drives more than $0.15$ of
+$n=4$ through collisional $3\to4$ transfer, so $(\phi_3,\phi_4) = (0.60,0.15)$
+requires a negative $n=4$ source and is not realisable on this operator. And
+the reduction is not monotone in $\phi_3$. The difference
+$\ffrac{3}(1-\phi_3) - \ffrac{4}(1-\phi_4)$ passes through zero near
+$\phi_3 = 0.74$ at $\phi_4 = 0.30$, beyond which $n=4$ is the more ground-fed
+of the two and the error grows again with $\overline{S}$ carrying the opposite
+sign. At the crest, where that zero is reachable with non-negative sources, a
+two-source dilution at $\phi_4 = 0.30$ brings the plateau error down to
+\SI{0.35}{\percent} at $\phi_3 = 0.75$, past the zero at $\phi_3 = 0.7355$; a
+single $n=3$ source there gives \SI{0.30}{\percent} at $\phi_3 = 0.70$ and
+\SI{1.1}{\percent} again at $\phi_3 = 0.80$, with $\overline{S}$ negative. A
+molecular channel strong enough cancels the diagnostic's sensitivity to the
+reservoir rather than merely reducing it, and past the cancellation the error
+returns.
+
 The bound is crude, it inherits every uncertainty in the quoted fractions, and
 it applies only where those fractions do. It is not nothing.
 
@@ -718,11 +764,11 @@ containing molecular states exactly as they hold for this one. What a molecular
 matrix changes is the numerical value of the ingredients, not the form of the
 result.
 
-What is \emph{not} available is a calculation. The factor of three to five
-above is arithmetic on two published emissivity fractions, not a solution of a
-matrix containing molecular states, and it says how far the cold-corner number
-would move under one specific dilution picture rather than what a molecular
-model would give. This is the objection most likely to be raised first by a
+What is \emph{not} available is a calculation with molecules in it. The
+factors above are the model's own operator driven by an imposed source of the
+published strength, not a solution of a matrix containing molecular states, and
+they say how far the cold-corner number would move under one specific dilution
+picture rather than what a molecular model would give. This is the objection most likely to be raised first by a
 referee drawn from the divertor spectroscopy community, and the correct answer
 is the honest one: this is an atomic model, its cold-edge numbers are
 atomic-model numbers, and the bound above is an estimate of how wrong they are

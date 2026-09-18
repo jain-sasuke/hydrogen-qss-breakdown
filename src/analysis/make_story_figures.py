@@ -736,7 +736,10 @@ def main():
         plt.close(fig)
 
     def provenance(fig, y=-0.035):
-        fig.text(1.0, y, stamp, ha="right", va="top", fontsize=5, color="0.55")
+        # The CR-data stamp is no longer drawn onto the figure: it belongs in the
+        # console provenance block and in the chapter text, not on the plate.
+        # `stamp` is still computed and printed above so the audit trail is intact.
+        return
 
     Te_edges, ne_edges = log_edges(Te), log_edges(ne)
     tok: dict = {"@SHA8@": sha8, "@SHAL@": sha_L[:16],
@@ -1604,9 +1607,6 @@ def main():
     ax.add_patch(FancyArrowPatch(
         (xs_box[2] + BOXW / 2, 39.4), (xs_box[2] + BOXW / 2, BOXY + BOXH + 0.9),
         arrowstyle="-|>", mutation_scale=11, lw=1.3, color=C_INK, zorder=4))
-    ax.text(1.0, 44.6, "schematic: no measured or computed quantity is shown "
-                       "on this figure", fontsize=6.4, color="0.45",
-            va="top", ha="left", style="italic")
     provenance(fig, y=0.02)
     save(fig, "fig1_1_diagnostic_chain")
     tok.update({"@LAMA@": f"{lam_a:.1f}", "@LAMB@": f"{lam_b:.1f}"})
@@ -1805,9 +1805,6 @@ def main():
     ax.text(XL + 0.01, ROW[bun_nmax] + 0.40,
             rf"fast: $\mathcal{{F}}$, {ctx.n_states - 1} excited levels",
             fontsize=7.4, color=C_BLUE, va="bottom", ha="left")
-    ax.text(0.0, ROW[1] - 2.32, "schematic: vertical spacing is not the energy "
-                                "scale (see right-hand panel)",
-            fontsize=6.4, color="0.45", va="top", style="italic")
     ax.set_xlim(-0.055, 1.30)
     ax.set_ylim(ROW[1] - 2.62, ROW["cont"] + 0.35)
 

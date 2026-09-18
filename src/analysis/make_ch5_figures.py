@@ -584,10 +584,10 @@ def main():
         plt.close(fig)
 
     def provenance(fig, y=-0.035):
-        # negative y puts it outside the axes; bbox_inches="tight" expands to
-        # include it. y is pushed further down where a legend sits below.
-        fig.text(1.0, y, stamp, ha="right", va="top",
-                 fontsize=5, color="0.55")
+        # The CR-data stamp is no longer drawn onto the figure: it belongs in the
+        # console provenance block and in the chapter text, not on the plate.
+        # `stamp` is still computed and printed above so the audit trail is intact.
+        return
 
     Te_edges, ne_edges = log_edges(Te), log_edges(ne)
 

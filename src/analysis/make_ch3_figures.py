@@ -94,10 +94,10 @@ def main():
     outdir.mkdir(exist_ok=True)
 
     def provenance(fig):
-        # negative y puts it outside the axes; bbox_inches="tight" expands to
-        # include it, so it can never overlap an axis label
-        fig.text(1.0, -0.035, stamp, ha="right", va="top",
-                 fontsize=5, color="0.55")
+        # The CR-data stamp is no longer drawn onto the figure: it belongs in the
+        # console provenance block and in the chapter text, not on the plate.
+        # `stamp` is still computed and printed above so the audit trail is intact.
+        return
 
     # ---- grid-wide eigenvalue sanity check --------------------------------
     # Chapter 3 defines tau_QSS and tau_relax from real negative eigenvalues at
@@ -526,8 +526,6 @@ def main():
             "recombination-fed" "\n" r"response $\mathbf{c}$",
             fontsize=7.5, color="#8e44ad", ha="left", va="center")
 
-    ax.text(0.02, ROW[1] - 0.95, "schematic: vertical spacing not to scale",
-            fontsize=6.5, color="0.45", va="top", style="italic")
 
     ax.set_xlim(-0.02, 1.16)
     ax.set_ylim(ROW[1] - 1.3, ROW["cont"] + 0.5)

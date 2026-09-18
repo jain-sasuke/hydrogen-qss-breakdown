@@ -222,26 +222,121 @@ Chat escalates to the student rather than deciding when:
 
 ## PART G — Resume point
 
-**State at pause:** filter diagnosed and confirmed by unconditional
-recomputation; fix **not yet applied**; `validation/timescales_unfiltered_CHECK.npz`
-written and uncommitted. `master_plan_v2.md` and this file not yet in the repo.
+**Superseded.** The August resume point is closed: the eigenvalue filter was
+repaired in `qss_analysis.py` on 23 Aug and in `solve_cr.py` / `check_mz.py` on
+16 Sep, `operating_protocol.md` is in the repo, and the filter's effect is
+reported in Chapters 2 and 4. For current state read `outputs/HANDOFF.md`, which
+is rewritten each session; this file holds only the method.
 
-**Next three actions, in order:**
+---
 
-1. `git status --short` — confirm what is uncommitted before editing anything.
-   Add `master_plan_v2.md` and `operating_protocol.md` to `outputs/` and commit.
-2. **Write the prediction down:** at τ_drive = 100 µs, how many of the 400 grid
-   points flip from "valid" to "breakdown" under the repaired filter? And what
-   would you conclude if the answer is 0?
-3. Send the V4b verifier prompt.
+## PART H — The review-adjudication cycle
 
-**Then:** raw output cold to ChatGPT (*"what would have to be true for the
-filtered and unfiltered results to describe the same plasma?"*), and the Te = 1 eV
-claim to `skeptic` with three named attacks — is ε_res meaningful where τ_QSS
-exceeds the confinement time; does the 43-state truncation hold at Te = 1 eV
-where the relaxation eigenmode sits at ⟨n⟩ ≈ 6.6; is τ_QSS = 67 s an artifact of
-the open-system boundary condition rather than physics.
+Four external reviews have now been worked through. The cycle that emerged is
+different from Part C's task cycle, because a review is not a task: it is a set
+of claims about the thesis, most of which are wrong in some respect.
 
-**Agent file to update before resuming:** `.claude/agents/verifier.md` must state
-the platform is macOS/BSD with zsh. That defect is real and this session exposed
-it.
+**H.1 Identify the build the reviewer read.** Every review so far was written
+against a stale PDF. Round 4 was written against commit `65b05da`, 175 pages,
+fourteen commits behind the tree. Find that commit, diff it against HEAD, and
+anchor every "already fixed" to the diff rather than to a status file. Of Round
+4's fifteen findings, two were wrong and three were already closed.
+
+**H.2 Adjudicate before acting.** The reviewer is not an authority. Re-derive or
+re-measure each claim. In Round 4 the single most valuable finding broke a thesis
+claim the reviewer had not realised he was breaking, and two findings that looked
+like defects were the thesis being right.
+
+**H.3 Sort the findings into three piles.**
+  - *requote* — an artifact exists and disagrees with the text. Cheapest and
+    highest value; do these first.
+  - *rescope* — the number is right and its set is not stated.
+  - *open physics* — cannot be closed by writing. Convert to a scope statement.
+
+**H.4 Never rewrite a claim on an agent's scratch computation.** A number that
+exists only in a transcript has the same provenance defect as one that exists
+only in a markdown note. If a correction changes a claim, write the stamped
+script first. This was done for the Fujimoto bundle result
+(`verify_fujimoto_bundle.py`) and it is the standard.
+
+**H.5 Propagate.** A claim usually appears three or four times. The Fujimoto
+l-closure explanation appeared in Chapter 4 twice, in Chapter 6 twice, and in
+Table 4.4; fixing two of the five left the chapter contradicting itself. Grep for
+the claim, not the sentence.
+
+---
+
+## PART I — Failures added since August
+
+Same format as Part A. Four of these five were committed by the assistant in the
+16 Sep session.
+
+### I.1 A page count quoted from an unconverged build
+
+`latexmk` can exit 0 with the page numbers not yet settled. "202 pages" was
+reported through a whole session and committed, while the same build's `.toc`
+placed section C.4 at printed page 210 — in a document measured at 202. Two
+further passes give 218.
+
+**Rule:** before quoting a page count, run `latexmk` twice and check the last
+`.toc` entry's printed page against `pypdf`'s count. If they disagree, the build
+has not converged.
+
+### I.2 A script run with `--help` overwrote its own stamped artifact
+
+Several scripts under `src/validation/` have no `argparse`. An unrecognised flag
+is ignored and the script runs its full computation into its own output
+directory. `validation/ion_closure/` and `validation/ng_scaling/` were
+regenerated this way; both are untracked, so the previous bytes were
+unrecoverable. Determinism was verified afterwards — two runs differ only in the
+`generated` timestamp — so no numbers were lost, but five days of provenance
+stamp were.
+
+**Rule:** read artifacts under `validation/` directly. Do not run a script to
+find out what its CLI is; `grep -c add_argument` first. Any new script gets
+`--out` before it gets a computation.
+
+### I.3 Code edited without updating the text that describes it
+
+The `eigs[eigs < -1.0]` literal was removed from two files at the author's
+instruction. Chapters 2 and 4 both asserted it was still present, so the thesis
+became false on a matter of fact, caused by the repair.
+
+**Rule:** grep the thesis for any file path or line number you are about to
+change. Code and prose are one artifact here.
+
+### I.4 An instruction was given to an agent and treated as protection
+
+A subagent was told not to overwrite stamped artifacts. It did anyway, by a route
+neither of us anticipated (I.2). The instruction was necessary and not
+sufficient.
+
+**Rule:** agents that only read get read-only tasks. If a task could write,
+scope the writable directory explicitly or run it yourself.
+
+### I.5 A zsh glob with no match aborted the line
+
+`rm -f *.aux *.log *.synctex.gz` — the last pattern matched nothing, zsh failed
+the whole command, and every build product was left in place and shipped inside
+an archive. This is the trap `HANDOFF.md` §2 already warns about, hit anyway.
+
+**Rule:** `find . -name '*.aux' -delete`, never a bare glob list. Quote every
+glob. Verify the archive contents after building it, not before.
+
+---
+
+## PART J — The build and release path
+
+1. Build twice: `latexmk -pdf -cd -interaction=nonstopmode thesis_tex/thesis_main.tex`.
+   The `-cd` matters; `\input{../figures/...}` needs it.
+2. Check: `grep -c '^! '` on the `.log` for errors, `grep -c undefined` for
+   references and citations, `grep -ci 'warning--'` on the `.blg`.
+3. Confirm convergence per I.1 before quoting a page count.
+4. Commit with an explicit file list, never `git add -A`; the author edits in
+   parallel and a parallel workstream was left unstaged on 16 Sep for exactly
+   this reason. Message via heredoc and `git commit -F -`.
+5. For Overleaf, flatten: `.tex` and `.bib` at the archive root, `figures/`
+   beside them, and rewrite `\input{../figures/...}` to `\input{figures/...}`
+   because Overleaf compiles from the project root with no `-cd`. Include only
+   the figures actually referenced. Test-compile the flattened tree before
+   sending it.

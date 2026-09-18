@@ -1,0 +1,165 @@
+# generated 2026-09-18 11:08 by verify_bundling_total_loss.py
+# interpreter /opt/anaconda3/envs/cr/bin/python
+# data/processed/cr_matrix/L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# data/processed/cr_matrix/Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# data/processed/cr_matrix/ne_grid_L.npy sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# data/processed/collisions/K_exc_full/state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# data/processed/Radiative/gamma_bundled.npy sha256 090bd7d67aaf257c7ea7d6acc869d26ffb62397ab0ca5d663316b4c60f9676fc
+# data/processed/collisions/tics/K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# outputs/bundling/K_lmix_per_shell.npy sha256 6b2ae0cdcf575c10a46dcbe99586f2e4414e31d85d67dd4aac80b8be1db82247
+# outputs/bundling/bundling_ratio.npy sha256 d7f11193d5058e83304a7b061873a77a5ab9d9adc5acb1d8bf5f1ed834493e97
+# src/rates/compute_lmix.py sha256 da9831c201cdd7b170b7b48d1a0f7eb8c83046856292030d5275bd51da7f4f5e
+# src/validation/verify_bundling_psm20.py sha256 3277dffff9b3483e66277c195bee8c8175465620403b65ef3a9aef0bdd1f571c
+# Debye cutoff frozen at compute_lmix.NE_DEFAULT = 1e+14 cm^-3; A_np_total = 1.3 x A(np->1s); channels l_> = 1 and 2 out of np
+# ratio_frozen = K_lmix_frozen / total_loss; ratio_local uses the two-channel rate with the cutoff at ne_cm3; ratio_local_F1 rescales by F(U_m, l_>=1) only
+==============================================================================
+BUNDLED-SHELL l-MIXING AGAINST TOTAL LOSS -- -L[k,k] decomposed, n = 9..15
+generated 2026-09-18 11:08  by verify_bundling_total_loss.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==============================================================================
+
+bundled states: idx 36..42 = n9, n10, n11, n12, n13, n14, n15  (n = 9..15), from data/processed/collisions/K_exc_full/state_index.csv
+
+  G1  own K_lmix (compute_lmix._psm20_q_down + _psm20_q_up, l_> = 1 and 2, Debye cutoff at NE_DEFAULT = 1e+14 cm^-3, x ne)
+      vs K_lmix_per_shell.npy: max rel diff 0.000e+00
+      own K_lmix / A(np_total)  [A_np_total IMPORTED from verify_bundling_psm20.py: 1.3 x A(np->1s) table]
+      vs bundling_ratio.npy: max rel diff 0.000e+00;  minimum 1537.58 at n = 9, Te index 0, ne index 0  (report: 1537.58 at n = 9, [0,0])
+  G2  L = R + ne C (R, C from ne indices 0,1; tested at all 8 densities, 50 Te): max rel residual 4.588e-16
+  G3  frac_rad + frac_coll + frac_ion = 1 at every (shell, Te, ne): max |sum - 1| 4.441e-16
+  G4  R[k,k] = -gamma_bundled: max rel diff 1.303e-11;  off-diagonal radiative column sum = gamma_bundled: max rel diff 3.731e-12
+  G5  column-sum deficit = K_ion[k] ne (ionisation identity): max rel diff 3.908e-14
+      (smallest off-diagonal entry in the bundled columns: C 1.170e-13 cm^3/s = 4.2e-11 of the largest, R -2.384e-07 s^-1 = -8.5e-17 of the largest L[.,0] entry;
+       a negative beyond -1e-12 of that scale would mean a piece below is not a rate)
+
+  ALL GATES PASSED.
+
+==============================================================================
+RESULT 1: Ratio_frozen = K_lmix(np, frozen Debye cutoff) / (-L[k,k]), per bundled shell over the 400 grid points
+==============================================================================
+    n      min       at  Te eV        ne     K_lmix    -L[k,k]    rad%   coll%    ion% |   [23,5]    [0,7] | min vs A(np) min vs gamma_n
+    9    26.46   (0, 0)   1.00  1.00e+12  1.155e+10  4.364e+08   0.194   97.93    1.88 |    125.3    26.51 |       1537.6        13657.9
+   10    21.61   (0, 0)   1.00  1.00e+12  9.490e+09  4.392e+08   0.119   92.06    7.82 |    119.6    21.64 |       1739.7        18112.0
+   11    12.02   (0, 0)   1.00  1.00e+12  7.845e+09  6.526e+08   0.052   92.89    7.06 |     83.8    12.03 |       1920.0        23123.8
+   12     6.86   (0, 0)   1.00  1.00e+12  6.580e+09  9.592e+08   0.024   93.74    6.24 |     56.9     6.86 |       2097.7        28884.1
+   13     4.19   (0, 0)   1.00  1.00e+12  5.598e+09  1.337e+09   0.012   94.33    5.66 |     38.8     4.19 |       2276.0        35485.4
+   14     2.85   (0, 0)   1.00  1.00e+12  4.821e+09  1.691e+09   0.007   94.45    5.54 |     28.0     2.85 |       2455.8        42982.7
+   15     3.85   (0, 0)   1.00  1.00e+12  4.195e+09  1.088e+09   0.007   89.51   10.48 |     41.3     3.85 |       2634.4        51427.1
+  grid minimum 2.851 at n = 14, (0, 0);  points with Ratio_frozen < 1: 0 of 2800;  points with Ratio_frozen < 10: 288
+  the original test's quantity, K_lmix / A(np_total), has grid minimum 1537.6; against the shell-average radiative loss gamma_n it is 13657.9
+
+==============================================================================
+RESULT 2: what -L[k,k] is made of (fractions of the total loss, over the 2800 points)
+==============================================================================
+  radiative                  0.0000 % at n=14 (49, 7)   to   0.1937 % at n=9 (0, 0)   median   0.001 %
+  collisional bound-bound   89.5111 % at n=15 (0, 0)   to  99.0824 % at n=9 (49, 7)   median  95.905 %
+  ionisation                 0.9159 % at n=9 (49, 0)   to  10.4822 % at n=15 (0, 7)   median   4.089 %
+  at   [0,0] 1 eV, 1e12: n9: r0.194/c97.9/i1.9%  n10: r0.119/c92.1/i7.8%  n11: r0.052/c92.9/i7.1%  n12: r0.024/c93.7/i6.2%  n13: r0.012/c94.3/i5.7%  n14: r0.007/c94.4/i5.5%  n15: r0.007/c89.5/i10.5%
+  at   [23,5] benchmark: n9: r0.001/c98.7/i1.3%  n10: r0.001/c94.6/i5.4%  n11: r0.000/c95.3/i4.7%  n12: r0.000/c96.0/i4.0%  n13: r0.000/c96.5/i3.5%  n14: r0.000/c96.6/i3.4%  n15: r0.000/c93.4/i6.6%
+  at   [0,7] 1 eV, 1e15: n9: r0.000/c98.1/i1.9%  n10: r0.000/c92.2/i7.8%  n11: r0.000/c92.9/i7.1%  n12: r0.000/c93.8/i6.2%  n13: r0.000/c94.3/i5.7%  n14: r0.000/c94.5/i5.5%  n15: r0.000/c89.5/i10.5%
+  at [49,7] 10 eV, 1e15: n9: r0.000/c99.1/i0.9%  n10: r0.000/c96.3/i3.7%  n11: r0.000/c96.9/i3.1%  n12: r0.000/c97.3/i2.7%  n13: r0.000/c97.7/i2.3%  n14: r0.000/c97.8/i2.2%  n15: r0.000/c95.7/i4.3%
+
+==============================================================================
+RESULT 3: Ratio_local = K_lmix with the Debye cutoff at the LOCAL density / (-L[k,k])
+==============================================================================
+    n      min       at  Te eV        ne |    [0,7]  [0,7] F1   [23,5]     [0,0] |  # < 1 # < 10
+    9    0.857   (0, 7)   1.00  1.00e+15 |    0.857     0.842     98.9     750.5 |      2     33
+   10    0.686   (0, 7)   1.00  1.00e+15 |    0.686     0.684     90.1    1002.5 |      4     38
+   11    0.380   (0, 7)   1.00  1.00e+15 |    0.380     0.380     60.2     867.9 |     10     54
+   12    0.217   (0, 7)   1.00  1.00e+15 |    0.217     0.217     39.0     731.7 |     17     69
+   13    0.132   (0, 7)   1.00  1.00e+15 |    0.132     0.132     25.5     629.5 |     26     84
+   14    0.090   (0, 7)   1.00  1.00e+15 |    0.090     0.090     17.8     580.0 |     34     98
+   15    0.122   (0, 7)   1.00  1.00e+15 |    0.122     0.122     25.8    1022.7 |     28     85
+  Ratio_local < 1 at 121 of 2800 points: shells n = [9, 10, 11, 12, 13, 14, 15], ne indices [6, 7] (3.7e+14, 1.0e+15), Te indices 0..23 (1.00..2.95 eV)
+  exact two-channel local rate vs the l_> = 1 F-rescale: max rel diff 0.366 (they differ because the np->nd channel has its own U_m)
+
+==============================================================================
+RESULT 4: how much F(U_m) actually varies with density (settles the '~30%' comment in compute_lmix.py)
+==============================================================================
+  bundling_report.txt's number, two-channel rate local/frozen at Te index 25 (3.24 eV), n = 15: x20.71 at 1e+12,  /30.01 at 1e+15   (report says x20 and /30)
+  over all shells n = 9..15 and the whole grid, two-channel local/frozen ranges 0.0316 to 265.32
+
+  F(U_m(n, l_> = 1, Te = 1 eV, ne)) / F(U_m(n, 1, Te, 1e14)), bundled shells:
+    n  Te eV  U_m(1e14) |  1.0e+12  2.7e+12  7.2e+12  1.9e+13  5.2e+13  1.4e+14  3.7e+14  1.0e+15
+    9   1.00  4.922e+00 |   38.738   27.121   16.424    7.768    2.540    0.613    0.140    0.032
+   10   1.00  7.519e+00 |   63.340   42.057   23.261    9.497    2.648    0.611    0.139    0.032
+   11   1.00  1.103e+01 |   97.488   60.993   30.477   10.711    2.678    0.611    0.139    0.032
+   12   1.00  1.564e+01 |  142.103   83.202   37.214   11.383    2.682    0.611    0.139    0.032
+   13   1.00  2.156e+01 |  197.533  107.491   42.791   11.670    2.683    0.611    0.139    0.032
+   14   1.00  2.903e+01 |  263.294  132.288   46.850   11.762    2.683    0.611    0.139    0.032
+   15   1.00  3.828e+01 |  337.973  155.892   49.419   11.784    2.683    0.611    0.139    0.032
+
+  F(U_m(n, l_> = 1, Te = 10 eV, ne)) / F(U_m(n, 1, Te, 1e14)), bundled shells:
+    n  Te eV  U_m(1e14) |  1.0e+12  2.7e+12  7.2e+12  1.9e+13  5.2e+13  1.4e+14  3.7e+14  1.0e+15
+    9  10.00  4.922e-02 |    2.462    2.147    1.832    1.518    1.206    0.899    0.604    0.342
+   10  10.00  7.519e-02 |    2.676    2.314    1.952    1.591    1.234    0.885    0.559    0.284
+   11  10.00  1.103e-01 |    2.925    2.507    2.090    1.675    1.266    0.871    0.512    0.231
+   12  10.00  1.564e-01 |    3.217    2.734    2.251    1.772    1.302    0.855    0.465    0.184
+   13  10.00  2.156e-01 |    3.564    3.001    2.439    1.884    1.343    0.838    0.417    0.146
+   14  10.00  2.903e-01 |    3.977    3.317    2.661    2.014    1.389    0.820    0.372    0.115
+   15  10.00  3.828e-01 |    4.473    3.696    2.924    2.165    1.441    0.800    0.329    0.092
+
+  the same ratio for resolved shells, l_> = 1, where compute_lmix.py's K_lmix is actually used:
+    n  Te eV  U_m(1e14) |  1.0e+12  2.7e+12  7.2e+12  1.9e+13  5.2e+13  1.4e+14  3.7e+14  1.0e+15
+    2   1.00  9.114e-03 |    1.960    1.754    1.548    1.342    1.137    0.932    0.729    0.530
+    2  10.00  9.114e-05 |    1.490    1.385    1.280    1.175    1.070    0.965    0.860    0.755
+    5   1.00  4.557e-01 |    4.860    3.990    3.126    2.280    1.480    0.787    0.302    0.080
+    5  10.00  4.557e-03 |    1.839    1.659    1.479    1.300    1.120    0.940    0.761    0.585
+    8   1.00  3.062e+00 |   22.468   16.488   10.810    5.851    2.310    0.626    0.144    0.033
+    8  10.00  3.062e-02 |    2.276    2.002    1.728    1.454    1.181    0.910    0.647    0.403
+  Reading: U_m = E_min/kT grows as n^4 (through D_ji) and as ne (through 1/lambda_D^2). For n = 2..8 it stays well below 1 and F is
+  logarithmic in ne, which is the regime the '~30%' comment describes. For n >= 9 at ne >= 1e14, U_m exceeds 1 and F falls as
+  U_m^-3/2, i.e. as ne^-3/2: the Debye screening is cutting the collision off, and the frozen cutoff is then not a mild approximation.
+
+==============================================================================
+RESULT 5: where the collisional bound-bound loss out of shell n goes (fractions of the bound-bound collisional loss)
+==============================================================================
+  (independent of ne because every bound-bound entry is ne x C; the density index only labels the requested point)
+
+  at [0,7] Te = 1.000 eV, ne = 1.000e+15:
+    n   to n-1   to n+1  adjacent  to <n-1  to >n+1   coll b-b out s^-1
+    9   56.37%   27.03%    83.39%    3.04%   13.56%           4.273e+11
+   10   23.89%   46.72%    70.61%    7.59%   21.80%           4.043e+11
+   11   26.37%   48.70%    75.06%    4.53%   20.41%           6.062e+11
+   12   28.09%   49.42%    77.50%    5.12%   17.38%           8.992e+11
+   13   30.44%   51.37%    81.81%    5.82%   12.37%           1.261e+12
+   14   35.37%   57.61%    92.98%    7.02%    0.00%           1.597e+12
+   15   83.01%     nan%    83.01%   16.99%    0.00%           9.742e+11
+  (n = 15 has no n+1: the model is truncated there, so its 'to n+1' is undefined and its adjacent share is the n-1 share alone)
+
+  at [23,5] Te = 2.947 eV, ne = 1.389e+14:
+    n   to n-1   to n+1  adjacent  to <n-1  to >n+1   coll b-b out s^-1
+    9   47.98%   35.53%    83.51%    2.96%   13.53%           7.106e+10
+   10   25.83%   50.79%    76.62%    5.44%   17.94%           8.005e+10
+   11   27.98%   51.76%    79.74%    3.76%   16.50%           1.211e+11
+   12   29.61%   52.06%    81.66%    4.21%   14.13%           1.790e+11
+   13   31.69%   53.37%    85.07%    4.71%   10.22%           2.517e+11
+   14   36.02%   58.44%    94.46%    5.54%    0.00%           3.228e+11
+   15   86.35%     nan%    86.35%   13.65%    0.00%           1.909e+11
+  (n = 15 has no n+1: the model is truncated there, so its 'to n+1' is undefined and its adjacent share is the n-1 share alone)
+
+==============================================================================
+PREDICTIONS (written before the run) against what came out
+==============================================================================
+  P1 per-shell minima 26.46, 21.61, 12.02, 6.86, 4.19, 2.85, 3.85 at [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)]  (predicted [26.5, 21.6, 12.0, 6.9, 4.2, 2.85, 3.85] all at (0, 0)): reproduced
+  P2 at [23,5]: 125.3, 119.6, 83.8, 56.9, 38.8, 28.0, 41.3  (predicted [125, 120, 84, 57, 39, 28, 41]): reproduced
+  P3 composition: coll 89.5-99.1 %, ion 0.9-10.5 %, rad <= 0.194 %  (predicted 90-98 / 2-10 / <= 0.2 %; judged with 2 points slack): NOT reproduced
+  P4 Ratio_local at [0,7]: 0.090 to 0.857  (predicted about 0.09-0.86): reproduced
+  P5 n = 15 local/frozen at Te index 25: x20.7 at 1e12, /30.0 at 1e15  (predicted about x20, /30; '~30%' would be 0.7-1.3): reproduced
+
+PREDICTIONS: not reproduced as written: P3
+REFUTER (Ratio_frozen < 1 anywhere): did not appear;  grid minimum 2.85, so the mixing beats the TOTAL loss by at least that factor with the model's own frozen cutoff.
+FINDING (Ratio_local < 1): appears at 121 points (see RESULT 3); with the cutoff at the local density the mixing does not beat the total
+  collisional loss at the top of the density range for shells n >= 9. It is not the quantity the frozen-cutoff model uses.
+
+What this does and does not say. The original test compared the mixing with the l-DIFFERENTIAL loss (radiative decay of np, the channel
+that would de-populate one l preferentially); that margin is >= 1538. Against the TOTAL loss the margin shrinks to a few because the
+dominant loss at these densities is collisional n-changing, which RESULT 5 shows goes overwhelmingly to the adjacent shells. Whether
+an n-changing collision at high n disturbs the l-distribution is a physics question this script does not answer; it supplies both numbers.

@@ -1,0 +1,67 @@
+# generated 2026-09-18 11:06 by verify_slow_mode_projection.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd
+# P = (v3/n3* - v4/n4*)/(v_g/n_ion) along the slow eigenvector; dev = P/(S/u*) - 1; refined = Schur-polished eigenpair
+==============================================================================
+SLOW-MODE PROJECTION -- does the shell ratio ride the slow coordinate?
+generated 2026-09-18 11:06  by verify_slow_mode_projection.py
+interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+  S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+  state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+  molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd
+==============================================================================
+
+n=3 sublevels ['3S', '3P', '3D']   n=4 sublevels ['4S', '4P', '4D', '4F']   ground 1S
+
+  A  a3,a4,c3,c4,u_CRE,Delta reproduce molecular_channel.csv at 400 points: max rel diff 8.737e-13 at (47, 4)
+  B  all CRE populations positive at every point: OK
+  C  slow eigenvalue real and simple everywhere; refined residual max 3.45e-21, raw residual max 5.31e-17: OK
+     refined eigenvalue vs numpy: max |lam_ref/lam_raw - 1| = 1.05e-04
+
+  ALL GATES PASSED.
+
+==============================================================================
+RESULT 1  S = f3 - f4 at u_CRE over the grid
+==============================================================================
+  S > 0 at 400/400 points;  min S = 0.0460 at [44,7] (Te 7.91 eV, ne 1.00e+15);  max S = 0.4932 at [0,3] (Te 1 eV, ne 1.93e+13)
+  S by density column (min..max over Te): 1e+12:0.147..0.187  3e+12:0.245..0.291  7e+12:0.325..0.411  2e+13:0.342..0.493  5e+13:0.277..0.470  1e+14:0.177..0.349  4e+14:0.096..0.224  1e+15:0.046..0.145
+
+==============================================================================
+RESULT 2  slow-eigenvector projection P = (v3/n3* - v4/n4*)/(v_g/n_ion) against S/u*
+==============================================================================
+             point        S          u*        S/u*       P_raw   P_refined    dev_raw    dev_ref    lam_slow       lam_2 lam_s/lam_2 dev_ref/(lam_s/lam_2)
+  benchmark [23,5]   0.2119  8.8039e-04  2.4072e+02  2.4075e+02  2.4075e+02  +1.22e-04  +1.22e-04 -4.3999e+04 -4.3919e+08   1.002e-04                 1.213
+  cold corner [0,4]   0.4702  2.8321e+01  1.6601e-02  1.6601e-02  1.6601e-02  +1.55e-08  +1.57e-08 -2.3752e+00 -1.5745e+08   1.509e-08                 1.042
+      min S [44,7]   0.0460  1.0363e-05  4.4426e+03  4.4772e+03  4.4772e+03  +7.80e-03  +7.80e-03 -9.0852e+06 -1.0875e+09   8.354e-03                 0.933
+      ridge [15,3]   0.4524  1.4122e-02  3.2038e+01  3.2038e+01  3.2038e+01  +3.68e-06  +3.68e-06 -4.9327e+02 -1.3359e+08   3.692e-06                 0.996
+  hot dense [49,7]   0.0465  5.3486e-06  8.6998e+03  8.7949e+03  8.7949e+03  +1.09e-02  +1.09e-02 -1.3267e+07 -1.1511e+09   1.153e-02                 0.948
+
+  max |dev_raw| over the grid     = 1.092e-02 at [49,7]  (lam_slow/lam_2 there 1.153e-02)
+  max |dev_refined| over the grid = 1.092e-02 at [49,7]  (lam_slow/lam_2 there 1.153e-02)
+  dev_refined / (lam_slow/lam_2): min -2.339, median 0.974, max 1.317 over 400 points
+  |lam_slow/lam_2| over the grid: min 5.783e-10, max 1.153e-02 at [49,7]
+
+  three slowest eigenvalues (s^-1):
+    [1,4] Te 1.048 eV ne 5.179e+13:  -4.2874e+00  -1.6029e+08  -3.4429e+08   gap lam_2/lam_slow = 3.739e+07   tau_slow = 0.2332 s
+    [0,0] Te 1 eV ne 1.000e+12:  -1.4874e-02  -2.5721e+07  -3.7721e+07   gap lam_2/lam_slow = 1.729e+09   tau_slow = 67.23 s
+    [23,5] Te 2.947 eV ne 1.389e+14:  -4.3999e+04  -4.3919e+08  -5.3994e+08   gap lam_2/lam_slow = 9.982e+03   tau_slow = 2.273e-05 s
+    [0,4] Te 1 eV ne 5.179e+13:  -2.3752e+00  -1.5745e+08  -3.3391e+08   gap lam_2/lam_slow = 6.629e+07   tau_slow = 0.421 s
+
+PREDICTIONS: P1 reproduced, P2 reproduced, P3 reproduced, P4 NOT reproduced
+REFUTER (S <= 0 anywhere, or projection off S/u* by > 1 % anywhere): APPEARED
+
+The projection test is exact given a one-dimensional slow subspace: the refined eigenvector differs from the QSS vector
+a = -L_EE^{-1} L_Eg only through lam_slow in the resolvent, so dev_refined is the first-order correction lam_slow/lam_2 itself.
+dev_raw adds numpy eig's relative floor on the small excited components of a ground-dominated eigenvector.

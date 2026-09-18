@@ -1,0 +1,162 @@
+# generated 2026-09-18 11:17 by verify_reservoir_vs_adas.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  pandas 3.0.0
+# L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# ne_grid_L.npy sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# SCD96_interpolated.csv sha256 3daeae0938fd3ef852077d1c2ea36662488f72d78529608ba047015dccf819b2
+# ACD96_interpolated.csv sha256 aa234b063434601f0dbf2a4521bfbfc9cb0dc2ee58539a45b2dca2ebb538776d
+# gate_D_diagnosis.csv sha256 cfacf972d2b7dbd32609a5bcbfc0b5002f300963f3e4d90172a2a90333ba1810
+# molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd
+# diagnose_gate_d.py sha256 fa20fd94215cb5079ddd702ae7d63f951d98a31d68f90c5dbb43274206518645
+# ADAS read: log-log bilinear on log10_K (columns *_loglog); gate-D read = diagnose_gate_d.adas_at (columns *_gateD); rows = k=1 steps, both directions, pre-step point quantities on each row (eta_*_loglog and eta_*_recomputed are the RESULT 3 per-point ratios; every grid point appears as a pre-step point in at least one direction)
+==============================================================================
+RESERVOIR RATIO u = ACD/SCD: MODEL AGAINST ADAS96 -- level offset and k = 1 step response
+generated 2026-09-18 11:17  by verify_reservoir_vs_adas.py
+interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==============================================================================
+
+ADAS96 tables: SCD 29 Te x 24 ne nodes, ACD 29 x 24; Te nodes 0.2..1e+04 eV, ne nodes 5e+07..2e+15 cm^-3
+ADAS Te nodes spanning the model's 1..10 eV grid: 1, 1.5, 2, 3, 5, 7, 10
+  node ratios: 1.5000, 1.3333, 1.5000, 1.6667, 1.4000, 1.4286;  model step ratio 1.0481 (49 steps)
+  model steps per ADAS interval: [1,1.5] 9, [1.5,2] 6, [2,3] 9, [3,5] 11, [5,7] 7, [7,10] 7
+  model ne bracketed by ADAS ne nodes: 1e+12 in [1e+12,2e+12]; 2.68e+12 in [2e+12,5e+12]; 7.2e+12 in [5e+12,1e+13]; 1.93e+13 in [1e+13,2e+13]; 5.18e+13 in [5e+13,1e+14]; 1.39e+14 in [1e+14,2e+14]; 3.73e+14 in [2e+14,5e+14]; 1e+15 in [1e+15,2e+15]
+
+Gate-D read (diagnose_gate_d.adas_at, imported verbatim): linear in Te and in value, ADAS ne nodes within a factor 2 of the model ne, no ne interpolation.
+    ne[0] = 1.000e+12: nodes in band 1e+12
+    ne[1] = 2.683e+12: nodes in band 2e+12, 5e+12
+    ne[2] = 7.197e+12: nodes in band 5e+12, 1e+13
+    ne[3] = 1.931e+13: nodes in band 1e+13, 2e+13
+    ne[4] = 5.179e+13: nodes in band 5e+13, 1e+14
+    ne[5] = 1.389e+14: nodes in band 1e+14, 2e+14
+    ne[6] = 3.728e+14: nodes in band 2e+14, 5e+14
+    ne[7] = 1.000e+15: nodes in band 1e+15
+This script's read: bilinear in (log10 Te, log10 ne) on the native log10_K column.
+ADAS96 nodes carrying weight in the log-log read: Te 1, 1.5, 2, 3, 5, 7, 10 eV;  ne 1e+12, 2e+12, 5e+12, 1e+13, 2e+13, 5e+13, 1e+14, 2e+14, 5e+14, 1e+15 cm^-3  (of 29 x 24 tabulated)
+Reported, not repaired: src/validation/diagnose_gate_d.py adas_at (def at line 114) keeps the ADAS rows with ne_tab/ne in [0.5, 2.0] (lines 119-120), sorts them by Te (line 123) and returns np.interp(Te, Te_rows, value_rows) (line 124): linear in Te and linear in the coefficient value, no logarithm, no interpolation in ne. That file is unchanged; its sha256 is in the header.
+
+GATES
+  G0  10**log10_K vs SCD_cm3_s: 4.441e-16;  vs ACD_cm3_s: 4.441e-16
+      two-channel split residual, worst of 400: 3.043e-14;  every grid point inside the ADAS node range: yes
+  G1  recomputed vs stored gate_D_diagnosis.csv (file stores 7 s.f.; gate = exact at stored precision, i.e. |diff| <= half an ulp of the stored value):
+      eta_SCD_groundfed  max rel dev 2.959e-07   within half-ulp 400/400   identical '.6e' strings 400/400
+      eta_ACD            max rel dev 3.474e-07   within half-ulp 400/400   identical '.6e' strings 400/400
+      SCD_groundfed      max rel dev 4.447e-07   within half-ulp 400/400   identical '.6e' strings 400/400
+      ACD_model          max rel dev 4.436e-07   within half-ulp 400/400   identical '.6e' strings 400/400
+      literal 1e-8 criterion: not testable against a '.6e' file (raw max 4.447e-07 is the file's rounding); gate applied as stated above
+  G2  u_model reproduces molecular_channel.csv u_CRE: max rel dev 6.717e-13
+  G3  identity u_model = ACD/SCD_gf: worst rel dev 4.143e-13 at [1,7]  (from the stored 7-digit columns instead: 6.704e-07)
+
+  ALL GATES PASSED.
+
+==============================================================================
+RESULT 1 -- level offset u_model / u_ADAS at the 400 grid points
+==============================================================================
+  log-log read : median 1.1791   min 0.8910 at [4,7] (Te 1.21, ne 1e+15)   max 1.4023 at [0,1] (Te 1, ne 2.68e+12)
+                 at benchmark [23,5]: 1.2595   at cold corner [0,4]: 1.3257
+  gate-D read  : median 1.3412   min 1.0539   max 7.4925   at [23,5]: 1.3380   at [0,4]: 1.3773
+  gate-D read / log-log read of u_ADAS itself: min 0.155, max 1.095 (at [48,6]); equal to 1e-3 at 8/400 points
+  ADAS SCD, gate-D read / log-log read: max 6.652 at [2,0]  (linear-in-value interpolation across an ADAS interval where SCD varies by orders of magnitude)
+
+  is the offset structured in Te or in ne?  (log-log read)
+    median by ne column: 1.00e+12:1.157  2.68e+12:1.186  7.20e+12:1.209  1.93e+13:1.222  5.18e+13:1.216  1.39e+14:1.192  3.73e+14:1.143  1.00e+15:1.081
+    median by Te row   :
+      [0]1:1.351  [1]1.05:1.226  [2]1.1:1.143  [3]1.15:1.093  [4]1.21:1.073  [5]1.26:1.080  [6]1.33:1.112  [7]1.39:1.172  [8]1.46:1.262  [9]1.53:1.309
+      [10]1.6:1.257  [11]1.68:1.227  [12]1.76:1.218  [13]1.84:1.234  [14]1.93:1.271  [15]2.02:1.294  [16]2.12:1.233  [17]2.22:1.191  [18]2.33:1.166  [19]2.44:1.156
+      [20]2.56:1.160  [21]2.68:1.178  [22]2.81:1.209  [23]2.95:1.255  [24]3.09:1.240  [25]3.24:1.193  [26]3.39:1.159  [27]3.56:1.136  [28]3.73:1.122  [29]3.91:1.118
+      [30]4.09:1.122  [31]4.29:1.135  [32]4.5:1.155  [33]4.71:1.184  [34]4.94:1.221  [35]5.18:1.214  [36]5.43:1.197  [37]5.69:1.186  [38]5.96:1.183  [39]6.25:1.185
+      [40]6.55:1.192  [41]6.87:1.205  [42]7.2:1.203  [43]7.54:1.190  [44]7.91:1.183  [45]8.29:1.180  [46]8.69:1.181  [47]9.1:1.186  [48]9.54:1.196  [49]10:1.209
+    spread of row medians (Te): 1.073..1.351 (ratio 1.26);  of column medians (ne): 1.081..1.222 (ratio 1.13)
+    variance of ln R: total 0.0049; row means (Te) 0.0023 = 47%; column means (ne) 0.0022 = 44%; remainder 9%
+    over Te >= 2 eV only: median 1.1791, min 1.0194, max 1.3509
+
+==============================================================================
+RESULT 2 -- k = 1 step response over the 392 steps (cooling is the sign flip; |.| statistics identical)
+==============================================================================
+  all (392 steps): median |dlnu_model| 0.2606;  median |diff| 0.0143;  max |diff| 0.1041 at [0,0]->[1,0] (Te 1->1.05, ne 1e+12; ADAS interval [1,1.5])
+      |diff| > 0.1 at 2 steps;  > 0.05 at 33;  median |dlnu_ADAS| 0.2256;  median |diff|/|dlnu_model| 0.058
+  Te >= 2 eV (272 steps): median |dlnu_model| 0.2014;  median |diff| 0.0107;  max |diff| 0.0503 at [15,0]->[16,0] (Te 2.02->2.12, ne 1e+12; ADAS interval [2,3])
+      |diff| > 0.1 at 0 steps;  > 0.05 at 2;  median |dlnu_ADAS| 0.2212;  median |diff|/|dlnu_model| 0.054
+  Te >= 2 eV, interior (264 steps): median |dlnu_model| 0.2044;  median |diff| 0.0105;  max |diff| 0.0503 at [15,0]->[16,0] (Te 2.02->2.12, ne 1e+12; ADAS interval [2,3])
+      |diff| > 0.1 at 0 steps;  > 0.05 at 2;  median |dlnu_ADAS| 0.2213;  median |diff|/|dlnu_model| 0.053
+  gate-D read instead: median |diff| 0.0323, max 1.6354 (all);  median 0.0219, max 0.2231 (Te >= 2 eV)
+  steps whose endpoints straddle an ADAS Te node: 48; median |diff| there 0.0115, elsewhere 0.0154
+  |diff| by ne column (median, max), all steps: 1.0e+12:(0.013,0.104)  2.7e+12:(0.014,0.102)  7.2e+12:(0.014,0.100)  1.9e+13:(0.015,0.098)  5.2e+13:(0.015,0.096)  1.4e+14:(0.014,0.096)  3.7e+14:(0.015,0.097)  1.0e+15:(0.016,0.099)
+
+  benchmark [23,5]->[24,5]  (Te 2.947->3.089 eV, ne 1.389e+14; ADAS Te interval [2,3], crosses node: True)
+      u_model 8.8039e-04   u_ADAS log-log 6.9898e-04 (ratio 1.2595)   u_ADAS gate-D 6.5798e-04 (ratio 1.3380)
+      Delta ln u: model -0.2695   ADAS log-log -0.2584   diff -0.0112   |  ADAS gate-D -0.2484   diff -0.0212
+      SCD_gf 3.1672e-10  SCD96 ll 4.1240e-10  gd 4.6714e-10   |   ACD 2.7884e-13  ACD96 ll 2.8826e-13  gd 3.0737e-13
+
+  cold corner [0,4]->[1,4]  (Te 1->1.048 eV, ne 5.179e+13; ADAS Te interval [1,1.5], crosses node: False)
+      u_model 2.8321e+01   u_ADAS log-log 2.1364e+01 (ratio 1.3257)   u_ADAS gate-D 2.0563e+01 (ratio 1.3773)
+      Delta ln u: model -0.6783   ADAS log-log -0.5820   diff -0.0963   |  ADAS gate-D -1.9253   diff +1.2470
+      SCD_gf 4.5856e-14  SCD96 ll 6.4331e-14  gd 8.1979e-14   |   ACD 1.2987e-12  ACD96 ll 1.3744e-12  gd 1.6857e-12
+
+  cold edge, first four steps (model vs ADAS log-log, per ne column):
+    [0]->[1] Te 1->1.048: j0:-0.681/-0.577  j1:-0.680/-0.578  j2:-0.679/-0.579  j3:-0.678/-0.581  j4:-0.678/-0.582  j5:-0.679/-0.583  j6:-0.680/-0.583  j7:-0.682/-0.584
+    [1]->[2] Te 1.048->1.099: j0:-0.652/-0.577  j1:-0.651/-0.578  j2:-0.650/-0.579  j3:-0.650/-0.581  j4:-0.650/-0.582  j5:-0.650/-0.583  j6:-0.652/-0.583  j7:-0.654/-0.584
+    [2]->[3] Te 1.099->1.151: j0:-0.625/-0.577  j1:-0.624/-0.578  j2:-0.623/-0.579  j3:-0.623/-0.581  j4:-0.623/-0.582  j5:-0.623/-0.583  j6:-0.624/-0.583  j7:-0.626/-0.584
+    [3]->[4] Te 1.151->1.207: j0:-0.599/-0.577  j1:-0.598/-0.578  j2:-0.597/-0.579  j3:-0.597/-0.581  j4:-0.597/-0.582  j5:-0.597/-0.583  j6:-0.598/-0.583  j7:-0.600/-0.584
+
+==============================================================================
+RESULT 3 -- eta_SCD_gf = SCD_gf/SCD96 and eta_ACD = ACD_model/ACD96 at the 400 grid points (one value per point), log-log read beside the gate-D read
+==============================================================================
+
+  eta_SCD_gf
+    log-log read, all 400          : within [0.5,2]: 400/400   min 0.702 at [0,3]   max 1.004 at [4,7]   median 0.828
+    gate-D read,  all 400          : within [0.5,2]: 323/400   min 0.130 at [2,0]   max 0.931 at [41,6]   median 0.696
+    log-log read, Te >= 2 eV (280): within [0.5,2]: 280/280   min 0.721 at [15,3]   max 0.937 at [29,7]   median 0.831
+    gate-D read,  Te >= 2 eV (280): within [0.5,2]: 263/280   min 0.438 at [17,4]   max 0.931 at [41,6]   median 0.767
+    at [23,5]: log-log 0.768  gate-D 0.678     at [0,4]: log-log 0.713  gate-D 0.559     at [2,0]: log-log 0.863  gate-D 0.130
+    median by Te row, i = 0..5 (log-log / gate-D): [0]1: 0.721/0.656  [1]1.05: 0.796/0.164  [2]1.1: 0.853/0.153  [3]1.15: 0.889/0.176  [4]1.21: 0.904/0.221  [5]1.26: 0.898/0.288
+    log-log/gate-D pointwise (= ADAS gate-D read / log-log read): min 0.893  max 6.652 at [2,0];  over Te >= 2 eV: 0.893..1.843
+
+  eta_ACD
+    log-log read, all 400          : within [0.5,2]: 400/400   min 0.894 at [3,7]   max 1.009 at [0,0]   median 0.982
+    gate-D read,  all 400          : within [0.5,2]: 400/400   min 0.729 at [3,4]   max 1.042 at [24,6]   median 0.943
+    log-log read, Te >= 2 eV (280): within [0.5,2]: 280/280   min 0.936 at [17,7]   max 0.992 at [49,7]   median 0.985
+    gate-D read,  Te >= 2 eV (280): within [0.5,2]: 280/280   min 0.807 at [19,6]   max 1.042 at [24,6]   median 0.950
+    at [23,5]: log-log 0.967  gate-D 0.907     at [0,4]: log-log 0.945  gate-D 0.770     at [2,0]: log-log 1.001  gate-D 0.972
+    median by Te row, i = 0..5 (log-log / gate-D): [0]1: 0.956/0.903  [1]1.05: 0.951/0.869  [2]1.1: 0.948/0.844  [3]1.15: 0.946/0.826  [4]1.21: 0.946/0.819  [5]1.26: 0.948/0.830
+    log-log/gate-D pointwise (= ADAS gate-D read / log-log read): min 0.921  max 1.285 at [3,4];  over Te >= 2 eV: 0.921..1.172
+
+PREDICTIONS scored under (b) log-log read, this script's result (tolerances in the docstring):
+  NOT reproduced  P1 median ratio ~1.34: 1.1791
+  NOT reproduced  P1 range ~1.05..7.5: 0.8910..1.4023 at [4,7], [0,1]
+  NOT reproduced  P1 [23,5] ~1.34, [0,4] ~1.38: 1.2595, 1.3257
+  NOT reproduced  P2 [23,5]->[24,5] model ~-0.270, ADAS ~-0.248: -0.2695, -0.2584
+  NOT reproduced  P3 median |diff| ~0.032 vs median |dlnu_model| ~0.26: 0.0143, 0.2606
+  NOT reproduced  P4 max |diff| ~1.64 at the cold edge: 0.1041 at [0,0] (Te 1)
+
+PREDICTIONS scored under (a) gate-D read (tolerances in the docstring):
+  reproduced      P1 median ratio ~1.34: 1.3412
+  reproduced      P1 range ~1.05..7.5: 1.0539..7.4925 at [47,6], [2,0]
+  reproduced      P1 [23,5] ~1.34, [0,4] ~1.38: 1.3380, 1.3773
+  reproduced      P2 [23,5]->[24,5] model ~-0.270, ADAS ~-0.248: -0.2695, -0.2484
+  reproduced      P3 median |diff| ~0.032 vs median |dlnu_model| ~0.26: 0.0323, 0.2606
+  reproduced      P4 max |diff| ~1.64 at the cold edge: 1.6354 at [0,0] (Te 1)
+  NOT reproduced  P5 G3 worst ~6.7e-7: full precision 4.14e-13; from the stored 7-digit columns 6.70e-07
+
+PREDICTIONS for RESULT 3 (written before that block ran):
+  reproduced      P6 eta_SCD_gf within factor 2 rises above 323/400 under log-log: 400/400 (gate-D 323/400)
+  reproduced      P7 eta_SCD_gf min > 0.3; [2,0] ~0.86 (+-0.05, ~x6.65); median moves less than the min (in ln): min 0.702 (gate-D 0.130); [2,0] 0.863 (gate-D 0.130, x6.65); median 0.828 (gate-D 0.696)
+  reproduced      P8 eta_ACD changes little: median within 5 %, 400/400 within factor 2: median 0.982 (gate-D 0.943); within factor 2 400/400; largest pointwise change 0.250 in ln
+
+REFUTER (|Delta ln u_model - Delta ln u_ADAS| > 0.1 at any interior step with Te >= 2 eV): did not appear (0 of 264 steps; worst 0.0503)
+  including the top Te edge (all Te >= 2 eV steps): 0 of 272 exceed 0.1; worst 0.0503 at [15,0]
+  under the gate-D read instead: 9 of 264 interior Te >= 2 eV steps exceed 0.1; worst 0.2231
+REFUTER for RESULT 3 (eta_SCD_gf minimum still below 0.2 under the log-log read): did not appear (min 0.702 at [0,3])
+
+LEVEL OFFSET, stated separately: u_model/u_ADAS > 1 means the model's ground reservoir per ion sits above ADAS's by that factor.
+It moves the operating point beneath the tanh(|Delta|/4) cap; it does not enter Delta ln u. This script computes neither Delta nor the cap.

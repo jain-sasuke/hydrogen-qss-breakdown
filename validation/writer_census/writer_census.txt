@@ -1,0 +1,179 @@
+# script verify_writer_census.py
+# generated 2026-09-18 11:12
+# interpreter /opt/anaconda3/envs/cr/bin/python  Python 3.11.14
+# git HEAD 7a23ecc0aa0b75bd46adefc9d9481b8dcea5a2ee  (branch backup/verification-session-2026-09-10)  (working tree has uncommitted changes)
+# audit_writers.py sha256 1826aca610eb4a9f0fb60135b87505868c97c53d914418d174d516bb50780ac3
+# scope 121 .py files under src/ scanned; excluded 1 under backup_scripts, 1 (this script); 0 unparsable
+
+==============================================================================
+WRITER CENSUS -- which write idioms exist under src/, and which of them
+audit_writers.py can see. Definitions in the docstring; repeated briefly.
+==============================================================================
+
+------------------------------------------------------------------------------
+1. COUNTS BY IDIOM   (call sites / distinct files)
+------------------------------------------------------------------------------
+  (a1) <expr>.open(<write mode in args[0]>)        45 sites /  29 files   INVISIBLE to audit_writers.py
+       resolved-target extensions: .csv 42, .txt 3
+       (a1) files with at least one target whose BASENAME resolves to *.csv (directory part may be partial): 29
+  (a2) <expr>.open(mode=<write mode>), no args      0 sites /   0 files   visible (as unresolved)
+  (a)  = (a1)+(a2)                                 45 sites /  29 files
+  (b)  open(path, <write mode>) / mode=            38 sites /  21 files   visible
+       builtin open: 38 sites / 21 files;  qualified (io.open, gzip.open ...): 0 sites / 0 files
+       resolved-target extensions: .txt 18, .csv 17, unresolved 3
+  (c)  .write_text / .write_bytes                  18 sites /  18 files   visible (resolved or unresolved)
+  (x)  other write family (save/to_csv/savefig/..) 226 sites /  66 files   visible   [context]
+  ALL  write call sites                           327 sites /  96 files
+  target resolution over ALL sites: resolved 53, partial 234, unresolved 40
+  target resolution over (a1):      resolved 0, partial 45, unresolved 0
+  files in scope NOT tracked by git (working tree only, counted above): 4
+      src/validation/verify_bundling_total_loss.py  b_open_mode_arg1_builtin 2, x_other_write_family 1
+      src/validation/verify_reservoir_vs_adas.py  b_open_mode_arg1_builtin 2, x_other_write_family 1
+      src/validation/verify_slow_mode_projection.py  b_open_mode_arg1_builtin 2, x_other_write_family 1
+      src/validation/verify_terminal_shell_budget.py  b_open_mode_arg1_builtin 2, x_other_write_family 1
+
+  calls seen but NOT counted (for transparency):
+      55  .copy() not on shutil (ndarray/dict copy; skipped)
+      29  open() read mode / no mode (skipped)
+
+------------------------------------------------------------------------------
+2. EVERY (a1) SITE   file:line  mode  target [status]
+------------------------------------------------------------------------------
+  src/analysis/make_ch5_figures.py:885  'w'    <expr>/validation/partial_correlation/partial_correlation_sweep.csv  [partial]
+  src/validation/diagnose_gate_d.py:315  'w'    <expr>/gate_D_diagnosis.csv  [partial]
+  src/validation/verify_2s_not_slow.py:242  'w'    <expr>/slow_subspace.csv  [partial]
+  src/validation/verify_2s_not_slow.py:245  'w'    <expr>/slow_subspace.txt  [partial]
+  src/validation/verify_closed_nuclei.py:738  'w'    <expr>/validation/closed_nuclei/closed_nuclei.csv  [partial]
+  src/validation/verify_closed_nuclei.py:743  'w'    <expr>/validation/closed_nuclei/closed_nuclei_summary.csv  [partial]
+  src/validation/verify_cold_corner_pressure.py:161  'w'    <expr>/cold_corner_pressure.csv  [partial]
+  src/validation/verify_crest_subgrid.py:241  'w'    <expr>/crest_vertices.csv  [partial]
+  src/validation/verify_crest_subgrid.py:244  'w'    <expr>/eps_step_locus.csv  [partial]
+  src/validation/verify_divertor_map.py:297  'w'    <expr>/validation/divertor_map/divertor_map.csv  [partial]
+  src/validation/verify_emissivity_generalisation.py:250  'w'    <expr>/emissivity_generalisation.csv  [partial]
+  src/validation/verify_fault_injection.py:229  'w'    <expr>/fault_injection.csv  [partial]
+  src/validation/verify_fujimoto_table41.py:429  'w'    <expr>/validation/fujimoto_table41/fujimoto_table41.csv  [partial]
+  src/validation/verify_inversion_error.py:424  'w'    <expr>/validation/inversion_error/inversion_error.csv  [partial]
+  src/validation/verify_inversion_error.py:428  'w'    <expr>/validation/inversion_error/inversion_error_summary.csv  [partial]
+  src/validation/verify_ion_closure.py:650  'w'    <expr>/validation/ion_closure/ion_closure.csv  [partial]
+  src/validation/verify_ion_closure.py:655  'w'    <expr>/validation/ion_closure/ion_closure_census.csv  [partial]
+  src/validation/verify_ion_closure.py:660  'w'    <expr>/validation/ion_closure/ion_closure_summary.csv  [partial]
+  src/validation/verify_joint_step_map.py:360  'w'    <expr>/joint_step_map.csv  [partial]
+  src/validation/verify_lyman_optical_depth.py:347  'w'    <expr>/lyman_optical_depth.txt  [partial]
+  src/validation/verify_lyman_optical_depth.py:681  'w'    <expr>/lyman_optical_depth.csv  [partial]
+  src/validation/verify_lyman_optical_depth.py:711  'w'    <expr>/lyman_optical_depth_summary.csv  [partial]
+  src/validation/verify_lyman_trapping.py:427  'w'    <expr>/lyman_trapping.txt  [partial]
+  src/validation/verify_lyman_trapping.py:608  'w'    <expr>/lyman_trapping.csv  [partial]
+  src/validation/verify_molecular_channel.py:712  'w'    <expr>/molecular_channel.csv  [partial]
+  src/validation/verify_molecular_channel.py:721  'w'    <expr>/molecular_channel_summary.csv  [partial]
+  src/validation/verify_ng_scaling.py:418  'w'    <expr>/validation/ng_scaling/ng_scaling.csv  [partial]
+  src/validation/verify_ng_scaling.py:424  'w'    <expr>/validation/ng_scaling/ng_scaling_peaks.csv  [partial]
+  src/validation/verify_open_reservoir.py:723  'w'    <expr>/open_reservoir.csv  [partial]
+  src/validation/verify_open_reservoir.py:728  'w'    <expr>/open_reservoir_summary.csv  [partial]
+  src/validation/verify_operator_conditioning.py:211  'w'    <expr>/operator_conditioning.csv  [partial]
+  src/validation/verify_operator_slope_decomposition.py:306  'w'    <expr>/validation/operator_slope_decomposition/operator_slope_decomposition.csv  [partial]
+  src/validation/verify_plateau_gridmap.py:362  'w'    <expr>/validation/plateau_gridmap/plateau_gridmap.csv  [partial]
+  src/validation/verify_plateau_slowmode.py:417  'w'    <expr>/validation/plateau_slowmode/plateau_slowmode.csv  [partial]
+  src/validation/verify_ramp_plateau.py:791  'w'    <expr>/ramp_plateau.csv  [partial]
+  src/validation/verify_reservoir_gain.py:236  'w'    <expr>/reservoir_gain.csv  [partial]
+  src/validation/verify_reservoir_gain.py:296  'w'    <expr>/reservoir_gain_summary.csv  [partial]
+  src/validation/verify_secant_linearity.py:139  'w'    <expr>/validation/secant_linearity/secant_linearity.csv  [partial]
+  src/validation/verify_trajectory_census.py:563  'w'    <expr>/trajectory_census.csv  [partial]
+  src/validation/verify_trajectory_census.py:566  'w'    <expr>/trajectory_census_summary.csv  [partial]
+  src/validation/verify_transport_selection.py:321  'w'    <expr>/transport_selection.csv  [partial]
+  src/validation/verify_weighted_census.py:490  'w'    <expr>/weighted_census.csv  [partial]
+  src/validation/verify_weighted_census.py:494  'w'    <expr>/weighted_census_summary.csv  [partial]
+  src/validation/verify_weighted_census.py:498  'w'    <expr>/weighted_census_lmix.csv  [partial]
+  src/validation/verify_window_sweep.py:316  'w'    <expr>/validation/window_sweep/window_sweep_summary.csv  [partial]
+
+------------------------------------------------------------------------------
+3. (d) PROTOCOL-D.4 PATHS: WRITERS (AST) AND MENTIONS (literal)
+------------------------------------------------------------------------------
+  M_grid.npy: 2 writer file(s), 2 write site(s)
+      WRITER   src/validation/qss_analysis.py:411  save() -> validation/M_grid.npy  [resolved]
+      WRITER   src/validation/validate_gates.py:462  save() -> validation/M_grid.npy  [resolved]
+      mention  src/analysis/plot_results.py:79  'M':   np.load(f'{data_dir}/M_grid.npy'),
+      mention  src/rates/check.py:2  M = np.load('validation/M_grid.npy')
+      mention  src/rates/mori_zwanzig_weekc.py:109  M_path     = _VAL_DIR / 'M_grid.npy'
+      mention  src/rates/mori_zwanzig_weekc.py:113  print(f"  Loaded M_grid.npy  shape {d['M_thesis'].shape}")
+      mention  src/rates/qsscheck.py:3  for fname in ['tau_relax_grid.npy', 'tau_QSS_grid.npy', 'M_grid.npy']:
+      mention  src/validation/audit_writers.py:6  `qss_analysis.py` and `validate_gates.py` both wrote `M_grid.npy`,
+      mention  src/validation/audit_writers.py:51  D4_PATHS = ("M_grid.npy", "tau_QSS_grid.npy", "tau_relax_grid.npy")
+  tau_QSS_grid.npy: 2 writer file(s), 2 write site(s)
+      WRITER   src/validation/qss_analysis.py:412  save() -> validation/tau_QSS_grid.npy  [resolved]
+      WRITER   src/validation/validate_gates.py:463  save() -> validation/tau_QSS_grid.npy  [resolved]
+      mention  src/analysis/plot_results.py:80  'tQ':  np.load(f'{data_dir}/tau_QSS_grid.npy'),
+      mention  src/rates/check.py:3  tau_QSS = np.load('validation/tau_QSS_grid.npy')
+      mention  src/rates/compute_term1_fraction.py:103  tau_QSS  = np.load(str(_MZ_DIR / '../../../validation/tau_QSS_grid.npy'))
+      mention  src/rates/mori_zwanzig_weekc.py:107  tQSS_path  = _VAL_DIR / 'tau_QSS_grid.npy'
+      mention  src/rates/mori_zwanzing_weekb.py:239  tau_QSS_path = _REPO / 'validation' / 'tau_QSS_grid.npy'
+      mention  src/rates/mori_zwanzing_weekb.py:245  print("  WARNING: validation/tau_QSS_grid.npy not found.")
+      mention  src/rates/qsscheck.py:3  for fname in ['tau_relax_grid.npy', 'tau_QSS_grid.npy', 'M_grid.npy']:
+      mention  src/validation/audit_writers.py:7  `tau_QSS_grid.npy` and `tau_relax_grid.npy`, and both once carried the
+      mention  src/validation/audit_writers.py:51  D4_PATHS = ("M_grid.npy", "tau_QSS_grid.npy", "tau_relax_grid.npy")
+  tau_relax_grid.npy: 2 writer file(s), 2 write site(s)
+      WRITER   src/validation/qss_analysis.py:413  save() -> validation/tau_relax_grid.npy  [resolved]
+      WRITER   src/validation/validate_gates.py:464  save() -> validation/tau_relax_grid.npy  [resolved]
+      mention  src/analysis/plot_results.py:81  'tr':  np.load(f'{data_dir}/tau_relax_grid.npy'),
+      mention  src/rates/check.py:4  tau_relax = np.load('validation/tau_relax_grid.npy')
+      mention  src/rates/mori_zwanzig_weekc.py:108  trel_path  = _VAL_DIR / 'tau_relax_grid.npy'
+      mention  src/rates/qsscheck.py:3  for fname in ['tau_relax_grid.npy', 'tau_QSS_grid.npy', 'M_grid.npy']:
+      mention  src/validation/audit_writers.py:7  `tau_QSS_grid.npy` and `tau_relax_grid.npy`, and both once carried the
+      mention  src/validation/audit_writers.py:51  D4_PATHS = ("M_grid.npy", "tau_QSS_grid.npy", "tau_relax_grid.npy")
+
+------------------------------------------------------------------------------
+4. (e) WRITERS INTO validation/plateau_gridmap
+------------------------------------------------------------------------------
+  1 writer file(s), 2 write site(s) whose target contains 'plateau_gridmap':
+      WRITER   src/validation/verify_plateau_gridmap.py:361  write_text('') -> <expr>/validation/plateau_gridmap/plateau_gridmap.txt  [partial]
+      WRITER   src/validation/verify_plateau_gridmap.py:362  open('w') -> <expr>/validation/plateau_gridmap/plateau_gridmap.csv  [partial]
+  POSSIBLE, NOT CLAIMED: 2 file(s) contain the literal 'plateau_gridmap' AND have a write site with an unresolved target:
+      src/analysis/make_ch5_figures.py  literal at lines [23, 28, 116, 237, 310, 427]...;  unresolved write sites: 582:savefig, 583:savefig, 659:save, 761:save, 966:save ...
+      src/analysis/make_story_figures.py  literal at lines [78, 162];  unresolved write sites: 732:savefig, 734:savefig, 889:save, 1033:save, 1211:save ...
+  mention only (literal present, every write site resolved elsewhere or none): 6
+      src/validation/verify_crest_subgrid.py  lines [28]
+      src/validation/verify_inversion_error.py  lines [22, 49, 58, 83, 121, 125, 291]
+      src/validation/verify_lyman_trapping.py  lines [66, 328, 334]
+      src/validation/verify_molecular_channel.py  lines [24]
+      src/validation/verify_operator_slope_decomposition.py  lines [34]
+      src/validation/verify_reservoir_gain.py  lines [47]
+
+------------------------------------------------------------------------------
+5. (f) thesis_tex/*.tex LINES MATCHING  plateau\\?_gridmap
+------------------------------------------------------------------------------
+  chapter4.tex         1 lines   [496]
+  chapter5.tex        15 lines   [226, 236, 245, 314, 334, 345, 355, 771, 850, 868, 1061, 1110, 1511, 1590, 2362]
+  zero in: appendixA.tex, appendixB.tex, appendixC.tex, chapter1.tex, chapter2.tex, chapter3.tex, chapter6.tex, chapter7.tex, thesis_main.tex
+
+------------------------------------------------------------------------------
+6. PREDICTIONS vs OUTCOME
+------------------------------------------------------------------------------
+  (a) predicted ~29 files / ~38 sites (notes: 27/38; grep baseline 29/45)
+      observed (a1) 29 files / 45 sites;  (a1+a2) 29 files / 45 sites
+  (d) M_grid.npy: predicted 2 writers (qss_analysis.py, validate_gates.py); observed 2: ['src/validation/qss_analysis.py', 'src/validation/validate_gates.py']  -> AS PREDICTED
+  (d) tau_QSS_grid.npy: predicted 2 writers (qss_analysis.py, validate_gates.py); observed 2: ['src/validation/qss_analysis.py', 'src/validation/validate_gates.py']  -> AS PREDICTED
+  (d) tau_relax_grid.npy: predicted 2 writers (qss_analysis.py, validate_gates.py); observed 2: ['src/validation/qss_analysis.py', 'src/validation/validate_gates.py']  -> AS PREDICTED
+  (e) predicted exactly one writer, verify_plateau_gridmap.py ~362; observed 1 file(s) ['src/validation/verify_plateau_gridmap.py'], sites at lines [361, 362]  -> AS PREDICTED
+  (f) predicted chapter4 1 / chapter5 ~15; observed chapter4 1 / chapter5 15  -> AS PREDICTED
+  REFUTER of chapter4.tex ~1726 ('four live writers of comma-separated output are
+  invisible to it'): (a1) files > 4.  Observed (a1) files = 29; of these
+  29 have a target resolving to *.csv.  -> REFUTED as written: the invisible set is far larger than four
+
+------------------------------------------------------------------------------
+7. HISTORY CROSS-CHECK: the (a1) plain-grep regex on two committed trees
+   (explains why three documents give three numbers; git grep, read-only)
+------------------------------------------------------------------------------
+  regex \.open\(\s*["'][wax]  (same as the pre-run baseline; working tree by this regex: 29 files / 45 sites, identical to the AST count (a1))
+  [last commit on or before 2026-09-16 in HEAD's history] commit 456fd106407823eb62fec4dd25f7a30b69fee79c 2026-09-16
+      (a1)-idiom: 29 files / 45 sites;  src/validation .py files in that tree: 47
+      (site list not repeated; it is the section-2 list)
+  [tip of ref 'main'] commit fa185956011aacf9656d6cbea028837eca9c4b53 2026-08-23
+      (a1)-idiom: 4 files / 4 sites;  src/validation .py files in that tree: 12
+      src/validation/verify_divertor_map.py:297:    with csv.open("w") as f:
+      src/validation/verify_fujimoto_table41.py:398:        with csv.open("w") as f:
+      src/validation/verify_plateau_gridmap.py:362:    with csv.open("w") as f:
+      src/validation/verify_plateau_slowmode.py:417:        with csv.open("w") as f:
+  Reading: a count of 'four' matches the tip of main (23 Aug); the notes' 38/27 is
+  reproduced by neither committed tree and is recorded here as unreproduced.
+
+  Static census. Nothing was executed; partial/unresolved targets are reported,
+  never guessed. Report only unless --write.

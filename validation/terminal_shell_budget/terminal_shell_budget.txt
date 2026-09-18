@@ -1,0 +1,127 @@
+# generated 2026-09-18 11:06 by verify_terminal_shell_budget.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# Te_grid_ion.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# alpha_3BR_resolved.npy sha256 f5f74dc8352639dd776a3a9dd4aea3fa6bf2db24e353c93b730baece242cd1e0
+# alpha_3BR_bundled.npy sha256 9bbec1c2ba7d279f5881da31d244f08a094a243d4a921339ccb2a09660085b03
+# terminal state k=42 (n15); k14=41 k13=40 k12=39; L = R + ne C; removed 15->16 by geometric continuation rho(14) (n^4 as sensitivity); b_n from analytic Saha with state_index g, I_eV; fluxes per unit n_ion
+==============================================================================
+TERMINAL SHELL BUDGET -- what n = 15 loses to, and what truncation removed
+generated 2026-09-18 11:06  by verify_terminal_shell_budget.py
+interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  L    sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e  (data/processed/cr_matrix/L_grid.npy)
+  S    sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a  (data/processed/cr_matrix/S_grid.npy)
+  si   sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65  (data/processed/collisions/K_exc_full/state_index.csv)
+  K    sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6  (data/processed/collisions/tics/K_ion_final.npy)
+  KTe  sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f  (data/processed/collisions/tics/Te_grid_ion.npy)
+  a3r  sha256 f5f74dc8352639dd776a3a9dd4aea3fa6bf2db24e353c93b730baece242cd1e0  (data/processed/recombination/alpha_3BR_resolved.npy)
+  a3b  sha256 9bbec1c2ba7d279f5881da31d244f08a094a243d4a921339ccb2a09660085b03  (data/processed/recombination/alpha_3BR_bundled.npy)
+==============================================================================
+
+  B  terminal state k=42 'n15' n=15 g=450 I=0.060470 eV bundled=True;  k14=41 k13=40 k12=39: OK
+  A  L = R + ne C exact across all 8 densities: max rel residual 3.13e-16
+  C  -sum_i L[i,s] = ne K_ion[s] for all states, all points: max rel diff 9.89e-14
+  D  R[i,k], C[i,k] >= 0 for i != k at every Te (mins 6.64e+01, 1.17e-13): OK
+  E  analytic Saha factor vs the model's alpha_3BR/K_ion, all rows with K_ion > 0: max rel diff 5.44e-07
+  D  budget fractions sum to 1 at all 400 points (max |sum-1| 4.4e-16): OK
+  F  all CRE populations positive: OK
+     radiative column deficit -sum_i R[i,k] relative to radiative loss: max 9.7e-12 (no ne-independent ionisation)
+
+  ALL GATES PASSED.
+
+==============================================================================
+RESULT 1  loss budget of the terminal shell n = 15 (state 42)
+==============================================================================
+
+  benchmark [23,5]  Te 2.947 eV  ne 1.389e+14 cm^-3
+    total loss -L[k,k]         2.0431e+11 s^-1
+    radiative (ne->0)          8.1576e+04 s^-1  (  0.0000 %)
+    coll. de-exc -> n=14       1.6483e+11 s^-1  (  80.675 %)
+    coll. de-exc -> n<=13      2.6045e+10 s^-1  (  12.748 %)
+    ionisation (col. deficit)  1.3437e+10 s^-1  (   6.577 %)
+    upward coefficients (cm^3 s^-1): 12->13 6.7049e-04  13->14 9.6666e-04  14->15 1.3576e-03;  rho(13) 1.4417  rho(14) 1.4044
+    REMOVED 15->16, geometric  q 1.9067e-03 cm^3 s^-1 -> ne q = 2.6494e+11 s^-1 = 1.297 x retained total   [sensitivity, n^4: 1.217 x]
+    (the retained 14->15 excitation is 0.565 of n=14's own total loss)
+    b_n - 1 at CRE:  n=13 +6.479e-05   n=14 +5.960e-05   n=15 +5.726e-05
+    n=15 balance per unit n_ion: feed from bound states 3.9887e+05, recombination 2.8078e+04, ionisation 2.8080e+04 s^-1;  net ionising flux +1.5204e+00 = +0.0000 of gross exchange (ion+rec), +0.0001 of the ionisation flux
+
+  cold corner [0,4]  Te 1 eV  ne 5.179e+13 cm^-3
+    total loss -L[k,k]         5.6367e+10 s^-1
+    radiative (ne->0)          8.1576e+04 s^-1  (  0.0001 %)
+    coll. de-exc -> n=14       4.1888e+10 s^-1  (  74.312 %)
+    coll. de-exc -> n<=13      8.5709e+09 s^-1  (  15.205 %)
+    ionisation (col. deficit)  5.9085e+09 s^-1  (  10.482 %)
+    upward coefficients (cm^3 s^-1): 12->13 4.4434e-04  13->14 6.4806e-04  14->15 9.2012e-04;  rho(13) 1.4585  rho(14) 1.4198
+    REMOVED 15->16, geometric  q 1.3064e-03 cm^3 s^-1 -> ne q = 6.7663e+10 s^-1 = 1.200 x retained total   [sensitivity, n^4: 1.114 x]
+    (the retained 14->15 excitation is 0.544 of n=14's own total loss)
+    b_n - 1 at CRE:  n=13 +6.542e-05   n=14 +5.807e-05   n=15 +5.458e-05
+    n=15 balance per unit n_ion: feed from bound states 2.0696e+05, recombination 2.4233e+04, ionisation 2.4234e+04 s^-1;  net ionising flux +1.2126e+00 = +0.0000 of gross exchange (ion+rec), +0.0001 of the ionisation flux
+
+  [0,0] [0,0]  Te 1 eV  ne 1.000e+12 cm^-3
+    total loss -L[k,k]         1.0884e+09 s^-1
+    radiative (ne->0)          8.1576e+04 s^-1  (  0.0075 %)
+    coll. de-exc -> n=14       8.0873e+08 s^-1  (  74.307 %)
+    coll. de-exc -> n<=13      1.6548e+08 s^-1  (  15.204 %)
+    ionisation (col. deficit)  1.1408e+08 s^-1  (  10.481 %)
+    upward coefficients (cm^3 s^-1): 12->13 4.4434e-04  13->14 6.4806e-04  14->15 9.2012e-04;  rho(13) 1.4585  rho(14) 1.4198
+    REMOVED 15->16, geometric  q 1.3064e-03 cm^3 s^-1 -> ne q = 1.3064e+09 s^-1 = 1.200 x retained total   [sensitivity, n^4: 1.114 x]
+    (the retained 14->15 excitation is 0.544 of n=14's own total loss)
+    b_n - 1 at CRE:  n=13 +2.322e-03   n=14 +2.059e-03   n=15 +1.933e-03
+    n=15 balance per unit n_ion: feed from bound states 7.7314e+01, recombination 9.0350e+00, ionisation 9.0505e+00 s^-1;  net ionising flux +1.5585e-02 = +0.0009 of gross exchange (ion+rec), +0.0017 of the ionisation flux
+
+  hot dense [49,7]  Te 10 eV  ne 1.000e+15 cm^-3
+    total loss -L[k,k]         1.6452e+12 s^-1
+    radiative (ne->0)          8.1576e+04 s^-1  (  0.0000 %)
+    coll. de-exc -> n=14       1.4038e+12 s^-1  (  85.330 %)
+    coll. de-exc -> n<=13      1.6982e+11 s^-1  (  10.322 %)
+    ionisation (col. deficit)  7.1535e+10 s^-1  (   4.348 %)
+    upward coefficients (cm^3 s^-1): 12->13 8.1972e-04  13->14 1.1635e-03  14->15 1.6101e-03;  rho(13) 1.4194  rho(14) 1.3838
+    REMOVED 15->16, geometric  q 2.2280e-03 cm^3 s^-1 -> ne q = 2.2280e+12 s^-1 = 1.354 x retained total   [sensitivity, n^4: 1.290 x]
+    (the retained 14->15 excitation is 0.576 of n=14's own total loss)
+    b_n - 1 at CRE:  n=13 +3.584e-05   n=14 +3.370e-05   n=15 +3.277e-05
+    n=15 balance per unit n_ion: feed from bound states 3.7318e+06, recombination 1.6964e+05, ionisation 1.6964e+05 s^-1;  net ionising flux +5.3560e+00 = +0.0000 of gross exchange (ion+rec), +0.0000 of the ionisation flux
+
+  hot thin [49,0]  Te 10 eV  ne 1.000e+12 cm^-3
+    total loss -L[k,k]         1.6452e+09 s^-1
+    radiative (ne->0)          8.1576e+04 s^-1  (  0.0050 %)
+    coll. de-exc -> n=14       1.4038e+09 s^-1  (  85.325 %)
+    coll. de-exc -> n<=13      1.6982e+08 s^-1  (  10.322 %)
+    ionisation (col. deficit)  7.1535e+07 s^-1  (   4.348 %)
+    upward coefficients (cm^3 s^-1): 12->13 8.1972e-04  13->14 1.1635e-03  14->15 1.6101e-03;  rho(13) 1.4194  rho(14) 1.3838
+    REMOVED 15->16, geometric  q 2.2280e-03 cm^3 s^-1 -> ne q = 2.2280e+09 s^-1 = 1.354 x retained total   [sensitivity, n^4: 1.290 x]
+    (the retained 14->15 excitation is 0.576 of n=14's own total loss)
+    b_n - 1 at CRE:  n=13 +9.748e-03   n=14 +9.153e-03   n=15 +8.892e-03
+    n=15 balance per unit n_ion: feed from bound states 3.7665e+00, recombination 1.6975e-01, ionisation 1.7115e-01 s^-1;  net ionising flux +1.3968e-03 = +0.0041 of gross exchange (ion+rec), +0.0082 of the ionisation flux
+
+==============================================================================
+RESULT 2  over the 400 grid points
+==============================================================================
+  radiative fraction             min 0.0000 at [47,7]   median 0.0000   max 0.0001 at [0,0]
+  de-exc -> 14 fraction          min 0.7431 at [0,0]   median 0.8101   max 0.8533 at [49,7]
+  de-exc -> <=13 fraction        min 0.1032 at [49,0]   median 0.1259   max 0.1521 at [0,7]
+  ionisation fraction            min 0.0435 at [49,0]   median 0.0639   max 0.1048 at [0,7]
+  removed/retained (geometric)   min 1.2003 at [0,0]   median 1.3014   max 1.3543 at [49,7]
+  removed/retained (n^4)         min 1.1141 at [0,0]   median 1.2221   max 1.2897 at [49,7]
+  rho(14)                        min 1.3838 at [49,0]   median 1.4033   max 1.4198 at [0,0]
+  rho(13)                        min 1.4194 at [49,0]   median 1.4405   max 1.4585 at [0,0]
+  removed/retained (geometric) >= 0.10 at 400/400 points;  >= 1 at 400/400
+  b_15 - 1: min +3.622e-06 at [0,7]   max +8.892e-03 at [49,0];  b_13 > b_14 > b_15 at 400/400 points;  b_15 > 1 at 400/400
+  net ionising flux / gross exchange through n=15: min +0.0000  median +0.0001  max +0.0041;  positive (net upward) at 400/400
+
+PREDICTIONS: benchmark 10/10 reproduced, cold corner 5/5 reproduced, b_n - 1 > 0 and decreasing at both: yes
+REFUTER (removed upward loss < 10 % of retained at benchmark or cold corner): did not appear
+
+ASSUMPTION behind the removed-loss estimate: rho(n) = q(n->n+1)/q(n-1->n) continues one step past the ladder. This is an
+estimate of a channel the model does not contain, not a model output; rho(13) and the n^4 alternative bound how much the
+continuation choice matters. The budget fractions and b_n are exact properties of the stored operator.

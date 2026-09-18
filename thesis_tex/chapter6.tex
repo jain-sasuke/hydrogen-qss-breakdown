@@ -1243,18 +1243,42 @@ $\nel = \SI{e14}{\per\cubic\centi\metre}$, because the array has no density
 axis. That freezing is not small: re-evaluating the cutoff at the local density
 changes the $n = 15$ rate by a factor $20$ upward at
 \SI{e12}{\per\cubic\centi\metre} and a factor $30$ downward at
-\SI{e15}{\per\cubic\centi\metre}. It does not move the verdict, because the
-worst ratio is $1538$ with the freezing and $3.26\times10^{4}$ without it, and
-both clear $10$ by more than two orders of magnitude.
+\SI{e15}{\per\cubic\centi\metre}. Against the radiative criterion it does not
+move the verdict, because the worst point sits at the lowest density, where the
+local cutoff raises the rate: the worst ratio is $1538$ with the freezing and
+$3.26\times10^{4}$ without it. At the highest densities the same correction
+lowers the rate, and that matters for the criterion that follows.
 
-\paragraph{What this closes and what it does not.} It closes the question of
-whether the bundled shells \emph{would} be statistical if the mixing were
-present: they would, by three orders of magnitude, and the assumption is the
-right one to make. It does not close the terminal-shell over-population above,
-which is a different defect with a different cause, and it does not make the
-bundled block's $\ell$-distribution a computed quantity. It remains assumed.
-The contribution of this check is that the assumption now has a number
-attached.
+\paragraph{What this closes and what it does not.} The criterion above compares
+mixing with radiative decay, and radiative decay is not how a high shell
+empties at these densities. The total loss out of a bundled state, $-L_{kk}$,
+is \SIrange{89.5}{99.1}{\percent} collisional transfer to other shells,
+\SIrange{0.9}{10.5}{\percent} ionisation and at most \SI{0.19}{\percent}
+radiative (\texttt{verify\_bundling\_total\_loss.py},
+\texttt{validation/bundling\_total\_loss/}). Against that total the margin is
+not three orders of magnitude. With the frozen cutoff the model is built with,
+mixing exceeds total escape at every one of the $2800$ combinations, by $26$
+at $n=9$ falling to $2.85$ at $n=14$, the minimum, all at
+\SI{1}{\electronvolt} and \SI{e12}{\per\cubic\centi\metre}, and $288$
+combinations sit below $10$. With the cutoff evaluated at the local density
+the ratio falls below unity at $121$ of the $2800$, in every bundled shell, at
+the two highest densities and $\Te \le \SI{2.95}{\electronvolt}$; at
+\SI{1}{\electronvolt} and \SI{e15}{\per\cubic\centi\metre} it runs from $0.86$
+at $n=9$ to $0.09$ at $n=14$. The comment in \texttt{compute\_lmix.py} that the
+cutoff factor varies by about \SI{30}{\percent} across the grid holds for
+$n=2$ and fails above $n=9$, where $U_m > 1$ and $F$ falls as $\nel^{-3/2}$;
+it is reported here and left in place. What survives is narrower than an
+earlier draft claimed. Where mixing wins, the $\ell$-distribution is
+statistical whatever the feeds do. Where collisional transfer wins, at high
+density, the distribution is set by the feeds, and $n$-changing collisions
+between adjacent shells, which carry \SIrange{71}{95}{\percent} of the
+collisional loss, are close to $\ell$-blind at high $n$, so the statistical
+assumption is plausible there for a different reason, one this thesis has not
+tested. It does not close the terminal-shell over-population above, which is a
+different defect with a different cause, and it does not make the bundled
+block's $\ell$-distribution a computed quantity. It remains assumed, now with
+two numbers attached and a stated region where the first of them does not
+license it.
 
 %-----------------------------------------------------------------------------
 \section{Remaining assumptions, and the sensitivities that are known}

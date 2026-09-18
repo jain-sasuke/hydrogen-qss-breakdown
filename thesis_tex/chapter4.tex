@@ -28,9 +28,10 @@
 %     (sec:bundling_check in chapter 6, outputs/bundling/); an earlier
 %     version of this comment said the "never executed" sentence was still
 %     true and must not be corrected. It was corrected. The n_max
-%     convergence result carried in Section~\ref{sec:convergence} still
-%     rests on working notes (ADDENDUM D.8) with no producing script; that
-%     gap is recorded in Appendix C and in the ladder table, not hidden. Its \todo asking for provenance on the
+%     convergence result carried in Section~\ref{sec:convergence} is now
+%     stamped (verify_nmax_downward_scan.py, 18 Sep 2026); the working-note
+%     values (ADDENDUM D.8) it replaced had the opposite sign at the
+%     benchmark and the cold corner, and the text records that. Its \todo asking for provenance on the
 %     4.9-6.2x terminal-shell excess is also closed there, by the internal
 %     terminal-vs-interior measurement (9.4x at p=8, 10.7x at p=9, 6.3x at
 %     p=10), which brackets it.
@@ -652,21 +653,46 @@ The quantity that has to converge is not a population but the difference in
 ground-fed fraction between the two Balmer shells, $\ffrac{3}-\ffrac{4}$, since
 Chapter~\ref{ch:results} shows the diagnostic error to be proportional to it.
 
-Rebuilding $\Lmat$ with successively lower $n_{\max}$ and recomputing
-$\ffrac{3}-\ffrac{4}$ gives increments that decay geometrically with ratio
-about $0.75$. Summing the remaining geometric tail gives an extrapolated
-truncation error of \SI{+0.9}{\percent} at the benchmark point,
-\SI{-1.4}{\percent} at the cold corner and \SI{-0.55}{\percent} at the ridge
-(\texttt{findings\_10} ADDENDUM~D.8). The sign changes across the grid:
-truncation makes $\ffrac{3}-\ffrac{4}$ slightly too large at cold points and
-slightly too small at the benchmark, so it is not a bias that can be corrected
-by a single factor, and it is smaller than the spread between the two step
-conventions of Section~\ref{sec:step_convention} everywhere it was measured.
+Rebuilding $\Lmat$ with successively lower $n_{\max}$, from $15$ down to $9$,
+with the loss channels of every removed state returned to the diagonal of the
+survivors, and recomputing $\ffrac{3}-\ffrac{4}$ at each truncation's own
+$u^{\mathrm{CRE}}$ (\texttt{verify\_nmax\_downward\_scan.py},
+\texttt{validation/nmax\_downward\_scan/}) gives increments of one sign at the
+three named points, with the last measured ratio $d(15)/d(14)$ equal to
+$0.88$ at the benchmark, $0.72$ at the cold corner $[0,0]$ and $0.33$ at the
+ridge $[15,3]$; at the $245$ of the $280$ defended points where the increments
+are one-signed and geometric the ratio has median $0.67$. Summing the geometric
+tail with that ratio gives an extrapolated truncation error of
+\SI{-0.46}{\percent} at the benchmark, \SI{+1.6}{\percent} at the cold corner
+and \SI{+0.005}{\percent} at the ridge; holding $u$ at its $n_{\max}=15$ value
+instead gives \SI{-0.38}{\percent}, \SI{+1.4}{\percent} and
+\SI{+0.005}{\percent}, so the sign does not depend on that choice. An earlier
+draft quoted \SI{+0.9}{\percent}, \SI{-1.4}{\percent} and \SI{-0.55}{\percent}
+with a common ratio of about $0.75$ from a working note
+(\texttt{findings\_10} ADDENDUM~D.8) that no script produced; the stamped run
+reverses both signs, and the sentence built on them. Truncation makes
+$\ffrac{3}-\ffrac{4}$ slightly too large at the benchmark and too small at the
+cold corner, so it is not a bias that can be corrected by a single factor.
+Over the defended points where the tail can be summed the extrapolated error
+has median \SI{+0.002}{\percent} and runs from \SI{-0.82}{\percent} to
+\SI{+1.03}{\percent}, smaller than the spread between the two step conventions
+of Section~\ref{sec:step_convention} at every such point. At the $35$ defended
+points of the density column $\nel = \SI{5.2e13}{\per\cubic\centi\metre}$ the
+increments change sign among $n_{\max} = 12$ to $15$ and no tail can be
+summed; the last measured increment there is below \SI{0.041}{\percent} of
+$\ffrac{3}-\ffrac{4}$ at every point.
 
 \paragraph{A trap in this test.} The first attempt dropped the top shells from
 the state vector without removing their loss channels from the diagonal of the
 surviving states, which then lost population to states that no longer existed,
-and $\ffrac{3}-\ffrac{4}$ jumped by \SIrange{22}{37}{\percent}: an artifact of
+and $\ffrac{3}-\ffrac{4}$ jumped. The stamped scan repeats the mistake
+deliberately: dropping $n=15$ alone without the correction moves
+$\ffrac{3}-\ffrac{4}$ by \SI{11.5}{\percent} at the benchmark,
+\SI{12.6}{\percent} at the cold corner and \SI{5.0}{\percent} at the ridge,
+where the correct truncation to $n_{\max}=14$ moves it by \SI{0.06}{\percent},
+\SI{0.64}{\percent} and \SI{0.01}{\percent}; dropping six shells without it
+gives \SI{17.9}{\percent}, \SI{25.9}{\percent} and \SI{13.3}{\percent} (an
+earlier note recorded \SIrange{22}{37}{\percent}). The jump is an artifact of
 the truncation procedure, not a dependence on $n_{\max}$. Removing state $k$
 requires adding $\sum_{k\ \rm dropped} L_{ki}$ back to $L_{ii}$ for every
 surviving $i$, as the production matrix does. Anyone repeating this test will
@@ -1717,8 +1743,7 @@ regenerates the number into an artifact under \texttt{validation/};
 no producing script, so it cannot be re-executed and cannot fail anything today.
 Four of the checks graded severe are in that condition, which is a statement
 about this thesis's record-keeping rather than about the model. Of the eighteen
-internal checks, eleven are severe, one is documented but not re-executable,
-four are tautological and two are weak; of the five external comparisons, two
+internal checks, twelve are severe, four are tautological and two are weak; of the five external comparisons, two
 pass, one passes only at the higher densities, one fails, and one is open.}
 \label{tab:ladder}
 \footnotesize
@@ -1737,7 +1762,7 @@ Line-weighted against shell ratio & severe & stamped & ratio $0.948$ to $1.000$ 
 Escape-factor cross-check & severe & stamped & $\sigma_0$ against an independent module, \SI{0.059}{\percent} apart against a \SI{1}{\percent} raising tolerance \\
 Pinned input hashes & severe & stamped & both SHA-256 match byte for byte \\
 Recomputation guards on the figures & severe & code & every plotted row rebuilt from $\Lmat$ at $10^{-9}$, raises \\
-Truncation convergence of $\ffrac{3}-\ffrac{4}$ & documented, not re-executable & notes & increments geometric at ratio $0.75$; extrapolated \SI{+0.9}{\percent} at the benchmark, \SI{-1.4}{\percent} at the cold corner. Tests one quantity, not the state space; no script regenerates it \\
+Truncation convergence of $\ffrac{3}-\ffrac{4}$ & severe & stamped & increments one-signed and geometric at $245$ of $280$ defended points, ratio median $0.67$; extrapolated \SI{-0.46}{\percent} at the benchmark, \SI{+1.6}{\percent} at the cold corner, within \SIrange{-0.82}{+1.03}{\percent} on the defended set. Tests one quantity, not the state space \\
 Gate~A, detailed balance & tautological & stamped & $<\SI{0.01}{\percent}$, but $K_{\rm deexc}$ was derived from $K_{\rm exc}$ \\
 Column-sum conservation & tautological & stamped & $3.61\times10^{-11}$; see the fault-injection row for what it cannot see \\
 The $\tanh$ bound & tautological & notes & holds at all $248$ points, and holds on corrupted input \\
@@ -1773,10 +1798,15 @@ hardest, $1s\to2p$ and $2p\to3d$, agree to between \SI{2.4}{\percent} and
 \SI{13.3}{\percent} across the temperature range. Above $n=4$ the atomic data are
 less certain and the truncation is measurable. Section~\ref{sec:convergence}
 tests one component of the mechanism, the sensitivity $\ffrac{3}-\ffrac{4}$,
-and finds it converged to between $+0.9$ and \SI{-1.4}{\percent} at the tested
-points, from working notes that no script regenerates; convergence of the
-reservoir quantities $u^{\mathrm{CRE}}$, $\Delta\ln u$ and $\tauslow$ under
-truncation is not established (Appendix~\ref{app:numerics}). What is measured
+and finds it converged to within \SI{1.03}{\percent} at the defended points
+where the geometric tail can be summed, in a stamped run
+(\texttt{validation/nmax\_downward\_scan/}); under the same truncation
+$u^{\mathrm{CRE}}$ is converged to within \SI{0.13}{\percent} at the $257$
+defended points where its increments are geometric, $\Delta$ to within
+\SI{0.57}{\percent} and $\tauslow$ to within \SI{1.6}{\percent} at all $280$,
+and $\Delta\ln u$ across the defended heating steps moves by at most
+$2.3\times10^{-5}$ between $n_{\max}=14$ and $15$ against a median step of
+$0.20$ (Appendix~\ref{app:numerics}). What is measured
 for the reservoir is a scan rather than a truncation: weakening the ionisation
 and three-body exchange of the top six shells eightfold moves $\epsplat$ by
 \SI{0.7}{\percent} at the median over the defended pairs

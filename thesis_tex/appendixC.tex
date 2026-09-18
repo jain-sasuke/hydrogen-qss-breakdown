@@ -124,19 +124,24 @@ returned to the diagonal of the survivors, and the result is reported in
 Section~\ref{sec:convergence}. Two limitations of that result belong here rather
 than in the body.
 
-First, it is a convergence test of one quantity, $\ffrac{3}-\ffrac{4}$, and not
-of the state space in general. Quantities that depend on the Rydberg population
+First, it is a convergence test of $\ffrac{3}-\ffrac{4}$ and, under the same
+truncation, of $u^{\mathrm{CRE}}$, $\Delta$ and $\tauslow$, not of the state
+space in general. Quantities that depend on the Rydberg population
 directly, among them the effective ionisation coefficient, are not covered by
 it.
 
-Second, the numbers reported in Section~\ref{sec:convergence} were recorded in
-this project's working notes and no script in the repository regenerates them.
-They are therefore not reproducible in the sense the rest of this appendix uses,
-and they are not repeated here. Closing that gap requires writing the truncation
-scan as a stamped script; the methodological trap it must avoid is recorded in
-Section~\ref{sec:convergence}, since an earlier attempt that dropped states
-without returning their loss channels to the diagonal produced a spurious
-\SIrange{22}{37}{\percent} jump that looked like a finding.
+Second, the numbers reported in Section~\ref{sec:convergence} come from
+\texttt{verify\_nmax\_downward\_scan.py}
+(\texttt{validation/nmax\_downward\_scan/}), which gates on reproducing the
+stamped $a_p$, $c_p$, $u^{\mathrm{CRE}}$ and $\Delta$ of
+\texttt{validation/molecular\_channel/} at all $400$ points before any state
+is removed, and on the column sums of every truncated matrix equalling those
+of the full one. An earlier draft of this appendix said that no script
+regenerated them and deferred to a working note; the note's values had the
+opposite sign at the benchmark and the cold corner, and the text now records
+that. The trap the scan avoids is recorded in Section~\ref{sec:convergence}:
+dropping states without returning their loss channels to the diagonal moves
+$\ffrac{3}-\ffrac{4}$ by \SIrange{5}{26}{\percent} at the three named points.
 
 Convergence \emph{upward}, at $n_{\max} = 18$ or $20$, is not attempted and
 cannot be, because the atomic data stop at $n = 15$. That is the second of the

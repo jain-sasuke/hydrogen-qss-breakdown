@@ -138,9 +138,7 @@ forbidden to electric-dipole radiation, and no two-photon rate is included in
 the present radiative dataset, so the only route out other than proton
 $\ell$-mixing is electron-impact de-excitation, some three orders of magnitude
 slower. Removing proton $\ell$-mixing therefore does not merely perturb the
-$n=2$ manifold; it changes which process controls it. Quasi-neutrality gives
-$\nion = \nel$ for the pure hydrogen plasma considered here, so both collisional
-terms scale with the same density.
+$n=2$ manifold; it changes which process controls it.
 
 \noindent Note the index order: $L_{pq}$ with $p \neq q$ is the rate of the
 transition $q \to p$, a \emph{gain} into $p$. Off-diagonal elements are
@@ -229,15 +227,12 @@ removes an atom from the bound states. Therefore
 that column represents, no more, no less.
 
 The check is worth having and it is worth being precise about what it can
-detect, because the answer is narrower than it looks. Each block of the
+detect, because the answer is narrower than it looks: each block of the
 assembly writes its diagonal as minus the column sum of the off-diagonal
 entries it has just written, so the identity holds by construction whatever
-those entries contain. Injecting a tenfold error into one excitation rate
-coefficient, deleting every de-excitation rate, and transposing the entire
-input array each leave the residual unchanged. What the check does detect is an
-inconsistency between the two separately stored radiative arrays, the
-transition probabilities and the total decay rates: halving one without the
-other moves the residual by thirteen orders of magnitude.
+those entries contain, and of the four faults
+Section~\ref{sec:conservation_severity} injects, only an inconsistency between
+the two separately stored radiative arrays moves the residual.
 Chapter~\ref{ch:validation} grades it on that basis.
 
 \subsection{A worked example}
@@ -355,7 +350,7 @@ $\Te = \benchTe$, $\nel = \benchne$.
 
 \begin{table}[htbp]
   \centering
-  \caption{The five slowest relaxation modes at the benchmark point. The gap
+  \caption[The five slowest relaxation modes at the benchmark point]{The five slowest relaxation modes at the benchmark point. The gap
   between the first and second is $9982$; the largest of the remaining 41 gaps
   is the $2.80$ in this table, at $k=2$, so the slow mode is isolated from the
   fast band by a factor of $3567$.}
@@ -457,22 +452,14 @@ there proceeds stepwise. We write
   \label{eq:tau_slow_def}
 \end{equation}
 
-\paragraph{A note on the name.} Earlier drafts of this work called
-Eq.~\eqref{eq:tau_slow_def} $\tau_{\mathrm{QSS}}$, and that name was a mistake
-worth explaining rather than quietly correcting. In this thesis QSS names the
-elimination of the \emph{fast} excited manifold, the approximation of
-Section~\ref{sec:qss}. The timescale above belongs to the \emph{slow} reservoir,
-at the opposite end of the same spectrum. A reader met the sentence ``the QSS
-approximation holds because $\tau_{\mathrm{QSS}}$ is long'' and had to work out
-that the two occurrences of QSS referred to different subsystems. The symbol is
-therefore $\tauslow$ throughout.
-
-The obvious alternative, $\tau_{\mathrm{res}}$ for the reservoir, was rejected
-for a specific reason: Sawada and Fujimoto use $\tau_{\mathrm{res}}$ for the
-\emph{response} time of the excited levels \cite{SawadaFujimoto1994}, which is
-this thesis's $\taurel$ and not its $\tauslow$. Chapter~\ref{ch:conclusions}
-compares the two works directly, and reusing their symbol for the opposite
-quantity would have made that comparison unreadable.
+\paragraph{A note on the name.} Earlier drafts called
+Eq.~\eqref{eq:tau_slow_def} $\tau_{\mathrm{QSS}}$, a name that attached the
+label of the \emph{fast}-manifold elimination of Section~\ref{sec:qss} to the
+\emph{slow} reservoir at the opposite end of the spectrum; the symbol is
+therefore $\tauslow$ throughout. The alternative $\tau_{\mathrm{res}}$ was
+rejected because Sawada and Fujimoto use it for the \emph{response} time of the
+excited levels \cite{SawadaFujimoto1994}, this thesis's $\taurel$, and
+Chapter~\ref{ch:conclusions} compares the two works directly.
 
 The next mode $\bm{v}_1$ is the excited states rearranging among themselves.
 Its participation ratio is $2.64$, so it lives on two or three levels rather
@@ -573,13 +560,12 @@ and the point carrying it is excluded from the transient analysis of
 Chapter~\ref{ch:results} by the plateau-window criterion, which requires
 $\Msep > 900$ for a window to exist at all. The floor over the \emph{analysed}
 set is therefore $\Msep \ge 902$, and that floor is imposed by the criterion
-rather than measured. The same distinction applies to $\tauslow$, and an earlier
-draft of Eq.~\eqref{eq:M_range} did not observe it: the floor
-$\tauslow \ge \SI{1.18}{\micro\second}$ is the minimum over the 346 points that
-satisfy $\Msep > 900$, not over the 400. Over all 400 it is
-\SI{75.4}{\nano\second}, at the same $[49,7]$ corner, and that is the value
-Eq.~\eqref{eq:M_range} now reports, so that all three ranges in it share one
-scope. Neither number licenses a statement of the form
+rather than measured. The same distinction applies to $\tauslow$: an earlier
+draft of Eq.~\eqref{eq:M_range} quoted the floor
+$\tauslow \ge \SI{1.18}{\micro\second}$, the minimum over the 346 points that
+satisfy $\Msep > 900$, and the equation now reports the minimum over all 400,
+\SI{75.4}{\nano\second} at the same $[49,7]$ corner, so that its three ranges
+share one scope. Neither number licenses a statement of the form
 \emph{\enquote{the separation is at least $X$ wherever the model is used}}: the
 first is a minimum over a set that includes points the analysis discards, and
 the second is a restatement of the cut. Both are reported here as descriptions
@@ -604,8 +590,7 @@ It is the single stress point of the two-clock picture. It is also, by the
 plateau-window criterion, outside the set analysed in
 Chapter~\ref{ch:results}, which is a limitation to state rather than a
 convenience, since it means the weakest separation on the grid is never tested
-against a transient. The figure script evaluates the isolation at all 400 points
-and halts if it falls below ten.
+against a transient.
 
 $\taurel$ falls with density with a fitted logarithmic slope
 $\mathrm{d}\ln\taurel/\mathrm{d}\ln\nel$ between $-0.46$ and $-0.53$ across the
@@ -690,7 +675,7 @@ rate coefficients are best known. It grows with density, from
 $\nel \approx \SI{e13}{\per\cubic\centi\metre}$ where the collisional part of
 $\Lmat$ has taken over from the radiative part and the rate uncertainty passes
 through undiluted. It falls with temperature, from \SI{17.0}{\percent} at
-\SI{1}{\electronvolt} to \SI{5.6}{\percent} at \SI{10}{\electronvolt} --- even
+\SI{1}{\electronvolt} to \SI{5.6}{\percent} at \SI{10}{\electronvolt}, even
 though Chapter~\ref{ch:atoms} finds the \emph{rates} best constrained at the
 cold end. At \SI{1}{\electronvolt} the excitation rates sit deep in the
 Boltzmann exponential, where a given fractional change in a rate coefficient
@@ -719,12 +704,8 @@ described as one.
 
 \subsection{What the separation does and does not license}
 
-A separation of $10^{4}$ invites an obvious simplification: treat the excited
-states as instantaneously equilibrated, and solve only for the slow subsystem.
-That is the quasi-steady-state approximation, and Section~\ref{sec:qss} derives
-it properly.
-
-Two warnings, both of which matter later.
+A separation of $10^{4}$ invites the quasi-steady-state approximation, which
+Section~\ref{sec:qss} derives. Two warnings, both of which matter later.
 
 First, $\Msep$ compares two \emph{rates}. Chapter~\ref{ch:results} measures a
 \emph{distance}, how far a diagnostic reading sits from the truth. Knowing how
@@ -732,18 +713,16 @@ quickly a system recovers from a displacement tells you nothing about how far it
 was displaced, and these are independent quantities.
 
 Second, eigenvalues describe the long-time behaviour of each mode in isolation.
-The matrix $\Lmat$ is strongly asymmetric: radiative decay downward runs at
-$\sim\SI{6.3e8}{\per\second}$ against collisional excitation upward at
-$\sim\SI{e4}{\per\second}$ at the benchmark density, some five orders of
-magnitude. Asymmetry of that size makes non-normality plausible. It does
-not by itself prove it: a non-symmetric matrix may still be normal and have
-orthogonal eigenvectors. The decisive test is the numerical one of
-Section~\ref{sec:transient_growth}, where the numerical abscissa is found to be
-positive at every grid point while every eigenvalue is negative. For a
-non-normal matrix the modal
-amplitudes can be large and opposing, and a perturbation can grow before it
-decays even though every eigenvalue is negative. The spectrum bounds the
-asymptotic decay; it does not bound the finite-time error.
+The matrix $\Lmat$ is strongly asymmetric, downward radiative rates exceeding
+upward collisional ones by some five orders of magnitude at the benchmark
+density, which makes non-normality plausible without proving it: a
+non-symmetric matrix may still be normal and have orthogonal eigenvectors.
+Section~\ref{sec:transient_growth} settles it numerically, finding the
+numerical abscissa positive at every grid point while every eigenvalue is
+negative. For a non-normal matrix the modal amplitudes can be large and
+opposing, and a perturbation can grow before it decays even though every
+eigenvalue is negative. The spectrum bounds the asymptotic decay; it does not
+bound the finite-time error.
 
 Both warnings point the same way: the two clocks tell us the system \emph{can}
 be simplified, and they say nothing about what the simplification costs. Working
@@ -890,11 +869,9 @@ the slow subsystem itself, $\taudrive \to \tauslow$ and the condition becomes
 \end{equation}
 
 Section~\ref{sec:two_clocks} measured $\Msep = 9982$ at the benchmark and
-$\Msep \ge 86.8$ at every one of the 400 grid points. \textbf{The condition is
-satisfied everywhere on the grid, comfortably.} The floor carries the
-qualification of Section~\ref{sec:two_clocks}: the point holding it is excluded
-from the transient analysis of Chapter~\ref{ch:results}, and the floor over the
-analysed set is imposed by the window criterion rather than measured.
+$\Msep \ge 86.8$ at every one of the 400 grid points, the floor carrying the
+qualification stated there. \textbf{The condition is satisfied everywhere on
+the grid, comfortably.}
 
 Two qualifications must travel with that statement.
 
@@ -934,16 +911,14 @@ $\Lmat_{FF}$, which is the one that sets QSS validity. The operator is strongly
 non-normal in a way that is almost irrelevant to this particular question.
 
 That said, Eq.~\eqref{eq:qss_bound} is still a statement about the settled
-deviation. Section~\ref{sec:two_clocks} warned that for a strongly non-normal
-operator the spectrum does not control finite-time behaviour, and that warning
-applies to the approach as opposed to the endpoint:
-the balance in Eq.~\eqref{eq:deviation} is a \emph{quasi-static} argument, valid
-once the fast transients have decayed and the deviation has settled onto the
-slow manifold. It says nothing about what $\bm{\delta}$ does in the first few
-$\taurel$ after a disturbance, when the non-orthogonality of the eigenvectors
-can allow transient growth. Whether that matters for the quantity actually
-measured is not decidable from the spectrum, and Chapter~\ref{ch:results}
-settles it by integrating the full system rather than by argument.
+deviation, and the warning of Section~\ref{sec:two_clocks} applies to the
+approach as opposed to the endpoint: the balance in Eq.~\eqref{eq:deviation}
+is a \emph{quasi-static} argument, valid once the fast transients have decayed,
+and it says nothing about what $\bm{\delta}$ does in the first few $\taurel$
+after a disturbance, when the non-orthogonality of the eigenvectors can allow
+transient growth. Whether that matters for the quantity actually measured is
+not decidable from the spectrum, and Chapter~\ref{ch:results} settles it by
+integrating the full system rather than by argument.
 
 \textbf{The condition is not sharp.} At the benchmark point
 Eq.~\eqref{eq:qss_validity} gives $(\Msep^{+})^{-1} = 1.21\times10^{-4}$, the
@@ -985,14 +960,12 @@ restricted to it: Section~\ref{sec:emissivity_generalisation} shows every result
 of this chapter holds for the $A$-weighted line ratio itself, and for any
 non-negative linear functional of the state vector. The substitution is
 therefore not free but it is also not load-bearing, and
-Section~\ref{sec:balmer_equivalence} measures what it costs. The transient error
+Section~\ref{sec:balmer_equivalence} measures what it costs: the transient error
 of Chapter~\ref{ch:results}, computed from the $A$-weighted line ratio and from
 the shell ratio, agrees to \SI{0.065}{\percent} at the benchmark point
-($0.063571$ against $0.063612$); across all $784$ point-and-direction pairs the
-line-ratio value runs between $0.9482$ and $0.9999$ times the shell-ratio
-value, below $1$ at every pair, with the worst case of \SI{5.2}{\percent} at
-the heating step from $9.54$ to \SI{10.0}{\electronvolt} at the low-density
-edge $\nel = \SI{e12}{\per\cubic\centi\metre}$
+($0.063571$ against $0.063612$), and the line-ratio value lies below the
+shell-ratio value at every grid point and step direction, with a worst case of
+\SI{5.2}{\percent} at the low-density edge
 (\texttt{validation/weighted\_census/}). The difference is not the darkness of
 the $4f$ level alone. The $\ell$-distribution within a shell differs between
 the ground-fed and the recombination-fed channels, so the $A$-weighted sum and
@@ -1000,15 +973,11 @@ the shell sum of Eq.~\eqref{eq:observable_def} respond differently to the
 transient, and the $H_\alpha$ numerator contributes more to the difference than
 the $H_\beta$ denominator: substituting one side at a time at that corner gives
 $0.967$ for the numerator against $0.981$ for the denominator, and $0.948$
-with both substituted (\texttt{validation/weighted\_census/}). The
-\SI{5.2}{\percent} scales inversely with the proton $\ell$-mixing rate, the
-within-shell $\ell$-changing rates being scaled by a common factor with the
-column sums of the operator preserved: \SI{10.0}{\percent} at half the rate,
-\SI{2.6}{\percent} at double and \SI{1.1}{\percent} at five times
-(\texttt{validation/weighted\_census/weighted\_census\_lmix.csv}), and it
-sits on the grid boundary. It is convenient to normalise to the ground state as well,
-writing $\rp = n_p/\ngs$, since that is the form in which the QSS solution is
-usually tabulated.
+with both substituted (\texttt{validation/weighted\_census/}); the scaling of
+the \SI{5.2}{\percent} with the proton $\ell$-mixing rate is in
+Section~\ref{sec:balmer_equivalence}. It is convenient to normalise to the
+ground state as well, writing $\rp = n_p/\ngs$, since that is the form in which
+the QSS solution is usually tabulated.
 
 \subsection{The hidden variable}
 
@@ -1228,11 +1197,8 @@ settling into $p$ on the way down. Neither depends on how many ground-state
 atoms or ions are actually present; both are properties of $\Lmat_{FF}$,
 $\Lmat_{FS}$ and $\Svec_F$ alone, and therefore functions of $(\Te,\nel)$ only.
 
-So Eq.~\eqref{eq:two_supplies} says something simple: every excited level is
-fed from two directions, and its population is the sum of two terms, one
-proportional to the size of the reservoir below it and one to the reservoir
-above. What distinguishes one level from another is the \emph{proportion} in
-which it draws on the two.
+Every excited level is thus fed from two directions, and what distinguishes one
+level from another is the \emph{proportion} in which it draws on the two.
 
 Writing $a_m$ and $c_m$ for the sums over the $\ell$-resolved states of shell
 $m$, and using $\ngs = \bdep\Zsb{1}\nel\nion$ from Eq.~\eqref{eq:departure},
@@ -1400,8 +1366,7 @@ $u_m = c_m/a_m$, a ratio of two network coefficients and nothing else.} In the
 $\bdep$ coordinate the same point reads
 $\bdep = c_m/(a_m\Zsb{1}\nel)$, which carries $\Zsb{1}\nel$ and is therefore a
 Saha-normalised label for a quantity that does not depend on the Saha balance.
-Equation~\eqref{eq:f_logistic} already says this: it puts the switching point at
-$x_m = \ln(c_m/a_m) = \ln u_m$. A plasma may lie far above the Saha--Boltzmann ground-state
+A plasma may lie far above the Saha--Boltzmann ground-state
 population, $\bdep \gg 1$, and still have both shells fed predominantly from
 above. The
 benchmark point is exactly such a case: $\bdep^{\mathrm{CRE}} = 956$, while the
@@ -1442,8 +1407,7 @@ throughout and every finite-interval integral is larger, not smaller. Chapter~\r
 the same integral for a different purpose, to define a mean sensitivity over the
 excursion a real step produces, and the two must not be confused. That second relation is only the fundamental
 theorem of calculus, and it is quoted here for what it is, a consistency check
-tying the two figures together, not an independent result. The figure script
-evaluates both and halts if either disagrees with the sampled curve.
+tying the two figures together, not an independent result.
 
 Three things follow, and the third is the useful one.
 
@@ -1458,9 +1422,7 @@ shells. \textbf{A shell ratio can never respond to the ground-state reservoir
 faster, in relative terms, than the reservoir itself moves.} Integrating a
 logarithmic sensitivity whose magnitude is everywhere below unity gives the
 finite-excursion statement $|\Delta\ln\Robs| \le |\Delta\ln\bdep|$, so a stale
-reservoir cannot be amplified in logarithmic space, only attenuated. The next
-subsection shows the same statement holds for the line ratio a spectrometer
-actually measures, which is what makes it worth having.
+reservoir cannot be amplified in logarithmic space, only attenuated.
 
 \subsection{The same result for what a spectrometer measures}
 \label{sec:emissivity_generalisation}
@@ -1598,12 +1560,11 @@ Eq.~\eqref{eq:inversion_jacobian} is what that second constraint buys.
 This thesis measures the numerator and does not measure $\bm{J}$, so no claim
 about a two-parameter inversion is made anywhere in it.
 
-The bound constrains the numerator only. Where the ratio is itself
-weakly sensitive to temperature, which is where Balmer diagnostics are known
-to be least useful, a bounded error in $\Robs$ can still become a large error
-in the inferred $\Te$. The inversion Jacobian in the denominator is supplied in
-Chapter~\ref{ch:results}; without it, no statement about diagnostic error
-follows from this section.
+Where the ratio is itself weakly sensitive to temperature, which is where
+Balmer diagnostics are known to be least useful, a bounded error in $\Robs$ can
+still become a large error in the inferred $\Te$; the inversion Jacobian in the
+denominator is supplied in Chapter~\ref{ch:results}, and without it no
+statement about diagnostic error follows from this section.
 
 These closed forms also locate the benchmark point on the curve rather than
 leaving it as an anchor of unstated significance. Its sensitivity is
@@ -1686,32 +1647,21 @@ in different coordinates; what is done here is to ask what the ratio of two such
 populations depends on, which Eq.~\eqref{eq:log_sensitivity} answers.
 
 Section~\ref{sec:fujimoto} tests the decomposition against Fujimoto's published
-population coefficients. A second test of the same decomposition is attempted
-against the ADAS effective coefficients~\cite{Summers2006}, and it fails.
-Because $r_0$ and $r_1$ are published as curves rather than tables, that test
-cannot be made level by level: $\bm{a}$ and $\bm{c}$ are instead summed against
-the ionisation rates to form the effective stage-to-stage coefficients, which
-\emph{are} tabulated, and compared with SCD96 and ACD96. The comparison,
-Gate~D of Chapter~\ref{ch:validation}, disagrees at every grid point, by a
-systematic factor running from $5.73$ to $8346$ whose per-temperature mean peaks
-near $\Te \approx \SI{2}{\electronvolt}$, and as first written only its
-ionisation half was implemented, the recombination table being read and never
-used.
-Chapter~\ref{ch:validation} reports that failure and its diagnosis rather than
-repairing it. Two readings are open. ADAS tabulates SCD as the \emph{ionising}
-coefficient, whereas the sum formed here runs over the full steady state, so
-ionisation out of recombination-fed Rydberg levels enters the model's
-coefficient and belongs under ACD; and this model holds the ion as a fixed
-reservoir with no forty-fourth state (Section~\ref{sec:two_references}), so the
-two quantities are not defined on the same system. Chapter~\ref{ch:validation} tests both
-readings. The first is demonstrated: rebuilding the coefficients on the two feed
-channels separately brings the ionising half within a factor two of ADAS at
-all $400$ points, a median ratio of $0.83$, and the recombination half, once
-implemented, to a median $0.98$ (Section~\ref{sec:gate_d_diagnosis}).
+population coefficients. A second test, against the ADAS effective
+coefficients~\cite{Summers2006}, cannot be made level by level because $r_0$
+and $r_1$ are published as curves rather than tables: $\bm{a}$ and $\bm{c}$ are
+instead summed against the ionisation rates to form the effective
+stage-to-stage coefficients, which \emph{are} tabulated, and compared with
+SCD96 and ACD96. That comparison, Gate~D of Section~\ref{sec:gate_d}, fails at
+every grid point and is left unrepaired; Section~\ref{sec:gate_d_diagnosis}
+traces the failure to the gate summing over both supply channels where ADAS
+keeps them apart, and rebuilt on the two channels separately both halves agree
+with ADAS within a factor two at all $400$ points. The size of the
+disagreement, the gate's unimplemented recombination half and the second
+reading that was open are recorded there.
 
 The contraction is severe in any case, since forty-two coefficients are
-collapsed into one and many incorrect $\bm{a}$ would contract correctly, but it
-is not merely a rate check either:
+collapsed into one, but it is not merely a rate check either:
 $a_p$ and $c_p$ enter the two coefficients with different weights, so an
 error in the \emph{split} between the two supplies displaces the ionisation and
 recombination coefficients in opposite directions, which no single-channel
@@ -1754,15 +1704,13 @@ $\bdep = 1$ denotes complete thermodynamic equilibrium, whereas
 $\bdep^{\mathrm{CRE}}$ denotes the steady state of the collisional--radiative
 system, which is a different and much weaker condition; where excitation out of
 the ground state dominates and the plasma is optically thin,
-$\bdep^{\mathrm{CRE}}$ is very much larger than unity. Note that a large
-$\bdep^{\mathrm{CRE}}$ does not by itself make the shells ground-fed: the
-benchmark has $\bdep^{\mathrm{CRE}} = 956$ and both shells fed predominantly
-from above, which is the distinction
-Section~\ref{sec:ground_fed_fraction} draws. Second,
-this model holds the ion density fixed (Section~\ref{sec:rate_equation}), so
-the quantity relaxing on $\tauslow$ is the ground-state population against a
-prescribed reservoir, not a self-consistent ionisation balance. What that
-restriction costs is assessed in Chapter~\ref{ch:limits}.
+$\bdep^{\mathrm{CRE}}$ is very much larger than unity, and, as
+Section~\ref{sec:ground_fed_fraction} showed at the benchmark, that does not by
+itself make the shells ground-fed. Second, this model holds the ion density
+fixed (Section~\ref{sec:rate_equation}), so the quantity relaxing on $\tauslow$
+is the ground-state population against a prescribed reservoir, not a
+self-consistent ionisation balance; what that restriction costs is assessed in
+Chapter~\ref{ch:limits}.
 
 \subsection{Two error measures}
 
@@ -1894,28 +1842,23 @@ and checked the assembly against particle conservation, which holds to
 $3.6\times10^{-11}$ across the operating range.
 
 Diagonalising $\Lmat$ revealed a spectrum with one gap and then a continuum: a
-single slow mode at $\tauslow = \SI{22.7}{\micro\second}$, the relaxation of the
-ground-state population, sitting four orders of magnitude above a dense band of
-fast modes whose slowest member is $\taurel = \SI{2.28}{\nano\second}$, the
-rearrangement of the excited manifold. The separation
-$\Msep = \tauslow/\taurel$ is 9982 at the benchmark point and does not fall below
-$86.8$ at any of the 400 grid points, though, as
-Section~\ref{sec:two_clocks} records, that floor sits at a point the transient
-analysis excludes, and the four-orders figure quoted above is the benchmark
-value rather than a property of the grid, over which $\Msep$ spans two to nine
-orders.
+single slow mode, the relaxation of the ground-state population, sitting four
+orders of magnitude above a dense band of fast modes whose slowest member is the
+rearrangement of the excited manifold. The separation $\Msep = \tauslow/\taurel$
+spans two to nine orders over the grid and, as Section~\ref{sec:two_clocks}
+records, its floor sits at a point the transient analysis excludes, so the
+four-orders figure is the benchmark value rather than a property of the grid.
 
 That separation licenses the quasi-steady-state approximation: eliminate the
 excited populations algebraically and solve only for the slow subsystem. The
 elimination is the Bodenstein steady-state approximation applied to 42 coupled
 intermediates at once, and it produces the Schur complement $\Omqss$, the
-effective ionisation rate that a plasma modeller using QSS constructs and the
-algebraic form of the effective coefficients that spectroscopic inversions rest
-on. Its validity condition, $\Msep \gg 1$, is satisfied everywhere on the grid
-and comfortably, subject to the two qualifications of
-Section~\ref{sec:qss}: $\Msep$ compares rates where
-Chapter~\ref{ch:results} measures a distance, and the spectrum of a non-normal
-operator bounds asymptotic decay rather than finite-time error.
+effective ionisation rate that a plasma modeller using QSS constructs. Its
+validity condition, $\Msep \gg 1$, is satisfied everywhere on the grid and
+comfortably, subject to the two qualifications of Section~\ref{sec:qss}:
+$\Msep$ compares rates where Chapter~\ref{ch:results} measures a distance, and
+the spectrum of a non-normal operator bounds asymptotic decay rather than
+finite-time error.
 
 The chapter's central result is that this is not the end of the argument. The
 QSS ratio

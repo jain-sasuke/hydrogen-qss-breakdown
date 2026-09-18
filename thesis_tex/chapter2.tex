@@ -13,14 +13,13 @@
 \label{ch:atoms}
 
 Chapter~\ref{ch:intro} left us with a question and no instrument to answer it. A
-spectroscopist measures the ratio of two hydrogen lines in a divertor, looks the
-answer up in a table, and reads off a temperature and a density. The table was
-computed on the assumption that the plasma has stopped changing; a divertor
-never stops changing. Everyone asked whether the table still holds worries about
-the same thing first: the excited states of the atom are the fast, delicate part
-of the system, and surely they cannot keep up with a plasma torn about on
-microsecond timescales. Testing that suspicion needs a model that follows every
-level of the atom in time, assuming in advance that none of them has settled.
+spectroscopist measures the ratio of two hydrogen lines in a divertor and reads a
+temperature and a density off a table computed on the assumption that the plasma
+has stopped changing; a divertor never stops changing. Everyone asked whether the
+table still holds worries first about the excited states, the fast, delicate part
+of the atom, which surely cannot keep up with a plasma torn about on microsecond
+timescales. Testing that suspicion needs a model that follows every level of the
+atom in time, assuming in advance that none of them has settled.
 
 This chapter builds the raw material for that model. There is no time derivative
 anywhere in it. It is about the \emph{atoms}: what can happen to a hydrogen atom
@@ -155,10 +154,9 @@ by three orders of magnitude. Radiative decay of $2p$ takes
 \SI{1.60}{\nano\second} and ground-state ionisation \SI{71.0}{\micro\second},
 both as anticipated, but $\ell$-mixing empties $2s$ in under
 \SI{7}{\pico\second}, two hundred times faster than the fastest radiative decay
-in the atom. That number is why Section~\ref{sec:lmixing} exists. It is also the
-first sight of the difficulty: a chemical engineer recognises a rate spread of
-ten decades as a stiff network, of exactly the kind that motivates the
-steady-state approximation for intermediates in the first place.
+in the atom. That number is why Section~\ref{sec:lmixing} exists, and the
+ten-decade spread is the stiff network that motivates the steady-state
+approximation for intermediates in the first place.
 
 %-----------------------------------------------------------------------------
 \section{The state space}
@@ -185,7 +183,7 @@ in Section~\ref{sec:atoms_scope}.
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{fig2_1_state_space}
-  \caption{\CapFigStateSpace}
+  \caption[The 43-state space and the five processes the rate matrix contains]{\CapFigStateSpace}
   \label{fig:state_space}
 \end{figure}
 
@@ -232,12 +230,10 @@ produces no error, only plausible numbers about the wrong states. The pipeline
 therefore never lets a script declare the ordering for itself.
 \texttt{src/validation/cr\_context.py} loads the grids, the matrix and the state
 ordering from the files the pipeline wrote, cross-checks their shapes, and
-raises if any is missing or inconsistent; its docstring names the failure mode
-it prevents: ``If a verification script hardcodes them and the pipeline later
-changes, the script keeps running and silently mislabels every result'', which
-is ``exactly the failure mode verification is supposed to catch''. Every
-verification result in Chapters~\ref{ch:validation} and~\ref{ch:results} comes
-from a script that imports it. The grid itself is declared in
+raises if any is missing or inconsistent, so that a script which hardcoded them
+cannot keep running and silently mislabel every result after the pipeline
+changes. Every verification result in Chapters~\ref{ch:validation}
+and~\ref{ch:results} comes from a script that imports it. The grid itself is declared in
 \texttt{src/rates/assemble\_cr\_matrix.py} and written to disk so downstream code
 reads rather than redeclares it: 50 temperatures logarithmically spaced over
 $\Te = 1$--\SI{10}{\electronvolt} and 8 densities over
@@ -303,13 +299,11 @@ one of the $1320$ excitation blocks is tabulated to between $955$ and
 \SI{969}{\electronvolt}; with the integrand $\sigma E\,\mathrm{e}^{-E/k_B\Te}$
 and $\sigma E$ allowed to grow logarithmically beyond the data, the largest
 missing tail at \SI{10}{\electronvolt} is $3\times10^{-41}$ of the integral
-(\texttt{validation/maxwell\_tail/}). An earlier draft gave the range as
-$100$ to \SI{968}{\electronvolt} and bounded the tail by the Boltzmann factor
-alone; neither was right. No block stops at \SI{100}{\electronvolt}, and had
-one done so its tail at \SI{10}{\electronvolt} would have been
-\SI{0.05}{\percent} for a ground-state dipole transition, five times the
-\SI{0.01}{\percent} then claimed, because $\sigma E$ and not the Boltzmann
-factor sets it.
+(\texttt{validation/maxwell\_tail/}). An earlier draft quoted $100$ to
+\SI{968}{\electronvolt} and a Boltzmann-only tail bound of \SI{0.01}{\percent};
+no block stops at \SI{100}{\electronvolt}, and had one done so its tail at
+\SI{10}{\electronvolt} would have been \SI{0.05}{\percent} for a ground-state
+dipole transition, because $\sigma E$ and not the Boltzmann factor sets it.
 
 \subsection{Detailed balance, and why de-excitation is never computed directly}
 
@@ -433,12 +427,11 @@ Three instructions came with the data and all three are load-bearing.
 \texttt{FINAL.INITIAL}, so \texttt{1S.2P} holds $2p \to 1s$
 \emph{de}-excitation and the excitation $1s \to 2p$ lives in \texttt{2P.1S}.
 Reading it the wrong way round would transpose the dataset with no obvious
-symptom, so it is worth saying which direction the model uses: rate coefficients
-are Maxwell-averaged from the \emph{excitation}-direction files, selected in
-\texttt{compute\_K\_CCC.py} by the test $n_{\mathrm f} > n_{\mathrm i}$, and
-de-excitation follows by Eq.~\eqref{eq:detailed_balance}. The
-de-excitation-direction files are parsed and stored but never enter the rate
-tables.
+symptom. The model's rate coefficients are Maxwell-averaged from the
+\emph{excitation}-direction files, selected in \texttt{compute\_K\_CCC.py} by
+the test $n_{\mathrm f} > n_{\mathrm i}$, and de-excitation follows by
+Eq.~\eqref{eq:detailed_balance}. The de-excitation-direction files are parsed
+and stored but never enter the rate tables.
 
 \paragraph{Transitions with $\Delta n = 0$ were excluded, on the data
 provider's instruction.} The note reads: ``Transitions with
@@ -450,27 +443,22 @@ non-relativistic treatment the $\ell$ sublevels of a shell are exactly
 degenerate, the transition energy is zero, and the long-range dipole interaction
 gives a divergent cross section. After the exclusion 2190 blocks remain, all
 with $\Delta n \ne 0$: 1320 in the excitation direction and 870 in the
-de-excitation direction. The Week-2 acquisition report recorded 1740, the 870
-of each direction among the resolved-state files, and the 450 the extended
-parse added are exactly the excitation blocks with $n=10$ as final state, $45$
-initial states times ten sublevels; the $324$ with $n=9$ final, $36$ times
-nine, were already among the 870. Collapsed over $\ell$, the 1320 become the
-$546 + 36 + 36 = 618$ CCC pairs of Table~\ref{tab:exc_coverage}, and with the
-201 Vriens--Smeets pairs, $36 \times 5$ resolved-to-bundled and $\binom{7}{2}$
-bundled-to-bundled, make the 819, which is also $\binom{36}{2}$ less the 84
-same-shell pairs plus $36 \times 7$ plus $\binom{7}{2}$ for 36 resolved and 7
-bundled states. Every integer in that chain is asserted by the script; an
-earlier draft stated the two differences rather than reconciling them. The
-accuracy the provider states for what remains is $\sim$\SI{5}{\percent}, which
+de-excitation direction. Collapsed over $\ell$, the 1320 become the 618 CCC
+pairs of Table~\ref{tab:exc_coverage}, which with the 201 Vriens--Smeets pairs
+make the 819, the number of $\Delta n \ne 0$ pairs among 36 resolved and 7
+bundled states once the 84 same-shell pairs are removed; every integer in that
+chain is asserted by the script. The Week-2 acquisition report recorded 1740,
+the 870 of each direction among the resolved-state files alone: the 450
+excitation blocks into $n=10$ had not yet been parsed, and the 324 into $n=9$
+were already among the 870; an earlier draft stated those differences rather
+than reconciling them. The accuracy the provider states for what remains is
+$\sim$\SI{5}{\percent}, which
 the benchmark of Section~\ref{sec:atomic_uncertainty} tests and does not
 confirm: it measures \SI{13}{\percent} for $n_{\text{upper}} \le 4$.
 
-That exclusion has a consequence which is easy to miss and which
-Section~\ref{sec:lmixing} turns into the central argument of this chapter. With
-$\Delta n = 0$ electron impact removed there is no electron-driven route between
-$2s$ and $2p$ at all. Together with the near-absence of a radiative exit from $2s$, it leaves
-the $n=2$ manifold with almost nothing to do, unless another collision partner
-is admitted.
+That exclusion leaves no electron-driven route between $2s$ and $2p$ at all, a
+consequence easy to miss and one that Section~\ref{sec:lmixing} turns into the
+central argument of this chapter.
 
 \paragraph{Covering the shells CCC does not reach.} CCC data extend to $n=8$
 resolved in $\ell$, with resolved data reaching $n=9$ and $n=10$. Transitions
@@ -613,13 +601,12 @@ is set by mixing to within about one part in that ratio whatever the capture
 distribution was. An earlier draft justified the split by a density threshold
 of \SI{e10}{\per\cubic\centi\metre}; the timescale ratio is the condition.
 
-One property of Eq.~\eqref{eq:alpha_RR} needed checking rather than assuming.
-$g_1(n)$ is negative and grows with $n$, so the three-term sum can in principle
-turn negative for high shells at low temperature; an earlier analysis in this
-project raised that objection and recommended the single-term form instead. The
-code keeps the three-term expansion and guards it with a clamp at zero, which
-would silently replace a negative value rather than report it. Reading the
-stored arrays directly, neither \texttt{alpha\_RR\_resolved.npy} nor
+$g_1(n)$ in Eq.~\eqref{eq:alpha_RR} is negative and grows with $n$, so the
+three-term sum can in principle turn negative for high shells at low
+temperature; an earlier analysis in this project raised that objection and
+recommended the single-term form instead. The code keeps the three-term
+expansion behind a clamp at zero, which would silently replace a negative value
+rather than report it, but neither \texttt{alpha\_RR\_resolved.npy} nor
 \texttt{alpha\_RR\_bundled.npy} contains an exact zero anywhere on the 50-point
 temperature grid: the clamp never fires over the range this thesis uses, though
 it would need revisiting for a colder grid or a longer ladder.
@@ -670,11 +657,9 @@ that suppresses it for the ground state is close to unity at the top of the
 ladder. A loosely bound electron is easy to knock off and, by the same token,
 easy to capture in a three-body encounter.
 
-That has a consequence Section~\ref{sec:atomic_uncertainty} takes up: the
-three-body coefficients for $n=10$--$15$ are built by
-Eq.~\eqref{eq:alpha_3BR} from Lotz ionisation coefficients the metadata itself
-calls too large by 4--8, and those are precisely the shells whose feed is
-entirely three-body.
+The three-body coefficients for $n=10$--$15$ therefore inherit the Lotz
+overestimate through Eq.~\eqref{eq:alpha_3BR}, which
+Section~\ref{sec:atomic_uncertainty} takes up.
 
 %-----------------------------------------------------------------------------
 \section{Radiative decay}
@@ -700,9 +685,7 @@ radiation field, feeds the Vriens--Smeets formulae of
 Section~\ref{sec:excitation}.
 
 Two consequences of the selection rule matter to this thesis. First,
-$2s \to 1s$ is forbidden, so $\gamma_{2s} = 0$ against
-$\gamma_{2p} = \SI{6.2684e8}{\per\second}$. The $n=2$ shell holds one level
-that empties in \SI{1.6}{\nano\second} and one that cannot empty radiatively.
+$2s \to 1s$ is forbidden, so $\gamma_{2s} = 0$ (Section~\ref{sec:state_space}).
 Second, $4f \to 2p$ is forbidden because $\ell$ would change by two, so the $4f$
 sublevel holds \SI{43.75}{\percent} of the $n=4$ shell by weight and contributes
 nothing to $H_\beta$, decaying only to $3d$. The $n=4$ \emph{shell} population
@@ -855,10 +838,8 @@ computed with $m = \SI{1.67262e-24}{\gram}$, which is the \emph{proton} mass
 where the physically correct object is the neutral hydrogen \emph{atom},
 \SI{1.6735328407e-24}{\gram}. A neutral atom Doppler-broadens with its own mass,
 so the line is \SI{0.027}{\percent} too wide. Neither shifts any conclusion in
-this thesis by a detectable amount, and neither has been edited: the repository
-is under verification rather than development, and a constant corrected quietly
-is a constant nobody can find again. They are recorded here so that a reader who
-recomputes $\sigma_0$ and gets a slightly different number knows why.
+this thesis by a detectable amount, and neither has been edited, because a
+constant corrected quietly is a constant nobody can find again.
 
 \textbf{Every rate matrix in this thesis is built with bare $A$ coefficients,
 $\Theta_P \equiv 1$.} Equation~\eqref{eq:escape} is a diagnostic applied
@@ -926,6 +907,7 @@ which is the quantitative content of the bundling argument in
 Section~\ref{sec:state_space}.
 
 \subsection{The implemented formula}
+\label{sec:lmix_formula}
 
 The rates actually used come from the Debye-cutoff form of the Pengelly--Seaton
 treatment~\cite{PengellySeaton1964} given by Badnell \emph{et
@@ -981,21 +963,19 @@ understates by how much. Evaluating the module's own expression across the eight
 density columns at \SI{1}{\electronvolt}, $F$ varies by a factor $3.7$ for
 $n=2$, which has only the $\ell=1$ channel, and by between $50$ and $687$ across
 the seven $\ell$ channels of $n=8$, the largest belonging to $\ell=1$ and the
-smallest to $\ell=7$. An earlier draft quoted $50$ for $n=8$ beside $3.7$ for
-$n=2$, which are correct measurements of different $\ell$ channels and should
-not have been set side by side. Over the whole $(\Te,\nel)$ grid the $n=8$,
-$\ell=1$ spread reaches $1564$
-(\texttt{compute\_lmix.py}, functions \texttt{\_psm20\_Um} and
-\texttt{\_psm20\_F}). The practice survives for a different reason, measured
-rather than assumed. Rebuilding $\Lmat$ with a density-consistent cutoff at every
-grid point moves $\ffrac{3}-\ffrac{4}$ by at most \SI{0.42}{\percent}, and
-scaling every $\ell$-mixing rate over a range of $\times0.1$ to $\times10$ moves
-it by less than \SI{0.3}{\percent} at the benchmark and the density maximum.
-$\ell$-mixing is saturated, so the frozen table costs nothing that can be
-measured. The
-stored table has no density axis at all, so the linear $\propto\nel$ scaling
-applied at assembly is exact while the Coulomb-logarithm factor inside it is
-frozen at mid-grid. Badnell's formulation offers two competing cut-offs to the Debye radius, one
+smallest to $\ell=7$ (an earlier draft's $50$ for $n=8$ was the $\ell=7$
+channel alone, set beside the $3.7$ for $n=2$). Over the whole $(\Te,\nel)$
+grid the $n=8$, $\ell=1$ spread reaches $1564$ (\texttt{compute\_lmix.py},
+functions \texttt{\_psm20\_Um} and \texttt{\_psm20\_F}). The practice survives
+for a different reason, measured rather than assumed. Rebuilding $\Lmat$ with a
+density-consistent cutoff at every grid point moves $\ffrac{3}-\ffrac{4}$ by at
+most \SI{0.42}{\percent}, and scaling every $\ell$-mixing rate over a range of
+$\times0.1$ to $\times10$ moves it by less than \SI{0.3}{\percent} at the
+benchmark and the density maximum. $\ell$-mixing is saturated, so the frozen
+table costs nothing that can be measured. The stored table has no density axis
+at all, so the linear $\propto\nel$ scaling applied at assembly is exact while
+the Coulomb-logarithm factor inside it is frozen at mid-grid. Badnell's
+formulation offers two competing cut-offs to the Debye radius, one
 set by the level lifetime and one by any residual splitting of the $\ell$
 degeneracy, and the correct $R_c$ is the smallest of the three. Only the Debye
 cut-off is implemented, and the cost of that choice is now measured rather than
@@ -1069,14 +1049,12 @@ impact-parameter picture, with the Debye length as cut-off and
 $b_{\min} = n^{2}a_0$, gives \SI{0.16}{\pico\second} for $n=5$: high by roughly
 six, in the expected direction, because the crude estimate uses the full orbital
 size for the dipole matrix element and drops the angular factors that $D_{ji}$
-supplies. An order-of-magnitude derivation agreeing to within a factor of six
-for an understood reason is doing its job: it confirms that the large number
-in the table is physics and not a coding error. Finally, the largest single
-entry anywhere in the assembled rate matrix at the benchmark point is the $8s$
-diagonal, $-\SI{9.5235e12}{\per\second}$ (\texttt{L\_grid.npy}, element
-$[23,5,28,28]$): again $\ell$-mixing, at the highest resolved shell, exactly
-where the $n^{4}$ of Eq.~\eqref{eq:lmix_scaling} puts it. The stiffest direction
-of the whole problem is a process most treatments omit.
+supplies, so the large number in the table is physics and not a coding error.
+Finally, the largest single entry anywhere in the assembled rate matrix at the
+benchmark point is the $8s$ diagonal, $-\SI{9.5235e12}{\per\second}$
+(\texttt{L\_grid.npy}, element $[23,5,28,28]$): again $\ell$-mixing, at the
+highest resolved shell, exactly where the $n^{4}$ of
+Eq.~\eqref{eq:lmix_scaling} puts it.
 
 %-----------------------------------------------------------------------------
 \section{How well do we know these rates?}
@@ -1085,11 +1063,10 @@ of the whole problem is a process most treatments omit.
 % know?
 
 Internal consistency checks cannot establish that a rate is the right size.
-Detailed balance holds to $2.5\times10^{-9}$ because it was imposed;
-column-sum conservation, which Chapter~\ref{ch:theory} uses, holds to
-$3.6\times10^{-11}$ because every transition entered as a loss also entered as a
-gain. Both would hold for a dataset uniformly wrong by a factor of three. The
-only test with real severity is comparison against an independent calculation.
+Detailed balance holds to $2.5\times10^{-9}$ and column-sum conservation, which
+Chapter~\ref{ch:theory} uses, to $3.6\times10^{-11}$, both by construction, so
+both would hold for a dataset uniformly wrong by a factor of three. The only
+test with real severity is comparison against an independent calculation.
 
 That comparison is against Anderson \emph{et al.}, who computed effective
 collision strengths $\Upsilon$ for all $n \le 5$, $\Delta n \ne 0$ transitions in
@@ -1171,11 +1148,10 @@ Table~\ref{tab:anderson} gives the outcome over the resulting 4250 comparisons.
 \end{figure}
 
 Taken at face value the last row is a failure: fewer than half the comparisons
-agree within \SI{20}{\percent}. Most of that sits in transitions reaching $n=5$,
-which supply 2500 of the 4250 comparisons. But the degradation with upper shell
-is graded rather than abrupt, and saying that the disagreement lies
-\emph{entirely} at $n=5$ would overstate the case: $n_{\text{upper}} = 4$ already
-falls to \SI{74.0}{\percent} within \SI{20}{\percent} against
+agree within \SI{20}{\percent}, most of the shortfall in transitions reaching
+$n=5$. But the degradation with upper shell is graded rather than abrupt, and the
+disagreement does not lie \emph{entirely} at $n=5$: $n_{\text{upper}} = 4$
+already falls to \SI{74.0}{\percent} within \SI{20}{\percent} against
 \SI{96.9}{\percent} for $n_{\text{upper}} = 3$. Within the $n_{\text{upper}}=4$
 block the spread is carried by $\Delta n = 1$ and $\Delta n = 3$; the $\Delta n =
 2$ transitions agree within \SI{20}{\percent} at every point tested. Nor is the
@@ -1239,8 +1215,8 @@ computes it. Along a Rydberg series of dipole transitions $n_{\mathrm{lo}} \to
 n_{\mathrm{up}}$ the absorption oscillator strength falls as
 $f \sim C/n_{\mathrm{up}}^{3}$ as $n_{\mathrm{up}} \to \infty$, and at a
 temperature well above threshold the rate coefficient is dominated by the Bethe
-term --- the leading high-energy contribution to a dipole-allowed cross section,
-which is proportional to $f$ --- and inherits that scaling. The rate
+term, the leading high-energy contribution to a dipole-allowed cross section and
+itself proportional to $f$, so it inherits that scaling. The rate
 coefficient also carries the threshold factor $\mathrm{e}^{-\Delta E/\Te}$,
 with $\Delta E$ the excitation energy of the transition, which both
 calculations share and which at \SI{1}{\electronvolt} dominates everything
@@ -1258,12 +1234,10 @@ Equation~\eqref{eq:rydberg_reduced} does not say what the constant is, and it
 is not used to compute anything; its only role is that a dataset tracking
 hydrogenic behaviour produces a smooth $R(n_{\mathrm{up}})$, so a dataset that
 kinks at one particular $n_{\mathrm{up}}$ is departing from that behaviour
-there. An earlier draft tabulated $K n_{\mathrm{up}}^{3}$ with the threshold
-factor left in; at \SI{1}{\electronvolt} that quantity is smooth for either
-dataset because the Boltzmann factor is, and the $-41$, $-16$ and
-\SI{-12}{\percent} it recorded for CCC were the threshold factor rather than
-the scaling under test. Table~\ref{tab:rydberg} gives the successive changes
-in $R$ for three series at both ends of the temperature range.
+there. An earlier draft left the threshold factor in; the $-41$, $-16$ and
+\SI{-12}{\percent} steps it recorded for CCC were that factor rather than the
+scaling under test. Table~\ref{tab:rydberg} gives the successive changes in $R$
+for three series at both ends of the temperature range.
 
 \begin{table}[tbp]
   \centering
@@ -1284,19 +1258,19 @@ in $R$ for three series at both ends of the temperature range.
     Series & $\Te$ & Source & $2\!\to\!3$ & $3\!\to\!4$ & $4\!\to\!5$ & $5\!\to\!6$ & $6\!\to\!7$ \\
     \midrule
     $1s \to np$ & \SI{1}{\electronvolt}  & CCC  & $-19.5$ & $-9.2$  & $-20.6$          & $-1.2$  & $-2.5$ \\
-                &                        & RMPS & $-19.6$ & $-9.9$  & $\mathbf{+28.4}$ & ---     & --- \\
+                &                        & RMPS & $-19.6$ & $-9.9$  & $\mathbf{+28.4}$ & --      & -- \\
                 & \SI{10}{\electronvolt} & CCC  & $-41.4$ & $-17.9$ & $-9.9$           & $-5.2$  & $-3.8$ \\
-                &                        & RMPS & $-34.0$ & $-10.9$ & $-6.9$           & ---     & --- \\
+                &                        & RMPS & $-34.0$ & $-10.9$ & $-6.9$           & --      & -- \\
     \midrule
-    $2p \to nd$ & \SI{1}{\electronvolt}  & CCC  & ---     & $-42.6$ & $-27.3$          & $-14.9$ & $-8.3$ \\
-                &                        & RMPS & ---     & $-42.6$ & $\mathbf{+12.4}$ & ---     & --- \\
-                & \SI{10}{\electronvolt} & CCC  & ---     & $-64.6$ & $-33.2$          & $-18.5$ & $-11.8$ \\
-                &                        & RMPS & ---     & $-59.1$ & $-29.3$          & ---     & --- \\
+    $2p \to nd$ & \SI{1}{\electronvolt}  & CCC  & --      & $-42.6$ & $-27.3$          & $-14.9$ & $-8.3$ \\
+                &                        & RMPS & --      & $-42.6$ & $\mathbf{+12.4}$ & --      & -- \\
+                & \SI{10}{\electronvolt} & CCC  & --      & $-64.6$ & $-33.2$          & $-18.5$ & $-11.8$ \\
+                &                        & RMPS & --      & $-59.1$ & $-29.3$          & --      & -- \\
     \midrule
-    $2s \to np$ & \SI{1}{\electronvolt}  & CCC  & ---     & $-28.5$ & $-24.2$          & $-10.2$ & $-10.1$ \\
-                &                        & RMPS & ---     & $-29.8$ & $\mathbf{+12.0}$ & ---     & --- \\
-                & \SI{10}{\electronvolt} & CCC  & ---     & $-54.4$ & $-26.6$          & $-14.4$ & $-9.6$ \\
-                &                        & RMPS & ---     & $-47.1$ & $-21.5$          & ---     & --- \\
+    $2s \to np$ & \SI{1}{\electronvolt}  & CCC  & --      & $-28.5$ & $-24.2$          & $-10.2$ & $-10.1$ \\
+                &                        & RMPS & --      & $-29.8$ & $\mathbf{+12.0}$ & --      & -- \\
+                & \SI{10}{\electronvolt} & CCC  & --      & $-54.4$ & $-26.6$          & $-14.4$ & $-9.6$ \\
+                &                        & RMPS & --      & $-47.1$ & $-21.5$          & --      & -- \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -1327,9 +1301,7 @@ there is no kink. The RMPS steps are three to seven points flatter than the
 CCC ones at $3 \to 4$ and $4 \to 5$ alike, the step into $n=5$ is where the
 two calculations differ \emph{least}, and the same ratio climbs steadily,
 $1.06$, $1.19$, $1.29$, $1.34$. An earlier draft placed the kink at both
-temperatures; it is a \SI{1}{\electronvolt} feature, and at
-\SI{10}{\electronvolt} the disagreement is a trend with $n$ rather than a
-step at one shell.
+temperatures; it is a \SI{1}{\electronvolt} feature.
 
 The sign at \SI{1}{\electronvolt} matches the bulk sign of the disagreement
 in Table~\ref{tab:anderson}: the RMPS $n=5$ rates sit high, so CCC reads low
@@ -1358,9 +1330,9 @@ measured error in the data being benchmarked}, and claims no more than that.
 
 The preceding argument is about rate coefficients. A discrepancy in a rate
 coefficient matters only insofar as it moves something the thesis reports, and
-the way to find out is to make the substitution and look. Because the CR matrix
-is linear in electron density --- verified, not assumed, to a relative
-$3\times10^{-16}$ --- it separates exactly into a radiative part and a
+the way to find out is to make the substitution and look. The CR matrix is
+linear in electron density, verified rather than assumed, to a relative
+$3\times10^{-16}$, so it separates exactly into a radiative part and a
 collisional part,
 \begin{equation}
   \Lmat(\Te, \nel) = \Lmat_{\mathrm{rad}}(\Te) + \nel\,\Lmat_{\mathrm{coll}}(\Te),
@@ -1394,7 +1366,7 @@ chapter identified as missing.
 
 Figure~\ref{fig:atomic_propagation}(a) maps that shift over the grid. It grows
 with density and saturates above $\nel \approx
-\SI{e13}{\per\cubic\centi\metre}$, and it is largest at the cold end --- the
+\SI{e13}{\per\cubic\centi\metre}$, and it is largest at the cold end, the
 opposite of where the rate coefficients are best known, because at
 \SI{1}{\electronvolt} the excitation rates sit deep in the Boltzmann
 exponential and a given fractional change in a rate produces a larger one in
@@ -1428,10 +1400,9 @@ replaced:
   \end{tabular}
 \end{table}
 
-Fifty transitions reaching $n=5$, disagreeing by factors of two to five, move
-$\Msep$ by \SI{0.9}{\percent}. Fourteen ground-state transitions, agreeing far
-better, move it by \SI{12.4}{\percent}. The reason is structural rather than
-numerical: $\tauslow$ is the timescale of the slowest mode, and
+The $n=5$ transitions barely move $\Msep$ and the ground-state ones move it most
+(Table~\ref{tab:atomic_sensitivity}), for a structural rather than a numerical
+reason: $\tauslow$ is the timescale of the slowest mode, and
 Section~\ref{sec:two_clocks} identifies that mode as the depletion of the ground
 state, so the rates out of $1s$ set it almost by themselves. Rates into $n=5$
 enter only through cascades that have already been diluted by everything they
@@ -1441,13 +1412,11 @@ excited-fed transitions into $n=5$ by \SI{+2.4}{\percent}, so part of the
 reason $n=5$ does not reach the result is that its two halves pull in opposite
 directions (\texttt{validation/anderson\_subset\_impact/}).
 
-The conclusion of the earlier draft survives and its reasoning does not. It is
-true that the $n=5$ disagreement does not affect this thesis, but not because
-$n=5$ channels are weak in some general sense --- it is because they are weak
-\emph{in the specific eigenvalue the thesis reports}, and that had to be
-computed rather than asserted. The same calculation shows that the transitions
-which do matter are the ones the benchmark constrains least well among
-$n_{\text{upper}} \le 4$: ground-state excitation agrees within
+An earlier draft reached the same conclusion on the general ground that $n=5$
+channels are weak; they are weak \emph{in the specific eigenvalue the thesis
+reports}, which had to be computed rather than asserted. The same calculation
+shows that the transitions which do matter are the ones the benchmark constrains
+least well among $n_{\text{upper}} \le 4$: ground-state excitation agrees within
 \SI{20}{\percent} in only \SI{61.8}{\percent} of comparisons at
 $n_{\text{upper}} \le 4$, against \SI{81.4}{\percent} for that block as a whole.
 Chapter~\ref{ch:theory} carries the consequence, which is that $\Msep$ is
@@ -1492,8 +1461,8 @@ substitution.
 come from a semi-empirical fit of quoted accuracy $\sim$\SI{20}{\percent} rather
 than a close-coupling calculation, which is the price of the ladder reaching
 $n=15$. And one gap that the benchmark simply cannot close: the RMPS tabulation
-stops at $n=5$, so every CCC transition reaching $n \ge 6$ --- the whole upper
-half of the ladder --- has no independent check in this thesis at all.
+stops at $n=5$, so every CCC transition reaching $n \ge 6$, the whole upper
+half of the ladder, has no independent check in this thesis at all.
 
 %-----------------------------------------------------------------------------
 \section{Two errors found by audit}
@@ -1543,16 +1512,14 @@ across the grid the effect on the relaxation time is bounded by
 \SI{0.85}{\percent} (register entry A12). A factor of 3 to 7 in the fastest
 rates in the matrix moves the slow eigenvalues by less than one percent.
 
-That insensitivity is not luck and it is not an excuse. It is the timescale
-separation of Chapter~\ref{ch:theory} doing what timescale separation does.
-$\ell$-mixing runs at picoseconds; the relaxation being measured runs at
-nanoseconds, and on that timescale the $\ell$ sublevels are fully equilibrated
-whether the mixing is three times faster or seven, so the slow eigenvalue cannot
-see the difference. Finding a factor-of-five error in an input and then proving
-the headline moves by less than one percent is a stronger statement about the
-model than never having looked. It licenses nothing elsewhere: absolute
-$\ell$-resolved populations and any $\ell$-resolved line ratio depend on the
-correction directly, which is why it was fixed rather than merely bounded.
+That insensitivity is not luck; it is the timescale separation of
+Chapter~\ref{ch:theory}. $\ell$-mixing runs at picoseconds; the relaxation being
+measured runs at nanoseconds, and on that timescale the $\ell$ sublevels are
+fully equilibrated whether the mixing is three times faster or seven, so the
+slow eigenvalue cannot see the difference. It licenses nothing elsewhere:
+absolute $\ell$-resolved populations and any $\ell$-resolved line ratio depend
+on the correction directly, which is why it was fixed rather than merely
+bounded.
 
 \subsection{The eigenvalue magnitude filter}
 
@@ -1605,10 +1572,9 @@ filter produced eigenvalues that were all negative, all finite and correctly
 ordered. A structurally consistent, physically wrong result is the
 characteristic failure mode of this kind of model, and it is why
 Chapter~\ref{ch:validation} separates checks a wrong result would also have
-passed from checks it would not. The structural response is the one described in
-Section~\ref{sec:state_space}: grids, state ordering and matrices are loaded
-from the pipeline's own files through a single module that raises on any
-inconsistency, so a stale array cannot be silently combined with a fresh one.
+passed from checks it would not. The structural response is the loading module
+of Section~\ref{sec:state_space}, which raises on any inconsistency between
+grids, state ordering and matrices.
 
 %-----------------------------------------------------------------------------
 \section{What this model assumes}
@@ -1633,8 +1599,11 @@ one place and quantified where the thesis is able to quantify them.
     Quasi-neutrality gives $\nion = \nel$; no impurities are modelled.
   \item[A fixed reference density in the Debye cut-off.] $U_m$ in
     Eq.~\eqref{eq:F_Um} is evaluated at \SI{e14}{\per\cubic\centi\metre} rather
-    than at each grid density; the dependence is logarithmic, and the stated
-    variation across the grid is about \SI{30}{\percent} in $F$.
+    than at each grid density, freezing a factor that varies across the density
+    columns at \SI{1}{\electronvolt} by $3.7$ for $n=2$ and by $50$ to $687$
+    across the $\ell$ channels of $n=8$ (Section~\ref{sec:lmix_formula}), not
+    the \SI{30}{\percent} an earlier draft stated; the cost to
+    $\ffrac{3}-\ffrac{4}$ is at most \SI{0.42}{\percent}.
   \item[Optically thin.] All Einstein coefficients enter bare,
     $\Theta_P \equiv 1$. Chapter~\ref{ch:theory} evaluates
     Eq.~\eqref{eq:escape} across the grid and finds the assumption excellent
@@ -1671,16 +1640,12 @@ atomic hydrogen: 43 levels, six elementary processes, and a rate coefficient for
 every pair of levels at every point of a $50\times8$ grid in temperature and
 density. Table~\ref{tab:data_sources} is the provenance record for all of it.
 
-One provenance item on that table was resolved by test rather than by
-inspection, and the outcome is recorded here because the suspicion was
-reasonable and wrong. The merged excitation arrays appeared to predate a CCC
-file they are assembled from, which would have meant
-\texttt{assemble\_K\_exc.py} had not been re-run since. Re-running the merge
-into a scratch directory and comparing byte for byte returns all five arrays
-\emph{identical} by SHA-256, with a maximum absolute difference of zero. The
-file whose date raised the question is \texttt{K\_CCC\_metadata.csv}, which
-carries no rate data; the rate tables themselves predate the merge. The stored
-arrays are current.
+One provenance item on that table was resolved by test rather than inspection.
+The merged excitation arrays appeared to predate a CCC file they are assembled
+from; re-running \texttt{assemble\_K\_exc.py} into a scratch directory returns
+all five arrays identical by SHA-256. The file whose date raised the question,
+\texttt{K\_CCC\_metadata.csv}, carries no rate data, and the rate tables
+themselves predate the merge. The stored arrays are current.
 
 \begin{table}[tbp]
   \centering
@@ -1746,17 +1711,14 @@ $\ell$-mixing is structural}: it carries at least \SI{99.92}{\percent} of the
 loss from $2s$ everywhere on the grid. \textbf{The data are good where it
 matters}: the $n_{\text{upper}} \le 4$ transitions that drive the kinetics agree
 with an independent RMPS calculation at a mean absolute error of
-\SI{13.0}{\percent}. The agreement degrades smoothly with the upper shell
-rather than holding and then failing, and the factor 2--5 disagreement at $n=5$
-is localised to the top shell of the RMPS target basis by a test those data
-cannot perform on themselves. Substituting the RMPS rates wholesale moves the
+\SI{13.0}{\percent}, and the factor 2--5 disagreement at $n=5$ is localised to
+the top shell of the RMPS target basis (Section~\ref{sec:n5_anomaly}).
+Substituting the RMPS rates wholesale moves the
 timescale separation of Chapter~\ref{ch:theory} by \SI{11}{\percent}, carried
 by ground-state excitation and not by $n=5$. And \textbf{two
 implementation errors were found by audit and both were bounded}.
 
-What none of this has done is put the atoms in motion. We have $43 \times 43$
-rate coefficients and a feed term, and no idea what the system does with them.
-Chapter~\ref{ch:theory} assembles them into a single matrix equation, finds that
-the network runs on two clocks separated by four orders of magnitude, and asks
-the question this thesis was built to answer: whether the fast one is fast
-enough for the standard shortcut to be safe.
+What none of this has done is put the atoms in motion. Chapter~\ref{ch:theory}
+assembles the $43 \times 43$ rate coefficients and the feed term into a single
+matrix equation and asks whether its fast clock is fast enough for the standard
+shortcut to be safe.

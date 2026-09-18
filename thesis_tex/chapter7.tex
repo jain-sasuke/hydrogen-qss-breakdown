@@ -98,10 +98,9 @@ the size of the transient, leaving
   \label{eq:recipe}
 \end{equation}
 
-\noindent This repeats Eq.~\eqref{eq:eps_of_step}, and it is repeated because
-its function has changed. In Chapter~\ref{ch:results} it was the end of a
-derivation; here it is a procedure, and the reader supplies the third factor. It
-inherits that chapter's assumption that the ion population is a fixed reservoir
+\noindent This repeats Eq.~\eqref{eq:eps_of_step}, here as a procedure in which
+the reader supplies the third factor. It inherits from Chapter~\ref{ch:results}
+the assumption that the ion population is a fixed reservoir
 and that $\ngs$ is frozen for the duration of the event, which removes the
 freedom for ionisation balance to respond and is the condition
 Section~\ref{sec:transport} cannot test.
@@ -152,11 +151,10 @@ $\epsplat$ at the same points changes by up to a factor $8.44$. A percentage
 quoted without its step is not a property of the plasma; $G$ very nearly is.
 Both figures are direct reductions of
 \texttt{validation/reservoir\_gain/reservoir\_gain.csv} ($2288$ rows, stamped
-10 September 2026). Both aggregations are performed by
-\texttt{verify\_reservoir\_gain.py} and written to
-\texttt{validation/reservoir\_gain/reservoir\_gain\_summary.csv}, one row per
-filter, because the same quantity over a different filter is a different number
-and this is where the two used to be confused. The spread of $|G|$ is $1.039$ to
+10 September 2026) by \texttt{verify\_reservoir\_gain.py}, written to
+\texttt{validation/reservoir\_gain/reservoir\_gain\_summary.csv} one row per
+filter, because an earlier draft confused two filters and the same quantity over
+a different filter is a different number. The spread of $|G|$ is $1.039$ to
 $1.065$ over $368$ heating triples and $1.039$ to $1.067$ over $368$ cooling
 triples; the spread of $\epsplat$ over the same points is $2.27$ to $8.44$
 heating and $2.33$ to $4.70$ cooling.
@@ -183,25 +181,22 @@ than of any rate coefficient. Every property of the 42-state network enters only
 through $\Delta$. Since $|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$ everywhere,
 integrating over any excursion gives $|\Delta\ln\Robs| \le |\Delta\ln\bdep|$, so a
 reservoir left stale by a factor of two cannot put the line ratio out by more
-than a factor of two. A stale reservoir is attenuated in logarithmic space,
-never amplified. That protection holds for every shell pair, every
-$(\Te,\nel)$ and every atomic dataset, because the width of the logistic is
-unity whatever the rates are. The \emph{height} of the ceiling is not
-dataset-independent in the same way: it is $\tanh(|\Delta|/4)$, and $\Delta$ is
-built from rate coefficients. The ceiling is approached most closely where the
-error is largest: at $[23,3]$, one column into the crest, the measured
-sensitivity already sits at \SI{97}{\percent} of it
-(Section~\ref{sec:bound}). That is a statement about the headroom beneath the
-ceiling and not about where the ceiling sits, and the two must not be run
-together. Substituting an independent excitation dataset moves the ceiling
-while leaving the headroom nearly where it was, the median sensitivity falling
-from \SI{80.4}{\percent} to \SI{78.2}{\percent} of its own cap over the $338$
-heating pairs of the map (Sections~\ref{sec:atomic_propagation}
-and~\ref{sec:bound}). Substituting the ionisation data instead does the
-opposite, moving the sensitivity inside a cap that barely shifts. Running at
-\SI{97}{\percent} of the cap is therefore not an artefact of this rate set, but
-neither does it bound where a refinement would put the cap itself, and the two
-refinements this thesis can perform move the two quantities separately.
+than a factor of two. That protection holds for every shell pair, every
+$(\Te,\nel)$ and every atomic dataset; the \emph{height} of the ceiling does
+not, since it is $\tanh(|\Delta|/4)$ and $\Delta$ is built from rate
+coefficients. The ceiling is approached most closely where the error is largest:
+at $[23,3]$, one column into the crest, the measured sensitivity already sits at
+\SI{97}{\percent} of it (Section~\ref{sec:bound}). Substituting an independent
+excitation dataset moves the ceiling while leaving the headroom nearly where it
+was, the median sensitivity falling from \SI{80.4}{\percent} to
+\SI{78.2}{\percent} of its own cap over the $338$ heating pairs of the map
+(Sections~\ref{sec:atomic_propagation} and~\ref{sec:bound}). Substituting the
+ionisation data instead does the opposite, moving the sensitivity inside a cap
+that barely shifts. Running at \SI{97}{\percent} of the cap is therefore a
+statement about the headroom beneath the ceiling and not about where the ceiling
+sits: it is not an artefact of this rate set, but neither does it bound where a
+refinement would put the cap itself, and the two refinements this thesis can
+perform move the two quantities separately.
 
 \paragraph{The clock is $\tauslow$, and it is far too slow to average away.} The
 temptation is to assume that an error introduced by a fast disturbance decays
@@ -306,10 +301,8 @@ inside a zero-dimensional model.
 % established decades ago?
 %=============================================================================
 
-Section~\ref{sec:prior_work} set out what was already known before this work
-began. What follows is the narrower question of what may now be claimed that
-could not be claimed then, item by item, and it is deliberately smaller than the
-argument might suggest.
+Section~\ref{sec:prior_work} set out what was already known. What follows is
+what may now be claimed that could not be claimed then, item by item.
 
 \paragraph{The two-channel decomposition is not new and is not claimed.} That
 every excited population is exactly affine in the ground-state and ion
@@ -398,25 +391,19 @@ reservoir rather than a pool the levels compete for.
 \paragraph{Greenland stated the negative result in general form, twenty-five
 years ago.} That the validity criteria for a reduced CR model are conditions on
 eigenvectors rather than eigenvalues, and are not related to the equilibrium
-timescales, is Greenland's, in two papers of the same year and separately
-attributable \cite{Greenland2001a, Greenland2001b}. This work does not improve
-on either statement. It quantifies them for one diagnostic and maps where the
-criterion misleads: the $19.3\times$ separation of the two maxima inside the
-defended range, the sign reversal of the association once the operating point
-is controlled for, and the census of
-Section~\ref{sec:M_does_not_predict}. Turning a general criterion into
-a number is a smaller contribution than stating the criterion, and it is the one
-available here.
+timescales, is Greenland's \cite{Greenland2001a, Greenland2001b}; both
+statements are quoted in Section~\ref{sec:prior_work}. This work does not
+improve on either. It quantifies them for one diagnostic and maps where the
+criterion misleads (Section~\ref{sec:M_does_not_predict}; the separation of the
+two maxima and the sign of the residual association are in
+Section~\ref{sec:criterion}), which is a smaller contribution than stating the
+criterion.
 
 \paragraph{Sawada and Fujimoto asked the adjacent question and answered it
-first.} Their paper is titled, in part, for the validity range of the
-quasi-steady-state solution of the coupled rate equations
-\cite{SawadaFujimoto1994}, and it treats the same system: atomic hydrogen, a CR
-model, an abrupt change of conditions. What they established is which level
-controls the approach to steady state. In an ionising plasma the levels below
-Griem's boundary relax at their own natural lifetimes while those above relax at
-the rate of the boundary level, and in a recombining plasma the roles invert.
-Their answer is a clock internal to the excited manifold. The question here is
+first.} Section~\ref{sec:prior_work} set out their result for the same system,
+atomic hydrogen under an abrupt change of conditions: which level controls the
+approach to steady state \cite{SawadaFujimoto1994}. Their answer is a clock
+internal to the excited manifold. The question here is
 what a diagnostic inversion costs while the reservoir underneath that manifold
 has not settled, which is a different quantity governed by a clock four orders
 of magnitude slower, and which can be large at the very moment the excited-level
@@ -499,9 +486,8 @@ above \SI{2}{\electronvolt} satisfies $\tauesc > \tauslow$, at either
 \SI{36}{\percent} of the other $635$ analysed pairs do
 (Section~\ref{sec:transport_selection}). The selection is structural: a pair
 enters the census because $\tauslow$ is long, and a long $\tauslow$ is exactly the
-condition under which transport rather than ionisation sets $\ngs$. What
-follows is not that the magnitudes of Chapter~\ref{ch:results} are upper
-estimates. Section~\ref{sec:transport_partition} opens the reservoir to an
+condition under which transport rather than ionisation sets $\ngs$.
+Section~\ref{sec:transport_partition} opens the reservoir to an
 escape sink and a recycling source and finds that a fast-exchanging reservoir
 with a steady source freezes the closed-parcel error rather than removing it,
 and that a rising source enlarges it, the true error exceeding the
@@ -548,15 +534,14 @@ fractions cited there, driven through this thesis's atomic operator rather than
 computed from a matrix containing molecules, and it
 inherits every uncertainty in those fractions. An earlier draft of this chapter
 recorded the two chapters as contradicting each other on whether a bound could
-be constructed at all; Section~\ref{sec:molecules} constructs one, and this
-paragraph quotes it with the same caveats.
+be constructed at all; Section~\ref{sec:molecules} constructs one.
 
 \paragraph{The atomic-data figures are substitution sensitivities, not an
 uncertainty budget.} Two of the three input
 channels have been swapped for independent calculations and carried through to
 the observable: the excitation coefficients for R-matrix values, and the
-ionisation coefficients --- and with them the three-body recombination that
-detailed balance builds from them --- for Lotz. Together they move $\epsplat$
+ionisation coefficients, with the three-body recombination that detailed
+balance builds from them, for Lotz. Together they move $\epsplat$
 by \SI{15.5}{\percent} over the $448$ defended pairs and at most
 \SI{25.4}{\percent}, and $\Msep$ by \SI{11}{\percent}
 (Sections~\ref{sec:atomic_propagation} and~\ref{sec:bound}). Those figures are
@@ -585,7 +570,7 @@ $1.45$ to $\SI{1.95e13}{\per\cubic\centi\metre}$, a factor $1.35$
 (\texttt{validation/crest\_subgrid/}). The range is wide because of the rows
 this thesis excludes, not because the crest is poorly located where it is
 defended. It is also the $(3,4)$ shell pair's maximum and not the
-Balmer series' (Section~\ref{sec:ridge_conditional}).
+Balmer series' (Section~\ref{sec:error_maps}).
 
 %=============================================================================
 \section{What would settle what is open}
@@ -616,7 +601,7 @@ substitutions of Sections~\ref{sec:atomic_propagation} and~\ref{sec:bound}
 bound $\epsplat$ against independent data wherever independent data exist,
 which is $n\le5$ for excitation and $n\le9$ for ionisation. Above $n=9$ the
 model and the substitution both use Lotz, so the six shells whose feed is
-essentially all three-body are the shells with no independent check at all ---
+essentially all three-body are the shells with no independent check at all,
 and they are the shells where Section~\ref{sec:atomic_uncertainty} records Lotz
 exceeding CCC by a factor of four to eight, and where
 Chapter~\ref{ch:limits} finds the terminal shell over-populated by

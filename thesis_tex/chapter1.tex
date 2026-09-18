@@ -41,19 +41,15 @@ holds, and if not, by how much it is wrong and where.
 
 That is all this chapter does: put the reader in front of the spectrum, show
 where the table comes from, and expose the assumption buried inside it.
-Section~\ref{sec:divertor} explains what the region being measured is for and
-why a probe cannot be put into it. Section~\ref{sec:hydrogen_atom} builds the
-hydrogen atom and its spectrum from scratch, because everything downstream is a
-statement about two of its lines. Section~\ref{sec:spectrometer} says what the
-instrument records and what it does not. Section~\ref{sec:inversion} follows the
-chain from a measured ratio to a pair of plasma parameters.
+Sections~\ref{sec:divertor}, \ref{sec:hydrogen_atom}, \ref{sec:spectrometer}
+and~\ref{sec:inversion} follow the chain from the divertor, through the hydrogen
+atom and the spectrometer, to the inversion of a measured ratio.
 Section~\ref{sec:the_assumption} is the hinge: it identifies the quantity the
 table has eliminated and separates two approximations that are routinely
 confused with one another. Section~\ref{sec:transients} asks whether the plasma
-is ever in the state the table assumes. Section~\ref{sec:prior_work} says what
-is already known and by whom, which is more than one might guess.
-Section~\ref{sec:question} states the question this thesis answers and names the
-suspect it went looking for.
+is ever in the state the table assumes, Section~\ref{sec:prior_work} says what
+is already known and by whom, and Section~\ref{sec:question} states the question
+this thesis answers and names the suspect it went looking for.
 
 %-----------------------------------------------------------------------------
 \section{Why the divertor is hard}
@@ -199,11 +195,9 @@ Light has neither limitation, and one decisive advantage: it leaves the plasma b
 itself. A window, a fibre, a spectrometer and a detector make a measurement that
 touches nothing, perturbs nothing, and samples the emitting volume rather than
 the surface. Spectroscopy is therefore complementary to probe measurement rather
-than a replacement for it, and it is the only one of the two that reports on the
-recombining volume where a detached plasma does its interesting work. This is why
-hydrogen line emission is a workhorse divertor diagnostic, and why the chain of
-reasoning that converts photons into $\Te$ and $\nel$ carries so much weight. The
-next section builds the atom that emits them.
+than a replacement for it. This is why hydrogen line emission is a workhorse
+divertor diagnostic, and why the chain of reasoning that converts photons into
+$\Te$ and $\nel$ carries so much weight.
 
 %-----------------------------------------------------------------------------
 \section{Light from a hydrogen atom}
@@ -354,14 +348,11 @@ two lines of the same series from the same species. Only the \emph{relative}
 sensitivity of the detector at two nearby visible wavelengths is needed, which is
 a far easier measurement to make and to maintain.
 
-What survives is a pure ratio of two excited-state populations. That is the whole
-appeal of a line ratio, and it is why $\Robs$, rather than any single brightness,
-is the quantity a divertor spectroscopist works with. It is also where the burden
-of interpretation now sits. A line ratio contains no geometry and no absolute
+What survives is a pure ratio of two excited-state populations, which is why
+$\Robs$, rather than any single brightness, is the quantity a divertor
+spectroscopist works with. A line ratio contains no geometry and no absolute
 density, so every piece of physics in it is compressed into one question:
-\emph{what sets the ratio of the $n=3$ and $n=4$ populations?} The next section
-answers that with a model, and the section after it examines what the model had
-to assume.
+\emph{what sets the ratio of the $n=3$ and $n=4$ populations?}
 
 %-----------------------------------------------------------------------------
 \section{From a ratio to a temperature}
@@ -421,7 +412,7 @@ table's own assumption enters.
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\textwidth]{fig1_1_diagnostic_chain}
-  \caption{\CapFigDiagnosticChain}
+  \caption[Where the hidden assumption enters divertor spectroscopy]{\CapFigDiagnosticChain}
   \label{fig:diagnostic_chain}
 \end{figure}
 
@@ -576,12 +567,11 @@ measured ratio can correspond to more than one temperature is stated in
 operator, in Section~\ref{sec:inversion_jacobian}. Two routes to the same defect is
 better evidence than either alone.
 
-That closure is an assumption about the plasma, not a piece of atomic physics.
-
-It is important to say who is and is not being criticised, because the databases
-are not at fault. ADAS keeps the excitation-driven and recombination-driven
-coefficients separate precisely so that a user can weight them by the $\ngs$ and
-$\nion$ appropriate to the plasma in hand \cite{Summers2006}. The most careful
+That closure is an assumption about the plasma, not a piece of atomic physics,
+and the databases are not at fault. ADAS keeps the excitation-driven and
+recombination-driven coefficients separate precisely so that a user can weight
+them by the $\ngs$ and $\nion$ appropriate to the plasma in hand
+\cite{Summers2006}. The most careful
 divertor analyses do exactly that, and treat the neutral content as an unknown
 rather than a given: Verhaegh and co-workers, analysing Balmer emission from the
 divertor of the TCV tokamak, take the neutral fraction $\ngs/\nel$ to be a
@@ -694,16 +684,11 @@ not repeated here for that reason. Loarte \emph{et al.}~\cite{Loarte2003},
 which is the refereed extrapolation of ELM properties to ITER used above,
 extrapolates the ELM energy loss and the pulse duration and does not state a
 frequency at all; the word hertz does not appear in it. \textbf{Nothing in this
-thesis depends on the frequency.} What matters is the duration of one event
-against the plasma's own recovery time, and that is the comparison the next
-paragraph makes.
-
-The distinction matters for the argument. An ELM is not a gentle modulation that
-the plasma tracks quasi-statically; it is a step change delivered in a few
-hundred microseconds, after which the plasma is left to recover. The relevant
-question is therefore not how often the steps come but how long the recovery
-takes relative to a single step, and that is a question about the plasma's own
-internal clocks.
+thesis depends on the frequency.} An ELM is not a gentle modulation that the
+plasma tracks quasi-statically; it is a step change delivered in a few hundred
+microseconds, after which the plasma is left to recover. The relevant question is
+therefore not how often the steps come but how long the recovery takes relative
+to a single step, and that is a question about the plasma's own internal clocks.
 
 An ELM is not the only transient. The detachment front itself moves: as the
 neutral pressure in the divertor is raised, the ionisation region lifts off the
@@ -760,10 +745,8 @@ said so far, and it turns out not to be obvious at all.
 \emph{The question: how much of this is new, and how much has been known for
 decades?}
 
-This question has been asked before, in several forms, and it is better to be
-precise about what was established than to be told at an examination. The
-contribution of this thesis is narrower than the question it asks, and the
-narrowing is worth stating at the outset.
+This question has been asked before, in several forms, and the contribution of
+this thesis is narrower than the question it asks; the narrowing is stated here.
 
 \paragraph{The time-dependent hydrogen problem has been solved before, and the
 overlap is close enough to state plainly.} Sawada and Fujimoto studied exactly
@@ -933,9 +916,6 @@ Chapter~\ref{ch:limits} examines every one of those boundaries and quantifies
 what it costs, rather than listing them as caveats. A result stated without its
 scope is the characteristic failure of this subject, and it is not repeated here.
 
-Everything from this point on is construction. The section below says what each
-of the remaining chapters contributes to it.
-
 %-----------------------------------------------------------------------------
 \section{Outline of the thesis}
 \label{sec:outline}
@@ -943,48 +923,42 @@ of the remaining chapters contributes to it.
 
 \emph{The question: where does the argument go from here?}
 
-\textbf{Chapter~\ref{ch:atoms}, \emph{The Atoms}}, establishes the inputs. It
-describes everything that can happen to a hydrogen atom in a plasma and how fast
-each process runs, sets out the levels the model tracks and the reason orbital
-angular momentum is resolved for the lower ones and bundled above them, shows how
-a measured collision cross section becomes a rate coefficient, and gives the
-provenance and accuracy of every dataset used. It makes a structural argument for
-including a process the standard treatments often omit, and is explicit about
-where the atomic data are least secure.
+\textbf{Chapter~\ref{ch:atoms}, \emph{The Atoms}}, establishes the inputs: the
+processes and their rates, the levels tracked and why orbital angular momentum is
+resolved for the lower ones and bundled above them, how a measured cross section
+becomes a rate coefficient, the case for including a process the standard
+treatments often omit, and the provenance and accuracy of every dataset used,
+including where the atomic data are least secure.
 
-\textbf{Chapter~\ref{ch:theory}, \emph{Two Clocks}}, is the conceptual core. It
-assembles the CR rate equation from a population balance on each level, checks
-the assembly against particle conservation, and then diagonalises the rate matrix
-to expose the timescale structure the Boltzmann-factor argument of
-Section~\ref{sec:transients} anticipated: one very slow mode, the ground state,
-sitting far above a dense band of fast ones. It presents the QSS
-approximation as the Bodenstein approximation applied to that fast band, derives
-the exact dependence of $\Robs$ on the ground-state reservoir, and defines the two
-reference states and the two error measures the rest of the thesis keeps apart.
+\textbf{Chapter~\ref{ch:theory}, \emph{Two Clocks}}, assembles the CR rate
+equation from a population balance on each level, diagonalises the rate matrix to
+expose the timescale structure the Boltzmann-factor argument of
+Section~\ref{sec:transients} anticipated, presents the QSS approximation as the
+Bodenstein approximation applied to the fast band, derives the exact dependence
+of $\Robs$ on the ground-state reservoir, and defines the two reference states
+and the two error measures the rest of the thesis keeps apart.
 
-\textbf{Chapter~\ref{ch:validation}, \emph{Does the Model Work?}}, asks what a
-wrong model would fail, and then applies those tests: detailed balance, the
-coronal and LTE limits, the timescale hierarchy, and an external benchmark
-against independently published population coefficients. It also records the
-errors this project's own audit found, what each cost, and how each was caught.
+\textbf{Chapter~\ref{ch:validation}, \emph{Does the Model Work?}}, applies the
+tests a wrong model would fail, detailed balance, the coronal and LTE limits, the
+timescale hierarchy and an external benchmark against independently published
+population coefficients, and records the errors this project's own audit found,
+what each cost, and how each was caught.
 
 \textbf{Chapter~\ref{ch:results}, \emph{What the Model Says}}, reports the
-result: the relaxation in time, the size of each of the two errors, the mechanism
-that sets the larger one, a map of where in the $(\Te,\nel)$ plane it lives,
-whether it survives averaging over a transient event, and whether the standard
+relaxation in time, the size of each of the two errors, the mechanism that sets
+the larger one, a map of where in the $(\Te,\nel)$ plane it lives, whether it
+survives averaging over a transient event, and whether the standard
 timescale-separation criterion predicts any of it.
 
 \textbf{Chapter~\ref{ch:limits}, \emph{What This Model Cannot Say}}, bounds the
 claim: optical thickness, molecular channels, the truncation of the level
-manifold, the fixed ion reservoir, and the remaining assumptions, with each
-consequence quantified where quantification is possible and stated as open where
-it is not.
+manifold, the fixed ion reservoir and the remaining assumptions, each quantified
+where quantification is possible and stated as open where it is not.
 
 \textbf{Chapter~\ref{ch:conclusions}} states the criterion in a form another
 modeller can apply to their own rate matrix, says where in the divertor operating
 range a $(\Te,\nel)$ inversion should be distrusted, and sets out what a
 time-dependent inversion would require.
 
-The argument begins with the atoms. Before anything can be said about how fast
-the populations change, we need to know what the processes are and how well their
-rates are known, which is where Chapter~\ref{ch:atoms} starts.
+The argument begins with the atoms, and with how well their rates are known, in
+Chapter~\ref{ch:atoms}.

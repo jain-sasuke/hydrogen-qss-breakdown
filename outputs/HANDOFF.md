@@ -26,9 +26,15 @@ but will break if anyone claims the old name. Fix with
 It is still **PUBLIC**: `refs/` and `data/processed/**/*.npy` are gitignored and
 must stay that way.
 
-**Current state (16 Sep 2026, evening): 202 pages, 0 LaTeX errors, 0 undefined
+**Current state (18 Sep 2026): 218 pages, 0 LaTeX errors, 0 undefined
 references, 0 undefined citations, BibTeX clean, 0 em dashes in live prose,
-66 bib entries, 57 overfull boxes.**
+66 bib entries.**
+
+**Page counts need a converged build.** A single `latexmk` invocation can stop
+before the page numbers settle, and the count was reported as 202 for most of
+16 Sep on exactly that mistake; the committed PDF from that day was under-run.
+Run `latexmk` twice and confirm the last `.toc` entry's printed page is
+consistent with `pypdf`'s count before quoting a number.
 Markers: **1** `\todo` (the front-matter personalise note only), 0
 `[UNVERIFIED]`, 0 `[SOURCE REQUIRED]`, 1 `[MECHANISM NOT ESTABLISHED]`
 (`chapter5.tex`, the ridge-gain mechanism), 0 `[KEY REQUIRED]`.

@@ -197,8 +197,10 @@ depth. A deuterium cross-section with the full-path depth also returns $105$
 and $26$, since the isotope mass enters the width as the same $\sqrt{2}$, so
 the two errors are indistinguishable from the counts alone. All seven
 conventions are tabulated in \texttt{validation/lyman\_optical\_depth/}.
-Nothing in the defended range depends on the choice: every crossing lies below
-\SI{2}{\electronvolt} except two, both at $D = \SI{20}{\centi\metre}$.
+Nothing in the defended range depends on the choice of width convention: with
+the absorbing atoms at $\Te$, every crossing lies below \SI{2}{\electronvolt}
+except two, both at $D = \SI{20}{\centi\metre}$; colder atoms move the
+crossings upward, and Section~\ref{sec:scope} gives by how much.
 
 \subsection{What we expected trapping to do, and what it did}
 
@@ -377,8 +379,9 @@ That result cuts in the mechanism's favour, which is worth saying explicitly
 because it is easy to miss. The ridge attribution of
 Section~\ref{sec:mechanism} was verified over $\Te \ge \SI{2}{\electronvolt}$,
 and $\Te \ge \SI{2}{\electronvolt}$ is precisely the range in which trapping has
-now been shown to be irrelevant. The agreement with Griem's boundary criterion
-is therefore not an artifact of neglected opacity; it was established where
+now been shown not to move the defended census within the tested escape-factor
+model ($D = 1$ to \SI{20}{\centi\metre}, $\Tn = \Te$). The agreement with
+Griem's boundary criterion is therefore not an artifact of neglected opacity; it was established where
 opacity does not act.
 
 \subsection{A contradiction resolved, and what is still open}
@@ -407,7 +410,12 @@ centre. A $0$-D model cannot check any of those. One assumption inside it
 atoms, which sets the Doppler width. Fixing it at \SI{3}{\electronvolt}, the
 value a molecule dissociating by the Franck--Condon process would give, instead
 of at $\Te$, changes the census at $D = \SI{5}{\centi\metre}$ from $170/680$ and
-a worst case of $0.2550$ to $173/680$ and $0.2653$. Continuum lowering is
+a worst case of $0.2550$ to $173/680$ and $0.2653$; fixing it at
+\SI{0.5}{\electronvolt}, colder atoms returning from a surface, changes them to
+$166/680$ and $0.2443$; above \SI{2}{\electronvolt} the count is $45$ of $448$
+under all three, with the worst case moving from $0.1746$ to $0.1744$
+(\texttt{verify\_lyman\_trapping.py}, \texttt{validation/lyman\_trapping\_tat3/}
+and \texttt{\ldots\_tat05/}). Continuum lowering is
 untouched here and remains open. Opacity in the Balmer lines themselves, which
 would act on the observed ratio directly rather than through the level
 populations, has been computed: the largest $H_\alpha$ optical depth above
@@ -461,7 +469,8 @@ do carry the result, and gets a worse answer.
 
 \begin{quote}
 \textbf{In a divertor, the ground-state neutral density at a given point is not
-set by local ionisation balance. It is set by recycling.}
+set by local ionisation balance alone. It is set by recycling and transport
+together with the local atomic and molecular reactions.}
 \end{quote}
 
 \subsection{Why this bears on the result specifically}
@@ -473,10 +482,13 @@ that belongs to the old conditions, and the lookup table, which assumes the
 reservoir finished settling, reads the wrong answer. Everything hangs on the
 reservoir not being refreshed.
 
-Neutral transport refreshes it. Any process that replaces the ground-state
-population on a timescale shorter than $\tauslow$ resets the staleness, and this
-model contains no such process; the \SI{26}{\micro\second} renewal threshold
-quoted above is the map's own measure of how fast that process would have to be.
+Neutral transport takes the reservoir's history out of the local balance. Any
+process that replaces the ground-state population on a timescale shorter than
+$\tauslow$ makes $u(t)$ something this model does not compute, and whether the
+error then shrinks or grows depends on what the influx supplies
+(Section~\ref{sec:transport_partition}); this model contains no such process,
+and the \SI{26}{\micro\second} renewal threshold quoted above is the map's own
+measure of how fast one would have to be to matter.
 
 \subsection{The assumption fails hardest where the result is generated}
 \label{sec:transport_selection}
@@ -559,19 +571,21 @@ The finding above is about magnitudes; it does not touch the algebra.
 Eq.~\eqref{eq:two_supplies}, exact to a relative residual of
 $3.075\times10^{-14}$; the unit-width logistic form of the ground-fed fraction;
 the bound $\max|f_3-f_4| = \tanh(|\Delta|/4)$ and its corollary
-$|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$; the sensitivity map
-$\overline{S}$; and the accuracy of the excited-state closure,
-$6.73\times10^{-9}$ at the worst point. These are properties of the operator
+$|\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep| < 1$; and the accuracy of the
+excited-state closure, $6.73\times10^{-9}$ at the worst point. These are properties of the operator
 $\Lmat(\Te,\nel)$ at a fixed operating point, or theorems about its structure.
-$\overline{S}$ says how the line ratio responds to whatever the reservoir does;
-it is silent on what made the reservoir do it. Transport changes the reservoir's
-history and cannot reach any of them.
+The function $f_3(u)-f_4(u)$ says how the line ratio responds to whatever the
+reservoir does; where on that function the plasma sits is the reservoir's
+business, not the operator's. Transport changes the reservoir's history and
+cannot reach any of them.
 
 \textbf{Conditional on the closed parcel.} The reservoir gain $G$, which is
 a secant along the CRE curve and therefore assumes the ground
 state responds through collisional--radiative balance alone; $\epsplat$, which
-is built from it; the breakdown census; and every time-averaged magnitude in
-Chapter~\ref{ch:results}. If recycling renews $\ngs$ on a timescale shorter than
+is built from it; the breakdown census; the sensitivity map $\overline{S}$ and
+the ridge location, both evaluated at the CRE operating point
+$u^{\mathrm{CRE}}$ that transport can move (Section~\ref{sec:ridge_conditional});
+and every time-averaged magnitude in Chapter~\ref{ch:results}. If recycling renews $\ngs$ on a timescale shorter than
 $\tauslow$, $G$ is not the gain the plasma has. These numbers are not upper
 estimates. A fast-exchanging reservoir with a steady source freezes the
 closed-parcel error rather than removing it, and a rising source enlarges it: over
@@ -582,8 +596,9 @@ magnitude conditional on the reservoir's history, not a bound on it.
 
 The thesis therefore leads with the structure and the bound and reports the
 magnitudes as conditional; Section~\ref{sec:transport_selection} adds that the
-condition is measured to fail at the points that matter, by one to two orders
-of magnitude.
+condition is measured to fail at the points that matter, with
+$\tauesc/\tauslow$ between $2.5\times10^{-4}$ and $0.64$ over the $45$ pairs at
+both scale lengths (Table~\ref{tab:transport_selection}).
 
 \subsection{The claim, restated as the conditional it is}
 
@@ -591,16 +606,21 @@ The honest form is therefore not a caveat but a conditional, and it should be
 written this way wherever the number appears:
 
 \begin{quote}
-\emph{If} the ground-state neutral density is frozen for the duration of the
-event, the error is as computed.
+\emph{If} the reservoir history $u(t)$ follows the local zero-dimensional
+collisional--radiative dynamics used here, with no external influx, the error
+is as computed; during the fast-stage plateau specifically, $\ngs$ is frozen to
+within the closure residual.
 \end{quote}
 
-That conditional is close to exactly true for the excited manifold, which
-equilibrates in nanoseconds, and it is the standard implicit assumption of every
+The frozen-reservoir part is exact for the plateau, because the excited manifold
+equilibrates in nanoseconds while the reservoir has not yet moved, and the whole
+conditional is the standard implicit assumption of every
 $0$-D collisional--radiative table in use, the object this thesis set out to
 test. But it is an assumption about the plasma, not about the atoms, and no
 eigenvalue analysis inside a $0$-D matrix can validate it: the two timescales
-are measured to differ by four orders of magnitude and assumed not to interact.
+are measured to differ by a ratio $\tauesc/\tauslow$ between $2.5\times10^{-4}$ and $0.64$ over the
+defended breakdown pairs and by $3.2\times10^{3}$ at the cold worst point
+(Section~\ref{sec:limits_summary}), and are assumed not to interact.
 What would settle it is a two-region or transport-coupled calculation, an edge
 code such as SOLPS (Scrape-Off Layer Plasma Simulation) supplying $\ngs$ from a
 recycling influx; that is outside the scope of this thesis and is named in
@@ -665,15 +685,19 @@ stated.
 The \emph{numerical} cold-edge results are atomic-model results and nothing
 more. Adding a third supply channel that feeds $n=3$ preferentially would change
 $\ffrac{3}-\ffrac{4}$, and could plausibly change it a great deal; this work
-offers no direct calculation of how much. A bound can nonetheless be
-constructed, from the emissivity fractions cited in this section. For a given
+offers no direct calculation of how much. A sensitivity scenario can
+nonetheless be constructed by imposing the emissivity fractions cited in this
+section. For a given
 upper level the molecular fraction of the emissivity equals the molecular
 fraction of the population, because both channels emit through the same
 transition probability, and molecular-assisted recombination bypasses the ground
 state entirely, so it dilutes the ground-fed fraction as
-$\ffrac{p} \to \ffrac{p}(1-\phi_p)$. Taking $\phi_3 = 0.60$ and $\phi_4 = 0.30$
-from the reported \SIrange{60}{70}{\percent} of $\mathrm{D}\alpha$ and
-\SIrange{10}{20}{\percent} of $\mathrm{D}\gamma$, the difference of ground-fed
+$\ffrac{p} \to \ffrac{p}(1-\phi_p)$. Taking $\phi_3 = 0.60$ from the reported
+\SIrange{60}{70}{\percent} of $\mathrm{D}\alpha$, and $\phi_4 = 0.30$ as a
+chosen value, since the sources report no $n=4$ fraction, the $\mathrm{D}\gamma$
+\SIrange{10}{20}{\percent} belongs to $n=5$, and an $n=3$ source alone at
+$\phi_3 = 0.60$ already puts $0.216$ into $n=4$ on this operator
+(\texttt{validation/molecular\_channel/}), the difference of ground-fed
 fractions at the cold corner falls from $0.4866$ to $0.1088$ and at the density
 crest from $0.4580$ to $0.0998$, and the secant sensitivity $\overline{S}$
 falls with it, from $0.4822$ to $0.0903$ and from $0.4552$ to $0.0903$.
@@ -708,18 +732,24 @@ molecular channel strong enough cancels the diagnostic's sensitivity to the
 reservoir rather than merely reducing it, and past the cancellation the error
 returns.
 
-The bound is crude, it inherits every uncertainty in the quoted fractions, and
-it applies only where those fractions do.
+The scenario is crude, it inherits every uncertainty in the quoted fractions,
+it applies only where those fractions do, and it holds the transient fixed: a
+molecular reservoir would also move $u(t)$ and $\nion(t)$, which an imposed
+source cannot.
 
 The \emph{structural} results, the list of Section~\ref{sec:transport_partition},
-are theorems about whatever matrix $\Lmat$ is supplied and hold for one
-containing molecular states; what such a matrix changes is the numerical value
-of the ingredients, not the form of the result.
+are theorems about whatever matrix $\Lmat$ is supplied, and they hold for one
+containing molecular states fed from the same two reservoirs, which changes the
+numerical value of the ingredients and not the form of the result. They do not
+hold for molecular hydrogen as a third independent reservoir: the observable
+then depends on two reservoir coordinates, $u$ and $n_{\mathrm{H}_2}/\nion$, the
+logistic form in $u$ survives only at a fixed value of the second, and the error
+depends on two histories rather than one (Section~\ref{sec:further_work}).
 
 What is \emph{not} available is a calculation with molecules in it: the factors
 above are the model's own operator driven by an imposed source of the published
 strength, not a solution of a matrix containing molecular states. This is an
-atomic model, its cold-edge numbers are atomic-model numbers, and the bound
+atomic model, its cold-edge numbers are atomic-model numbers, and the scenario
 above is an estimate of how wrong they are rather than a correction to them.
 
 %-----------------------------------------------------------------------------
@@ -757,7 +787,8 @@ $\ffrac{p} = a_1 n_g/(a_0 + a_1 n_g)$, where $n_g$ is the ground-state density
 feeding the excitation channel and $a_0$, $a_1$ are the network responses of
 Section~\ref{sec:R_depends_on_b}. Scaling $n_g$ is therefore an exact operation
 on the ridge, not an approximation to one. Doing it, at
-$\Te = \SI{2.02}{\electronvolt}$:
+$\Te = \SI{2.02}{\electronvolt}$ (\texttt{verify\_ng\_scaling.py},
+\texttt{validation/ng\_scaling/}):
 
 \begin{center}
 \begin{tabular}{lr}
@@ -765,9 +796,9 @@ $\Te = \SI{2.02}{\electronvolt}$:
   $\ngs$ scaling & density at which $|\ffrac{3}-\ffrac{4}|$ peaks \\
   \midrule
   $\times 0.01$ & $\le 10^{12}\,\si{\per\cubic\centi\metre}$ (off grid) \\
-  $\times 0.1$  & $2.28\times10^{12}\,\si{\per\cubic\centi\metre}$ \\
-  $\times 1$ (the model's own CRE value) & $1.68\times10^{13}\,\si{\per\cubic\centi\metre}$ \\
-  $\times 10$   & $2.48\times10^{14}\,\si{\per\cubic\centi\metre}$ \\
+  $\times 0.1$  & $2.30\times10^{12}\,\si{\per\cubic\centi\metre}$ \\
+  $\times 1$ (the model's own CRE value) & $1.70\times10^{13}\,\si{\per\cubic\centi\metre}$ \\
+  $\times 10$   & $2.50\times10^{14}\,\si{\per\cubic\centi\metre}$ \\
   $\times 100$  & $\ge 10^{15}\,\si{\per\cubic\centi\metre}$ (off grid) \\
   \bottomrule
 \end{tabular}
@@ -776,7 +807,10 @@ $\Te = \SI{2.02}{\electronvolt}$:
 \noindent \textbf{One decade in the assumed neutral density moves the ridge by
 roughly one decade in electron density.} The response is close to
 proportional, and the whole three-decade span of the density grid is traversed
-by a two-decade change in $\ngs$.
+by a two-decade change in $\ngs$. An earlier draft quoted $2.28\times10^{12}$,
+$1.68\times10^{13}$ and $2.48\times10^{14}$ from a record with no producing
+script; the stamped scan, the operator at $[15,j]$ with its own CRE $\ngs$
+scaled, gives the values in the table, about \SI{1}{\percent} higher.
 
 The agreement with Griem's criterion at unit scaling, $1.93\times10^{13}$
 measured against $2.05\times10^{13}\,\si{\per\cubic\centi\metre}$ predicted, is
@@ -841,17 +875,19 @@ genuinely is volume 62.
 
 The honest statement is uncomfortable and should be made anyway. \textbf{The
 structure this work found is real and reproducible, and it sits at a density
-this thesis cannot identify with any named region of a tokamak.} It is not
-detachment; it is not the upstream separatrix; and calling it either would be a
-claim about edge transport that a $0$-D atomic model cannot support. The ridge
+this thesis cannot identify with any named region of a tokamak.} The model does
+not identify it with detachment or with the upstream separatrix, and calling it
+either would be a claim about edge transport that a $0$-D atomic model cannot
+support. The ridge
 is a property of how two shells of hydrogen divide their supply. It needs no
 divertor geometry to produce it, and it acquires none by being described in one.
 
 The ridge and the detached band do not overlap: restricted to
 $\Te \ge \SI{2}{\electronvolt}$ and $\nel \ge 10^{14}\,\si{\per\cubic\centi\metre}$
 the census is $0$ of $108$ with a worst estimate of \SI{7.2}{\percent}
-(Table~\ref{tab:trapping_census}), so where the diagnostic is most used the
-transient error is real but modest.
+(Table~\ref{tab:trapping_census}), so within the closed-reservoir atomic model,
+at the densities where the diagnostic is most used, no tested case reaches the
+threshold.
 
 %-----------------------------------------------------------------------------
 \section{The open boundary: an attack that was expected to be fatal}
@@ -1184,6 +1220,9 @@ proton-impact $\ell$-mixing rates of Section~\ref{sec:lmixing} are evaluated at
 an ion temperature equal to the electron temperature. In a detaching divertor
 the ions are frequently colder than the electrons. Not tested here.
 
+Both limit the transfer of the magnitudes to a divertor, not the two-channel
+structure, which holds for any rate set.
+
 \paragraph{The step is instantaneous: tested, and safe for a reason that is
 easy to get wrong.} The error maps impose a sudden temperature step, whereas a
 real ELM has a finite rise time. The tempting ratio
@@ -1271,9 +1310,12 @@ That is a rate-generation exercise, not an analysis one.
 
 \paragraph{3. The ground-state population is solved for, not supplied.} Every
 magnitude in Chapter~\ref{ch:results} is conditional on $\ngs$ coming from
-$\Lmat\nvec + \Svec\nion = 0$; in a divertor it is set by recycling, on a
-transport timescale four orders of magnitude shorter than the local ionisation
-balance (Section~\ref{sec:transport}). The open-boundary test of
+$\Lmat\nvec + \Svec\nion = 0$; in a divertor it is set by recycling and
+transport, on a timescale shorter than the local ionisation balance with
+$\tauesc/\tauslow$ between $2.5\times10^{-4}$ and $0.64$ over the $45$ defended
+breakdown pairs, median $0.0079$ at $L = \SI{10}{\centi\metre}$, and by $3.2\times10^{3}$ at the
+cold worst point, while at the benchmark transport is the slower of the two, at
+$3.6$ (Section~\ref{sec:transport}). The open-boundary test of
 Section~\ref{sec:attacks} bounds the sensitivity without removing the
 conditional, and what would settle it is stated in Section~\ref{sec:transport}.
 
@@ -1315,7 +1357,8 @@ It cannot say what a real divertor does, because recycling renews the
 ground-state population there on a transport timescale the model does not
 contain: \SI{72}{\micro\second} against \SI{233}{\milli\second} at the worst
 point, a factor $3.2\times10^{3}$, below the scope boundary; inside the defended
-range one to three orders rather than four, with a median $\tauesc/\tauslow$ of
+range $\tauesc/\tauslow$ runs from $2.5\times10^{-4}$ to $0.64$ over the $45$
+defended breakdown pairs, with a median $\tauesc/\tauslow$ of
 $0.0079$ over the $45$ defended pairs (Table~\ref{tab:transport_selection}); and
 $3.6$ at the benchmark, where transport is the \emph{slower} of the two.
 
@@ -1325,7 +1368,7 @@ in $\Lmat$.
 
 It cannot name the density at which its own ridge sits as a region of a tokamak.
 The ridge falls between the modelled upstream separatrix and the detached
-divertor band, and belongs to neither.
+divertor band, and cannot be assigned to either by this model.
 
 And it cannot establish the absolute normalisation of its ground-fed
 population coefficient against an independent calculation: $r_1$ sits a factor
@@ -1344,17 +1387,21 @@ points out of $680$ and the worst case by one part in $325$; the factor $2300$
 that would have refuted the result at the cold corner measures $15$, and at the
 ridge the factor required is $20$ against a measured $1.01$
 (Section~\ref{sec:attacks}). The ridge mechanism was verified over
-$\Te \ge \SI{2}{\electronvolt}$, where trapping is now shown to be irrelevant,
-so the agreement with Griem's boundary criterion is not an artifact of neglected
-opacity. At citable divertor densities above \SI{2}{\electronvolt} the
+$\Te \ge \SI{2}{\electronvolt}$, where trapping is now shown not to move the
+defended census within the tested escape-factor model ($D = 1$ to
+\SI{20}{\centi\metre}, $\Tn = \Te$), so the agreement with Griem's boundary
+criterion is not an artifact of neglected opacity. At citable divertor densities above \SI{2}{\electronvolt} the
 \SI{100}{\micro\second} time-averaged error never reaches \SI{10}{\percent} over
 $108$ points, worst case \SI{7.2}{\percent} (Section~\ref{sec:not_detachment}).
 
 \subsection{The bridge}
 
 The pattern is consistent, and it is why this chapter is not an apology. Every
-objection that could be computed inside a $0$-D atomic model was computed, and
-the defensible claim came through all of them with its numbers unchanged. The
+objection that could be computed inside a $0$-D atomic model was computed. The
+structural result and its bound came through unchanged; the census numbers came
+through as conditional magnitudes, unchanged under Lyman trapping and under the
+closed boundary, and shown by Section~\ref{sec:transport_selection} to rest on a
+reservoir history the model does not supply at the points that carry them. The
 objections that remain, neutral transport and molecular chemistry, are the
 ones that cannot be computed inside a $0$-D atomic model at all, and they have
 been stated as conditionals rather than dissolved into caveats.

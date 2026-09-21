@@ -101,8 +101,10 @@ the size of the transient, leaving
 \noindent This repeats Eq.~\eqref{eq:eps_of_step}, here as a procedure in which
 the reader supplies the third factor. It inherits from Chapter~\ref{ch:results}
 the assumption that the ion population is a fixed reservoir
-and that $\ngs$ is frozen for the duration of the event, which removes the
-freedom for ionisation balance to respond and is the condition
+and that the ground-state history $u(t)$ follows the local zero-dimensional
+collisional--radiative dynamics with no external influx, so that during the
+fast-stage plateau $\ngs$ is frozen to within the closure residual; this leaves
+the reservoir no supply from outside the parcel and is the condition
 Section~\ref{sec:transport} cannot test.
 
 Both structural factors are dimensionless. The mean sensitivity $\overline{S}$
@@ -292,9 +294,11 @@ the two-parameter inversion has been carried through the table.
 
 \paragraph{What does not follow.} None of the above licenses a claim about a
 particular machine. Every number in this section is conditional on the
-ground-state neutral density being frozen for the duration of the event, which
-is the conditional Section~\ref{sec:transport} states and cannot test from
-inside a zero-dimensional model.
+ground-state history $u(t)$ following the local zero-dimensional
+collisional--radiative dynamics with no external influx, with $\ngs$ frozen
+during the fast-stage plateau, which is the conditional
+Section~\ref{sec:transport} states and cannot test from inside a
+zero-dimensional model.
 
 %=============================================================================
 \section{What is new, at the smallest size that is defensible}
@@ -613,8 +617,10 @@ the last gap in the atomic-data bound and test whether those two observations
 are the same one. As it stands the link between them remains a hypothesis.
 
 \paragraph{A two-region or transport-coupled calculation.} The single conditional
-on which all of Section~\ref{sec:criterion} rests is that $\ngs$ is frozen for
-the duration of the event. Deciding it requires $\ngs$ to be supplied by a
+on which all of Section~\ref{sec:criterion} rests is that the reservoir history
+$u(t)$ follows the local zero-dimensional collisional--radiative dynamics with
+no external influx, so that $\ngs$ is frozen during the fast-stage plateau.
+Deciding it requires $\ngs$ to be supplied by a
 recycling influx from an edge transport calculation rather than solved for from
 $\Lmat\nvec + \Svec\nion = 0$, which is a different class of calculation and
 not a refinement of this one. It is the item that would convert the result from

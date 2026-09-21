@@ -1,0 +1,71 @@
+# generated 2026-09-21 21:58 by verify_tn_boundary.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65  (data/processed/collisions/K_exc_full/state_index.csv)
+# lyman_optical_depth.csv         sha256 8d427ec032806600625d29ee82e502c4bce365b5791b52c88197792145f38824
+# lyman_optical_depth_summary.csv sha256 f3408efb7d214cf970f65465dc9d06ff58c0e9dc15a038fdf0b30662d83c0cf7
+# divertor_map.csv                sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# functions imported from verify_lyman_optical_depth.py: sigma0_independent, crossing, read_divertor_map, digits_agree; constants M_H, T_N_FIXED = 3
+item,quantity,value,recorded,source,status
+G2,worst rel sigma_0 rebuild vs module,0,,computed,PASSED
+G1,"kappa_0 (T_n=Te) [0,4] per cm",80.29430015,80.3,chapter6.tex table,REPRODUCED (3 digits)
+G1,"kappa_0 (T_n=Te) [3,4] per cm",10.64025742,10.6,chapter6.tex table,REPRODUCED (3 digits)
+G1,"kappa_0 (T_n=Te) [10,4] per cm",0.2243978792,0.224,chapter6.tex table,REPRODUCED (3 digits)
+G1,"kappa_0 (T_n=Te) [15,4] per cm",0.02546756842,0.0255,chapter6.tex table,REPRODUCED (3 digits)
+G1,"kappa_0 (T_n=Te) [23,4] per cm",0.001631697715,0.00163,chapter6.tex table,REPRODUCED (3 digits)
+G1,worst rel vs stamped csv n1s_cm3,4.135775656e-11,,lyman_optical_depth.csv,
+G1,worst rel vs stamped csv sigma0_H_cm2,2.471760577e-11,,lyman_optical_depth.csv,
+G1,worst rel vs stamped csv kappa0_H,4.300618518e-11,,lyman_optical_depth.csv,
+G3,worst rel vs stamped csv kappa0_Tn3,4.427338452e-11,,lyman_optical_depth.csv,
+G1,worst rel vs stamped csv tau_half_H_1cm,4.447477225e-11,,lyman_optical_depth.csv,
+G3,worst rel vs stamped csv tau_half_Tn3_1cm,4.565545072e-11,,lyman_optical_depth.csv,
+G1,worst rel vs stamped csv tau_half_H_5cm,4.592216e-11,,lyman_optical_depth.csv,
+G3,worst rel vs stamped csv tau_half_Tn3_5cm,4.242396397e-11,,lyman_optical_depth.csv,
+G1,worst rel vs stamped csv tau_half_H_20cm,4.300616177e-11,,lyman_optical_depth.csv,
+G3,worst rel vs stamped csv tau_half_Tn3_20cm,4.427342541e-11,,lyman_optical_depth.csv,
+G1,max |dTe| T_n=Te boundary D=1 vs stamped,4.121593275e-05,,lyman_optical_depth_summary.csv,
+G1,max |dTe| T_n=Te boundary D=5 vs stamped,4.88151618e-05,,lyman_optical_depth_summary.csv,
+G1,max |dTe| T_n=Te boundary D=20 vs stamped,4.921661235e-05,,lyman_optical_depth_summary.csv,
+G3,census T_n=3eV n(tau_half(5cm)>1),78,78,lyman_optical_depth_summary.csv,REPRODUCED
+G3,census T_n=3eV n(tau_half(5cm)>100),12,12,lyman_optical_depth_summary.csv,REPRODUCED
+P1,kappa_0 factor 3eV vs Te at 2 eV exactly,0.8164965809,,computed,
+P1,kappa_0 factor 3eV vs Te at grid row 15,0.8212976821,,computed,
+P1,kappa_0 factor 1eV vs Te at 2 eV exactly,1.414213562,,computed,
+P1,kappa_0 factor 1eV vs Te at grid row 15,1.422529313,,computed,
+P1,kappa_0 factor 0.5eV vs Te at 2 eV exactly,2,,computed,
+P1,kappa_0 factor 0.5eV vs Te at grid row 15,2.011760248,,computed,
+P1,worst |ratio/sqrt(Te/Tn)-1|,6.661338148e-16,,computed,PASSED
+R1,crossings above 2 eV Te D=1,0,,computed,
+R1,crossings above 2 eV Te D=5,0,,computed,
+R1,crossings above 2 eV Te D=20,2,,computed,
+R1,crossings above 2 eV Te total,2,2,chapter 5 sec:optical_depth,REPRODUCED
+R1,crossings above 2 eV 3eV D=1,0,,computed,
+R1,crossings above 2 eV 3eV D=5,0,,computed,
+R1,crossings above 2 eV 3eV D=20,2,,computed,
+R1,crossings above 2 eV 3eV total,2,,computed,
+R1,crossings above 2 eV 1eV D=1,0,,computed,
+R1,crossings above 2 eV 1eV D=5,1,,computed,
+R1,crossings above 2 eV 1eV D=20,2,,computed,
+R1,crossings above 2 eV 1eV total,3,,computed,
+R1,crossings above 2 eV 0.5eV D=1,0,,computed,
+R1,crossings above 2 eV 0.5eV D=5,1,,computed,
+R1,crossings above 2 eV 0.5eV D=20,3,,computed,
+R1,crossings above 2 eV 0.5eV total,4,,computed,
+R1,largest |boundary shift| [eV],0.2883502677,,D=20 0.5eV j=7,
+R1,D=5 boundary max Te Te [eV],1.984037972,,computed,
+R1,hottest crossing over all D Te [eV],2.356383659,,computed,
+R1,D=5 boundary max Te 3eV [eV],1.934259028,,computed,
+R1,hottest crossing over all D 3eV [eV],2.316410795,,computed,
+R1,D=5 boundary max Te 1eV [eV],2.071216943,,computed,
+R1,hottest crossing over all D 1eV [eV],2.508453516,,computed,
+R1,D=5 boundary max Te 0.5eV [eV],2.166824631,,computed,
+R1,hottest crossing over all D 0.5eV [eV],2.644733927,,computed,
+R2,thin census Te n(tau_half(5cm)>1),85,85,computed,REPRODUCED
+R2,thin census Te n(tau_half(5cm)>100),15,15,computed,REPRODUCED
+R2,thin census 3eV n(tau_half(5cm)>1),78,,computed,
+R2,thin census 3eV n(tau_half(5cm)>100),12,,computed,
+R2,thin census 1eV n(tau_half(5cm)>1),90,,computed,
+R2,thin census 1eV n(tau_half(5cm)>100),17,,computed,
+R2,thin census 0.5eV n(tau_half(5cm)>1),98,,computed,
+R2,thin census 0.5eV n(tau_half(5cm)>100),19,,computed,

@@ -1,0 +1,180 @@
+# generated 2026-09-21 21:58 by verify_tn_boundary.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65  (data/processed/collisions/K_exc_full/state_index.csv)
+# lyman_optical_depth.csv         sha256 8d427ec032806600625d29ee82e502c4bce365b5791b52c88197792145f38824
+# lyman_optical_depth_summary.csv sha256 f3408efb7d214cf970f65465dc9d06ff58c0e9dc15a038fdf0b30662d83c0cf7
+# divertor_map.csv                sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# functions imported from verify_lyman_optical_depth.py: sigma0_independent, crossing, read_divertor_map, digits_agree; constants M_H, T_N_FIXED = 3
+==============================================================================
+NEUTRAL-TEMPERATURE SENSITIVITY OF THE LYMAN-ALPHA tau_half = 1 BOUNDARY
+==============================================================================
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  S_grid         : (50, 8, 43)
+  conventions    : T_n = Te, T_n = 3 eV, T_n = 1 eV, T_n = 0.5 eV
+  slabs D [cm]   : [1.0, 5.0, 20.0]   (tau_half = kappa_0 D/2)
+  Te grid spacing: ln(Te[i+1]/Te[i]) = 0.04699 (min) to 0.04699 (max)
+
+  validation/lyman_optical_depth/lyman_optical_depth.csv: header carries live L/S/state_index hashes [checked], 400 rows
+  validation/lyman_optical_depth/lyman_optical_depth_summary.csv: header carries live hashes [checked], 63 rows
+  validation/divertor_map/divertor_map.csv: header carries live hashes [checked], 784 rows
+
+==============================================================================
+G2  sigma0_independent(T) vs escape_factor.lyman_alpha_sigma0(T)
+==============================================================================
+  worst relative difference over 50 grid Te and 0.5, 1, 3 eV: 0.00e+00
+  G2 PASSED
+    sigma_0(0.5 eV) = 7.741035e-14 cm^2
+    sigma_0(1 eV) = 5.473738e-14 cm^2
+    sigma_0(2 eV) = 3.870518e-14 cm^2
+    sigma_0(3 eV) = 3.160264e-14 cm^2
+
+==============================================================================
+G1  T_n = Te kappa_0 vs chapter 6 table and lyman_optical_depth.csv
+==============================================================================
+  kappa_0 (T_n=Te) [0,4] per cm = 80.2943   recorded 80.3 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 7.10e-05
+  kappa_0 (T_n=Te) [3,4] per cm = 10.6403   recorded 10.6 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 3.80e-03
+  kappa_0 (T_n=Te) [10,4] per cm = 0.224398   recorded 0.224 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 1.78e-03
+  kappa_0 (T_n=Te) [15,4] per cm = 0.0254676   recorded 0.0255 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 1.27e-03
+  kappa_0 (T_n=Te) [23,4] per cm = 0.0016317   recorded 0.00163 [chapter6.tex table]  -> REPRODUCED, 3 digits, rel 1.04e-03
+  all 400 rows vs the stamped csv, worst relative difference:
+    n1s_cm3                4.14e-11
+    sigma0_H_cm2           2.47e-11
+    kappa0_H               4.30e-11
+    kappa0_Tn3             4.43e-11
+    tau_half_H_1cm         4.45e-11
+    tau_half_Tn3_1cm       4.57e-11
+    tau_half_H_5cm         4.59e-11
+    tau_half_Tn3_5cm       4.24e-11
+    tau_half_H_20cm        4.30e-11
+    tau_half_Tn3_20cm      4.43e-11
+  T_n = Te boundaries vs the stamped summary rows (printed to 4 decimals):
+    D =  1.0 cm: max |dTe| = 4.1e-05 eV
+    D =  5.0 cm: max |dTe| = 4.9e-05 eV
+    D = 20.0 cm: max |dTe| = 4.9e-05 eV
+  G1 PASSED
+
+==============================================================================
+G3  T_n = 3 eV column vs the stamped Tn3 columns and census (g) 78/12
+==============================================================================
+  worst relative difference, kappa0_Tn3 and tau_half_Tn3 columns, 400 rows: 4.57e-11
+  divertor_map: window_ok 680, breakdown pairs (lo_ELM_crash > 0.10) 202
+  census (g) recount, T_n = 3 eV, half-slab, D = 5 cm: tau > 1: 78, > 100: 12   stamped 78/12
+  G3 PASSED
+
+==============================================================================
+P1  kappa_0(T_n)/kappa_0(T_n = Te) = sqrt(Te/T_n)
+==============================================================================
+  worst |ratio/sqrt(Te/T_n) - 1| over the grid and three fixed conventions: 6.7e-16
+  nearest grid row to 2 eV: [15,:] Te = 2.0236 eV
+    T_n = 3 eV    : factor at Te = 2 eV exactly 0.8165; at [15,:] 0.8213
+    T_n = 1 eV    : factor at Te = 2 eV exactly 1.4142; at [15,:] 1.4225
+    T_n = 0.5 eV  : factor at Te = 2 eV exactly 2.0000; at [15,:] 2.0118
+
+==============================================================================
+RESULT 1  tau_half = 1 crossing Te [eV] per density column, per convention and D
+==============================================================================
+  columns j:         0         1         2         3         4         5         6         7
+  ne [cm^-3]:  1.00e+12  2.68e+12  7.20e+12  1.93e+13  5.18e+13  1.39e+14  3.73e+14  1.00e+15
+
+  D = 1 cm
+    T_n = Te           1.007     1.071     1.142     1.223     1.313     1.416     1.532     1.667   crossings 8, above 2 eV 0
+    T_n = 3 eV          none     1.033     1.102     1.180     1.267     1.368     1.483     1.616   crossings 7, above 2 eV 0
+      NOTE sign changes per column [0, 1, 1, 1, 1, 1, 1, 1] (not exactly one everywhere)
+      shift [eV]        none    -0.038    -0.041    -0.043    -0.046    -0.048    -0.049    -0.050
+      shift [%]         none     -3.58     -3.57     -3.53     -3.48     -3.37     -3.21     -3.03
+      slope est.      -0.037    -0.039    -0.041    -0.044    -0.046    -0.049    -0.051    -0.050   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+    T_n = 1 eV         1.007     1.074     1.148     1.233     1.329     1.439     1.565     1.713   crossings 8, above 2 eV 0
+      shift [eV]      +0.000    +0.003    +0.006    +0.010    +0.016    +0.023    +0.033    +0.047
+      shift [%]        +0.02     +0.25     +0.50     +0.83     +1.18     +1.63     +2.17     +2.80
+      slope est.      +0.000    +0.003    +0.006    +0.010    +0.015    +0.023    +0.033    +0.045   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+    T_n = 0.5 eV       1.031     1.101     1.180     1.269     1.371     1.488     1.622     1.780   crossings 8, above 2 eV 0
+      shift [eV]      +0.025    +0.030    +0.037    +0.046    +0.057    +0.072    +0.090    +0.114
+      shift [%]        +2.45     +2.80     +3.27     +3.76     +4.37     +5.06     +5.87     +6.81
+      slope est.      +0.025    +0.030    +0.036    +0.046    +0.055    +0.070    +0.089    +0.108   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+
+  D = 5 cm
+    T_n = Te           1.125     1.205     1.295     1.397     1.514     1.648     1.802     1.984   crossings 8, above 2 eV 0
+    T_n = 3 eV         1.085     1.162     1.250     1.350     1.464     1.597     1.751     1.934   crossings 8, above 2 eV 0
+      shift [eV]      -0.040    -0.042    -0.045    -0.047    -0.049    -0.051    -0.051    -0.050
+      shift [%]        -3.57     -3.52     -3.48     -3.38     -3.27     -3.10     -2.85     -2.51
+      slope est.      -0.041    -0.042    -0.046    -0.049    -0.049    -0.051    -0.052    -0.050   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+    T_n = 1 eV         1.130     1.214     1.309     1.419     1.545     1.693     1.865     2.071   crossings 8, above 2 eV 1
+      shift [eV]      +0.005    +0.009    +0.014    +0.022    +0.032    +0.045    +0.062    +0.087
+      shift [%]        +0.44     +0.76     +1.11     +1.57     +2.08     +2.71     +3.46     +4.39
+      slope est.      +0.005    +0.009    +0.014    +0.022    +0.031    +0.044    +0.062    +0.085   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+    T_n = 0.5 eV       1.160     1.249     1.350     1.466     1.600     1.759     1.944     2.167   crossings 8, above 2 eV 1
+      shift [eV]      +0.035    +0.044    +0.055    +0.069    +0.087    +0.110    +0.141    +0.183
+      shift [%]        +3.13     +3.66     +4.23     +4.93     +5.73     +6.69     +7.83     +9.21
+      slope est.      +0.035    +0.042    +0.054    +0.068    +0.084    +0.107    +0.137    +0.175   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+
+  D = 20 cm
+    T_n = Te           1.250     1.348     1.459     1.588     1.737     1.911     2.113     2.356   crossings 8, above 2 eV 2
+    T_n = 3 eV         1.206     1.301     1.411     1.538     1.686     1.861     2.067     2.316   crossings 8, above 2 eV 2
+      shift [eV]      -0.044    -0.046    -0.048    -0.050    -0.051    -0.051    -0.047    -0.040
+      shift [%]        -3.52     -3.43     -3.31     -3.17     -2.96     -2.65     -2.22     -1.70
+      slope est.      -0.044    -0.047    -0.050    -0.050    -0.051    -0.051    -0.047    -0.041   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+    T_n = 1 eV         1.261     1.366     1.486     1.627     1.792     1.988     2.221     2.508   crossings 8, above 2 eV 2
+      shift [eV]      +0.011    +0.018    +0.027    +0.039    +0.055    +0.077    +0.108    +0.152
+      shift [%]        +0.92     +1.34     +1.85     +2.44     +3.16     +4.05     +5.11     +6.45
+      slope est.      +0.011    +0.018    +0.027    +0.038    +0.053    +0.075    +0.104    +0.150   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+    T_n = 0.5 eV       1.299     1.409     1.537     1.688     1.865     2.078     2.331     2.645   crossings 8, above 2 eV 3
+      shift [eV]      +0.049    +0.062    +0.078    +0.100    +0.128    +0.167    +0.217    +0.288
+      shift [%]        +3.93     +4.58     +5.36     +6.27     +7.38     +8.72    +10.28    +12.24
+      slope est.      +0.048    +0.061    +0.078    +0.096    +0.123    +0.159    +0.205    +0.277   (0.5 ln(Te0/T_n)/|s+0.5| from the bracketing rows of the T_n = Te depth)
+
+  crossings above 2 eV, per convention (D = 1 / 5 / 20 cm, total of 24):
+    T_n = Te       0 / 0 / 2   total 2 of 24
+    T_n = 3 eV     0 / 0 / 2   total 2 of 23
+    T_n = 1 eV     0 / 1 / 2   total 3 of 24
+    T_n = 0.5 eV   0 / 1 / 3   total 4 of 24
+  largest |shift| anywhere: 0.288 eV at D = 20 cm, 0.5eV, j = 7
+  T_n = Te      : D = 5 cm boundary 1.125 to 1.984 eV; hottest crossing over all D 2.356 eV
+  T_n = 3 eV    : D = 5 cm boundary 1.085 to 1.934 eV; hottest crossing over all D 2.316 eV
+  T_n = 1 eV    : D = 5 cm boundary 1.130 to 2.071 eV; hottest crossing over all D 2.508 eV
+  T_n = 0.5 eV  : D = 5 cm boundary 1.160 to 2.167 eV; hottest crossing over all D 2.645 eV
+
+==============================================================================
+RESULT 2  thin recount of the 202 breakdown pairs by tau_half(5 cm), pre-step point
+==============================================================================
+  source validation/divertor_map/divertor_map.csv: window_ok 680, lo_ELM_crash > 0.10: 202, pre-step Te < 2 eV: 157
+    T_n = Te       tau_half(5 cm) > 1:   85   > 100:   15
+    T_n = 3 eV     tau_half(5 cm) > 1:   78   > 100:   12
+    T_n = 1 eV     tau_half(5 cm) > 1:   90   > 100:   17
+    T_n = 0.5 eV   tau_half(5 cm) > 1:   98   > 100:   19
+
+  NOT RECOUNTED HERE: the thesis's trapped-run census 170/680 -> 173/680 at D = 5 cm (chapter 6 ~409-410).
+  That is the breakdown count of the map rebuilt with self-consistent Lyman escape
+  factors (verify_lyman_trapping.py --t-at 3): 400 trapped L matrices iterated to a
+  Theta <-> n(1s) fixed point. It is not run here (instructed), and no artifact under
+  validation/ records a T_at = 3 eV trapped run (lyman_trapping.txt holds only T_at = Te).
+  The colder-T_n analogue of 170 -> 173 therefore has no number from this script.
+
+  wrote /Users/phi/Desktop/non_markovian_cr/validation/tn_boundary/tn_boundary.csv
+  wrote /Users/phi/Desktop/non_markovian_cr/validation/tn_boundary/tn_boundary_crossings.csv
+  wrote /Users/phi/Desktop/non_markovian_cr/validation/tn_boundary/tn_boundary_summary.csv
+
+==============================================================================
+VERDICT on the predictions
+==============================================================================
+  P1  scaling identity worst deviation 6.7e-16 (asserted < 1e-12): HOLDS
+  P2  (task) crossings stay below 2 eV at D = 1 and 5 cm for every convention: FAILS
+      D = 1 cm hottest crossing per convention: Te 1.667, 3eV 1.616, 1eV 1.713, 0.5eV 1.780
+      D = 5 cm hottest crossing per convention: Te 1.984, 3eV 1.934, 1eV 2.071, 0.5eV 2.167
+      D = 5 cm crossings above 2 eV: T_n = 1 eV j=7 (1.00e+15) at 2.071 eV; T_n = 0.5 eV j=7 (1.00e+15) at 2.167 eV
+  P2' (hand) D = 5 cm j = 7: 1eV about 2.06 eV, 0.5eV about 2.15 eV; found 2.071 and 2.167 eV; largest shift about 0.26 eV at D = 20, j = 7, 0.5eV; found 0.288 eV at D = 20, 0.5eV, j = 7
+  P3  D = 20 cm above 2 eV: Te 2, 3eV 2, 1eV 2, 0.5eV 3   (predicted Te 2, 3eV 2, 1eV 2, 0.5eV 3; task expected 3 to 4 for 0.5eV)
+  P4  total above 2 eV of 24: Te 2, 3eV 2, 1eV 3, 0.5eV 4   (predicted 2, 2, 3, 4)
+  P5  thin census D = 5 cm: Te 85/15, 3eV 78/12, 1eV 90/17, 0.5eV 98/19   (predicted 85/15, 78/12, 88-92/16-18, 95-100/19-22)
+
+  REFUTER (a) a convention moves a D = 5 cm crossing above 2 eV: FIRED
+  REFUTER (b) a boundary shift exceeds 0.5 eV anywhere: did not fire (largest 0.288 eV)
+  0 of 10 recorded comparisons NOT reproduced

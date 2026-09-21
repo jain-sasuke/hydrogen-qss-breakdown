@@ -98,9 +98,10 @@ would be an answer to a question about the grid this thesis happens to use, and
 Section~\ref{sec:step_convention} shows how badly that goes.
 
 Both results are stated over $\Te\ge\SI{2}{\electronvolt}$.
-Section~\ref{sec:scope} shows that this is not a hedge: it is the region of the
-operating grid on which the model's own assumptions are mutually consistent, and
-two unrelated pieces of physics place the boundary in the same place.
+Section~\ref{sec:scope} shows that this is not a hedge: it is the conservative
+boundary adopted above the band in which the model's own assumptions fail
+together, and two unrelated pieces of physics place the boundary in the same
+place.
 
 \medskip
 \noindent\textbf{What this chapter takes as given.} From
@@ -2347,19 +2348,21 @@ in it is an enormous fractional change in $\nel$.
 Imposing conservation of nuclei across a single $+\SI{4.81}{\percent}$
 temperature step makes this quantitative. Writing
 $x = \ngs^{\mathrm{new}}/\ngs^{\mathrm{old}}$ for the fractional collapse of
-the reservoir, the electron density that quasineutrality would require is:
+the reservoir, the electron-density change that the fixed-density solutions
+imply is:
 
 \begin{table}[htbp]
 \centering
-\caption[Electron-density change required by conservation of nuclei across one step]{Electron-density change required by conservation of nuclei across one
-one-interval temperature step, against the fixed $\nel$ the model actually
-uses. $x$ is the ratio of post-step to pre-step ground-state population at
-collisional--radiative equilibrium.}
+\caption[Electron-density change implied by conservation of nuclei across one step]{Electron-density change implied by conservation of nuclei across one
+one-interval temperature step, inferred from the two fixed-$\nel$ solutions;
+the self-consistent closed-parcel value is given in the text. $x$ is the ratio
+of post-step to pre-step ground-state population at collisional--radiative
+equilibrium.}
 \label{tab:quasineutrality}
 \begin{tabular}{llrr}
   \toprule
   step in $\Te$ & $\nel$ (\si{\per\cubic\centi\metre}) & $x$ &
-  required $\Delta\nel/\nel$ \\
+  inferred $\Delta\nel/\nel$ \\
   \midrule
   $1.000 \to \SI{1.048}{\electronvolt}$ & $1.00\times10^{12}$ & $0.506$ & $+20.0$ \\
   $1.000 \to \SI{1.048}{\electronvolt}$ & $5.18\times10^{13}$ & $0.508$ & $+13.9$ \\
@@ -2375,8 +2378,8 @@ Section~\ref{sec:exact_decomposition} identifies as the source of the
 \SI{38.7}{\percent}. \textbf{The displacement that produces the cold-edge error
 is exactly the displacement that makes the fixed-density assumption
 inconsistent.} Over the $392$ one-step operators, $68$ of them, \SI{17}{\percent},
-require $|\Delta\nel/\nel| > \SI{10}{\percent}$, and $36$, \SI{9}{\percent},
-require more than \SI{100}{\percent}. The model evaluates the post-step operator
+imply $|\Delta\nel/\nel| > \SI{10}{\percent}$, and $36$, \SI{9}{\percent},
+imply more than \SI{100}{\percent}. The model evaluates the post-step operator
 at the old $\nel$ at every one of them. Above \SI{2}{\electronvolt} the
 heating-direction, fixed-$\nel$ inference never exceeds $5.4\times10^{-3}$, its
 largest value there sitting at \SI{2.02}{\electronvolt}, and it first falls
@@ -2392,13 +2395,22 @@ part in a thousand an earlier draft claimed.
 
 This closes a gap between two objections that this thesis has until now
 presented as separate and separately survivable. If the plasma parcel is closed,
-quasineutrality forces $\nel$ up by a factor of $10$ to $20$ at the cold end,
-and every rate coefficient in the post-step operator is then evaluated at the
-wrong density. If instead the parcel is fed by transport, so that $\nel$
-genuinely does stay fixed while the neutrals are consumed, then the ground state
-is being resupplied from outside and is not stale, which removes the mechanism
-that produces the error. \textbf{The two pictures cannot both be held, and the
-cold edge needs one of them.}
+the fixed-density inference of Table~\ref{tab:quasineutrality} is not the answer
+but the symptom: solving the nuclei balance self-consistently, so that the
+post-step $\ngs$ is evaluated at the post-step $\nel$, the electron density at
+the \SI{1}{\electronvolt} row rises by a factor $1.98$ to $2.05$
+(\texttt{verify\_closed\_nuclei.py}, \texttt{validation/closed\_nuclei/}),
+against the $10$ to $20$ inferred; over the $392$ heating steps $67$ change
+$\nel$ by more than \SI{10}{\percent} and $7$ by more than \SI{100}{\percent},
+against $68$ and $36$ inferred. An earlier draft read the inference as the
+required change. Either way every rate coefficient in a fixed-density post-step
+operator is evaluated at the wrong density there. If instead the parcel is fed
+by transport, so that $\nel$ genuinely does stay fixed while the neutrals are
+consumed, then the ground-state history is set by the influx rather than by the
+local balance, and Section~\ref{sec:transport_partition} measures that this
+enlarges the error at $165$ of $180$ tested cases rather than removing it.
+\textbf{The two pictures cannot both be held, and the cold edge needs one of
+them.}
 
 The cold corner also fails a cruder test: it is not a divertor state. The
 model's own steady solution at $[0,4]$ gives
@@ -2435,7 +2447,7 @@ three put the floor between $1.1$ and \SI{2.4}{\electronvolt}.
 
 These are fixed points of a zero-dimensional box with no transport and no
 pumping. A real divertor's neutral density is set by recycling and pumping
-rather than by local ionisation balance, which is the objection
+together with local ionisation balance, which is the objection
 Chapter~\ref{ch:limits} raises against the closed parcel, so the pressure is
 evidence that the cold corner is outside the modelled regime rather than a
 prediction of a pressure.
@@ -2500,7 +2512,19 @@ optical-depth contour at $\tau_0 = 1$ sits at $1.13$ to
 across the three thicknesses in the trapping sweep it spans $1.01$ to
 \SI{2.36}{\electronvolt}. Of the 24 optical-depth crossings, 2 lie above
 \SI{2}{\electronvolt}, both at the largest thickness $D = \SI{20}{\centi\metre}$
-and at the two highest density columns.
+and at the two highest density columns. Those crossings take the absorbing
+atoms at the electron temperature. Because the Doppler cross-section scales as
+$T_n^{-1/2}$, colder neutrals move every crossing upward, by $0.005$ to
+\SI{0.29}{\electronvolt} over the $24$ (the largest at $D = \SI{20}{\centi\metre}$,
+$\nel = \SI{e15}{\per\cubic\centi\metre}$, $\Tn = \SI{0.5}{\electronvolt}$),
+while Franck--Condon atoms at \SI{3}{\electronvolt} move them down by $0.04$ to
+\SI{0.05}{\electronvolt}. At $\Tn = 1$ and \SI{0.5}{\electronvolt} the count
+above \SI{2}{\electronvolt} becomes $3$ and $4$ of $24$: the
+$D = \SI{5}{\centi\metre}$ crossing at the highest density,
+\SI{1.98}{\electronvolt} at $\Tn = \Te$, moves to $2.07$ and
+\SI{2.17}{\electronvolt}, so at that thickness the \SI{2}{\electronvolt} boundary
+is exceeded by at most \SI{0.17}{\electronvolt} and in one density column
+(\texttt{verify\_tn\_boundary.py}, \texttt{validation/tn\_boundary/}).
 
 \begin{figure}[tbp]
   \centering
@@ -2589,8 +2613,8 @@ row maximises on $\SI{1.93e13}{\per\cubic\centi\metre}$ and the subgrid vertex
 spans a factor $1.35$ (\texttt{validation/crest\_subgrid/}). The density
 maximum is a position effect, the plasma's own reservoir sliding along a fixed
 sensitivity curve (Section~\ref{sec:density_mechanism}); it survived three
-independent tests, it is not detachment, and it is the $(3,4)$ pair's maximum
-rather than the Balmer series'.
+independent tests, the model does not identify it with detachment, and it is
+the $(3,4)$ pair's maximum rather than the Balmer series'.
 
 Inside the defensible scope, $\Te\ge\SI{2}{\electronvolt}$, $45$ of $448$
 point-and-direction pairs commit a time-averaged error above \SI{10}{\percent}

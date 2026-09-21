@@ -1,0 +1,228 @@
+==============================================================================
+PHYSICAL RAMP BOUND: interpolated operator vs the true mid-node operator
+# generated 2026-09-21 21:17 by verify_physical_ramp_bound.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  scipy 1.16.3
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# ramp_plateau.csv sha256 a51e64b5bc01178fde9bb0f6308d8dd988564c98d70ae0010e1a5aa6457baabf  (G1 gate)  # generated 2026-09-11 16:20 by verify_ramp_plateau.py
+# integrator: copy of verify_ramp_plateau.integrate (Radau, rtol 1e-10, conv rerun 1e-08, atol 1e-12*max|n_old|, max_step t_ramp/50, window t_ramp+30 tau_relax)
+# grid: 50 Te x 8 ne, Delta ln Te = 0.046992 per interval, r = 1.048113, f_lin(mid) = 0.488254, f_log(mid) = 0.5
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==============================================================================
+
+G1  reproduce validation/ramp_plateau/ramp_plateau.csv at [15,3] with verify_ramp_plateau.integrate
+    tau_slow          mine 1.493771716e-03  csv 1.493771716e-03  rel 0.00e+00
+    tau_relax         mine 7.413482251e-09  csv 7.413482251e-09  rel 0.00e+00
+    eps_plateau_step  mine 1.807281812e-01  csv 1.807281812e-01  rel 0.00e+00
+              step      none  eps(ws) 1.807031792e-01 (csv 1.807031792e-01, rel 1.22e-15)   plateau 1.000000 (csv 1.000000, rel 0.00e+00)
+    0.001 tau_slow    linear  eps(ws) 1.806206598e-01 (csv 1.806206598e-01, rel 0.00e+00)   plateau 0.999543 (csv 0.999543, rel 1.33e-15)
+     0.01 tau_slow    linear  eps(ws) 1.798799876e-01 (csv 1.798799876e-01, rel 0.00e+00)   plateau 0.995445 (csv 0.995445, rel 1.33e-15)
+      0.1 tau_slow    linear  eps(ws) 1.726670740e-01 (csv 1.726670740e-01, rel 0.00e+00)   plateau 0.955529 (csv 0.955529, rel 1.11e-15)
+        1 tau_slow    linear  eps(ws) 1.168896184e-01 (csv 1.168896184e-01, rel 1.89e-15)   plateau 0.646860 (csv 0.646860, rel 6.66e-16)
+        1 tau_slow loglinear  eps(ws) 1.188358247e-01 (csv 1.188358247e-01, rel 0.00e+00)   plateau 0.657630 (csv 0.657630, rel 1.11e-15)
+    worst relative difference against the CSV: 1.89e-15  (tolerance 1e-08)
+    G1 REPRODUCED: 0.9995 / 0.9954 / 0.9555 / 0.6469 linear, 0.6576 log-linear at De = 1  ->  0.9995, 0.9954, 0.9555, 0.6469, 0.6576
+G1b integrate_path (no interior break) vs verify_ramp_plateau.integrate, 1 tau_slow linear, max entrywise rel diff of n(t_ws): 0.00e+00  (tolerance 1e-10)
+    G1b PASSED
+
+==============================================================================
+B1  OPERATOR-LEVEL ERROR at the true mid node of a two-interval span i -> i+2
+    e = X_interp / X_true - 1 over the nonzero entries of L[i+1,j]; classes: all, diagonal,
+    1S column (off-diagonal), ionisation (= -column sum), recombination (S).
+    linear evaluated at f_lin = (Te[i+1]-Te[i])/(Te[i+2]-Te[i]); log-linear at f = 1/2 in ln Te.
+==============================================================================
+  spans: 384 (i = 0..47, j = 0..7);  interpolant undefined (sparsity/sign mismatch between the ends): 0
+  spans where the mid-node sparsity pattern differs from an end: 0
+
+  ramp point [15,3]: span [15,3] -> [17,3], Te 2.0236 -> 2.1210 (true mid) -> 2.2230 eV, ne 1.931e+13;  f_lin 0.48825, f_log 0.50000; nonzero entries of L[mid] 1737
+    true mid node: tau_slow 1.493772e-03 s  tau_relax 7.413482e-09 s  u_CRE 9.803895e-03  eps_plateau(step i->i+1) 0.180728
+    linear    (f = 0.48825); interpolant nonzero where truth is zero: 0
+      all   n 1737  median   0.035 %  p90   0.102 %  max   2.823 %  signed median   -0.022 %  (over 501, under 1236)
+      diag  n   43  median   0.056 %  p90   0.133 %  max   1.642 %  signed median   -0.053 %  (over 4, under 39)
+      col1s n   42  median   2.347 %  p90   2.682 %  max   2.823 %  signed median   +2.347 %  (over 42, under 0)
+      ion   n   43  median   0.028 %  p90   0.096 %  max   3.953 %  signed median   -0.025 %  (over 9, under 34)
+      rec   n   43  median   0.450 %  p90   0.508 %  max   0.613 %  signed median   +0.450 %  (over 43, under 0)
+      post-hoc (a): 1S ionisation rate error +3.953 %;  population-weighted net ionisation rate at true CRE populations 2.9821e+05 s^-1, error +0.011 %
+      derived: tau_slow 1.451313e-03 (-2.842 %)  tau_relax (+0.024 %)  u_CRE 9.556344e-03 (-2.525 %)  eps_plateau 0.194414 (+7.572 %)
+    loglinear (f = 0.50000); interpolant nonzero where truth is zero: 0
+      all   n 1737  median   0.022 %  p90   0.075 %  max   0.713 %  signed median   -0.022 %  (over 257, under 1480)
+      diag  n   43  median   0.042 %  p90   0.112 %  max   0.503 %  signed median   -0.042 %  (over 0, under 43)
+      col1s n   42  median   0.692 %  p90   0.706 %  max   0.713 %  signed median   -0.692 %  (over 0, under 42)
+      ion   n   43  median   0.807 %  p90   4.567 %  max  18.469 %  signed median   +0.807 %  (over 43, under 0)
+      rec   n   43  median   0.012 %  p90   0.017 %  max   0.020 %  signed median   -0.012 %  (over 0, under 43)
+      post-hoc (a): 1S ionisation rate error +0.090 %;  population-weighted net ionisation rate at true CRE populations 2.9821e+05 s^-1, error +0.058 %
+      derived: tau_slow 1.498285e-03 (+0.302 %)  tau_relax (-0.041 %)  u_CRE 9.818828e-03 (+0.152 %)  eps_plateau 0.179884 (-0.467 %)
+
+  benchmark [23,5]: span [23,5] -> [25,5], Te 2.9471 -> 3.0888 (true mid) -> 3.2375 eV, ne 1.389e+14;  f_lin 0.48825, f_log 0.50000; nonzero entries of L[mid] 1737
+    true mid node: tau_slow 1.849416e-05 s  tau_relax 2.243691e-09 s  u_CRE 6.723793e-04  eps_plateau(step i->i+1) 0.063612
+    linear    (f = 0.48825); interpolant nonzero where truth is zero: 0
+      all   n 1737  median   0.030 %  p90   0.094 %  max   1.064 %  signed median   -0.015 %  (over 552, under 1185)
+      diag  n   43  median   0.039 %  p90   0.101 %  max   0.634 %  signed median   -0.038 %  (over 5, under 38)
+      col1s n   42  median   0.718 %  p90   0.921 %  max   1.064 %  signed median   +0.718 %  (over 42, under 0)
+      ion   n   43  median   0.019 %  p90   0.085 %  max   1.685 %  signed median   -0.014 %  (over 14, under 29)
+      rec   n   43  median   0.474 %  p90   0.531 %  max   0.647 %  signed median   +0.474 %  (over 43, under 0)
+      post-hoc (a): 1S ionisation rate error +1.685 %;  population-weighted net ionisation rate at true CRE populations 1.1668e+08 s^-1, error +0.015 %
+      derived: tau_slow 1.831318e-05 (-0.979 %)  tau_relax (+0.039 %)  u_CRE 6.681266e-04 (-0.632 %)  eps_plateau 0.065082 (+2.311 %)
+    loglinear (f = 0.50000); interpolant nonzero where truth is zero: 0
+      all   n 1737  median   0.021 %  p90   0.060 %  max   0.494 %  signed median   -0.021 %  (over 197, under 1540)
+      diag  n   43  median   0.029 %  p90   0.074 %  max   0.342 %  signed median   -0.029 %  (over 0, under 43)
+      col1s n   42  median   0.473 %  p90   0.490 %  max   0.494 %  signed median   -0.473 %  (over 0, under 42)
+      ion   n   43  median   0.485 %  p90   2.193 %  max  10.723 %  signed median   +0.485 %  (over 42, under 1)
+      rec   n   43  median   0.011 %  p90   0.017 %  max   0.021 %  signed median   -0.011 %  (over 0, under 43)
+      post-hoc (a): 1S ionisation rate error -0.133 %;  population-weighted net ionisation rate at true CRE populations 1.1668e+08 s^-1, error +0.044 %
+      derived: tau_slow 1.854778e-05 (+0.290 %)  tau_relax (-0.040 %)  u_CRE 6.735977e-04 (+0.181 %)  eps_plateau 0.063097 (-0.809 %)
+
+  cold corner [0,0]: span [0,0] -> [2,0], Te 1.0000 -> 1.0481 (true mid) -> 1.0985 eV, ne 1.000e+12;  f_lin 0.48825, f_log 0.50000; nonzero entries of L[mid] 1737
+    true mid node: tau_slow 3.601732e+01 s  tau_relax 3.834545e-08 s  u_CRE 2.047317e+01  eps_plateau(step i->i+1) 0.083004
+    linear    (f = 0.48825); interpolant nonzero where truth is zero: 0
+      all   n 1737  median   0.046 %  p90   0.128 %  max  14.911 %  signed median   -0.026 %  (over 576, under 1161)
+      diag  n   43  median   0.086 %  p90   0.137 %  max   8.288 %  signed median   -0.080 %  (over 3, under 40)
+      col1s n   42  median  13.817 %  p90  14.557 %  max  14.911 %  signed median  +13.817 %  (over 42, under 0)
+      ion   n   43  median   0.063 %  p90   0.120 %  max  17.911 %  signed median   -0.061 %  (over 3, under 40)
+      rec   n   43  median   0.385 %  p90   0.461 %  max   0.515 %  signed median   +0.385 %  (over 43, under 0)
+      post-hoc (a): 1S ionisation rate error +17.911 %;  population-weighted net ionisation rate at true CRE populations 1.2522e+00 s^-1, error +0.167 %
+      derived: tau_slow 3.113508e+01 (-13.555 %)  tau_relax (+0.040 %)  u_CRE 1.774966e+01 (-13.303 %)  eps_plateau 0.097521 (+17.489 %)
+    loglinear (f = 0.50000); interpolant nonzero where truth is zero: 0
+      all   n 1737  median   0.026 %  p90   0.141 %  max   1.423 %  signed median   -0.025 %  (over 344, under 1393)
+      diag  n   43  median   0.086 %  p90   0.173 %  max   1.042 %  signed median   -0.086 %  (over 0, under 43)
+      col1s n   42  median   1.398 %  p90   1.417 %  max   1.423 %  signed median   -1.398 %  (over 0, under 42)
+      ion   n   43  median   3.411 %  p90  18.031 %  max  53.285 %  signed median   +3.411 %  (over 43, under 0)
+      rec   n   43  median   0.013 %  p90   0.017 %  max   0.024 %  signed median   -0.013 %  (over 0, under 43)
+      post-hoc (a): 1S ionisation rate error +4.359 %;  population-weighted net ionisation rate at true CRE populations 1.2522e+00 s^-1, error +0.157 %
+      derived: tau_slow 3.554777e+01 (-1.304 %)  tau_relax (-0.294 %)  u_CRE 2.013562e+01 (-1.649 %)  eps_plateau 0.086373 (+4.058 %)
+
+  GRID-WIDE (all defined spans): distribution over spans of per-span statistics
+  interp    class stat       median        p90        max  worst span
+  linear    all   med        0.029%     0.042%     0.047%  [0,7] Te 1.000->1.099
+  linear    all   p90        0.093%     0.112%     0.128%  [0,7] Te 1.000->1.099
+  linear    all   max        0.999%     9.696%    14.911%  [0,0] Te 1.000->1.099
+  linear    diag  med        0.039%     0.086%     0.091%  [1,7] Te 1.048->1.151
+  linear    diag  p90        0.099%     0.137%     0.137%  [3,7] Te 1.151->1.265
+  linear    diag  max        0.595%     5.441%     8.288%  [0,0] Te 1.000->1.099
+  linear    col1s med        0.658%     8.844%    13.817%  [0,0] Te 1.000->1.099
+  linear    col1s p90        0.857%     9.405%    14.557%  [0,1] Te 1.000->1.099
+  linear    col1s max        0.999%     9.696%    14.911%  [0,0] Te 1.000->1.099
+  linear    ion   med        0.022%     0.054%     0.063%  [0,7] Te 1.000->1.099
+  linear    ion   p90        0.088%     0.119%     0.120%  [2,4] Te 1.099->1.207
+  linear    ion   max        1.596%    12.023%    17.911%  [0,0] Te 1.000->1.099
+  linear    rec   med        0.460%     0.509%     0.527%  [47,7] Te 9.103->10.000
+  linear    rec   p90        0.526%     0.568%     0.588%  [47,7] Te 9.103->10.000
+  linear    rec   max        0.632%     0.683%     0.690%  [47,7] Te 9.103->10.000
+  linear    e_tau_slow signed median   -1.041 %  median |.|   1.041 %  max |.|  13.555 %  range -13.555 .. +0.063 %  worst [0,0]
+  linear    e_u        signed median   -0.739 %  median |.|   0.739 %  max |.|  13.303 %  range -13.303 .. +0.372 %  worst [0,0]
+  linear    e_eps      signed median   +2.857 %  median |.|   3.032 %  max |.|  20.470 %  range -3.240 .. +20.470 %  worst [0,4]
+  loglinear all   med        0.021%     0.024%     0.026%  [1,7] Te 1.048->1.151
+  loglinear all   p90        0.059%     0.118%     0.141%  [0,7] Te 1.000->1.099
+  loglinear all   max        0.483%     1.182%     1.423%  [0,5] Te 1.000->1.099
+  loglinear diag  med        0.029%     0.071%     0.086%  [0,7] Te 1.000->1.099
+  loglinear diag  p90        0.073%     0.168%     0.173%  [0,7] Te 1.000->1.099
+  loglinear diag  max        0.334%     0.859%     1.042%  [0,3] Te 1.000->1.099
+  loglinear col1s med        0.462%     1.158%     1.398%  [0,0] Te 1.000->1.099
+  loglinear col1s p90        0.479%     1.177%     1.417%  [0,5] Te 1.000->1.099
+  loglinear col1s max        0.483%     1.182%     1.423%  [0,5] Te 1.000->1.099
+  loglinear ion   med        0.472%     1.961%     3.411%  [0,0] Te 1.000->1.099
+  loglinear ion   p90        2.291%    11.872%    18.031%  [0,0] Te 1.000->1.099
+  loglinear ion   max       11.866%    24.747%    53.285%  [0,0] Te 1.000->1.099
+  loglinear rec   med        0.010%     0.014%     0.018%  [0,7] Te 1.000->1.099
+  loglinear rec   p90        0.014%     0.023%     0.027%  [0,7] Te 1.000->1.099
+  loglinear rec   max        0.017%     0.027%     0.029%  [0,7] Te 1.000->1.099
+  loglinear e_tau_slow signed median   +0.204 %  median |.|   0.213 %  max |.|   1.304 %  range -1.304 .. +0.673 %  worst [0,0]
+  loglinear e_u        signed median   +0.127 %  median |.|   0.145 %  max |.|   1.649 %  range -1.649 .. +0.189 %  worst [0,0]
+  loglinear e_eps      signed median   -0.715 %  median |.|   0.745 %  max |.|   4.058 %  range -0.820 .. +4.058 %  worst [0,0]
+  linear    post-hoc (a) net ionisation rate (population-weighted): signed median  +0.023 %  max |.|  0.167 %;   1S ionisation rate: signed median  +1.596 %  max |.| 17.911 %
+  loglinear post-hoc (a) net ionisation rate (population-weighted): signed median  +0.043 %  max |.|  0.157 %;   1S ionisation rate: signed median  -0.128 %  max |.|  4.359 %
+  reading note (post-hoc a): the ion class is the column-sum residual; entrywise geometric interpolation does not
+  preserve column sums, so for excited states (ionisation a small residual of large entries) its relative error is
+  large although the entries themselves are accurate; the population-weighted line above is the net effect.
+  smallest true eps_plateau over the spans: 6.360e-03 (relative errors of eps are well defined)
+
+  P1 grid-wide: spans where log-linear |e| is NOT below linear |e| (count of 384), per class / stat
+    all   med   0  p90  48  max   0
+    diag  med  39  p90  88  max 144
+    col1s med 176  p90  64  max  40
+    ion   med 384  p90 384  max 384
+    rec   med   0  p90   0  max   0
+
+==============================================================================
+B2  TRAJECTORY LEVEL at [15,3]: two-interval ramp Te linear in t from Te[15] to Te[17], held on L[17,3]
+==============================================================================
+  span [15,3] -> [17,3] via true mid node [16,3]: Te 2.0236 -> 2.1210 -> 2.2230 eV, ne 1.931e+13; mid node at t/t_ramp = 0.48825
+  post-step operator L[17,3]: tau_slow 1.115209e-03 s  tau_relax 7.343304e-09 s  M 151867.5   (one-interval, L[16,3]: tau_slow 1.493772e-03, tau_relax 7.413482e-09)
+  two-interval step: eps_step 0.021756  eps_plateau 0.382031   (one-interval eps_plateau 0.180728)
+  generator check (a     piecewise log-linear via true mid node): min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.9071e+02 s^-1 at t/t_ramp = 0.0000
+  generator check (b     log-linear between ends, f_log(t)): min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.9071e+02 s^-1 at t/t_ramp = 0.0000
+  generator check (c     linear between ends, f = t/t_ramp): min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.9071e+02 s^-1 at t/t_ramp = 0.0000
+  generator check (a_lin piecewise linear via true mid node (secondary)): min off-diagonal 0.000e+00 (>= 0 asserted), worst column sum -1.9071e+02 s^-1 at t/t_ramp = 0.0000
+  pure two-interval step: eps(ws) 3.819679e-01  max/eps_plateau 0.9999  expm resid 3.9e-08  nfev 2333  (conv rerun rel change of eps(ws) 3.1e-10)
+
+  td/tau_slow variant   plateau     conv max/eps_pl     conv      eps(ws)      eps(we)  eps(end) ng drift/tot     expm   nfev
+        1e-02       a  0.996132  6.7e-11   0.996101  1.3e-07 3.804906e-01 3.733053e-01  2.10e-05     0.004713  7.2e-09   2304
+        1e-02       b  0.996144  1.9e-10   0.996113  1.4e-07 3.804952e-01 3.733098e-01  2.10e-05     0.004698  7.2e-09   2283
+        1e-02       c  0.995913  1.0e-10   0.995883  1.5e-07 3.804068e-01 3.732227e-01  2.10e-05     0.004979  7.2e-09   2283
+        1e-02   a_lin  0.996074  9.5e-11   0.996044  1.4e-07 3.804684e-01 3.732834e-01  2.10e-05     0.004783  7.2e-09   2381
+              c/nobrk  0.995913   [variant c without the mid-node break; rel diff vs c 1.1e-14]
+        1e-01       a  0.962011  2.5e-10   0.961994  5.9e-08 3.674575e-01          nan  2.01e-05     0.045864  7.0e-09   2172
+        1e-01       b  0.962128  2.7e-10   0.962110  9.7e-08 3.675020e-01          nan  2.01e-05     0.045725  7.0e-09   2165
+        1e-01       c  0.959882  3.6e-10   0.959865  7.5e-08 3.666441e-01          nan  2.01e-05     0.048413  6.9e-09   2172
+        1e-01   a_lin  0.961447  3.5e-10   0.961430  7.1e-08 3.672419e-01          nan  2.01e-05     0.046540  7.0e-09   2189
+              c/nobrk  0.959882   [variant c without the mid-node break; rel diff vs c 4.8e-14]
+        1e+00       a  0.682552  2.5e-09   0.682552  5.9e-11 2.607130e-01          nan  1.35e-05     0.361448  5.1e-09   1939
+        1e+00       b  0.683394  2.4e-09   0.683394  5.8e-11 2.610344e-01          nan  1.35e-05     0.360552  5.1e-09   1939
+        1e+00       c  0.667080  2.9e-09   0.667081  7.3e-11 2.548031e-01          nan  1.31e-05     0.377878  5.0e-09   1939
+        1e+00   a_lin  0.678379  2.7e-09   0.678380  6.5e-11 2.591191e-01          nan  1.34e-05     0.365890  5.1e-09   1946
+              c/nobrk  0.667080   [variant c without the mid-node break; rel diff vs c 2.2e-12]
+
+  DIFFERENCES of the plateau fraction (and of the max column), with the rtol 1e-8 rerun alongside
+  td/tau_slow    (a)-(b)       conv    (a)-(c)       conv    (b)-(c) (a)-(a_lin) |a-b|/|b-c|  bracket max:(a)-(b) max:(a)-(c)
+        1e-02  -0.000012  -0.000012  +0.000219  +0.000219  +0.000231   +0.000058      0.0519   inside   -0.000012   +0.000218
+        1e-01  -0.000116  -0.000116  +0.002130  +0.002130  +0.002246   +0.000564      0.0519   inside   -0.000116   +0.002129
+        1e+00  -0.000841  -0.000841  +0.015472  +0.015472  +0.016314   +0.004173      0.0516   inside   -0.000841   +0.015472
+
+  B3  ONE-INTERVAL BOUND -- AN ESTIMATE, NOT A MEASUREMENT: second-order interpolants, error ~ span^2,
+      so the one-interval distance is taken as one quarter of the measured two-interval distance.
+  td/tau_slow plateau(a)    |a-b|/4  % of (a)    |a-c|/4  % of (a) measured (a)-(a_lin) stored 1-interval log-lin
+        1e-02   0.996132   0.000003    0.000%   0.000055    0.006%            +0.000058                 +0.000163   [estimate]
+        1e-01   0.962011   0.000029    0.003%   0.000532    0.055%            +0.000564                             [estimate]
+        1e+00   0.682552   0.000210    0.031%   0.003868    0.567%            +0.004173                 +0.010770   [estimate]
+
+  B3 POST-HOC (b): does the quarter rule hold for the PLATEAU FRACTION? The (b)-(c) gap is measured at both spans.
+  td/tau_slow (b)-(c) 2-int (b)-(c) 1-int stored ratio 1/2 |a-b| x ratio  % of (a) |a-c| x ratio  % of (a)
+        1e-02     +0.000231            +0.000163     0.704      0.000008    0.001%      0.000155    0.016%   [estimate; the quarter rule would give 0.250]
+        1e-01     +0.002246            +0.001570     0.699      0.000081    0.008%      0.001489    0.155%   [estimate; the quarter rule would give 0.250]
+        1e+00     +0.016314            +0.010770     0.660      0.000555    0.081%      0.010215    1.497%   [estimate; the quarter rule would give 0.250]
+  reading (post-hoc b): the operator error scales as span^2 but the reservoir excursion that normalises the plateau
+  fraction scales as span, so the plateau-fraction sensitivity scales about as span; the quarter rule is for
+  operator-level quantities (B1). P3 keeps its quarter definition; the empirically scaled line is the better estimate.
+
+==============================================================================
+PREDICTIONS
+==============================================================================
+  [HELD] P2 td/tau_slow = 0.01: |(a)-(b)| = 0.000012 < |(b)-(c)| = 0.000231
+  [HELD] REFUTER td/tau_slow = 0.01: (a) = 0.996132 vs [(b),(c)] = [0.995913, 0.996144], excess outside 0.00e+00 <= width 2.31e-04
+  [HELD] P2 td/tau_slow = 0.1: |(a)-(b)| = 0.000116 < |(b)-(c)| = 0.002246
+  [HELD] REFUTER td/tau_slow = 0.1: (a) = 0.962011 vs [(b),(c)] = [0.959882, 0.962128], excess outside 0.00e+00 <= width 2.25e-03
+  [HELD] P2 td/tau_slow = 1: |(a)-(b)| = 0.000841 < |(b)-(c)| = 0.016314
+  [HELD] REFUTER td/tau_slow = 1: (a) = 0.682552 vs [(b),(c)] = [0.667080, 0.683394], excess outside 0.00e+00 <= width 1.63e-02
+  [HELD] P3b De = 1: estimate |a-b|/4 / plateau(a) = 0.031 % < 0.5 %  [estimate]
+  [FAILED] P3c De = 1: estimate |a-c|/4 / plateau(a) = 0.567 % < 0.5 %  [estimate]
+  [FAILED] P1 ramp point [15,3]: log-linear below linear in every class and statistic; exceptions: ion/med log 0.807% >= lin 0.028%; ion/p90 log 4.567% >= lin 0.096%; ion/max log 18.469% >= lin 3.953%
+  [HELD] P1 ramp point [15,3]: log-linear all-entry median |e| = 0.022 % < 2 %
+  [FAILED] P1 benchmark [23,5]: log-linear below linear in every class and statistic; exceptions: ion/med log 0.485% >= lin 0.019%; ion/p90 log 2.193% >= lin 0.085%; ion/max log 10.723% >= lin 1.685%
+  [HELD] P1 benchmark [23,5]: log-linear all-entry median |e| = 0.021 % < 2 %
+  [FAILED] P1 cold corner [0,0]: log-linear below linear in every class and statistic; exceptions: all/p90 log 0.141% >= lin 0.128%; diag/med log 0.086% >= lin 0.086%; diag/p90 log 0.173% >= lin 0.137%; ion/med log 3.411% >= lin 0.063%; ion/p90 log 18.031% >= lin 0.120%; ion/max log 53.285% >= lin 17.911%
+  [HELD] P1 cold corner [0,0]: log-linear all-entry median |e| = 0.026 % < 2 %
+  [FAILED] P1 grid-wide: log-linear below linear in every class/statistic at every defined span (violations 1751 of 5760 class/stat/span combinations)
+  [HELD] P1 grid-wide: median over spans of the log-linear all-entry median |e| = 0.021 % < 2 %
+  11 of 16 held
+  REFUTER ((a) outside [(b),(c)] by more than the interval width): did not appear
+  Part A (true L at interior temperatures): NOT RUN -- needs module edits or a re-implementation of the
+  rate assembly (see docstring); everything above is from stamped grid operators only.
+  runtime 1.8 s

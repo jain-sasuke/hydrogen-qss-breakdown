@@ -1141,7 +1141,7 @@ def main():
   Fractional error $\varepsilon_{\rm plateau}$ in the $n=3/n=4$ shell
   population ratio committed while the excited manifold has reached partial
   equilibrium but the ground state has not yet responded, after a
-  $+@FRAC@\%$ step in $T_e$ at fixed $n_e$ --- the \emph{heating} direction.
+  $+@FRAC@\%$ step in $T_e$ at fixed $n_e$, the \emph{heating} direction.
   Cooling is not the mirror image: the same transition between the two
   coldest grid temperatures, at $n_e = @ANE@$~cm$^{-3}$, gives @AHEAT@\%
   heated and @ACOOL@\% cooled, and the grid maximum moves from
@@ -1171,7 +1171,7 @@ def main():
   row's maximum, open symbols mark points with no plateau window.
   Each row has a single interior maximum, but it is
   \emph{broad and shallow in $\log n_e$}: across the peak column and its two
-  neighbours --- a factor @THREESPAN@ in density --- $\varepsilon$ varies by
+  neighbours, a factor @THREESPAN@ in density, $\varepsilon$ varies by
   only @THREEVARLO@--@THREEVARHI@\%, so the location of the maximum is not
   resolved to better than about one grid interval, a factor @NEXT@. Over the
   full three decades the same row falls by a factor
@@ -1196,7 +1196,7 @@ def main():
   $(\log T_e, \log n_e)$ alone, a bare Arrhenius factor $e^{13.6/T_e}$
   containing no dynamics correlates at @RARR@, and controlling for
   $(\log T_e, \log n_e)$ drives the association to @RLIN@ linearly and
-  @RQUAD@ --- the opposite sign --- quadratically. The two starred extrema make
+  @RQUAD@, the opposite sign, quadratically. The two starred extrema make
   the same point without statistics: the largest $M$ on the grid
   ($@MMAX@$, blue) carries $\varepsilon = @MMAX_EPS@\%$, while the largest
   error (@EPSMAX@\%, red) occurs @NERATIO@$\times$ away in density, at an $M$
@@ -1219,7 +1219,7 @@ def main():
   over the same twentyfold range. (b) Number of analysed pairs exceeding the
   $10\%$ threshold, counted on the plateau value itself and not on the
   time-averaged ELM bound: @CNT0@ falls to @CNTMAX@ over the whole map, while
-  above $2$~eV it is @CNTW0@ against @CNTWMAX@ --- unchanged to within one
+  above $2$~eV it is @CNTW0@ against @CNTWMAX@, unchanged to within one
   pair. (At $D = @DMAX@$~cm the analysed set is @NPAIRD@ pairs rather than
   @NWIN@: two lose their plateau window.)
   The $T_e \geq 2$~eV restriction is therefore not a hedge; it is the measured

@@ -1,0 +1,159 @@
+# generated 2026-09-21 21:09 by verify_terminal_vs_interior.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd  (G1 gate)
+# fujimoto_table41.csv sha256 8742edcb393846e8f1624b05d0c83a9fc80f54334ee0ec882c31171deda98da8  (external r_1(15) excess 4.8858, 6.1656)
+# benchmark point [23,5]  Te=2.9471 eV  ne=1.3895e+14 cm^-3
+# X_q_full = q(n_max = p) / q(n_max = 15); X_q_next = q(n_max = p) / q(n_max = p + 1); trap = no diagonal correction
+==============================================================================
+TERMINAL vs INTERIOR -- over-population of shell p when it is the top of the ladder
+generated 2026-09-21 21:09  by verify_terminal_vs_interior.py
+interpreter   /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  named points   : benchmark [23,5] Te=2.947 eV ne=1.39e+14, cold corner [0,0] Te=1 eV ne=1e+12, ridge [15,3] Te=2.024 eV ne=1.93e+13, Fujimoto 1e12 [49,0] Te=10 eV ne=1e+12, Fujimoto 1e15 [49,7] Te=10 eV ne=1e+15
+  shells p       : [8, 9, 10, 11, 12, 13, 14]  terminal = n_max = p (corrected truncation);  interior = full n_max = 15
+  external excess: r_1(15) model/Fujimoto, PRODUCTION, from validation/fujimoto_table41/fujimoto_table41.csv: 4.886 at ne=1e+12, 6.166 at ne=1e+15
+==============================================================================
+
+G2  column sums over kept states vs full matrix, worst relative difference over all p and points: 3.87e-11
+    G2 PASSED
+
+G1  n_max = 15 reproduces molecular_channel.csv at all 400 points (worst relative / absolute):
+    a3     8.36e-13
+    a4     8.74e-13
+    c3     1.22e-15
+    c4     1.44e-15
+    u_CRE  6.72e-13
+    Delta  1.55e-15
+    G1 REPRODUCED
+
+------------------------------------------------------------------------------
+RESULT 1: primary definition -- corrected truncation, interior = full n_max = 15 operator
+          X_q(p) = q(terminal, n_max = p) / q(interior), q = n_p, a_p, c_p; the +1 columns use n_max = p+1 as reference
+------------------------------------------------------------------------------
+
+  benchmark [23,5]  Te = 2.9471 eV  ne = 1.389e+14 cm^-3   u_CRE(15) = 8.8039e-04
+    p    X_n(full)   X_a(full)   X_c(full)  |  X_n(+1)   X_a(+1)   X_c(+1)  |  a_p(term)    a_p(int)     n_p(term)    n_p(int)     D.8
+     8      1.0041     14.2075      0.9912  |   1.0016    1.5638    0.9965  |  9.8427e-06   6.9278e-07   6.2868e-07   6.2609e-07   9.4
+     9      1.0026     12.2678      0.9946  |   1.0019    2.8910    0.9962  |  7.7103e-06   6.2850e-07   7.8246e-07   7.8041e-07   10.7
+    10      1.0007      6.4985      0.9985  |   1.0004    1.9443    0.9991  |  2.8462e-06   4.3797e-07   9.5369e-07   9.5299e-07   6.3
+    11      1.0003      4.4900      0.9994  |   1.0002    1.7039    0.9997  |  1.5913e-06   3.5441e-07   1.1442e-06   1.1439e-06   4.4
+    12      1.0002      3.1264      0.9997  |   1.0001    1.5884    0.9998  |  1.0273e-06   3.2860e-07   1.3532e-06   1.3530e-06   3.1
+    13      1.0001      2.1505      0.9999  |   1.0000    1.5172    0.9999  |  7.1310e-07   3.3160e-07   1.5805e-06   1.5803e-06     --
+    14      1.0000      1.4667      0.9999  |   1.0000    1.4667    0.9999  |  5.1801e-07   3.5318e-07   1.8260e-06   1.8259e-06     --
+
+  cold corner [0,0]  Te = 1.0000 eV  ne = 1.000e+12 cm^-3   u_CRE(15) = 4.0439e+01
+    p    X_n(full)   X_a(full)   X_c(full)  |  X_n(+1)   X_a(+1)   X_c(+1)  |  a_p(term)    a_p(int)     n_p(term)    n_p(int)     D.8
+     8      1.0872      7.2529      0.6976  |   1.0234    1.3358    0.8809  |  2.6734e-10   3.6860e-11   2.8981e-08   2.6657e-08   9.4
+     9      1.0643      6.8229      0.7893  |   1.0410    2.1500    0.8558  |  2.3741e-10   3.4796e-11   3.4215e-08   3.2149e-08   10.7
+    10      1.0222      4.8960      0.9270  |   1.0123    1.7621    0.9591  |  1.0957e-10   2.2380e-11   3.9057e-08   3.8210e-08   6.3
+    11      1.0099      3.8268      0.9669  |   1.0052    1.6186    0.9826  |  6.3535e-11   1.6603e-11   4.5478e-08   4.5032e-08   4.4
+    12      1.0048      2.8580      0.9839  |   1.0026    1.5384    0.9913  |  4.1345e-11   1.4466e-11   5.2836e-08   5.2581e-08   3.1
+    13      1.0023      2.0583      0.9924  |   1.0015    1.4848    0.9952  |  2.8614e-11   1.3902e-11   6.0961e-08   6.0821e-08     --
+    14      1.0009      1.4445      0.9972  |   1.0009    1.4445    0.9972  |  2.0637e-11   1.4287e-11   6.9803e-08   6.9742e-08     --
+
+  ridge [15,3]  Te = 2.0236 eV  ne = 1.931e+13 cm^-3   u_CRE(15) = 1.4122e-02
+    p    X_n(full)   X_a(full)   X_c(full)  |  X_n(+1)   X_a(+1)   X_c(+1)  |  a_p(term)    a_p(int)     n_p(term)    n_p(int)     D.8
+     8      1.0163     12.4690      0.9579  |   1.0060    1.5378    0.9832  |  6.9865e-07   5.6031e-08   1.6080e-07   1.5822e-07   9.4
+     9      1.0105     10.6719      0.9740  |   1.0073    2.7232    0.9817  |  5.5220e-07   5.1743e-08   1.9784e-07   1.9580e-07   10.7
+    10      1.0031      6.0540      0.9925  |   1.0017    1.9071    0.9957  |  2.1159e-07   3.4951e-08   2.3853e-07   2.3781e-07   6.3
+    11      1.0013      4.3169      0.9968  |   1.0007    1.6869    0.9983  |  1.1843e-07   2.7433e-08   2.8471e-07   2.8434e-07   4.4
+    12      1.0006      3.0610      0.9985  |   1.0003    1.5785    0.9992  |  7.6255e-08   2.4911e-08   3.3557e-07   3.3536e-07   3.1
+    13      1.0003      2.1301      0.9993  |   1.0002    1.5109    0.9995  |  5.2733e-08   2.4756e-08   3.9097e-07   3.9085e-07     --
+    14      1.0001      1.4625      0.9997  |   1.0001    1.4625    0.9997  |  3.8155e-08   2.6089e-08   4.5086e-07   4.5081e-07     --
+
+  Fujimoto 1e12 [49,0]  Te = 10.0000 eV  ne = 1.000e+12 cm^-3   u_CRE(15) = 1.0956e-05
+    p    X_n(full)   X_a(full)   X_c(full)  |  X_n(+1)   X_a(+1)   X_c(+1)  |  a_p(term)    a_p(int)     n_p(term)    n_p(int)     D.8
+     8      1.3164      9.4252      0.8356  |   1.0548    1.2574    0.9496  |  3.3226e-05   3.5252e-06   9.4043e-10   7.1438e-10   9.4
+     9      1.2597     10.6862      0.8779  |   1.1560    2.4296    0.9162  |  3.2815e-05   3.0708e-06   1.1192e-09   8.8843e-10   10.7
+    10      1.0908      6.3268      0.9592  |   1.0476    1.8468    0.9773  |  1.5178e-05   2.3989e-06   1.1798e-09   1.0816e-09   6.3
+    11      1.0424      4.3783      0.9814  |   1.0213    1.6545    0.9903  |  9.2836e-06   2.1203e-06   1.3542e-09   1.2991e-09   4.4
+    12      1.0214      3.0479      0.9909  |   1.0112    1.5565    0.9951  |  6.3402e-06   2.0802e-06   1.5725e-09   1.5396e-09   3.1
+    13      1.0104      2.1046      0.9957  |   1.0065    1.4938    0.9973  |  4.5858e-06   2.1789e-06   1.8208e-09   1.8022e-09     --
+    14      1.0040      1.4482      0.9984  |   1.0040    1.4482    0.9984  |  3.4403e-06   2.3755e-06   2.0948e-09   2.0865e-09     --
+
+  Fujimoto 1e15 [49,7]  Te = 10.0000 eV  ne = 1.000e+15 cm^-3   u_CRE(15) = 5.3486e-06
+    p    X_n(full)   X_a(full)   X_c(full)  |  X_n(+1)   X_a(+1)   X_c(+1)  |  a_p(term)    a_p(int)     n_p(term)    n_p(int)     D.8
+     8      1.0025     17.7270      0.9989  |   1.0009    1.5407    0.9996  |  4.9168e-04   2.7736e-05   6.8672e-07   6.8498e-07   9.4
+     9      1.0016     16.7750      0.9993  |   1.0012    3.2656    0.9995  |  3.9618e-04   2.3617e-05   8.6444e-07   8.6303e-07   10.7
+    10      1.0004      7.5127      0.9998  |   1.0002    2.0081    0.9999  |  1.3602e-04   1.8105e-05   1.0625e-06   1.0620e-06   6.3
+    11      1.0002      4.8137      0.9999  |   1.0001    1.7268    1.0000  |  7.6482e-05   1.5888e-05   1.2822e-06   1.2820e-06   4.4
+    12      1.0001      3.2232      1.0000  |   1.0000    1.5984    1.0000  |  5.0011e-05   1.5516e-05   1.5231e-06   1.5229e-06   3.1
+    13      1.0000      2.1712      1.0000  |   1.0000    1.5214    1.0000  |  3.5205e-05   1.6215e-05   1.7849e-06   1.7848e-06     --
+    14      1.0000      1.4678      1.0000  |   1.0000    1.4678    1.0000  |  2.5921e-05   1.7659e-05   2.0677e-06   2.0677e-06     --
+
+------------------------------------------------------------------------------
+RESULT 2: P1 -- which (variant, reference, quantity, point) reproduces D.8's 9.4 / 10.7 / 6.3 at p = 8 / 9 / 10
+          dev3 = max_{p=8,9,10} |X/D8 - 1|;  dev5 adds p = 11, 12 (4.4, 3.1)
+------------------------------------------------------------------------------
+  closest ten combinations:
+    variant  ref   q  point            dev3     dev5     X8      X9      X10     X11     X12     X13     X14
+    fix      full  a  Fujimoto 1e12    0.004    0.017     9.43   10.69    6.33    4.38    3.05    2.10    1.45
+    fix      full  a  ridge            0.326    0.326    12.47   10.67    6.05    4.32    3.06    2.13    1.46
+    fix      full  a  cold corner      0.362    0.362     7.25    6.82    4.90    3.83    2.86    2.06    1.44
+    fix      full  a  benchmark        0.511    0.511    14.21   12.27    6.50    4.49    3.13    2.15    1.47
+    fix      next  a  benchmark        0.834    0.834     1.56    2.89    1.94    1.70    1.59    1.52    1.47
+    fix      next  a  Fujimoto 1e15    0.836    0.836     1.54    3.27    2.01    1.73    1.60    1.52    1.47
+    fix      next  a  ridge            0.836    0.836     1.54    2.72    1.91    1.69    1.58    1.51    1.46
+    fix      next  a  cold corner      0.858    0.858     1.34    2.15    1.76    1.62    1.54    1.48    1.44
+    fix      next  a  Fujimoto 1e12    0.866    0.866     1.26    2.43    1.85    1.65    1.56    1.49    1.45
+    fix      full  n  Fujimoto 1e12    0.882    0.882     1.32    1.26    1.09    1.04    1.02    1.01    1.00
+
+  P1  1 combination(s) within 5 % at p = 8, 9, 10 (1 under the primary definition):
+      fix/full/a at Fujimoto 1e12 [49,0]: dev3 0.004; p = 11, 12 give 4.38, 3.05 against 4.4, 3.1 (dev5 0.017) -> as predicted
+  P1  -> held
+  REFUTER (no combination within 25 %): did not appear; 1 combination(s) within 25 %
+
+  carried forward: fix/full/a at Fujimoto 1e12 [49,0]  (best hit under the primary definition)
+
+  P1a (this script's expectation): the reproducing quantity is a_p and X_n, X_c are within 10 % of 1 at every p and named point
+      quantity carried: a;  worst |X_n - 1|, |X_c - 1| over named points and p = 8..14: 0.3164 (X_n(8) at Fujimoto 1e12)  -> NOT as predicted
+
+  P2  fix/full/a at the benchmark, p = 8, 9, 10: 14.21, 12.27, 6.50  -> of order ten (3..30), as predicted
+
+  P3  (D.8's claim) monotone decrease from p = 9 upward, fix/full/a at Fujimoto 1e12: X(8) = 9.43, X(9) = 10.69, X(10) = 6.33, X(11) = 4.38, X(12) = 3.05, X(13) = 2.10, X(14) = 1.45  -> as claimed
+      X(9) > X(8): the chapter's 'no monotone trend over p = 8..10' is consistent
+      all named points, primary definition, X_a: benchmark 14.21/12.27/6.50/4.49/3.13/2.15/1.47; cold corner 7.25/6.82/4.90/3.83/2.86/2.06/1.44; ridge 12.47/10.67/6.05/4.32/3.06/2.13/1.46; Fujimoto 1e12 9.43/10.69/6.33/4.38/3.05/2.10/1.45; Fujimoto 1e15 17.73/16.77/7.51/4.81/3.22/2.17/1.47
+
+  P4  external r_1(15) excess 4.886 to 6.166 against the p = 8..10 band 6.33 to 10.69 (fix/full/a at Fujimoto 1e12): does not sit inside the band; same order (factor 3): yes  -> as predicted
+      shells whose X lies within 4.89..6.17: none;  X(14) = 1.45 (caveat: the reference for p = 14 has one shell above it; X(15) is undefined in this operator)
+
+------------------------------------------------------------------------------
+RESULT 3: grid-wide excess, primary definition, Te >= 2 eV (280 points)
+------------------------------------------------------------------------------
+  X_n( 8): median   1.0216   range   1.0005 ..   1.3164   (max at [49,0] Te=10 ne=1e+12)
+  X_n( 9): median   1.0141   range   1.0003 ..   1.2597   (max at [49,0] Te=10 ne=1e+12)
+  X_n(10): median   1.0039   range   1.0001 ..   1.0908   (max at [49,0] Te=10 ne=1e+12)
+  X_a( 8): median  14.0818   range   8.1931 ..  17.7270   (max at [49,7] Te=10 ne=1e+15)
+  X_a( 9): median  12.6327   range   8.0453 ..  16.7750   (max at [49,7] Te=10 ne=1e+15)
+  X_a(10): median   6.6251   range   5.3946 ..   7.5127   (max at [49,7] Te=10 ne=1e+15)
+  X_c( 8): median   0.9765   range   0.7414 ..   0.9989   (max at [49,7] Te=10 ne=1e+15)
+  X_c( 9): median   0.9853   range   0.8165 ..   0.9993   (max at [49,7] Te=10 ne=1e+15)
+  X_c(10): median   0.9960   range   0.9373 ..   0.9998   (max at [49,7] Te=10 ne=1e+15)
+  X_a decreasing monotonically from p = 9 to 14 at 280 of 280 defended points (400 of 400 over the whole grid);  X_a(9) > X_a(8) at 47 of 280
+  X_a(8..10) between 3 and 30 at 280 of 280 defended points;  over all 400: 400
+
+------------------------------------------------------------------------------
+RESULT 4: diagnostic -- the trap (no diagonal correction), X_q(p) against the full operator, named points
+------------------------------------------------------------------------------
+  benchmark      X_a:  0.360  0.523  0.433  0.319  0.232  0.170  0.141   X_n:  0.030  0.049  0.087  0.092  0.092  0.094  0.107
+  cold corner    X_a:  0.328  0.590  0.516  0.396  0.303  0.234  0.206   X_n:  0.043  0.087  0.129  0.131  0.131  0.135  0.158
+  ridge          X_a:  0.347  0.547  0.462  0.345  0.254  0.190  0.161   X_n:  0.032  0.058  0.099  0.103  0.104  0.106  0.122
+  Fujimoto 1e12  X_a:  0.394  0.442  0.351  0.252  0.178  0.127  0.102   X_n:  0.054  0.053  0.071  0.071  0.070  0.069  0.076
+  Fujimoto 1e15  X_a:  0.399  0.446  0.352  0.254  0.179  0.127  0.101   X_n:  0.027  0.031  0.061  0.066  0.067  0.068  0.075
+
+READING: the excess of the terminal shell over the same shell inside the ladder is as printed in
+RESULT 1; RESULT 2 states whether any definition reproduces D.8's 9.4 / 10.7 / 6.3 and which. The
+Chapter 4 sentence is to be requoted from this run with the quantity, the reference and the grid point
+named. Assumptions: removing a shell removes recombination into it; the interior reference is the
+n_max = 15 operator, itself truncated, so X(p) for p near 15 understates the excess against an infinite
+ladder and X(15) is not defined here.

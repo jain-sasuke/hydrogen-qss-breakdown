@@ -33,8 +33,10 @@
 %     values (ADDENDUM D.8) it replaced had the opposite sign at the
 %     benchmark and the cold corner, and the text records that. Its \todo asking for provenance on the
 %     4.9-6.2x terminal-shell excess is also closed there, by the internal
-%     terminal-vs-interior measurement (9.4x at p=8, 10.7x at p=9, 6.3x at
-%     p=10), which brackets it.
+%     terminal-vs-interior measurement (a_p at [49,0]: 9.4x at p=8, 10.7x at
+%     p=9, 6.3x at p=10), which does not bracket it (band 6.3 to 10.7 against
+%     4.9 to 6.2) but lies within a factor 2.2 of it and shares the density
+%     trend; stamped 21 Sep 2026 by verify_terminal_vs_interior.py.
 %
 %  3. chapter3.tex:222-225 asserts a severity for the conservation check that
 %     Section~\ref{sec:conservation_severity} measures and refutes. Either
@@ -715,15 +717,27 @@ exchange is nearly balanced and the sign of the bias is decided channel by
 channel: the ground-fed channel, whose net flux through the top of the ladder
 is upward, loses only an exit and can only be biased high, and it is the
 ground-fed coefficient $r_1(15)$ that the external comparison finds high while
-$r_0(15)$ agrees (Section~\ref{sec:fujimoto}). Comparing each shell's population when it is terminal against its
-population when interior levels sit above it gives excesses of $9.4$ at $p=8$,
-$10.7$ at $p=9$ and $6.3$ at $p=10$: of order ten, with no monotone trend over
-those three shells. The externally measured excess at the terminal shell, a
-factor $4.9$ to $6.2$ against published values, is of the same order, which
-makes truncation a sufficient explanation for the $n=15$ discrepancy without
-invoking the atomic data (it does not sit inside the $6.3$ to $10.7$ interval,
-as \texttt{findings\_10} ADDENDUM~D.8 wrongly states; the defensible claim is
-agreement in magnitude and trend). No result in this thesis rests on the
+$r_0(15)$ agrees (Section~\ref{sec:fujimoto}). Comparing each shell's ground-fed coefficient $a_p$ as terminal
+shell (operator rebuilt with $n_{\max}=p$, the loss channels into the removed states kept on the diagonal) with its
+value in the full $n_{\max}=15$ operator gives at the Fujimoto point $[49,0]$ (\SI{10}{\electronvolt},
+\SI{e12}{\per\cubic\centi\metre}) excesses of $9.4$ at $p=8$, $10.7$ at $p=9$ and $6.3$ at $p=10$, then $4.4$,
+$3.0$, $2.1$ and $1.4$ at $p=11$ to $14$ (\texttt{verify\_terminal\_vs\_interior.py},
+\texttt{validation/terminal\_vs\_interior/}). At the benchmark $p=8$ to $10$ give $14.2$, $12.3$ and $6.5$; over
+the $280$ defended points the $p=8$ excess spans $8.2$ to $17.7$ and the $p=10$ excess $5.4$ to $7.5$. The excess
+is confined to the ground-fed channel: the shell's total population and recombination-fed coefficient move under
+\SI{1}{\percent} at the benchmark and at most \SI{32}{\percent} and \SI{30}{\percent} at the low-density named
+points. An earlier draft quoted $9.4$, $10.7$ and $6.3$ from \texttt{findings\_10} ADDENDUM~D.8 with neither
+quantity nor grid point named; the stamped run reproduces them to \SI{0.4}{\percent} as $a_p$ at $[49,0]$. The
+absence of a monotone trend over $p=8$ to $10$ that the draft reported holds there and at $47$ of the $280$ points;
+from $p=9$ upward the excess falls at every grid point, at the benchmark from $p=8$. The external excess at the
+terminal shell, $4.9$ to $6.2$ against published values (Section~\ref{sec:fujimoto}), lies outside the $6.3$ to
+$10.7$ band, not inside it as ADDENDUM~D.8 states, but within a factor $2.2$ of every value in it, and both rise
+with density ($4.9$ to $6.2$ externally, $9.4$ to $17.7$ at $p=8$ internally at \SI{10}{\electronvolt}). That
+agreement in magnitude and in the sign of the density trend makes truncation a sufficient explanation for the
+$n=15$ discrepancy without invoking the atomic data. The fall with $p$ cannot be extrapolated to $p=15$: the
+reference for $p=14$ is itself a ladder with one shell above it, so the internal measurement neither predicts nor
+excludes $4.9$ to $6.2$ there.
+No result in this thesis rests on the
 top shell: the observable is built from $n=3$ and $n=4$, both fully resolved in
 orbital angular momentum $\ell$ and eleven shells below the cut at
 $n_{\max}=15$.
@@ -802,14 +816,30 @@ Chapter~\ref{ch:limits} treats it at length. For the Balmer lines themselves it
 closes here, because it bears on the observable rather than on the matrix.
 
 Section~\ref{sec:opacity} defines the optical depth $\tau$ and the escape factor
-and treats the Lyman series, where transparency fails. The optical depth of
-$H_\alpha$ across a \SI{10}{\centi\metre} slab is
-$6.3\times10^{-7}$ at the cold corner, $1.0\times10^{-3}$ at $[0,4]$, and
-$0.263$ at $[0,7]$, the single worst cell on the grid. Even there the escape
-factor stays above $0.85$, which moves the observed ratio by at most about
-\SI{10}{\percent} in that one cell and by a negligible amount everywhere else
-(\texttt{findings\_10} ADDENDUM~D.8). The Balmer lines are optically thin over
-the region where this thesis makes quantitative claims.
+and treats the Lyman series, where transparency fails. For the Balmer lines the
+absorbers are the $n=2$ atoms, $n_{2s}+n_{2p}$ in collisional--radiative
+equilibrium with $\nion=\nel$, the Doppler width is taken at $\Tn=\Te$, and the
+multiplet oscillator strengths are $f(2\to3)=0.641$ and
+$f(2\to4)=0.119$~\cite{WieseFuhr2009}. The line-centre optical depth of
+$H_\alpha$ across a \SI{10}{\centi\metre} slab is then $4.9\times10^{-7}$ at the
+cold corner, $8.2\times10^{-4}$ at $[0,4]$ and $0.214$ at $[0,7]$, the single
+worst cell on the grid; resolving the absorbers into $2s$ and $2p$ with the
+model's own $A$ coefficients changes these by at most \SI{4}{\percent}. At
+$[0,7]$ the population escape factor for a photon born at the slab centre
+($\kappa_0 D/2 = 0.107$) is $0.928$ for $H_\alpha$ and $0.990$ for $H_\beta$, so
+the observed ratio is lowered by \SI{6.3}{\percent} in that one cell; over the
+full path ($\tau=0.214$) the figures are $0.861$ and \SI{12}{\percent}. Above
+\SI{2}{\electronvolt} the largest $H_\alpha$ optical depth is $0.010$ at
+$[15,7]$ and the ratio moves by less than \SI{0.7}{\percent} anywhere
+(\texttt{verify\_balmer\_optical\_depth.py},
+\texttt{validation/balmer\_optical\_depth/}). The Balmer lines are optically
+thin over the region where this thesis makes quantitative claims. An earlier
+draft quoted $6.3\times10^{-7}$, $1.0\times10^{-3}$ and $0.263$ from
+\texttt{findings\_10} ADDENDUM~D.8, a working note with no producing script;
+those values are $1.23$ to $1.28$ times the stamped ones and no convention
+tested recovers them, and the escape factor above $0.85$ and ratio shift of at
+most about \SI{10}{\percent} quoted with them are half-slab figures attached to
+a full-slab optical depth. The conclusion is unchanged.
 
 %-----------------------------------------------------------------------------
 \section{Two attacks, and what they were expected to do}

@@ -1890,8 +1890,8 @@ def main():
   The \emph{CRE distance} is $|R(t)/R^{\rm CRE} - 1|$, the distance to the
   equilibrium-ionisation-balance state $n = -L^{-1}S$ that a two-parameter
   $(T_e, n_e)$ lookup table returns.
-  (a) Both, for all @NCELL@ analysed cells across the @NDCOL@ density
-  columns. The closure residual runs from $@CLO_MIN@$ to $@CLO_MAX@$, so the
+  (a) Both, for the @NOK@ window-passing cells among the @NCELL@ candidate heating
+  cells, across the @NDCOL@ density columns. The closure residual runs from $@CLO_MIN@$ to $@CLO_MAX@$, so the
   closure everyone worries about is never worse than one part in
   $@CLO_MAX_INV@$ anywhere on the analysed grid: it is $@CLO_B@$ at the
   benchmark ($T_e = @BENCH_TE@$~eV, $n_e = @BENCH_NE@$~cm$^{-3}$), one part in

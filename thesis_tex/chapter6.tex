@@ -407,9 +407,13 @@ centre. A $0$-D model cannot check any of those. One assumption inside it
 atoms, which sets the Doppler width. Fixing it at \SI{3}{\electronvolt}, the
 value a molecule dissociating by the Franck--Condon process would give, instead
 of at $\Te$, changes the census at $D = \SI{5}{\centi\metre}$ from $170/680$ and
-a worst case of $0.2550$ to $173/680$ and $0.2653$. Continuum lowering is untouched here, and so is
-opacity in the Balmer lines themselves, which would act on the observed
-ratio directly rather than through the level populations. Both remain open.
+a worst case of $0.2550$ to $173/680$ and $0.2653$. Continuum lowering is
+untouched here and remains open. Opacity in the Balmer lines themselves, which
+would act on the observed ratio directly rather than through the level
+populations, has been computed: the largest $H_\alpha$ optical depth above
+\SI{2}{\electronvolt} is $0.010$, and the worst cold cell, $[0,7]$, reaches
+$0.214$ (Section~\ref{sec:balmer_equivalence},
+\texttt{validation/balmer\_optical\_depth/}).
 
 %-----------------------------------------------------------------------------
 \section{Transport: the atoms do not stay where the model puts them}

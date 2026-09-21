@@ -1,0 +1,125 @@
+# generated 2026-09-21 21:15 by verify_balmer_optical_depth.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# L_grid.npy      sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid.npy      sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65  (data/processed/collisions/K_exc_full/state_index.csv)
+# A_resolved.npy  sha256 9b21d945e103495cccd8d3476a28cb8070b430c77f9a28880da1576f41f56ee8
+# H_A_E1_LS_n1_15_physical.csv sha256 81c91a3ceba937e585f17abc0c9a67daeb32f19cfb9d6d156d09d5bb0c281633  (G3)
+# molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd  (G2 gate)
+# wiese_fuhr.pdf  sha256 937ebe60cfa92cd3d0d0cd4382fb881051b1635c61c6d498bdaa4a75ad7d740b  (read from data/raw/wiese_fuhr.pdf page index 8 and equal to the transcription)
+# D = 10 cm; tau_full = kappa_0 D; tau_half = kappa_0 D/2; T_n = Te; m_H = 1.67262e-24 g; n_ion = n_e
+# (a) n(n=2) = n_2s + n_2p, f = 0.64108 (2-3), 0.11938 (2-4), lambda_vac = 6564.64, 4862.7 A (Wiese and Fuhr 2009 Table 4 rows 40, 41)
+# (b) per component f_lu = A_ul (g_u/g_l) m_e c lambda^2/(8 pi^2 e^2) from A_resolved.npy, lambda from state_index I_eV
+# Theta = escape_factor.escape_factor_quadrature(tau); shift = Theta(H_alpha)/Theta(H_beta) - 1
+# benchmark point [23,5]  Te=2.9471 eV  ne=1.3895e+14 cm^-3
+item,quantity,value,recorded,source,status
+(a),f shell Halpha Wiese-Fuhr,0.64108,,read from data/raw/wiese_fuhr.pdf page index 8 and equal to the transcription,
+(a),f shell Halpha pipeline g-weighted mean,0.6407330544764045,,A_resolved.npy,
+(a),f shell Hbeta Wiese-Fuhr,0.11938,,read from data/raw/wiese_fuhr.pdf page index 8 and equal to the transcription,
+(a),f shell Hbeta pipeline g-weighted mean,0.11931845607354263,,A_resolved.npy,
+R1 a,"tau_full(Halpha) [0,0]",4.930760136477823e-07,,computed,
+R1 a,"Theta_full(Halpha) [0,0]",1.0,,computed,
+R1 a,"tau_half(Halpha) [0,0]",2.4653800682389116e-07,,computed,
+R1 a,"Theta_half(Halpha) [0,0]",1.0,,computed,
+R1 a,"tau_full(Hbeta) [0,0]",6.801422985629344e-08,,computed,
+R1 a,"Theta_full(Hbeta) [0,0]",1.0,,computed,
+R1 a,"tau_half(Hbeta) [0,0]",3.400711492814672e-08,,computed,
+R1 a,"Theta_half(Hbeta) [0,0]",1.0,,computed,
+R1 a,"ratio shift Theta_a/Theta_b - 1 (full) [0,0]",0.0,,computed,
+R1 a,"ratio shift Theta_a/Theta_b - 1 (half) [0,0]",0.0,,computed,
+R1 b,"tau_full(Halpha) [0,0]",4.7362507091570593e-07,,computed,
+R1 b,"Theta_full(Halpha) [0,0]",1.0,,computed,
+R1 b,"tau_half(Halpha) [0,0]",2.3681253545785296e-07,,computed,
+R1 b,"Theta_half(Halpha) [0,0]",1.0,,computed,
+R1 b,"tau_full(Hbeta) [0,0]",6.681516474939443e-08,,computed,
+R1 b,"Theta_full(Hbeta) [0,0]",1.0,,computed,
+R1 b,"tau_half(Hbeta) [0,0]",3.3407582374697216e-08,,computed,
+R1 b,"Theta_half(Hbeta) [0,0]",1.0,,computed,
+R1 b,"ratio shift Theta_a/Theta_b - 1 (full) [0,0]",0.0,,computed,
+R1 b,"ratio shift Theta_a/Theta_b - 1 (half) [0,0]",0.0,,computed,
+R1 a,"tau_full(Halpha) [0,4]",0.0008158159739044625,,computed,
+R1 a,"Theta_full(Halpha) [0,4]",0.9994233230767948,,computed,
+R1 a,"tau_half(Halpha) [0,4]",0.00040790798695223125,,computed,
+R1 a,"Theta_half(Halpha) [0,4]",0.999711613523016,,computed,
+R1 a,"tau_full(Hbeta) [0,4]",0.00011253253785167887,,computed,
+R1 a,"Theta_full(Hbeta) [0,4]",0.9999204311349207,,computed,
+R1 a,"tau_half(Hbeta) [0,4]",5.6266268925839435e-05,,computed,
+R1 a,"Theta_half(Hbeta) [0,4]",0.9999602146535901,,computed,
+R1 a,"ratio shift Theta_a/Theta_b - 1 (full) [0,4]",-0.000497147615597382,,computed,
+R1 a,"ratio shift Theta_a/Theta_b - 1 (half) [0,4]",-0.00024861102164974724,,computed,
+R1 b,"tau_full(Halpha) [0,4]",0.0008142432866625948,,computed,
+R1 b,"Theta_full(Halpha) [0,4]",0.9994244343948295,,computed,
+R1 b,"tau_half(Halpha) [0,4]",0.0004071216433312974,,computed,
+R1 b,"Theta_half(Halpha) [0,4]",0.9997121693669454,,computed,
+R1 b,"tau_full(Hbeta) [0,4]",0.00011237208051009481,,computed,
+R1 b,"Theta_full(Hbeta) [0,4]",0.9999205445849777,,computed,
+R1 b,"tau_half(Hbeta) [0,4]",5.6186040255047404e-05,,computed,
+R1 b,"Theta_half(Hbeta) [0,4]",0.999960271381223,,computed,
+R1 b,"ratio shift Theta_a/Theta_b - 1 (full) [0,4]",-0.0004961496119214592,,computed,
+R1 b,"ratio shift Theta_a/Theta_b - 1 (half) [0,4]",-0.00024811187141959845,,computed,
+R1 a,"tau_full(Halpha) [0,7]",0.21363148640786794,,computed,
+R1 a,"Theta_full(Halpha) [0,7]",0.8613392651254981,,computed,
+R1 a,"tau_half(Halpha) [0,7]",0.10681574320393397,,computed,
+R1 a,"Theta_half(Halpha) [0,7]",0.9276643510938676,,computed,
+R1 a,"tau_full(Hbeta) [0,7]",0.029468034580699597,,computed,
+R1 a,"Theta_full(Hbeta) [0,7]",0.9794115098790565,,computed,
+R1 a,"tau_half(Hbeta) [0,7]",0.014734017290349798,,computed,
+R1 a,"Theta_half(Hbeta) [0,7]",0.9896438796337923,,computed,
+R1 a,"ratio shift Theta_a/Theta_b - 1 (full) [0,7]",-0.12055427525876083,,computed,
+R1 a,"ratio shift Theta_a/Theta_b - 1 (half) [0,7]",-0.0626281128145405,,computed,
+R1 b,"tau_full(Halpha) [0,7]",0.21338966419208014,,computed,
+R1 b,"Theta_full(Halpha) [0,7]",0.8614830384948055,,computed,
+R1 b,"tau_half(Halpha) [0,7]",0.10669483209604007,,computed,
+R1 b,"Theta_half(Halpha) [0,7]",0.9277427295724715,,computed,
+R1 b,"tau_full(Hbeta) [0,7]",0.029436144206013422,,computed,
+R1 b,"Theta_full(Hbeta) [0,7]",0.9794335243651562,,computed,
+R1 b,"tau_half(Hbeta) [0,7]",0.014718072103006711,,computed,
+R1 b,"Theta_half(Hbeta) [0,7]",0.9896550198772093,,computed,
+R1 b,"ratio shift Theta_a/Theta_b - 1 (full) [0,7]",-0.12042724997268517,,computed,
+R1 b,"ratio shift Theta_a/Theta_b - 1 (half) [0,7]",-0.06255946674470414,,computed,
+P1 a full,"tau_full(H_alpha) [0,0]",4.930760136477823e-07,6.3e-07,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 a full,"tau_full(H_alpha) [0,4]",0.0008158159739044625,0.001,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 a full,"tau_full(H_alpha) [0,7]",0.21363148640786794,0.263,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 a half,"tau_half(H_alpha) [0,0]",2.4653800682389116e-07,6.3e-07,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 a half,"tau_half(H_alpha) [0,4]",0.00040790798695223125,0.001,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 a half,"tau_half(H_alpha) [0,7]",0.10681574320393397,0.263,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 b full,"tau_full(H_alpha) [0,0]",4.7362507091570593e-07,6.3e-07,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 b full,"tau_full(H_alpha) [0,4]",0.0008142432866625948,0.001,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 b full,"tau_full(H_alpha) [0,7]",0.21338966419208014,0.263,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 b half,"tau_half(H_alpha) [0,0]",2.3681253545785296e-07,6.3e-07,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 b half,"tau_half(H_alpha) [0,4]",0.0004071216433312974,0.001,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1 b half,"tau_half(H_alpha) [0,7]",0.10669483209604007,0.263,chapter4 ~806-808 / D.8,NOT REPRODUCED
+P1,conventions reproducing all three quoted tau,0,1,task,NONE
+P1b,(b)/(a) tau(H_alpha) min,0.9605518374577217,0.68,hand estimate,as predicted
+P1b,(b)/(a) tau(H_alpha) max,0.9988816795278732,1.0,hand estimate,as predicted
+P2 a,worst cell tau_full(H_alpha),"[0,7]","[0,7]",chapter4,as predicted
+P2 b,worst cell tau_full(H_alpha),"[0,7]","[0,7]",chapter4,as predicted
+P3 a half,"Theta(H_alpha) [0,7]",0.9276643510938676,0.85,chapter4 ~809,holds
+P3 a half,"ratio shift [0,7]",-0.0626281128145405,-0.1,chapter4 ~810,holds
+P3 a full,"Theta(H_alpha) [0,7]",0.8613392651254981,0.85,chapter4 ~809,holds
+P3 a full,"ratio shift [0,7]",-0.12055427525876083,-0.1,chapter4 ~810,FAILS
+P3 b half,"Theta(H_alpha) [0,7]",0.9277427295724715,0.85,chapter4 ~809,holds
+P3 b half,"ratio shift [0,7]",-0.06255946674470414,-0.1,chapter4 ~810,holds
+P3 b full,"Theta(H_alpha) [0,7]",0.8614830384948055,0.85,chapter4 ~809,holds
+P3 b full,"ratio shift [0,7]",-0.12042724997268517,-0.1,chapter4 ~810,FAILS
+R2 a full,cells with tau(H_alpha) > 0.1,4,,computed,
+R2 a full,cells with tau(H_alpha) > 1,0,,computed,
+R2 a full,defended max tau(H_alpha),0.01002613206545534,0.1,refuter,below
+R2 a full,defended max |ratio shift|,0.006089192243385999,0.1,refuter,below
+R2 a half,cells with tau(H_alpha) > 0.1,1,,computed,
+R2 a half,cells with tau(H_alpha) > 1,0,,computed,
+R2 a half,defended max tau(H_alpha),0.00501306603272767,0.1,refuter,below
+R2 a half,defended max |ratio shift|,0.0030501967110533323,0.1,refuter,below
+R2 b full,cells with tau(H_alpha) > 0.1,4,,computed,
+R2 b full,cells with tau(H_alpha) > 1,0,,computed,
+R2 b full,defended max tau(H_alpha),0.01001481008761514,0.1,refuter,below
+R2 b full,defended max |ratio shift|,0.0060822944211659236,0.1,refuter,below
+R2 b half,cells with tau(H_alpha) > 0.1,1,,computed,
+R2 b half,cells with tau(H_alpha) > 1,0,,computed,
+R2 b half,defended max tau(H_alpha),0.00500740504380757,0.1,refuter,below
+R2 b half,defended max |ratio shift|,0.003046735109417553,0.1,refuter,below
+bench,"tau_full(H_alpha) [23,5] (a)",8.148405580085945e-05,,computed,
+R3,"D.8 / run tau_full(H_alpha) (a) [0,0]",1.277693464217114,,diagnostic,
+R3,"D.8 / run tau_full(H_alpha) (a) [0,4]",1.2257666336367994,,diagnostic,
+R3,"D.8 / run tau_full(H_alpha) (a) [0,7]",1.2310919350992908,,diagnostic,
+R3,alternatives reproducing D.8/run at all three points,0,0,diagnostic,NONE

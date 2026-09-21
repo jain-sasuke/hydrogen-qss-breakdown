@@ -1962,8 +1962,24 @@ $\mathrm{De}=1$, where the 43-state value itself moves a further
 interpolation of the operator along the ramp
 (\texttt{validation/ramp\_plateau/}, log-linear sensitivity block; at
 $t_{\mathrm{ramp}} = 10^{-2}\tauslow$ the same change is $+1.6\times10^{-4}$),
-so the fraction there is $0.65\pm0.01$. During a linear ramp the ground-state
-reservoir completes the fraction
+so the fraction there is $0.65\pm0.01$.
+
+Inside the grid the distance to the true operator can be measured. Over the two-interval span
+$[15,3]\to[17,3]$ the true mid-node operator $\Lmat[16,3]$ is under-estimated by log-linear
+interpolation of its neighbours by \SI{0.69}{\percent} and over-estimated by linear interpolation by
+\SI{2.3}{\percent} in the ground-state column (median of $42$ entries; $\tauslow$ by $+0.30$ and
+\SI{-2.8}{\percent}), and a $\Te$-linear ramp integrated piecewise through that true operator
+reaches $0.9961$, $0.9620$ and $0.6826$ of the step's plateau error at $t_{\mathrm{ramp}}/\tauslow =
+10^{-2}$, $10^{-1}$ and $1$, inside the interval spanned by the plain log-linear ($0.9961$,
+$0.9621$, $0.6834$) and linear ($0.9959$, $0.9599$, $0.6671$) operator ramps at every ratio and
+within $9\times10^{-4}$ of the log-linear one (\texttt{verify\_physical\_ramp\_bound.py},
+\texttt{validation/physical\_ramp\_bound/}). The one-interval distance is an estimate, not a
+measurement: scaling the measured two-interval gaps by the ratio $0.66$ measured between the one-
+and two-interval log-linear-minus-linear gaps places the physical ramp about $6\times10^{-4}$ below
+$0.6576$ and $0.010$ above $0.6469$ at $\mathrm{De}=1$, so the band $0.65\pm0.01$ stands with the
+physical value expected near its log-linear edge, while $\Lmat[\Te(t)]$ itself remains uncomputed.
+
+During a linear ramp the ground-state reservoir completes the fraction
 $1 - \mathrm{De}\,(1-\mathrm{e}^{-1/\mathrm{De}})$ of its total excursion, the
 lag of a single pole behind a ramp, which for large $\mathrm{De}$ expands to
 $(t_{\mathrm{ramp}}/\tauslow)\,(\tfrac12 - \tfrac{1}{6\,\mathrm{De}}

@@ -1,0 +1,140 @@
+# generated 2026-09-21 20:23 by verify_window_membership_exposure.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  pandas 3.0.0
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# input plateau_gridmap.csv sha256 95b4815165222b5f05cc9f0ee84786f2d3535e411a0aaacdb4714e020a99828d
+# input divertor_map.csv sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# input window_sweep_summary.csv sha256 4b4960bdf48f233f979f54218c3f5d3f810b96b0359a1025b37ce4821a1f3f2a
+# input plateau_slowmode.csv sha256 ad85f465b92640539ee5d3a658f4e5a70c4e1e4be2ecd94d1dab987f60084b44
+# input divertor_map_w10/divertor_map.csv sha256 0ac39efd3d81d554b86129605b4004aa0beb730c991226c8552610d91fb45ba3
+# input divertor_map_w20/divertor_map.csv sha256 6073fa267ac066d846bb28162c015ce82724a528b46df68554d3d1336ae3bfd6
+# input divertor_map_w50/divertor_map.csv sha256 48d24f0f1839784ef395053a85694464cfe3a03a7dc3804abca91cc1f02280c8
+# window test (k*tau_relax) < (tau_QSS/k) [verify_divertor_map.py l.176]; defended Te >= 2.0 eV; census thr 0.1; td 100us = 0.0001, 506us = 0.000506
+==============================================================================
+WINDOW MEMBERSHIP (k = 10..100) AND EXPOSURE vs tau_slow -- recount from stamped one-interval artifacts
+generated 2026-09-21 20:23  by verify_window_membership_exposure.py
+interpreter   /opt/anaconda3/envs/cr/bin/python   numpy 2.3.5   pandas 3.0.0
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+  inputs (read-only, sha256):
+    validation/plateau_gridmap/plateau_gridmap.csv  95b4815165222b5f05cc9f0ee84786f2d3535e411a0aaacdb4714e020a99828d
+    validation/divertor_map/divertor_map.csv  5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+    validation/window_sweep/window_sweep_summary.csv  4b4960bdf48f233f979f54218c3f5d3f810b96b0359a1025b37ce4821a1f3f2a
+    validation/plateau_slowmode/plateau_slowmode.csv  ad85f465b92640539ee5d3a658f4e5a70c4e1e4be2ecd94d1dab987f60084b44
+    validation/divertor_map_w10/divertor_map.csv  0ac39efd3d81d554b86129605b4004aa0beb730c991226c8552610d91fb45ba3
+    validation/divertor_map_w20/divertor_map.csv  6073fa267ac066d846bb28162c015ce82724a528b46df68554d3d1336ae3bfd6
+    validation/divertor_map_w50/divertor_map.csv  48d24f0f1839784ef395053a85694464cfe3a03a7dc3804abca91cc1f02280c8
+  current pipeline files (sha256):
+    L_grid sha256        2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+    S_grid sha256        7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+    state_index sha256   23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+  k swept        : [10, 20, 30, 50, 100]   canonical k = 30
+  window test    : (k*tau_relax) < (tau_QSS/k)   [verify_divertor_map.py l.176, strict <]  i.e. M > k^2
+  defended       : Te >= 2.0 eV;  dense: also ne >= 1e+14;  census threshold 10%
+==============================================================================
+
+G0  stamped header sha256 vs current pipeline files; grid labels; key set
+    plateau_gridmap        header L_grid / S_grid / state_index sha256 all equal the current files
+    divertor_map           header L_grid / S_grid / state_index sha256 all equal the current files
+    window_sweep_summary   header L_grid / S_grid / state_index sha256 all equal the current files
+    plateau_slowmode       header L_grid / S_grid / state_index sha256 all equal the current files
+    plateau_gridmap        784 rows = 392 heat + 392 cool, unique keys, Te[i] & ne[j] equal the pipeline grids (rel 2.2e-16, 0.0e+00)
+    divertor_map           784 rows = 392 heat + 392 cool, unique keys, Te[i] & ne[j] equal the pipeline grids (rel 2.2e-16, 0.0e+00)
+    heat i range 0..48, cool i range 1..49; Te_new/Te is exactly one grid interval on every row (rel 2.2e-16); achieved |step| 0.045905 .. 0.048113  (heating +4.8113%, cooling -4.5905%)
+    G0 PASSED
+
+G1  plateau_gridmap vs divertor_map, row by row on the shared keys (worst relative difference)
+    tau_QSS      0.00e+00
+    tau_relax    0.00e+00
+    M            0.00e+00
+    eps_plateau  0.00e+00
+    window_ok    differs on 0 rows
+    G1 PASSED  (divertor_map.csv is used below; plateau_gridmap.csv supplies Te_new)
+
+  consistency of the stored columns: |M/(tau_QSS/tau_relax) - 1| max 9.2e-13;  |lo_100us recomputed / lo_ELM_crash stored - 1| max 7.5e-13
+  defended pairs (Te >= 2.0 eV): 552 = 272 heating + 280 cooling
+
+  recount at k = 30 vs the stored window_ok column: differs on 0 rows
+
+------------------------------------------------------------------------------
+RESULT 1: membership by k (784 pairs; census = defended & window_ok & lower bound > 10 %)
+------------------------------------------------------------------------------
+    k    M>k^2   window_ok  heat  cool  excluded | warm(of defended)  dense | census@100us  worst  at            | census@506us  worst  | thr5%  thr20% | (k*tR<tQ/k) vs M>k^2 differ | bench heat[23,5]
+    10     100     779      389   390      5   |   547 of 552       202  |    45       0.1748 heat[15,3]    |    24      0.1533 |  141      0   |          0 rows          | included
+    20     400     728      363   365     56   |   496 of 552       151  |    45       0.1748 heat[15,3]    |    24      0.1533 |  141      0   |          0 rows          | included
+    30     900     680      338   342    104   |   448 of 552       108  |    45       0.1748 heat[15,3]    |    24      0.1533 |  141      0   |          0 rows          | included
+    50    2500     596      295   301    188   |   364 of 552        66  |    45       0.1748 heat[15,3]    |    24      0.1533 |  141      0   |          0 rows          | included
+   100   10000     452      222   230    332   |   221 of 552        25  |    45       0.1748 heat[15,3]    |    24      0.1533 |  141      0   |          0 rows          | EXCLUDED
+
+G2  recount at k = 10, 20, 30, 50 vs validation/window_sweep/window_sweep_summary.csv (stamped 11 Sep)
+    k= 10: all columns reproduced
+    k= 20: all columns reproduced
+    k= 30: all columns reproduced
+    k= 50: all columns reproduced
+    G2 REPRODUCED
+
+G3 / P5  stored k-sibling divertor maps: recounted window_ok vs stored; eps_plateau vs k = 30 (bit for bit)
+    k= 10: window_ok recount differs from stored on 0 rows;  max|eps_plateau(k) - eps_plateau(30)| = 0.000e+00 (identical);  tau_QSS rel 0.0e+00, tau_relax rel 0.0e+00
+    k= 20: window_ok recount differs from stored on 0 rows;  max|eps_plateau(k) - eps_plateau(30)| = 0.000e+00 (identical);  tau_QSS rel 0.0e+00, tau_relax rel 0.0e+00
+    k= 50: window_ok recount differs from stored on 0 rows;  max|eps_plateau(k) - eps_plateau(30)| = 0.000e+00 (identical);  tau_QSS rel 0.0e+00, tau_relax rel 0.0e+00
+    G3 PASSED on every sibling present;  P5: eps_plateau is a column never touched by k in this recount, and the stored siblings agree bit for bit
+
+------------------------------------------------------------------------------
+P1  window-passing at k = 30 by direction
+------------------------------------------------------------------------------
+    heating 338 of 392 (predicted 338),  cooling 342 of 392 (predicted 342),  excluded 104 (predicted 104)  -> as predicted
+    excluded pairs by density column j: j=0: 0, j=1: 0, j=2: 0, j=3: 0, j=4: 5, j=5: 17, j=6: 35, j=7: 47
+    excluded pairs by Te class: Te < 2 eV 0, Te >= 2 eV 104
+
+------------------------------------------------------------------------------
+P2  k = 100 (M > 1e4)
+------------------------------------------------------------------------------
+    n_window_ok 452 of 784 (predicted 452);  heating 222, cooling 230
+    warm (window_ok & Te >= 2) 221 of 552 defended (predicted 221 of 552);  dense 25
+    census @100us 45 / 221  worst 0.1748 at ('heat', 15, 3)  (predicted numerator 45);  census @506us 24
+    benchmark heat[23,5]: M = 8242.7375 -> 8243 (predicted 8243);  k=30 (M > 900): included;  k=100 (M > 1e4): EXCLUDED
+    -> counts as predicted;  census numerator as predicted;  benchmark membership as predicted
+    REFUTER (census numerator changes with k): did not appear -- {10: 45, 20: 45, 30: 45, 50: 45, 100: 45}
+    census members at k = 30 whose M is below 1e4 (would leave the census at k = 100): 0;  census-member M range 3.541e+04 .. 1.412e+06
+
+------------------------------------------------------------------------------
+P3  one-interval values for the requote (from divertor_map.csv == plateau_gridmap.csv, G1)
+------------------------------------------------------------------------------
+    pair              Te [eV]   Te_new [eV]   ne [cm^-3]    tau_QSS [s]    tau_relax [s]   M            eps_plateau   lo_100us    lo_506us
+    benchmark     heat[23,5]  2.9471    3.0888       1.3895e+14   1.849416e-05   2.243691e-09   8242.7375   0.06361184    0.011712    0.002325
+    cold corner   heat[ 0,0]  1.0000    1.0481       1.0000e+12   3.601732e+01   3.834545e-08   939285389.8471   0.08300438    0.083004    0.083004
+    cold/dense    heat[ 0,4]  1.0000    1.0481       5.1795e+13   2.332390e-01   6.238552e-09   37386715.7310   0.38690263    0.386820    0.386483
+    census worst  heat[15,3]  2.0236    2.1210       1.9307e+13   1.493772e-03   7.413482e-09   201493.9357   0.18072818    0.174812    0.153301
+    eps_plateau(heat,23,5) = 0.063612 (predicted 0.063612),  eps_plateau(heat,0,0) = 0.083004 (predicted 0.083004),  M(heat,23,5) = 8242.7 (predicted 8243)  -> as predicted
+    for comparison, what the chapter now quotes from validation/plateau_slowmode/plateau_slowmode.csv (+0.6 eV ABSOLUTE step):
+      ITER ref    [23,5]  Te 2.9471 -> 3.5565 eV (step +20.7 %)  tau_QSS 1.047737e-05  M 4856.27  eps_plateau 0.32902966
+      cold corner [0,0]  Te 1.0000 -> 1.5999 eV (step +60.0 %)  tau_QSS 3.946455e-01  M 11367968.65  eps_plateau 0.24075077
+    one-interval step at the benchmark is +4.81 % (Te 2.9471 -> 3.0888 eV); at the cold corner +4.81 %
+    NOTE tau_QSS of the benchmark PAIR is 18.49 us = 1/|lambda_0| of the post-step operator L[24,5]; the chapter's 22.7 us is 1/|lambda_0| of L[23,5] itself (CLAUDE.md 22.73 us). Both are reported below.
+
+------------------------------------------------------------------------------
+P4  tau_slow (= tau_QSS of the pair) over the defended window-passing pairs at k = 30, against the 100 us exposure
+------------------------------------------------------------------------------
+    defended & window_ok(30), all          n= 448:  <100us  237 ( 52.9 %),  <22.7us  142,  <18.49us(bench pair)  131,  <506us  336,  >1ms   84;  min 1.177e-06  median 8.151e-05  max 8.867e-02 s
+      heating                              n= 218:  <100us  118 ( 54.1 %),  <22.7us   71,  <18.49us(bench pair)   65,  <506us  167,  >1ms   38;  min 1.177e-06  median 7.639e-05  max 4.612e-02 s
+      cooling                              n= 230:  <100us  119 ( 51.7 %),  <22.7us   71,  <18.49us(bench pair)   66,  <506us  169,  >1ms   46;  min 1.177e-06  median 9.221e-05  max 8.867e-02 s
+    census members @100us (k=30)           n=  45:  <100us    0 (  0.0 %),  <22.7us    0,  <18.49us(bench pair)    0,  <506us   11,  >1ms   24;  min 1.951e-04  median 1.115e-03  max 2.884e-02 s
+      heating                              n=  22:  <100us    0 (  0.0 %),  <22.7us    0,  <18.49us(bench pair)    0,  <506us    8,  >1ms    9;  min 1.951e-04  median 8.075e-04  max 1.513e-02 s
+      cooling                              n=  23:  <100us    0 (  0.0 %),  <22.7us    0,  <18.49us(bench pair)    0,  <506us    3,  >1ms   15;  min 3.905e-04  median 1.584e-03  max 2.884e-02 s
+    predicted over 448: <100us 237, <22.7us 142, >1ms 84  -> as predicted
+    REFUTER (fewer than 45 of 448 = 10 % below 100 us): did not appear -- 237 of 448 (52.9 %) have tau_slow < 100 us, i.e. the ground state relaxes within the exposure there
+    the 237 defended window-passing pairs with tau_slow < 100 us, by density column j: j=0: 0, j=1: 11, j=2: 29, j=3: 43, j=4: 50, j=5: 48, j=6: 34, j=7: 22
+    their Te range 2.024 .. 10.000 eV; the remaining 211 (tau_slow >= 100 us) have ne <= 1.389e+14 cm^-3
+    recovery factor lo_100us/eps_plateau over the defended window-passing pairs: min 0.0118  median 0.5761  max 0.9994;  at the benchmark pair 0.1841
+
+READING: membership is recounted from the same tau_QSS / tau_relax columns that verify_divertor_map.py wrote,
+with its own inequality; k = 100 is the one new value. The one-interval eps_plateau and M for the requote are
+printed under P3 next to the +0.6 eV values the paragraph currently quotes. P4 is the tally that decides whether
+the 'spends its integration time looking at the plateau' sentence survives. Nothing here re-runs any physics.

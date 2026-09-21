@@ -73,10 +73,12 @@ results are worth stating before the evidence rather than after it.
 The first is a reversal. The quasi-steady-state (QSS) closure, the
 approximation that the excited populations sit in instantaneous steady state
 with whatever ground-state reservoir is present, is not the problem. Measured
-along a full time-dependent trajectory it is accurate to eight significant
-figures. What fails is the assumption that the reservoir itself has finished
-moving, which is a different assumption, made at a different step of the
-inversion, and never previously separated from the first.
+along full time-dependent trajectories, its residual never exceeds
+$4.4\times10^{-5}$ over the analysed pairs and is $6.73\times10^{-9}$ at the
+grid point carrying the largest diagnostic error (Section~\ref{sec:bridge}).
+What fails is the assumption that the reservoir itself has finished moving,
+which is a different assumption, made at a different step of the inversion,
+and never previously separated from the first.
 
 The second is that what that failure costs is not a number. It is a function,
 and the function has a closed form,
@@ -163,9 +165,18 @@ axis, at the benchmark and at the coldest grid point.
 
 The ELM that motivates this thesis lasts of order \SI{100}{\micro\second},
 long against $\taurel$ by a factor of about $4\times10^{4}$ and comparable
-to $\tauslow$, so a spectrometer pointed at the divertor during one spends its
-integration time looking at the plateau. That is the state whose error this
-chapter measures.
+to $\tauslow$. Comparable cuts both ways: over the $448$ defended pairs with a
+plateau window $\tauslow$ runs from \SI{1.2}{\micro\second} to
+\SI{89}{\milli\second}, and at $237$ of them it is shorter than
+\SI{100}{\micro\second}, so a spectrometer integrating over an ELM records the
+reservoir's relaxation there and not a frozen plateau; at every one of the
+$45$ pairs where the averaged error exceeds \SI{10}{\percent} it is longer
+than \SI{195}{\micro\second}
+(\texttt{validation/window\_membership\_exposure/}). An earlier draft said the
+exposure ``spends its integration time looking at the plateau'', which holds
+only where $\tauslow$ exceeds the exposure. The plateau is the state whose
+error this chapter measures first; what an exposure of finite length records
+is the subject of Section~\ref{sec:persistence}.
 
 \subsection{Two error measures, and why the step size is part of each}
 \label{sec:eps_definitions}
@@ -257,10 +268,10 @@ $\epsCRE = 3.869\times10^{-1}$ (\texttt{findings\_09}~\S1, from direct
 integration).
 
 At those two points the two errors differ by 3.9 and 7.8 decades, and they
-differ most at the point where the diagnostic error is worst. Over the 392
-analysed cells the gap runs from 2.9 to 9.7 decades
-(Figure~\ref{fig:reversal}b), so it is a distribution rather than a single
-number and should not be quoted as one. Neither figure is zero: the
+differ most at the point where the diagnostic error is worst. Over the 338
+window-passing cells among the 392 candidate heating cells the gap runs from
+2.9 to 9.7 decades (Figure~\ref{fig:reversal}b), so it is a distribution
+rather than a single number and should not be quoted as one. Neither figure is zero: the
 excited-state closure is an approximation and it carries a measurable residual.
 The point is its size relative to the other error, not its vanishing. The adiabatic elimination of
 Section~\ref{sec:qss} is doing its job to a part in $10^{8}$ precisely where the
@@ -454,8 +465,10 @@ point by a factor $4.8$ at $[0,4]$ ($0.3869$ to $1.8732$), $4.5$ at $[15,3]$
 and $5.2$ at the benchmark $[23,5]$; the grid maximum moves by a factor $4.9$
 only because its location shifts from $[0,4]$ to $[0,5]$ at four intervals. Quoted
 bare, \SI{38.7}{\percent} is a statement about a grid, and the sentence
-\emph{``the quasi-steady-state error reaches \SI{39}{\percent}''} is not
-falsifiable because it does not say what it is \SI{39}{\percent} of.
+\emph{``the reservoir-closure error reaches \SI{39}{\percent}''} is not
+falsifiable because it does not say what it is \SI{39}{\percent} of; calling
+it the quasi-steady-state error, as is common, misnames it as well
+(Section~\ref{sec:qss_is_exact}).
 
 The way out is not a better choice of step. It is to report the response
 function instead of one of its values, which is what
@@ -1392,14 +1405,21 @@ is where that slide crosses the peak.
 
 This is a statement about where the operating point sits, not about how
 sensitive the diagnostic could be, and it forbids the inference that the effect
-disappears at high density. The cap does not close; the plasma merely walks off
-the peak. On a grid extending further in density it would walk back on.
+disappears at high density. The cap does not close; over this grid the
+operating point walks off the peak, and Table~\ref{tab:position_effect} shows
+$\ln(u^{\mathrm{CRE}}/u^{\mathrm{peak}})$ falling monotonically to the grid's
+top density. Whether the operating point meets the peak again beyond that
+density is not computed here.
 
-\subsection{Three independent tests of the mechanism}
+\subsection{Three tests of the mechanism}
 \label{sec:griem_tests}
 
 The account above predicts more than the shape of one curve, and each
-prediction can fail.
+prediction can fail. The crest positions and the boundary level in these tests
+are computed from the same rate matrix that produces the maps, so the third
+test compares the operator with itself; the first two compare it with Griem's
+criterion, which is external to the operator; none of the three is
+experimental.
 
 \textbf{The crest must move with the shell pair, and by a predicted amount.}
 The reservoir strength at which a shell switches from recombination-fed to
@@ -1419,8 +1439,8 @@ criterion evaluated at $n=4$ and $\Te = \SI{2}{\electronvolt}$ gives
 $\SI{2.05e13}{\per\cubic\centi\metre}$ against a measured crest at
 $\SI{1.93e13}{\per\cubic\centi\metre}$, a \SI{6}{\percent} difference.
 
-\textbf{An independent diagnostic must put the boundary level in the same
-place.} \texttt{verify\_boundary\_descent.py} computes, without reference to
+\textbf{A second diagnostic of the same operator must put the boundary level
+in the same place.} \texttt{verify\_boundary\_descent.py} computes, without reference to
 $\ffrac{3}$ or $\ffrac{4}$, the effective principal quantum number at which the
 collisional and radiative rates balance. At the crest density it returns
 $\bar n = 3.08$ to $3.25$ at every temperature on the grid
@@ -1514,16 +1534,17 @@ temperature, from $14.4$ at \SI{1.00}{\electronvolt} to $5.7$ at
 \SI{2.95}{\electronvolt} (Table~\ref{tab:gain}), and a step of fixed fractional
 size therefore displaces the reservoir progressively less.
 
-Why the gain behaves this way is not established here. $|\Delta\ln u|$ is flat
-to one per cent across three decades of density while varying by a factor $2.7$
-across temperature, which implies that
+Why the gain falls with temperature is not established here. $|\Delta\ln u|$
+is flat to one per cent across three decades of density while varying by a
+factor $2.7$ across temperature, which implies that
 $\partial\ln\ngs/\partial\ln\Te$ at collisional--radiative equilibrium is
-controlled by temperature alone. \emph{[MECHANISM NOT ESTABLISHED: this is an
-observation from \texttt{verify\_ridge\_mechanism.py}, not a derived result. A
-natural candidate is the Arrhenius factor in the electron-impact ionisation
-rate out of the ground state, whose logarithmic temperature derivative is
-$\chi_H/\Te = 4.6$ at the benchmark against a measured $|G| = 5.7$, but the
-comparison has not been carried through and the two need not be equal.]}
+controlled by temperature alone. This is an observation from
+\texttt{verify\_ridge\_mechanism.py}, not a derived result. A natural
+candidate is the Arrhenius factor in the electron-impact ionisation rate out
+of the ground state, whose logarithmic temperature derivative is
+$\chi_H/\Te = 4.6$ at the benchmark against the measured $|G| = 5.7$
+(Table~\ref{tab:gain}), but the comparison has not been carried through and
+the two need not be equal.
 
 \subsection{Three explanations this work does not support}
 \label{sec:withdrawn}
@@ -1853,7 +1874,13 @@ definitions of the averaged error, and is distinct from the
 \SI{2.2}{\percent} by which $\epsestim$ departs from the true average at
 \SI{100}{\micro\second}. The exposure ratio gives the same census: $43$ of $448$ at \SI{100}{\micro\second} on both the
 shell ratio and the $A$-weighted line ratio, and $24$ and $23$ at
-\SI{506}{\micro\second}. The agreement is empirical rather than structural. At
+\SI{506}{\micro\second}. The headline $45$ of $448$ in
+Table~\ref{tab:elm_census} is the count on the estimate; the propagated true
+average and the exposure ratio give $43$ on the shell ratio because two
+cooling pairs, from $[22,3]$ and $[23,2]$, whose estimates are $0.10008$ and
+$0.10043$, come out at $0.09949$ and $0.09999$ when propagated, both within
+$0.001$ of the threshold (\texttt{validation/trajectory\_census/},
+section~C). The agreement is empirical rather than structural. At
 $98$ of the $784$ pairs the signed error changes sign during the rise, so
 cancellation inside the exposure integral is possible in principle; all $98$
 have $\epsplat\le0.064$ and none is a census member.
@@ -1861,26 +1888,41 @@ have $\epsplat\le0.064$ and none is a census member.
 \paragraph{The plateau window itself is a free parameter, and it moves only one
 of the two things.} The window is defined by a separation factor $k$, taken as
 $30$ throughout, so that a point is analysed only where
-$k\,\taurel < \tauslow/k$. That choice is imposed rather than measured, and its
-effect was swept at $k = 10$, $30$ and $100$ before this chapter was written
-(\texttt{verify\_plateau\_window.py} and the two re-runs stamped in
-\texttt{validation/plateau\_slowmode\_w10/} and
-\texttt{\ldots\_w100/}). The result separates cleanly.
+$k\,\taurel < \tauslow/k$, that is where $\Msep > k^{2}$. That choice is
+imposed rather than measured, and its effect was recounted at $k = 10$, $20$,
+$30$, $50$ and $100$ from the stamped one-interval maps
+(\texttt{verify\_window\_sweep.py}, \texttt{validation/window\_sweep/};
+\texttt{verify\_window\_membership\_exposure.py},
+\texttt{validation/window\_membership\_exposure/}). The result separates
+cleanly.
 
-\emph{Magnitudes do not move at all.} At the benchmark $\epsplat$ is
-$0.32902966$ at $k=10$ and $0.32902966$ at $k=30$, identical to eight figures,
-and $0.24075077$ at the cold corner under both. That is not a numerical
-coincidence: $\epsplat$ is a frozen-reservoir linear solve evaluated at one
-instant, so it cannot depend on the width of a window it is not averaged over.
-Sampling the trajectory across the window and extrapolating back to $t=0$
-returns the analytic value to \SI{0.005}{\percent}.
+\emph{Magnitudes do not move at all.} $\epsplat$ is a frozen-reservoir linear
+solve evaluated at one instant and computed before the window gate is applied,
+so it cannot depend on the width of a window it is not averaged over; the
+stored maps at $k = 10$, $20$, $30$ and $50$ carry bit-identical $\epsplat$ on
+all $784$ pairs, $0.0636$ at the benchmark heating pair and $0.0830$ at the
+cold corner. An earlier draft quoted $0.32902966$ and $0.24075077$ here, with
+$\Msep = 4856$ at the benchmark. Those values came from a run with a fixed
+$+\SI{0.6}{\electronvolt}$ step (\texttt{validation/plateau\_slowmode/}), which
+is the four-interval $+\SI{20.7}{\percent}$ step at the benchmark and a
+$+\SI{60}{\percent}$ step at the cold corner, not this chapter's one-interval
+step; the invariance in $k$ they illustrated was real, the magnitudes were not
+this chapter's. Sampling that run's trajectory across the window and
+extrapolating back to $t=0$ returned its analytic value to
+\SI{0.005}{\percent} (\texttt{validation/plateau\_window\_check.txt}).
 
 \emph{Membership does move.} $k$ decides which points have a resolvable plateau
-at all, and it bites: at $k=100$ the benchmark itself is excluded, needing
-$\Msep > 10^4$ and having $4856$. \textbf{So $k$ sets the denominator of every
-census and never the numerator's magnitude}, and a census quoted without its $k$
-is as incomplete as one quoted without its threshold. Every count in this
-chapter uses $k=30$.
+at all: $779$, $728$, $680$, $596$ and $452$ of the $784$ pairs pass at
+$k = 10$, $20$, $30$, $50$ and $100$, and $547$, $496$, $448$, $364$ and $221$
+of the $552$ defended pairs. At $k = 100$ the benchmark heating pair itself is
+excluded, needing $\Msep > 10^{4}$ and having $8243$ for its post-step
+operator. The census numerator does not move with the denominator: $45$ pairs
+exceed the \SI{10}{\percent} threshold at every one of the five values of $k$,
+with the same worst case, $0.1748$ at $[15,3]$, because every census member
+has $\Msep$ between $3.5\times10^{4}$ and $1.4\times10^{6}$. \textbf{So $k$
+sets the denominator of every census and, over the range swept, never the
+numerator}, and a census quoted without its $k$ is as incomplete as one quoted
+without its threshold. Every count in this chapter uses $k=30$.
 
 \subsection{Two structural objections, tested}
 
@@ -1898,7 +1940,11 @@ reservoir without closing the electron balance or adding transport are in
 Section~\ref{sec:attacks}.
 
 The second objection is that a step is an idealisation and a real ELM has a
-finite rise time. Replacing the step by a linear ramp of duration
+finite rise time. What was tested is a ramp of the operator between the two
+ends of one grid interval, interpolated linearly and log-linearly, because no
+rate matrix exists at intermediate temperatures inside one interval; the
+operator along a true temperature ramp, $\Lmat[\Te(t)]$, was not computed.
+Replacing the step by a linear operator ramp of duration
 $t_{\mathrm{ramp}}$, integrating the full 43-state system through
 $\Lmat(t) = (1-f)\,\Lmat^{-} + f\,\Lmat^{+}$ with
 $f = \min(t/t_{\mathrm{ramp}},1)$, and reading the error at the start of the
@@ -1933,8 +1979,9 @@ established at these four values of $\mathrm{De}$ only. The relevant Damk\"ohler
 which is $2332$ at $[0,4]$, and not $\taurel/\taudrive \approx 10^{-5}$, which
 describes the suppression of the fast excited-manifold error and has nothing to
 say about the plateau; at $\mathrm{De} = 2332$ the plateau is suppressed by
-\SI{0.02}{\percent}. The step idealisation is safe, and the ratio that makes it
-safe is $\tauslow/t_{\mathrm{ramp}}$, not $\taurel/t_{\mathrm{ramp}}$.
+\SI{0.02}{\percent}. Under the two operator ramps tested, at $[15,3]$, the step
+idealisation is safe, and the ratio that makes it safe is
+$\tauslow/t_{\mathrm{ramp}}$, not $\taurel/t_{\mathrm{ramp}}$.
 
 \subsection{Stepping temperature and density together as a two-parameter perturbation stress test}
 \label{sec:joint_step}
@@ -1992,7 +2039,7 @@ this particular sweep. That coarseness is a limitation of the tabulation, not a
 statement about ELMs, and it is why the census below is quoted per step rather
 than as one number.
 
-\paragraph{A density change alone never breaks the diagnostic.} Of the $320$
+\paragraph{None of the tested one-index density steps breaks the diagnostic.} Of the $320$
 window-passing cases at $\Delta\nel = -1$ index and the $296$ at $+1$, with the
 temperature held fixed, \emph{none} exceeds the \SI{10}{\percent} threshold. The
 median $\epsplat$ is \SI{2.7}{\percent} and \SI{2.6}{\percent} respectively. The
@@ -2031,8 +2078,9 @@ time-average wins; stepping up from $\SI{7.2e12}{\per\cubic\centi\metre}$ moves
 \emph{toward} it, and $\epsplat$ rises faster than $\tauslow$ falls.
 
 The defensible statement is that the census is insensitive to a density step of
-this size while the worst case is not, and that the fixed-density map
-understates the worst case rather than overstating it.
+this size while the worst case is not, and that under the tested $+1$-index
+density step the fixed-density map understates the worst case rather than
+overstating it.
 
 %-----------------------------------------------------------------------------
 \section{Timescale separation does not predict the reservoir-closure error}

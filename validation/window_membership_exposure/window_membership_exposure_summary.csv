@@ -1,0 +1,19 @@
+# generated 2026-09-21 20:23 by verify_window_membership_exposure.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  pandas 3.0.0
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# state_index sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# input plateau_gridmap.csv sha256 95b4815165222b5f05cc9f0ee84786f2d3535e411a0aaacdb4714e020a99828d
+# input divertor_map.csv sha256 5a20bbfcf05e258d9e4a9ad459cc0d27de7130ca2403d029914f1fd265d80490
+# input window_sweep_summary.csv sha256 4b4960bdf48f233f979f54218c3f5d3f810b96b0359a1025b37ce4821a1f3f2a
+# input plateau_slowmode.csv sha256 ad85f465b92640539ee5d3a658f4e5a70c4e1e4be2ecd94d1dab987f60084b44
+# input divertor_map_w10/divertor_map.csv sha256 0ac39efd3d81d554b86129605b4004aa0beb730c991226c8552610d91fb45ba3
+# input divertor_map_w20/divertor_map.csv sha256 6073fa267ac066d846bb28162c015ce82724a528b46df68554d3d1336ae3bfd6
+# input divertor_map_w50/divertor_map.csv sha256 48d24f0f1839784ef395053a85694464cfe3a03a7dc3804abca91cc1f02280c8
+# window test (k*tau_relax) < (tau_QSS/k) [verify_divertor_map.py l.176]; defended Te >= 2.0 eV; census thr 0.1; td 100us = 0.0001, 506us = 0.000506
+K,n_window_ok,n_heat_ok,n_cool_ok,n_excluded,n_warm,n_defended,n_dense,census_100us,worst_100us,census_506us,worst_506us,census_thr005,census_thr020,forms_disagree_rows,bench_included,worst_at
+10,779,389,390,5,547,552,202,45,0.1748115524029855,24,0.15330059755550865,141,0,0,True,"heat[15,3]"
+20,728,363,365,56,496,552,151,45,0.1748115524029855,24,0.15330059755550865,141,0,0,True,"heat[15,3]"
+30,680,338,342,104,448,552,108,45,0.1748115524029855,24,0.15330059755550865,141,0,0,True,"heat[15,3]"
+50,596,295,301,188,364,552,66,45,0.1748115524029855,24,0.15330059755550865,141,0,0,True,"heat[15,3]"
+100,452,222,230,332,221,552,25,45,0.1748115524029855,24,0.15330059755550865,141,0,0,False,"heat[15,3]"

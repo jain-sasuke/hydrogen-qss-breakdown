@@ -356,3 +356,16 @@ __pycache__/
 # per-file judgement in a directory people will drop things into.
 # The rule below overrides the "!*.pdf" un-ignore earlier in this file.
 refs/
+
+# Three publisher-copyright article PDFs that predate the refs/ rule above and
+# were therefore tracked. Untracked on 22 September 2026; the files stay on disk.
+# Wiese & Fuhr, J. Phys. Chem. Ref. Data 38, 565 (2009) is NIST-authored but
+# published by AIP and is not open access; jpcrd382009565p.pdf is the same paper
+# under its publisher filename. Lotz, Z. Physik 216, 241 (1968) is Springer.
+# Patterns are basenames so they hold under either data/Raw or data/raw.
+# verify_balmer_optical_depth.py reads wiese_fuhr.pdf when present and falls back
+# to its own transcription with a warning when it is not, so nothing breaks in a
+# fresh clone; gate G0b simply reports "transcribed only" instead of PDF-checked.
+wiese_fuhr.pdf
+Lotz_1968.pdf
+/jpcrd382009565p.pdf

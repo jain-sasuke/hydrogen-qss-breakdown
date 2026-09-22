@@ -54,7 +54,7 @@ machinery to make quantitative claims about a diagnostic in use on real
 machines. Between the two sits a question that no amount of further algebra
 answers: why should anyone believe a number this model produces?
 
-The honest answer is not a single verdict. It is a graded one, because the
+The answer is not a single verdict. It is a graded one, because the
 checks that have been run on this model are not of equal worth, and several of
 the ones that look most impressive are worth almost nothing. This chapter sorts
 them.
@@ -110,9 +110,9 @@ and none of it appears here.
 The useful property of a check is not whether it passes. It is the size of the
 set of wrong models it would reject. Call that its severity.
 
-A chemical engineer already owns the failure mode. Close a mass balance on a
-continuous stirred-tank reactor by computing the outlet stream as inlet minus
-consumption, then verify that the balance closes. It closes to machine
+The failure mode is the one a mass balance on a continuous stirred-tank
+reactor shows. Compute the outlet stream as inlet minus consumption, then
+verify that the balance closes. It closes to machine
 precision, always, for any rate constant whatever, because the outlet was
 constructed from the balance being tested. The check is real arithmetic and it
 is entirely uninformative about the kinetics. A model can be wired correctly
@@ -245,10 +245,9 @@ The rate magnitudes are reached only by Section~\ref{sec:atomic_uncertainty}'s
 comparison against RMPS and by the external comparisons of
 Section~\ref{sec:fujimoto}, and by nothing internal.
 
-\paragraph{The point the table belongs to, recovered.} An earlier draft carried
-Table~\ref{tab:faultinject} without recording the grid point, and three of the
-four $\max|\Delta\Lmat|$ values scale with $\nel$, so the table could not be
-reproduced. Sweeping all $400$ grid points and matching on those three values
+\paragraph{The grid point of the table.} Three of the four
+$\max|\Delta\Lmat|$ values in Table~\ref{tab:faultinject} scale with $\nel$, so
+the table fixes its own grid point. Sweeping all $400$ grid points and matching on those three values
 identifies $[23,5]$, the benchmark, with a worst disagreement of
 \SI{1.63}{\percent}, the rounding of the printed table to two significant
 figures; every residual in Table~\ref{tab:faultinject} then reproduces to the
@@ -324,10 +323,13 @@ still conserve particles, still satisfy Gate~A, and still produce plausible
 populations. Nothing internal would notice.
 
 Testing ionisation against three-body recombination through the Saha relation
-at every level gives a ratio of $0.999997$ for every one of the $43$ states, at
-every temperature, \emph{to the same eight digits}
-(\texttt{findings\_10} ADDENDUM~D.6). The point is not the closeness to unity,
-which detailed balance imposes. It is the identity of the residual across
+at every level, with CODATA constants on the Saha side, gives a ratio of
+$0.999997$ for every one of the $43$ states at every temperature, identical
+across all $2150$ entries to $1.4\times10^{-15}$
+(\texttt{verify\_saha\_balance.py}, \texttt{validation/saha\_balance/}); the
+residual is the rate module's rounded values of $h$, $m_e$ and the
+electron-volt against CODATA, and nothing else. The point is not the
+closeness to unity, which detailed balance imposes. It is the identity of the residual across
 levels whose Saha exponents span the full binding-energy ladder of hydrogen,
 from $\mathrm{e}^{13.6\,\mathrm{eV}/k_B\Te}$ for the ground state down to
 $\mathrm{e}^{0.06\,\mathrm{eV}/k_B\Te}$ for the top shell. At
@@ -413,7 +415,7 @@ $[49,7]$ ($\Te = \SI{10}{\electronvolt}$,
 $\nel = \SI{e15}{\per\cubic\centi\metre}$) to $1.72928\times10^{9}$ at the cold
 corner; $\tauslow$ spans \SI{75.4}{\nano\second} to \SI{67.2}{\second} and
 $\taurel$ spans \SI{0.87}{\nano\second} to \SI{38.9}{\nano\second}
-(\texttt{thesis\_ready.md} A1). The gate asks for $\Msep>1$. The smallest value
+(project working note; Table~\ref{tab:ladder}). The gate asks for $\Msep>1$. The smallest value
 anywhere is $86.8$.
 
 \textbf{Grade: tautological as posed, and the real content is elsewhere.} The
@@ -435,7 +437,7 @@ Section~\ref{sec:attacks} quantifies. And the slow eigenvalue is not an
 equilibration rate: measured against the ground-state ionisation rate
 coefficient $K_{\rm ion}(1s)$, in \si{\cubic\centi\metre\per\second}, it
 satisfies $|\lambda_0| = 2.286\,K_{\rm ion}(1s)\,\nel$ across the grid
-(\texttt{thesis\_ready.md} A1), so $\tauslow$ is the collisional--radiative
+(project working note; Table~\ref{tab:ladder}), so $\tauslow$ is the collisional--radiative
 ionisation lifetime of the ground-state reservoir and not the time for anything
 to come to equilibrium.
 
@@ -478,7 +480,7 @@ the largest residual is $3.075\times10^{-14}$
 \textbf{Grade: severe}, for a specific reason. Feeding the check a corrupted
 input in which the $n=3$ and $n=4$ entries are swapped, which is the mistake
 that would most easily go unnoticed in a two-shell observable, trips it
-(\texttt{findings\_10} ADDENDUM~B.3). It is one of only two checks in the
+(project working note; Table~\ref{tab:ladder}). It is one of only two checks in the
 project reported to catch that swap.
 
 \subsection{The reduced-versus-full ratio test}
@@ -489,8 +491,8 @@ two-channel form of Eq.~\eqref{eq:R_of_b} with the ground-fed fractions
 substituted in. The two routes share no code path beyond the matrix itself. At
 the benchmark point $\Te = \benchTe$, $\nel = \benchne$, an independent
 re-implementation obtained $\Robs = 0.777768$ by three routes against
-\texttt{chapter3.tex}'s recorded $0.7778$
-(\texttt{findings\_10} ADDENDUM~B.1). A $3\leftrightarrow4$ swap breaks the
+Chapter~\ref{ch:theory}'s recorded $0.7778$
+(project working note; Table~\ref{tab:ladder}). A $3\leftrightarrow4$ swap breaks the
 agreement.
 
 \subsection{Pinned hashes on the inputs}
@@ -623,7 +625,7 @@ significant digits, a condition number of $10^{5}$ costs five of them. Eleven
 remain, and every conclusion in this thesis turns on the first three.
 
 The range was first asserted in Chapter~\ref{ch:theory} on an unscripted
-session note, which is not a check; the stamped script reproduces it to
+working note, which is not a check; the stamped script reproduces it to
 \SI{0.14}{\percent} and \SI{0.21}{\percent}. The number was right the whole
 time and was not evidence until it could be re-run.
 
@@ -643,10 +645,12 @@ tolerance of $10^{-9}$ against $10^{-12}$ shifts the result by
 $1.20\times10^{-8}$, and computing the propagator by a dense matrix exponential
 against a Krylov action differs by $1.13\times10^{-10}$.
 
-The eigenvalue condition numbers and the single-precision test come from
-ADDENDUM~B of \texttt{findings\_10} and cover three of $400$ points; the
-tolerance comparisons cover two. They are point measurements, not grid scans,
-and are quoted as such.
+The eigenvalue condition numbers and the single-precision test cover three of
+$400$ points; the tolerance comparisons cover two. The condition numbers and the
+displacement are recomputed under the definition $1/|\bm{y}^H\bm{x}|$ with
+unit-norm left and right eigenvectors by \texttt{verify\_residual\_claims.py}
+(\texttt{validation/residual\_claims/}). They are point measurements, not grid
+scans, and are quoted as such.
 
 \subsection{Where the ladder was cut}
 \label{sec:convergence}
@@ -668,11 +672,12 @@ tail with that ratio gives an extrapolated truncation error of
 \SI{-0.46}{\percent} at the benchmark, \SI{+1.6}{\percent} at the cold corner
 and \SI{+0.005}{\percent} at the ridge; holding $u$ at its $n_{\max}=15$ value
 instead gives \SI{-0.38}{\percent}, \SI{+1.4}{\percent} and
-\SI{+0.005}{\percent}, so the sign does not depend on that choice. An earlier
-draft quoted \SI{+0.9}{\percent}, \SI{-1.4}{\percent} and \SI{-0.55}{\percent}
-with a common ratio of about $0.75$ from a working note
-(\texttt{findings\_10} ADDENDUM~D.8) that no script produced; the stamped run
-reverses both signs, and the sentence built on them. Truncation makes
+\SI{+0.005}{\percent}, so the sign does not depend on that choice. A historical
+project value with no producing script, not used as evidence here and superseded
+by \texttt{verify\_nmax\_downward\_scan.py}, records
+\SI{+0.9}{\percent}, \SI{-1.4}{\percent} and \SI{-0.55}{\percent} with a
+common ratio of about $0.75$; the stamped run reverses both signs and the
+conclusion that rested on them. Truncation makes
 $\ffrac{3}-\ffrac{4}$ slightly too large at the benchmark and too small at the
 cold corner, so it is not a bias that can be corrected by a single factor.
 Over the defended points where the tail can be summed the extrapolated error
@@ -693,8 +698,8 @@ $\ffrac{3}-\ffrac{4}$ by \SI{11.5}{\percent} at the benchmark,
 \SI{12.6}{\percent} at the cold corner and \SI{5.0}{\percent} at the ridge,
 where the correct truncation to $n_{\max}=14$ moves it by \SI{0.06}{\percent},
 \SI{0.64}{\percent} and \SI{0.01}{\percent}; dropping six shells without it
-gives \SI{17.9}{\percent}, \SI{25.9}{\percent} and \SI{13.3}{\percent} (an
-earlier note recorded \SIrange{22}{37}{\percent}). The jump is an artifact of
+gives \SI{17.9}{\percent}, \SI{25.9}{\percent} and \SI{13.3}{\percent} (a
+working note recorded \SIrange{22}{37}{\percent}). The jump is an artifact of
 the truncation procedure, not a dependence on $n_{\max}$. Removing state $k$
 requires adding $\sum_{k\ \rm dropped} L_{ki}$ back to $L_{ii}$ for every
 surviving $i$, as the production matrix does. Anyone repeating this test will
@@ -704,8 +709,7 @@ reproduce the spurious number first.
 Truncating the ladder at $n_{\max}$ removes, from the balance of the terminal
 shell, the collisional excitation out of it to $n > n_{\max}$ and the
 de-excitation and cascade into it from those levels (cascade is downward, so
-what is lost is a way out and not, as an earlier draft said, something ``to
-cascade out to''). The loss removed is not small. Continuing the $12\to13$, $13\to14$
+what is lost is a way out, not something ``to cascade out to''). The loss removed is not small. Continuing the $12\to13$, $13\to14$
 and $14\to15$ excitation coefficients geometrically, the missing $15\to16$
 channel would carry $1.30$ times the whole retained loss out of $n=15$ at the
 benchmark and $1.20$ times at $[0,4]$, between $1.20$ and $1.35$ times at
@@ -726,12 +730,13 @@ $3.0$, $2.1$ and $1.4$ at $p=11$ to $14$ (\texttt{verify\_terminal\_vs\_interior
 the $280$ defended points the $p=8$ excess spans $8.2$ to $17.7$ and the $p=10$ excess $5.4$ to $7.5$. The excess
 is confined to the ground-fed channel: the shell's total population and recombination-fed coefficient move under
 \SI{1}{\percent} at the benchmark and at most \SI{32}{\percent} and \SI{30}{\percent} at the low-density named
-points. An earlier draft quoted $9.4$, $10.7$ and $6.3$ from \texttt{findings\_10} ADDENDUM~D.8 with neither
-quantity nor grid point named; the stamped run reproduces them to \SI{0.4}{\percent} as $a_p$ at $[49,0]$. The
-absence of a monotone trend over $p=8$ to $10$ that the draft reported holds there and at $47$ of the $280$ points;
+points. A historical project value with no producing script, not used as evidence here and superseded by
+\texttt{verify\_terminal\_vs\_interior.py}, records $9.4$, $10.7$ and
+$6.3$ with neither quantity nor grid point named; the stamped run reproduces them to \SI{0.4}{\percent} as $a_p$
+at $[49,0]$. The absence of a monotone trend over $p=8$ to $10$ holds there and at $47$ of the $280$ points;
 from $p=9$ upward the excess falls at every grid point, at the benchmark from $p=8$. The external excess at the
 terminal shell, $4.9$ to $6.2$ against published values (Section~\ref{sec:fujimoto}), lies outside the $6.3$ to
-$10.7$ band, not inside it as ADDENDUM~D.8 states, but within a factor $2.2$ of every value in it, and both rise
+$10.7$ band, not inside it as the working note states, but within a factor $2.2$ of every value in it, and both rise
 with density ($4.9$ to $6.2$ externally, $9.4$ to $17.7$ at $p=8$ internally at \SI{10}{\electronvolt}). That
 agreement in magnitude and in the sign of the density trend makes truncation a sufficient explanation for the
 $n=15$ discrepancy without invoking the atomic data. The fall with $p$ cannot be extrapolated to $p=15$: the
@@ -833,16 +838,17 @@ full path ($\tau=0.214$) the figures are $0.861$ and \SI{12}{\percent}. Above
 $[15,7]$ and the ratio moves by less than \SI{0.7}{\percent} anywhere
 (\texttt{verify\_balmer\_optical\_depth.py},
 \texttt{validation/balmer\_optical\_depth/}). The Balmer lines are optically
-thin over the region where this thesis makes quantitative claims. An earlier
-draft quoted $6.3\times10^{-7}$, $1.0\times10^{-3}$ and $0.263$ from
-\texttt{findings\_10} ADDENDUM~D.8, a working note with no producing script;
+thin over the region where this thesis makes quantitative claims. A historical
+project value with no producing script, not used as evidence here and superseded
+by \texttt{verify\_balmer\_optical\_depth.py}, records
+$6.3\times10^{-7}$, $1.0\times10^{-3}$ and $0.263$ for the same three cells;
 those values are $1.23$ to $1.28$ times the stamped ones and no convention
 tested recovers them, and the escape factor above $0.85$ and ratio shift of at
-most about \SI{10}{\percent} quoted with them are half-slab figures attached to
-a full-slab optical depth. The conclusion is unchanged.
+most about \SI{10}{\percent} recorded with them are half-slab figures attached
+to a full-slab optical depth. The conclusion holds with either set of values.
 
 %-----------------------------------------------------------------------------
-\section{Two attacks, and what they were expected to do}
+\section{Two tests of the reduction, and their expected outcomes}
 \label{sec:attacks}
 % QUESTION: the two objections most likely to destroy the result were tested;
 % what was the falsifier in each case, and did it appear?
@@ -859,8 +865,8 @@ $\Lmat$ describes an open system: atoms that ionise leave the accounting, the
 recombination feed $\Svec\nion$ enters as a constant source rather than a matrix
 element, and there is no forty-fourth state for ions to accumulate in. Since the
 persistence claim of Section~\ref{sec:persistence} rests entirely on $\tauslow$
-exceeding the duration of the disturbance, the obvious attack is that $\tauslow$
-is an artifact of the open boundary.
+exceeding the duration of the disturbance, the first objection is that
+$\tauslow$ is an artifact of the open boundary.
 
 \textbf{The falsifier, named first.} Write $\taudrive$ for the duration of the
 disturbance, fixed at \SI{100}{\micro\second} throughout this thesis as a
@@ -886,8 +892,8 @@ The manifold was closed by appending an ion state,
 \end{equation}
 so that every ionising atom lands in the new state instead of being deleted.
 Each column of $\Lmat_c$ sums to zero to machine precision, and the construction
-reproduces this project's own previously recorded closed-system value at the
-cold corner, \SI{1.6226}{\second}, to five digits, which confirms it is the same
+reproduces the closed-system value at the cold corner recorded in this
+project's working notes, \SI{1.6226}{\second}, to five digits, which confirms it is the same
 closure rather than a new one. The measured factors are given in
 Table~\ref{tab:closure}.
 
@@ -898,8 +904,12 @@ Table~\ref{tab:closure}.
   (open) and with a forty-fourth ion state appended (closed), at four grid
   points. Over the whole grid the ratio has minimum $1.00$, median $1.00$ and
   maximum $41.4$: the boundary condition matters only where $\tauslow$ already
-  exceeds the disturbance duration by three orders of magnitude. Source:
-  \texttt{findings\_10}~\S3.1.}
+  exceeds the disturbance duration by three orders of magnitude. Every entry is
+  reduced from \texttt{validation/ion\_closure/ion\_closure\_summary.csv}
+  (\texttt{verify\_ion\_closure.py}) by
+  \texttt{verify\_headline\_provenance.py}; the open column is the float64
+  eigensolver, which at the cold corner differs from the artifact's 40-digit
+  path by one part in $10^{4}$.}
   \label{tab:closure}
   \begin{tabular}{lrrr}
     \toprule
@@ -955,9 +965,9 @@ gives the comparison in Table~\ref{tab:lowerbound}.
   estimate of Eq.~\eqref{eq:elm_bound}, at five grid points. The averages are
   integrated at $400$ time samples per decade; at $1600$ per decade the five
   change by at most $4.7\times10^{-6}$ relative, and the $[0,4]$ average by
-  $2.7\times10^{-10}$. An earlier version of this table integrated on a uniform
-  \SI{25}{\nano\second} mesh, which under-resolves the nanosecond rise and read
-  low by $6\times10^{-5}$ to $5\times10^{-4}$ relative. The estimate reproduces
+  $2.7\times10^{-10}$. Integration on a uniform \SI{25}{\nano\second} mesh, which
+  under-resolves the nanosecond rise, reads low by $6\times10^{-5}$ to
+  $5\times10^{-4}$ relative. The estimate reproduces
   the true average to better than \SI{0.8}{\percent} at the five points. The
   value below unity at $[0,4]$ is real: a deficit of $2.2\times10^{-5}$ that
   survives the denser grid. Source: \texttt{verify\_trajectory\_census.py},
@@ -1095,11 +1105,10 @@ not verified}
 At $\nel = \SI{e12}{\per\cubic\centi\metre}$ this model's $r_1$ sits a factor
 $8.3$ low at $p=3$ and $4.4$ low at $p=4$ against Fujimoto's Table~4.1(b).
 Those are precisely the two shells whose difference is the mechanism of
-Chapter~\ref{ch:results}, so the discrepancy cannot be dismissed as peripheral,
-and it was for some time carried in this thesis as a failure of the model.
+Chapter~\ref{ch:results}, so the discrepancy cannot be dismissed as peripheral.
 
-That reading is no longer supportable, for six reasons, and the honest status
-is now an open comparison whose \emph{target} is unverified.
+Reading it as a failure of the model is not supportable, for six reasons, and
+the status is an open comparison whose \emph{target} is unverified.
 
 \begin{enumerate}
 \item \textbf{The model's $r_1$ is reproduced by hand.} In the coronal limit
@@ -1150,8 +1159,8 @@ the item below.
 for the gap.} Table~4.1(b) is indexed by $p = 2, 3, 4, 5, 7, 10, 15$, principal
 quantum numbers, and carries no $\ell$ label: the published coefficients are
 shell quantities computed with the $\ell$~substructure bundled, while this model
-resolves $\ell$ below $n=9$. That difference is real, and an earlier draft of
-this section treated it as the explanation. It is not. Imposing the source's own
+resolves $\ell$ below $n=9$. That difference is real, and it is not the
+explanation. Imposing the source's own
 closure directly, by bundling this model's operator under statistical
 $\ell$~weights as $\Lmat_{\rm bundle} = \mathsf{P}\,\Lmat\,\mathsf{R}$ with
 $\mathsf{P}_{ki} = 1$ for $i$ in shell $k$ and $\mathsf{R}_{ik} = g_i/g_k$,
@@ -1184,8 +1193,8 @@ to within the criterion's own precision. Read as \si{\per\cubic\centi\metre} the
 onset would sit five orders above Griem, which is impossible; and the rows run
 from $\log_{10}\nel = 12$ to $24$, a span of $10^{6}$ to
 $10^{18}\,\si{\per\cubic\centi\metre}$ read as \si{\per\cubic\metre} and no
-plasma at all at the top read as \si{\per\cubic\centi\metre}. An earlier draft
-proposed a one-decade offset in the density rows; that explanation is withdrawn.
+plasma at all at the top read as \si{\per\cubic\centi\metre}. A one-decade
+offset in the density rows is not a tenable reading either.
 \end{enumerate}
 
 \textbf{Status.} The $r_1$ deficit at low $p$ is an open external
@@ -1195,7 +1204,7 @@ a severity check: bundling an operator whose $\ell$~distribution is deliberately
 non-statistical moves $r_1(2)$ by a factor $129$, so the null result at $p=3$ is
 a measurement and not a blind instrument. What the section does \emph{not}
 establish is that the disagreement leaves the quantity
-Chapter~\ref{ch:results} uses untouched, and an earlier draft said it did.
+Chapter~\ref{ch:results} uses untouched.
 Equation~\eqref{eq:fujimoto_correspondence} makes
 $a_p = r_1(p)\,\Zsb{p}/\Zsb{1}$: $r_1$ is the ground-fed coefficient from which
 $\ffrac{p}$ is built, so a deficit in $r_1(3)$ and $r_1(4)$ is a deficit in
@@ -1318,9 +1327,8 @@ tabulates seven temperatures between $1$ and \SI{10}{\electronvolt}, and
 \texttt{diagnose\_gate\_d.py}, which first made this comparison, interpolates
 linearly in value between them (\texttt{adas\_at}, lines 114 to 124); across
 $1$ to \SI{1.5}{\electronvolt}, where SCD rises by nearly two orders of
-magnitude, that overstates the table by up to a factor $6.65$. An earlier draft
-quoted that read, $323$ of $400$, a range of $0.130$ to $0.931$ and a median of
-$0.696$, with a deficit deepening toward low temperature; read logarithmically
+magnitude, that overstates the table by up to a factor $6.65$. That read gives
+$323$ of $400$, a range of $0.130$ to $0.931$ and a median of $0.696$, with a deficit deepening toward low temperature; read logarithmically
 in both axes, as the table's spacing requires, the tail disappears, the row
 median being $0.72$ at \SI{1}{\electronvolt} and $0.90$ by
 \SI{1.2}{\electronvolt}. The diagnosis script is left in place; every ADAS
@@ -1377,11 +1385,11 @@ SCD on the ground-fed channel does not make the agreement perfect, and the
 remaining disagreement is systematic in a way worth reporting: the model's
 ionisation sits below ADAS at all but one of the $400$ points, by up to
 \SI{30}{\percent} and by \SI{17}{\percent} at the median, with the maximum
-$\eta = 1.004$ at $[4,7]$. An earlier draft reported the gap closing steeply
-with temperature, from a median of $0.302$ over $1$ to \SI{1.5}{\electronvolt}
-to $0.817$ over $5$ to \SI{10}{\electronvolt}, and read that shape as the
-signature of truncation; the steep part was the linear read of the table, and
-under the logarithmic read the deficit is between $0.72$ and $0.94$ at every
+$\eta = 1.004$ at $[4,7]$. Under the linear read of the table the gap closes
+steeply with temperature, from a median of $0.302$ over $1$ to
+\SI{1.5}{\electronvolt} to $0.817$ over $5$ to \SI{10}{\electronvolt}, a shape
+that reads as the signature of truncation; the steep part is the linear read,
+and under the logarithmic read the deficit is between $0.72$ and $0.94$ at every
 temperature above \SI{2}{\electronvolt}. A deficit of that size is still what
 truncation would produce, since ADAS96 carries levels above $n_{\max} = 15$
 and the levels nearest the continuum ionise most easily, but its temperature
@@ -1457,9 +1465,9 @@ the model $0$ to \SI{30}{\percent} low with a median ratio of $0.83$, consistent
 with the $n_{\max}$ truncation but not uniquely so, and at all $400$ for ACD
 with a median ratio of $0.98$.
 
-Earlier drafts read the failure as costing the thesis its only comparison of
-absolute effective coefficients against an external database; that comparison
-exists, hidden by the definition. The failure does not touch the structural results
+The failure does not cost the thesis its only comparison of absolute effective
+coefficients against an external database; that comparison exists, hidden by
+the definition. The failure does not touch the structural results
 of Chapter~\ref{ch:theory}, which are statements about whatever $\Lmat$ is
 supplied and would hold for the ADAS-consistent matrix equally. It does not
 touch the level-resolved comparison of Section~\ref{sec:fujimoto}, which
@@ -1507,8 +1515,8 @@ Evaluated with the local Debye length at the benchmark point $[23,5]$,
 $F = 6.62$ for $2p$--$2s$, $5.71$ for $3d$--$3p$, $4.26$ for $5g$--$5f$ and
 $2.89$ for $8k$--$8i$ (\texttt{validation/lmix\_cutoffs/}); with the
 production table's frozen density of \SI{e14}{\per\cubic\centi\metre} the
-$2p$--$2s$ value is $6.95$ (Section~\ref{sec:atoms_corrections}). An earlier
-draft quoted $6.65$, $5.73$, $4.29$ and $2.92$ from a derivation note.
+$2p$--$2s$ value is $6.95$ (Section~\ref{sec:atoms_corrections}). A derivation
+note records $6.65$, $5.73$, $4.29$ and $2.92$ for the same four pairs.
 
 The insensitivity of the slow eigenvalues to that error, which
 Section~\ref{sec:atoms_corrections} measures, is specific to a process already
@@ -1526,8 +1534,8 @@ Only switching $\ell$-mixing off entirely changes anything. Rebuilding the
 matrix with a density-consistent Debye cutoff in place of a frozen one moves
 $\ffrac{3}-\ffrac{4}$ by at most \SI{0.42}{\percent}.
 
-An earlier claim that the frozen Debye density varies the cutoff factor by about
-\SI{30}{\percent} across the grid was wrong, the module's own functions giving
+The claim that the frozen Debye density varies the cutoff factor by about
+\SI{30}{\percent} across the grid is wrong: the module's own functions give
 $\times3.7$ for $n=2$ and at least $\times50$ for $n=8$
 (Section~\ref{sec:lmixing}); the conclusion survives because the observable does
 not depend on the input over that range.
@@ -1558,8 +1566,8 @@ mode is slower than $1\,\si{\per\second}$.
 
 The largest of the four errors changed no number and inverted a sentence.
 
-The quantity reported throughout an earlier draft as the quasi-steady-state
-error was defined as the difference between the tabulated ratio and the true
+The quantity that had been reported as the quasi-steady-state error was
+defined as the difference between the tabulated ratio and the true
 one, with the tabulated ratio evaluated from a two-argument function of $\Te$
 and $\nel$. Section~\ref{sec:two_references} shows that the excited-state ratio
 is a function of three arguments, not two, the third being the state of the
@@ -1585,16 +1593,16 @@ They differ by four to eight orders of magnitude, most at the point carrying the
 largest error. The physics was intact and every number reproduced; what was
 wrong was the name and the sentence built on it, and Chapter~\ref{ch:results}
 states the consequence, that the approximation everyone worries about is not
-the one that fails. The error was found by a hostile read of the thesis text
+the one that fails. The error was found by an adversarial reading of the thesis text
 itself, not of the code, and it is why Section~\ref{sec:eps_definitions}
 defines four error measures separately.
 
 \subsection{A statement in Chapter~\ref{ch:theory} that measurement contradicted}
 \label{sec:promise_broken}
 
-An earlier draft of Section~\ref{sec:source_quadratic} stated that at
+The statement, in Section~\ref{sec:source_quadratic}, was that at
 $\nel = \SI{e12}{\per\cubic\centi\metre}$ three-body recombination supplies
-under \SI{10}{\percent} of the feed into any level, and used that to propose
+under \SI{10}{\percent} of the feed into any level, and it was used to propose
 testing the radiative and three-body datasets separately at the two ends of the
 density grid. Measured against the matrix, $30$ of $36$ levels exceed
 \SI{10}{\percent} three-body feed at both \SI{1.00}{\electronvolt} and
@@ -1711,8 +1719,8 @@ Two corrections apply, and both weaken it.
 The apparent agreement to eight parts in $10^{5}$ on the duration is
 cancellation. The inputs agree only to \SIrange{0.06}{0.6}{\percent}, and
 carrying the earlier run's own internal numbers through gives
-\SI{12.406}{\micro\second}, off by \SI{0.59}{\percent}. \textbf{The honest figure
-is agreement at the \SI{0.6}{\percent} level}, which is still strong.
+\SI{12.406}{\micro\second}, off by \SI{0.59}{\percent}. \textbf{The figure is
+agreement at the \SI{0.6}{\percent} level}, which is still strong.
 
 More seriously, \textbf{the earlier run has never been reproduced against the
 canonical matrix}. This project's own derivation record says of these same
@@ -1733,12 +1741,25 @@ downstream readers cannot tell whose numbers they are holding. This is exactly
 the condition under which the eigenvalue filter propagated, since the filtered
 and unfiltered versions of the same array have the same name.
 
+Two things bound what that costs here, and both were checked rather than
+assumed. The two writers are not two calculations: each sorts the eigenvalues of
+the same canonical $\Lmat$ and keeps the negative ones, neither applies the
+filter that caused the earlier incident, and the arrays on disk agree with the
+independently produced \texttt{verify\_timescales.py} artifact to $2\times
+10^{-16}$. And none of the six readers feeds this document: every figure and
+table they write is absent from it. The benchmark $\Msep = 9982$ quoted in
+Chapter~\ref{ch:theory} and in the abstract is not read from these arrays at
+all; it is $\tauslow/\taurel$ computed from $\Lmat$ by
+\texttt{verify\_timescales.py} and recorded in
+\texttt{validation/spectrum\_testpoint.csv}. The defect is therefore a latent
+hazard in the repository rather than an ambiguity in any number printed here,
+and it is left in place and named rather than quietly repaired.
+
 An audit script exists to detect single-writer violations, and it reports an
-unfixed failure of this kind. It is also incomplete, and more so than an
-earlier draft said. Its test for a write reads the file mode from the second
+unfixed failure of this kind. It is also incomplete. Its test for a write reads the file mode from the second
 argument or a keyword, so the idiom \texttt{path.open("w")} passes through it
-unrecorded. At the tip of \texttt{main} on 23~August that idiom had four users,
-which is the number the earlier draft gave; in the tree this thesis is built
+unrecorded. At the tip of \texttt{main} on 23~August that idiom had four users;
+in the tree this thesis is built
 from it has $45$ call sites in $29$ scripts, $42$ of them writing
 comma-separated output, among them the producer of the plateau map that
 fifteen places in Chapter~\ref{ch:results} read from
@@ -1771,8 +1792,10 @@ more uncomfortable of the two: \emph{stamped} means a script in the repository
 regenerates the number into an artifact under \texttt{validation/};
 \emph{notes} means the number is recorded in this project's working files with
 no producing script, so it cannot be re-executed and cannot fail anything today.
-Four of the checks graded severe are in that condition, which is a statement
-about this thesis's record-keeping rather than about the model. Of the eighteen
+None of the checks graded severe are in that condition, and the one
+\emph{notes} entry left is the $\tanh$ bound, which is graded tautological. The
+counts stated in this caption are checked against the table's own rows by
+\texttt{verify\_ladder\_counts.py}, which exits non-zero if they drift apart. Of the eighteen
 internal checks, twelve are severe, four are tautological and two are weak; of the five external comparisons, two
 pass, one passes only at the higher densities, one fails, and one is open.}
 \label{tab:ladder}
@@ -1784,7 +1807,7 @@ check & grade & record & measured \\
 Atomic-data provenance (Ch.~\ref{ch:atoms})  & severe & stamped & every coefficient traces to a named dated source; tallies exact \\
 Excitation rates against RMPS (Ch.~\ref{ch:atoms}) & severe & stamped & \SI{81.4}{\percent} within \SI{20}{\percent} for $n_{\rm upper}\le4$, mean \SI{13.0}{\percent}; $n=5$ disagrees by factors of $2$--$5$, localised to the top shell of the RMPS basis \\
 Raw cross sections, microscopic reversibility & severe & figure & ratio $0.9995 \pm 0.0032$, \SI{98.7}{\percent} within \SI{1}{\percent} \\
-One energy ladder on both sides & severe & notes & Saha ratio $0.999997$ for all $43$ states \\
+One energy ladder on both sides & severe & stamped & Saha ratio $0.999997$ for all $43$ states, spread $1.4\times10^{-15}$ \\
 Superposition of the two channels & severe & stamped & $3.075\times10^{-14}$ over $784$ pairs; catches a $3\leftrightarrow4$ swap \\
 Reduced against full $\Robs$ & severe & stamped & $0.777768$ by three routes; catches the same swap \\
 Deliberate fault injection & severe & stamped & three of four injected faults invisible to the conservation residual; the fourth moves it by thirteen orders \\
@@ -1820,8 +1843,8 @@ regeneration, and the grid-wide conditioning measurement together establish that
 the linear algebra does what Chapter~\ref{ch:theory} says it does, to a
 precision many orders of magnitude finer than any quantity the thesis reports.
 
-\textbf{The atomic data are traceable and benchmarked where the observable
-lives.} The rates feeding $n \le 4$, which is where $H_\alpha$ and $H_\beta$
+\textbf{The input rates are traceable and benchmarked where the observable
+lives; one derived coefficient there is not.} The rates feeding $n \le 4$, which is where $H_\alpha$ and $H_\beta$
 originate, agree with an independent R-matrix calculation at a mean absolute
 error of \SI{13.0}{\percent}, and the two transitions this thesis leans on
 hardest, $1s\to2p$ and $2p\to3d$, agree to between \SI{2.4}{\percent} and
@@ -1840,7 +1863,14 @@ $0.20$ (Appendix~\ref{app:numerics}). What is measured
 for the reservoir is a scan rather than a truncation: weakening the ionisation
 and three-body exchange of the top six shells eightfold moves $\epsplat$ by
 \SI{0.7}{\percent} at the median over the defended pairs
-(Section~\ref{sec:ion_recomb}).
+(Section~\ref{sec:ion_recomb}). All of that concerns the rates going in. The
+coefficients that come out at the two shells the observable uses are a separate
+matter, and one of them is in open disagreement: the ground-fed $r_1(3)$ and
+$r_1(4)$ of this model sit factors $8.3$ and $4.4$ below Fujimoto's tabulation
+at the lowest density, which is a deficit in $a_3$ and $a_4$ themselves and so
+in the sensitivity built from them (Section~\ref{sec:fujimoto}). Benchmarked
+inputs are therefore not the same thing as a benchmarked susceptibility, and
+this thesis can claim the first but not the second.
 
 \textbf{The structural results are robust to the choices that could have
 manufactured them.} Closing the ion boundary changes the persistence census by
@@ -1863,10 +1893,12 @@ a quantity ADAS does not tabulate.
 \textbf{No claim rests on the terminal shell}, whose population is high by a
 factor consistent with truncation, or on the $\ell$-distribution inside the
 bundled shells, which is assumed rather than measured.
-Section~\ref{sec:bundling_check} tests that assumption: it is licensed over most
-of the grid, but not at the two highest densities below \SI{3}{\electronvolt}
-once the cutoff is evaluated locally, where it rests on the $\ell$-blindness of
-$n$-changing collisions.
+Section~\ref{sec:bundling_check} tests that assumption: $\ell$-mixing licenses
+it over most of the grid, and at the two highest densities below
+\SI{3}{\electronvolt}, where the locally evaluated mixing loses to collisional
+loss, detailed balance among shells within $10^{-4}$ of Saha--Boltzmann
+equilibrium licenses it instead; the adjacent-shell rates themselves are not
+$\ell$-blind, and no grid point escapes both criteria.
 
 \textbf{Nothing here validates the physics that is absent.} Every check in this
 chapter tests a $43$-state atomic hydrogen model against itself, against

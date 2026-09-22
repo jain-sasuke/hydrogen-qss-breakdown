@@ -34,6 +34,7 @@
 \usepackage{siunitx}
 \usepackage{caption}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={The Cost of Assuming Ionisation Balance: Transient Error in Balmer-Ratio Diagnostics of Divertor Hydrogen Plasmas},pdfauthor={Nikhil Jain}}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{microtype}
 \usepackage{xcolor}
@@ -178,81 +179,42 @@ that every value taken from the literature is cited.
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-A Balmer line-ratio measurement in a tokamak divertor is inverted for electron
-temperature, at a density supplied by an independent measurement, against a
-table computed from a collisional--radiative model at fixed $(\Te,\nel)$. Indexing that table on two axes requires the
-neutral-to-ion ratio to be a function of those two axes alone, which holds only
-once the ionisation balance has settled. A divertor during an edge-localised
-mode has not settled. Careful practice avoids the difficulty rather than
-assuming it away, by choosing high Balmer lines in detached conditions where one
-supply channel dominates and the neutral-to-ion ratio cancels; that escape is
-not available for $H_\alpha$ and $H_\beta$, where neither channel dominates.
-\textbf{What follows is the cost of that closure where it is adopted, not a
-demonstration that divertor spectroscopy fails.}
+A Balmer line ratio is inverted for divertor electron temperature at known
+density against a collisional--radiative table at fixed $(\Te,\nel)$. Indexing
+on two axes requires the neutral-to-ion ratio to be a function of those axes
+alone, true only after ionisation balance settles, which a divertor during an
+edge-localised mode has not. That escape, one channel dominating so the ratio
+cancels, is unavailable for $H_\alpha$ and $H_\beta$. \textbf{What follows is
+the cost of that closure where it is adopted, not a demonstration that divertor
+spectroscopy fails.}
 
-This thesis measures what that closure costs. A $43$-state time-dependent
-collisional--radiative model of atomic hydrogen, resolved in $\ell$ to $n=8$ and
-bundled one state per shell to $n=15$, is built over $50$ temperatures from $1$
-to \SI{10}{\electronvolt} and $8$ densities from $10^{12}$ to
-\SI{e15}{\per\cubic\centi\metre} and integrated through abrupt changes in
-temperature.
+A $43$-state time-dependent model of atomic hydrogen, resolved in $\ell$ to
+$n=8$ and bundled to $n=15$, is integrated through abrupt temperature steps on
+a $50$ by $8$ grid over $1$ to \SI{10}{\electronvolt} and $10^{12}$ to
+\SI{e15}{\per\cubic\centi\metre}.
 
-The approximation usually held responsible is not the one that fails. Measured
-along the full $43$-state trajectory, the quasi-steady-state closure for the
-excited manifold is accurate to $8.66\times10^{-6}$ at the reference point
-$\Te = \benchTe$, $\nel = \benchne$, and to $6.73\times10^{-9}$ at the grid
-point carrying the largest diagnostic error. What does not keep up is the ground
-state, which holds almost every atom and turns over on a clock four orders of
-magnitude slower than the excited levels.
+The approximation usually blamed is not the one that fails: the
+quasi-steady-state closure for the excited manifold holds to
+$8.66\times10^{-6}$ at the reference point. What lags is the ground state,
+holding almost every atom and turning over four orders of magnitude slower.
 
-The cost of assuming it has turned over factorises exactly. With $u$ the
-ground-to-ion ratio, the error in the $n=3$ to $n=4$ population ratio on the
-plateau between the two clocks is
-$\epsplat = |\exp(\overline{S}\,G\,\Delta\ln\Te)-1|$, where $\overline{S}$ is
-the sensitivity of the line ratio to the reservoir and
-$G = \Delta\ln u/\Delta\ln\Te$ is very nearly a property of the operating
-point rather than of the disturbance. Across a fourfold change in step size $G$
-moves by at most \SI{6.74}{\percent}, a drift that is itself the secant closing
-on its tangent, while $\epsplat$ moves by a factor $8.44$; so the
-two coefficients rather than a percentage are the reportable object. The
-sensitivity obeys a ceiling, $|f_3-f_4| < 1$, that no atomic dataset can
-exceed, because it follows from the structure of the linear system and not
-from any rate coefficient; for a given dataset the sharper form is
-$\max|f_3-f_4| = \tanh(|\Delta|/4)$, and $\Delta$ is atomic data.
+That cost factorises exactly as
+$\epsplat = |\exp(\overline{S}\,G\,\Delta\ln\Te)-1|$, with $\overline{S}$ the
+reservoir sensitivity of the line ratio and $G$ the reservoir gain. The
+sensitivity obeys a ceiling, $|f_3-f_4| < 1$, set by the structure of the
+linear system, not by any rate coefficient.
 
-Averaged over an event of the duration extrapolated to the ITER pedestal,
-\SI{506}{\micro\second}, $24$ of the $448$ point-and-direction pairs above
-\SI{2}{\electronvolt} carry an error above \SI{10}{\percent}, the worst
-\SI{15.3}{\percent}; over the \SI{100}{\micro\second} the maps use it is $45$
-and \SI{17.5}{\percent}. Counted on the exposure-integrated line ratio a
-detector records, rather than on the time-averaged error, the
-\SI{100}{\micro\second} census is $43$ of $448$. The count is sensitive to the event duration and the
-worst case is not, falling by \SI{18}{\percent} across a factor $7.5$ in it.
-Those are fixed-density figures. Stepping density up with temperature, as a
-two-parameter stress test rather than a model of an edge-localised mode, leaves
-the count near a tenth of the pairs
-available and raises the worst case to \SI{22.1}{\percent}, so for that perturbation the
-fixed-density map understates it. At citable detached-divertor densities none
-of the $108$ pairs exceeds \SI{10}{\percent} at either duration, and the worst
-case is \SI{7.2}{\percent}. Inverted for temperature at known
-density, the plateau ratio has no solution within the table's $1$ to
-\SI{10}{\electronvolt} domain for $166$ of those $448$ pairs, and where it has
-one, a \SI{4.81}{\percent} step is read back with a median error of
-\SI{48}{\percent}, on the side the plasma came from at every pair. Timescale
-separation licenses the reduction and predicts none of this: the ratio of the two clocks is $9982$ at
-the reference point, and within the defended range the density at which that
-ratio is largest sits a factor $19.3$ away from the density at which the error
-is largest, which is \SI{18.1}{\percent} against \SI{7.4}{\percent} there.
+Over \SI{100}{\micro\second}, $45$ of the $448$ pairs above
+\SI{2}{\electronvolt} exceed \SI{10}{\percent} error, the worst
+\SI{17.5}{\percent}; timescale separation licenses the reduction and predicts
+none of it. Inverted, the
+ratio has no solution for $166$, reaches one only across a fold for $44$, and
+over the remaining $238$ reads a \SI{4.81}{\percent} step back with
+\SI{48}{\percent} median error.
 
-Two boundaries on the result are measured rather than assumed. Below
-\SI{2}{\electronvolt}, holding the electron density fixed contradicts
-conservation of nuclei and the Lyman-$\alpha$ optical depth passes unity, and
-the two boundaries fall in the same narrow band. Above it, the closed-parcel
-assumption on which every magnitude depends fails at all $45$ breakdown pairs,
-because a long ionisation time is exactly the condition under which neutral
-transport rather than local ionisation sets the ground-state density. The
-structural results survive that. The magnitudes are conditional on it, and are
-reported as such.
+Two measured boundaries exclude the model below \SI{2}{\electronvolt}. Above
+it, the closed-parcel assumption every magnitude depends on fails at all $45$
+breakdown pairs. The structural results survive that; the magnitudes are conditional on it.
 
 %--- acknowledgements --------------------------------------------------------
 \chapter*{Acknowledgements}

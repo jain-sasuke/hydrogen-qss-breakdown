@@ -1,0 +1,277 @@
+# generated 2026-09-22 08:12 by verify_l_blindness.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# data/processed/cr_matrix/L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# data/processed/cr_matrix/S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# data/processed/cr_matrix/Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# data/processed/cr_matrix/ne_grid_L.npy sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# data/processed/collisions/K_exc_full/state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# data/processed/collisions/ccc/K_CCC_exc_table.npy sha256 02838edcb63108ca6787cd4307574d5fe84fd8da5b2f89152c893c11c58b12c0
+# data/processed/collisions/ccc/K_CCC_deexc_table.npy sha256 1bc97f274e9ef5a5a2869e722f7ee302d84a8950fce9359f3d271843999fb83c
+# data/processed/collisions/ccc/K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# data/processed/collisions/ccc/Te_grid.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# data/processed/collisions/K_exc_full/K_exc_full.npy sha256 a3df4c549db8cddb0daca1f0b96b475e39231d6d516bc972edaf0085bdd06a43
+# data/processed/collisions/K_exc_full/K_deexc_full.npy sha256 243dcc84d220232521929eca9d731e98368f0915d436d20d504ebbba615ccc67
+# data/processed/lmix/K_lmix.npy sha256 d92a969dcd6017beef676f831316cac37b79c8d510450826cf80a9a7abcab399
+# data/processed/collisions/tics/K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# data/processed/recombination/alpha_3BR_resolved.npy sha256 f5f74dc8352639dd776a3a9dd4aea3fa6bf2db24e353c93b730baece242cd1e0
+# data/processed/recombination/alpha_3BR_bundled.npy sha256 9bbec1c2ba7d279f5881da31d244f08a094a243d4a921339ccb2a09660085b03
+# data/processed/Radiative/A_bund_res.npy sha256 d4ed10fe1819ef6e22976677374ec3245d86fb1a964a80c4926582e5e5be4274
+# data/processed/Radiative/A_bund_bund.npy sha256 6961907b9787b04b3b387ccd8e46c66d553024015b061efe4d7a71f2a9fc9018
+# data/processed/Radiative/gamma_resolved.npy sha256 fbb35684e0fe0c995df5873c967a7098f81acdb0efce56e5353d91bb9201767e
+# data/processed/Radiative/gamma_bundled.npy sha256 090bd7d67aaf257c7ea7d6acc869d26ffb62397ab0ca5d663316b4c60f9676fc
+# validation/molecular_channel/molecular_channel.csv sha256 26a409293849e46bef0a9e23d8189f810489e284f49fd50d136955a206140bcd
+# validation/bundling_total_loss/bundling_total_loss.csv sha256 80016aa16a1e3ea00443f9d70155290e7304de9fba99e99c2f089cf026ed1afa
+# src/rates/compute_lmix.py sha256 da9831c201cdd7b170b7b48d1a0f7eb8c83046856292030d5275bd51da7f4f5e
+# src/validation/verify_bundling_psm20.py sha256 3277dffff9b3483e66277c195bee8c8175465620403b65ef3a9aef0bdd1f571c
+# src/validation/verify_nmax_downward_scan.py sha256 ab802699677e13ceb9f9f0d6f5d870f103f6dd3f0ab7421bec70b312653da852
+# b_l = (p_l/g_l)/(sum p/sum g), g_l = 2(2l+1); departure from statistical is |b_l - 1|
+# R3 headline omits l-summed losses and feeds and is an identity in theta (see .txt); max_abs_dev_with_blind_loss adds the l-blind loss constant from bundling_total_loss without the balancing feed (a bound only)
+# R4 operators: built = L_grid; nomix = L minus the Delta-n = 0 off-diagonal block (K_lmix x ne) with the diagonal restored; local = nomix plus compute_K_lmix(ne_cm3 = ne_local) x ne
+# R5 s_max = A(np_total)/gamma_bundled with A_np_total from verify_bundling_psm20.py (1.3 x A(np->1s)); only the bundled radiative columns are scaled
+====================================================================================================
+l-BLINDNESS OF ADJACENT-SHELL COLLISIONS AND THE l-DISTRIBUTION WHERE MIXING LOSES
+generated 2026-09-22 08:12  by verify_l_blindness.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+====================================================================================================
+
+  G0  CCC rows n_f <= 8 (546) equal K_exc_full / K_deexc_full: max abs diff 0.0e+00;  sum over l_f of n_f = 9 rows vs K_exc_full[., n9]: 0.0e+00;  n_f = 10: 0.0e+00
+  G1  K_deexc = K_exc (omega_i/omega_f) exp(dE/kT) on all 1320 rows x 50 Te: max rel diff 2.0e-15
+  G2  L = R + ne C at all 8 densities: max rel residual 4.6e-16;  Delta-n = 0 off-diagonal block of C = K_lmix.npy: 1.4e-16;  compute_K_lmix(te, NE_DEFAULT = 1e+14) = K_lmix.npy: 0.0e+00
+  G3  u_CRE, a3, a4, c3, c4 from -L^-1 S vs molecular_channel.csv at 400 points: max rel diff 8.7e-13
+  G4  bundled columns of R: off-diagonal sum = gamma_bundled and diagonal = -gamma_bundled: max rel diff 1.3e-11
+  G5  bundling_total_loss.csv: ratio_local < 1 at 121 combinations occupying 34 grid points (ne indices [6, 7], Te indices 0..23)
+
+  ALL GATES PASSED.
+
+====================================================================================================
+RESULT 1: adjacent-shell transfer OUT of (n, l), summed over l' of the neighbour shell, across l  (CCC, cm^3/s)
+====================================================================================================
+
+  up n -> n+1:  spread = max_l / min_l;  argmax / argmin l;  at Te = 1.00, 2.947, 10.0 eV;  then the max spread over all 50 Te;
+  then the (2l+1)-weighted coefficient of variation and weighted mean |K/K_mean - 1| at 1 eV (the population-weighted measures of the same l-dependence)
+    n  spread lmax lmin |  spread lmax lmin |  spread lmax lmin | max over Te  at Te |    wCV   wMAD
+    1   1.000    0    0 |   1.000    0    0 |   1.000    0    0 |       1.000   1.00 |  0.000  0.000
+    2   1.221    1    0 |   1.174    1    0 |   1.203    1    0 |       1.221   1.00 |  0.082  0.071
+    3   1.141    2    0 |   1.250    2    0 |   1.456    2    0 |       1.456  10.00 |  0.050  0.048
+    4   1.281    3    0 |   1.524    3    0 |   1.784    3    0 |       1.784  10.00 |  0.084  0.074
+    5   1.553    4    0 |   1.836    4    0 |   2.080    4    0 |       2.080  10.00 |  0.135  0.115
+    6   1.825    5    0 |   2.119    5    0 |   2.317    5    0 |       2.317  10.00 |  0.179  0.159
+    7   2.106    6    0 |   2.356    6    0 |   2.505    6    0 |       2.505  10.00 |  0.218  0.192
+    8   2.357    7    0 |   2.545    7    0 |   2.655    7    0 |       2.655  10.00 |  0.247  0.214
+    9   2.532    8    0 |   2.666    8    0 |   2.752    8    0 |       2.752  10.00 |  0.266  0.230
+  per-l values at 1 eV for the highest shells:
+    n =  7: l0=7.992e-05 l1=8.461e-05 l2=9.383e-05 l3=1.074e-04 l4=1.248e-04 l5=1.456e-04 l6=1.683e-04
+    n =  8: l0=1.646e-04 l1=1.729e-04 l2=1.895e-04 l3=2.142e-04 l4=2.467e-04 l5=2.866e-04 l6=3.336e-04 l7=3.880e-04
+    n =  9: l0=3.020e-04 l1=3.150e-04 l2=3.407e-04 l3=3.790e-04 l4=4.297e-04 l5=4.930e-04 l6=5.691e-04 l7=6.590e-04 l8=7.647e-04
+
+  down n -> n-1:  spread = max_l / min_l;  argmax / argmin l;  at Te = 1.00, 2.947, 10.0 eV;  then the max spread over all 50 Te;
+  then the (2l+1)-weighted coefficient of variation and weighted mean |K/K_mean - 1| at 1 eV (the population-weighted measures of the same l-dependence)
+    n  spread lmax lmin |  spread lmax lmin |  spread lmax lmin | max over Te  at Te |    wCV   wMAD
+    2   1.748    0    1 |   1.158    0    1 |   1.782    1    0 |       1.782  10.00 |  0.273  0.236
+    3   1.121    2    0 |   1.875    2    0 |   3.230    2    0 |       3.230  10.00 |  0.055  0.055
+    4   1.723    3    0 |   2.972    3    0 |   4.635    3    0 |       4.635  10.00 |  0.198  0.186
+    5   2.829    4    0 |   4.506    4    0 |   5.478    4    0 |       5.478  10.00 |  0.329  0.284
+    6   4.442    5    0 |   5.479    5    0 |   5.616    5    0 |       5.636   6.55 |  0.407  0.358
+    7   5.471    6    0 |   5.710    6    0 |   5.491    6    0 |       5.718   2.44 |  0.439  0.390
+    8   5.905    7    0 |   5.653    7    0 |   5.331    7    0 |       5.905   1.00 |  0.454  0.398
+    9   5.918    8    0 |   5.488    8    0 |   5.181    8    0 |       5.918   1.00 |  0.456  0.393
+   10   5.680    9    0 |   5.244    9    0 |   4.994    9    0 |       5.680   1.00 |  0.450  0.394
+  per-l values at 1 eV for the highest shells:
+    n =  8: l0=2.978e-05 l1=3.364e-05 l2=4.184e-05 l3=5.518e-05 l4=7.466e-05 l5=1.011e-04 l6=1.350e-04 l7=1.758e-04
+    n =  9: l0=6.751e-05 l1=7.410e-05 l2=8.789e-05 l3=1.101e-04 l4=1.424e-04 l5=1.865e-04 l6=2.437e-04 l7=3.145e-04 l8=3.995e-04
+    n = 10: l0=1.370e-04 l1=1.470e-04 l2=1.677e-04 l3=2.009e-04 l4=2.486e-04 l5=3.132e-04 l6=3.969e-04 l7=5.013e-04 l8=6.277e-04 l9=7.783e-04
+
+====================================================================================================
+RESULT 2: l' distribution of the transfer INTO shell n_f from a STATISTICALLY populated neighbour shell; b(l') = share / [(2l'+1)/n_f^2]
+====================================================================================================
+
+  from n_f - 1 (excitation):  max_l' |b - 1|  and  feed-weighted mean |b - 1|  at Te = 1.00, 2.947, 10.0 eV;  b(l'=0) and b(yrast) at 1 eV
+  n_f max|b-1|   mean | max|b-1|   mean | max|b-1|   mean |    b(0) b(yrast)  b at 1 eV
+    2    0.473  0.274 |    0.114  0.059 |    0.370  0.162 |   1.473    0.842  1.47 0.84
+    3    0.064  0.054 |    0.351  0.234 |    0.585  0.359 |   0.936    1.049  0.94 0.94 1.05
+    4    0.296  0.186 |    0.535  0.335 |    0.682  0.418 |   0.704    1.212  0.70 0.75 0.91 1.21
+    5    0.507  0.287 |    0.666  0.367 |    0.716  0.410 |   0.493    1.394  0.49 0.56 0.70 0.97 1.39
+    6    0.659  0.358 |    0.712  0.400 |    0.714  0.416 |   0.341    1.513  0.34 0.40 0.54 0.76 1.09 1.51
+    7    0.711  0.392 |    0.716  0.417 |    0.703  0.419 |   0.289    1.581  0.29 0.34 0.44 0.61 0.85 1.18 1.58
+    8    0.724  0.404 |    0.709  0.413 |    0.693  0.407 |   0.276    1.630  0.28 0.31 0.39 0.51 0.69 0.94 1.25 1.63
+    9    0.720  0.402 |    0.698  0.398 |    0.683  0.389 |   0.280    1.659  0.28 0.31 0.36 0.46 0.59 0.77 1.01 1.31 1.66
+   10    0.706  0.403 |    0.684  0.394 |    0.672  0.385 |   0.294    1.669  0.29 0.32 0.36 0.43 0.53 0.67 0.85 1.07 1.35 1.67
+
+  from n_f + 1 (de-excitation):  max_l' |b - 1|  and  feed-weighted mean |b - 1|  at Te = 1.00, 2.947, 10.0 eV;  b(l'=0) and b(yrast) at 1 eV
+  n_f max|b-1|   mean | max|b-1|   mean | max|b-1|   mean |    b(0) b(yrast)  b at 1 eV
+    2    0.142  0.068 |    0.115  0.055 |    0.132  0.063 |   0.858    1.047  0.86 1.05
+    3    0.085  0.048 |    0.142  0.079 |    0.233  0.127 |   0.915    1.043  0.91 0.96 1.04
+    4    0.153  0.074 |    0.251  0.122 |    0.329  0.170 |   0.847    1.085  0.85 0.89 0.98 1.09
+    5    0.261  0.113 |    0.338  0.156 |    0.391  0.191 |   0.739    1.147  0.74 0.79 0.89 1.02 1.15
+    6    0.336  0.155 |    0.396  0.198 |    0.430  0.223 |   0.664    1.211  0.66 0.71 0.79 0.91 1.06 1.21
+    7    0.395  0.190 |    0.434  0.224 |    0.457  0.241 |   0.605    1.275  0.61 0.64 0.71 0.81 0.95 1.10 1.28
+    8    0.435  0.212 |    0.461  0.237 |    0.476  0.248 |   0.565    1.331  0.56 0.59 0.65 0.73 0.85 0.98 1.14 1.33
+    9    0.459  0.229 |    0.475  0.244 |    0.486  0.252 |   0.541    1.371  0.54 0.56 0.61 0.68 0.77 0.88 1.02 1.18 1.37
+
+====================================================================================================
+RESULT 3: the first bundled shell, n = 9, populated by collisions from n = 8 and n = 10 alone (both statistical), losses to 8 and 10 only
+====================================================================================================
+  by detailed balance p_l/omega_l = [alpha K_down(l) + beta K_up(l)]/[K_down(l) + K_up(l)]; theta = alpha/beta = 1 when N_8/N_10 is Boltzmann, and then b_l = 1 for ANY l-dependence of the rates
+     point  Te eV        ne   theta-1  max|b-1| mean|b-1|  +blind blind% feed8%  b_l(9), l = 0..8
+    (0, 7)   1.00  1.00e+15  +1.7e-05    0.0000    0.0000   0.086   18.2   30.2  1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+    (0, 6)   1.00  3.73e+14  +4.4e-05    0.0000    0.0000   0.086   18.2   30.2  1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+   (10, 7)   1.60  1.00e+15  +2.3e-05    0.0000    0.0000   0.092   18.0   30.8  1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+   (23, 7)   2.95  1.00e+15  +3.4e-05    0.0000    0.0000   0.101   17.6   31.5  1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+   (23, 5)   2.95  1.39e+14  +2.1e-04    0.0000    0.0000   0.101   17.6   31.5  1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+    (0, 0)   1.00  1.00e+12  +9.8e-03    0.0010    0.0004   0.087   18.1   30.4  0.999 0.999 0.999 0.999 1.000 1.000 1.000 1.000 1.001
+   (49, 7)  10.00  1.00e+15  +9.3e-05    0.0000    0.0000   0.116   16.3   32.4  1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+  over the 34 points of the 121 combinations: |theta-1| 1.7e-05 to 5.7e-05; max|b-1| 0.0000 to 0.0000 (at (9, 6)), mean|b-1| up to 0.0000; with the l-blind loss in the denominator and no l-blind feed (an inconsistent extreme, kept as a bound) up to 0.101
+  over the whole grid: |theta-1| up to 0.024 at (49, 0); max|b-1| 0.0000 to 0.0020 at (49, 0)
+  the l-dependence that theta - 1 multiplies: K_down/(K_down + K_up) at 1 eV runs from 0.183 to 0.343 across l
+  the l that departs most at [0,7]: l = 0 (b = 1.000);  b(9s) = 1.000, b(9p) = 1.000, b(yrast l=8) = 1.000
+  identity check: |(b_l - 1) - (theta - 1)[f_dn(l) - mean f_dn]| / |theta - 1| <= 6.2e-04 over the 34 points and [49,0]  (so max|b-1| <= 0.104 |theta - 1| at 1 eV: R3's headline is an identity in theta, not a test of the rates)
+  R3c  radiative loss out of 9p exceeds the shell average by A(9p_total) - gamma_9 = 6.663e+06 s^-1 (A_np_total from verify_bundling_psm20.py); against the collisional loss of 9p this shifts b(9p) by -1.7e-05 at [0,7], at most 4.6e-05 over the 34 points, and -0.017 at [0,0] (where mixing at 50x the loss covers it)
+
+  R3b  theta_n - 1 = Boltzmann departure of the neighbour pair (n-1, n+1) from the model's CRE populations, for every bundled shell (I_eV, g from state_index.csv):
+  (check: dE(8->9) from CCC metadata 0.044618 eV vs state_index 0.044618 eV;  dE(9->10) 0.031915 vs 0.031915)
+    n max|theta-1| over 34 pts       at      [0,7]     [23,7]     [23,5]      [0,0]   grid max       at
+    9                  5.7e-05   (9, 6)   +1.7e-05   +3.4e-05   +2.1e-04   +9.8e-03      0.024  (49, 0)
+   10                  4.7e-05   (9, 6)   +1.5e-05   +2.6e-05   +1.6e-04   +8.9e-03      0.016  (49, 0)
+   11                  2.0e-05   (9, 6)   +6.2e-06   +1.1e-05   +7.0e-05   +3.8e-03      0.007  (49, 0)
+   12                  8.7e-06   (9, 6)   +2.6e-06   +5.2e-06   +3.2e-05   +1.6e-03      0.004  (49, 0)
+   13                  4.2e-06   (9, 6)   +1.3e-06   +2.5e-06   +1.6e-05   +7.9e-04      0.002  (49, 0)
+   14                  2.1e-06   (9, 6)   +6.2e-07   +1.2e-06   +7.5e-06   +3.9e-04      0.001  (49, 0)
+  n = 15 has no upper neighbour in the model (terminal shell, see sec:convergence); its pair cannot be formed.
+
+  Saha departure b_Saha(n) = N_n / [ne alpha_3BR(n)/K_ion(n)] (per unit n_ion) from the model's own pair, at the 34 points (range) and at [0,0]:
+    n =  8: b_Saha - 1 over the 34 points +2.8e-05 to +9.4e-05;  [0,0] +0.017;  [49,0] +0.043;  grid range +0.000 to +0.043
+    n =  9: b_Saha - 1 over the 34 points +2.1e-05 to +7.0e-05;  [0,0] +0.013;  [49,0] +0.030;  grid range +0.000 to +0.030
+    n = 10: b_Saha - 1 over the 34 points +1.1e-05 to +3.7e-05;  [0,0] +0.007;  [49,0] +0.018;  grid range +0.000 to +0.018
+    n = 11: b_Saha - 1 over the 34 points +6.3e-06 to +2.3e-05;  [0,0] +0.004;  [49,0] +0.013;  grid range +0.000 to +0.013
+    n = 12: b_Saha - 1 over the 34 points +4.5e-06 to +1.7e-05;  [0,0] +0.003;  [49,0] +0.011;  grid range +0.000 to +0.011
+    n = 13: b_Saha - 1 over the 34 points +3.7e-06 to +1.4e-05;  [0,0] +0.002;  [49,0] +0.010;  grid range +0.000 to +0.010
+    n = 14: b_Saha - 1 over the 34 points +3.3e-06 to +1.3e-05;  [0,0] +0.002;  [49,0] +0.009;  grid range +0.000 to +0.009
+    n = 15: b_Saha - 1 over the 34 points +3.1e-06 to +1.2e-05;  [0,0] +0.002;  [49,0] +0.009;  grid range +0.000 to +0.009
+  complementarity: |theta_9 - 1| > 0.01 at 55 of 400 points (42 at Te >= 2 eV), ne up to 2.7e+12; at those the smallest local mixing-to-loss ratio over the bundled shells is 341; points failing BOTH criteria: 0
+  complementarity: |theta_9 - 1| > 0.001 at 190 of 400 points (145 at Te >= 2 eV), ne up to 5.2e+13; at those the smallest local mixing-to-loss ratio over the bundled shells is 104; points failing BOTH criteria: 0
+
+====================================================================================================
+RESULT 4: CRE l-distribution of the resolved shells from the model's own operator: as built / mixing removed / mixing at the local cutoff
+====================================================================================================
+  max_l |b_l - 1| for n = 8 (n = 7 in brackets):
+     point  Te eV        ne |          built      no mixing   local cutoff | 8p mix/loss frozen   local | gamma_eff/gamma_stat (n=8, no mix)
+    (0, 7)   1.00  1.00e+15 |  0.000 (0.000)  0.000 (0.000)  0.000 (0.000) |              52.65   1.822 |               1.0000
+    (0, 6)   1.00  3.73e+14 |  0.000 (0.000)  0.000 (0.000)  0.000 (0.000) |              52.64   8.005 |               1.0000
+   (10, 7)   1.60  1.00e+15 |  0.000 (0.000)  0.000 (0.000)  0.000 (0.000) |             110.69   5.587 |               1.0000
+   (23, 7)   2.95  1.00e+15 |  0.000 (0.000)  0.000 (0.000)  0.000 (0.000) |             197.26  24.360 |               1.0000
+   (23, 5)   2.95  1.39e+14 |  0.000 (0.000)  0.000 (0.000)  0.000 (0.000) |             197.21 162.399 |               0.9999
+    (0, 0)   1.00  1.00e+12 |  0.001 (0.002)  0.023 (0.077)  0.000 (0.000) |              50.62 853.008 |               0.9935
+   (49, 7)  10.00  1.00e+15 |  0.000 (0.000)  0.000 (0.000)  0.000 (0.000) |             326.57 140.831 |               1.0000
+   built: over the 34 points, n = 8 max|b-1| 0.0000 to 0.0000 (at (0, 6)); n = 7 up to 0.0000;  grid-wide n = 8 up to 0.0008 at (0, 0)
+   nomix: over the 34 points, n = 8 max|b-1| 0.0000 to 0.0001 (at (0, 6)); n = 7 up to 0.0002;  grid-wide n = 8 up to 0.0451 at (49, 0)
+   local: over the 34 points, n = 8 max|b-1| 0.0000 to 0.0000 (at (0, 6)); n = 7 up to 0.0000;  grid-wide n = 8 up to 0.0001 at (47, 0)
+  no mixing, b_l for n = 8 at [0,7]: 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000;  at [23,7]: 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
+  no mixing, b_l for n = 8 at [0,0]: 1.023 0.982 0.996 0.999 1.000 1.001 1.001 1.002   (low density: radiative decay competes, the l-distribution is not the collisional one)
+  no mixing, max|b-1| by shell at [0,7]: n2: 2.289  n3: 0.216  n4: 0.018  n5: 0.002  n6: 0.000  n7: 0.000  n8: 0.000
+  8p mixing-to-loss ratio at the local cutoff over the 34 points: 1.822 to 24.360  (n = 9 in bundling_total_loss: 0.86 at [0,7])
+  three-body recombination into n = 8 at Te = 1.00 eV: b_l = 0.864 0.884 0.908 0.949 0.957 1.019 1.108 1.005  max|b-1| = 0.136  (alpha_3BR/g follows K_ion by Saha balance)
+  three-body recombination into n = 8 at Te = 2.95 eV: b_l = 0.999 1.019 1.048 1.085 1.005 1.046 1.091 0.825  max|b-1| = 0.175  (alpha_3BR/g follows K_ion by Saha balance)
+  three-body recombination into n = 8 at Te = 10.00 eV: b_l = 1.138 1.166 1.209 1.250 1.062 1.067 1.051 0.641  max|b-1| = 0.359  (alpha_3BR/g follows K_ion by Saha balance)
+  gain into shell 8 by source at (0, 7), no-mixing operator: n=7 coll 23.1 %, n<=6 coll 1.1 %, n=9 coll (DB of l-summed CCC) 62.5 %, n=10 coll (DB of l-summed CCC) 8.2 %, n>=11 coll (VS) 3.7 %, radiative cascade from above 0.0 %, recombination (S) 1.4 %
+  gain into shell 8 by source at (23, 5), no-mixing operator: n=7 coll 24.7 %, n<=6 coll 1.3 %, n=9 coll (DB of l-summed CCC) 60.7 %, n=10 coll (DB of l-summed CCC) 8.1 %, n>=11 coll (VS) 4.0 %, radiative cascade from above 0.0 %, recombination (S) 1.2 %
+
+====================================================================================================
+RESULT 5: scaling the bundled shells' radiative columns by s (0: dark; s_max: shell rate raised to A(np_total), statistical branching), effect on u_CRE, f_3 - f_4, tau_slow
+====================================================================================================
+  s_max = A(np_total)/gamma_bundled per shell n = [9, 10, 11, 12, 13, 14, 15]: 8.88 10.41 12.04 13.77 15.59 17.50 19.52
+  radiative share of the bundled shells' loss at the 34 points: 4.7e-08 to 5.2e-06 (the 0.19 % of RESULT 2 in bundling_total_loss is the grid maximum, at 1e12 cm^-3)
+  flux budget per unit n_ion at CRE: net flow into the ground state = N_1 K_ion(1s) ne (balanced by ground ionisation); bundled radiative flux = sum_k gamma_k N_k, split by destination:
+     point      S_tot ground flux ground/S_tot bundled rad rad/ground |  to 1s    n=2    n=3  n=4-8 bundled
+    (9, 6) 1.8906e+06  4.3572e+01      2.3e-05  1.8533e+01      0.425 |   23.3   13.1    9.4   36.7   17.4 %
+    (0, 7) 2.7308e+07  1.3320e+02      4.9e-06  9.7722e+01      0.734 |   23.3   13.1    9.4   36.8   17.3 %
+   (23, 7) 4.4767e+06  6.7296e+01      1.5e-05  1.7845e+01      0.265 |   23.3   13.1    9.4   36.6   17.6 %
+  bundled radiative flux / net ground flux over the 34 points: 0.265 to 0.734;  destination split check at (9,6): sum of destinations / bundled radiative flux = 1.000000
+
+  s = 0:     point  Te eV        ne  du_CRE %     dS %   dtau %
+              (9, 6)   1.53  3.73e+14   -1.8740  -1.2467  -0.0005
+              (8, 6)   1.46  3.73e+14   -1.8467  -1.2133  -0.0004
+              (7, 6)   1.39  3.73e+14   -1.8164  -1.1773  -0.0004
+              (6, 6)   1.33  3.73e+14   -1.7834  -1.1389  -0.0002
+             (23, 5)   2.95  1.39e+14   -2.4445  -1.2700  -0.0010   (outside the 121, for scale)
+              (0, 0)   1.00  1.00e+12   -9.2666  +3.0216  -0.1963   (outside the 121, for scale)
+              (0, 4)   1.00  5.18e+13   -3.3418  -0.1506  +0.0012   (outside the 121, for scale)
+            largest |change| over the 34 points: 1.8740 %
+            theta_9 - 1 over the 34 points under this scaling: +1.0e-05 to +4.0e-05 (built: 1.7e-05 to 5.7e-05)
+
+  s = s_max:     point  Te eV        ne  du_CRE %     dS %   dtau %
+              (9, 6)   1.53  3.73e+14  +20.8539 +12.8193  +0.0044
+              (8, 6)   1.46  3.73e+14  +20.5428 +12.4597  +0.0046
+              (7, 6)   1.39  3.73e+14  +20.1994 +12.0753  +0.0045
+              (6, 6)   1.33  3.73e+14  +19.8244 +11.6673  +0.0048
+             (23, 5)   2.95  1.39e+14  +27.2872 +12.1605  +0.0094   (outside the 121, for scale)
+              (0, 0)   1.00  1.00e+12 +102.2273 -16.2269  +2.0673   (outside the 121, for scale)
+              (0, 4)   1.00  5.18e+13  +37.0350  -0.2660  +0.0365   (outside the 121, for scale)
+            largest |change| over the 34 points: 20.8539 %
+            theta_9 - 1 over the 34 points under this scaling: +9.6e-05 to +2.6e-04 (built: 1.7e-05 to 5.7e-05)
+
+  destination-resolved removal at (9,6), du_CRE when only the bundled decays into one group are removed (their loss removed from the diagonal too):
+    1s -1.168 %, n=2 -0.596 %, n=3 -0.094 %, n=4-8 -0.016 %, bundled -0.000 %;  sum -1.874 % (s = 0 gave -1.874 %)
+  at (9,6), s = 0, the two-channel coefficients move by a3 -0.000 %, a4 -0.000 %, c3 -0.213 %, c4 -0.052 % against u_CRE -1.874 %: the effect is on u itself
+
+====================================================================================================
+PREDICTIONS (written before the run) against what came out
+====================================================================================================
+  P1 up-spread at 1 eV: n=2 1.221 ... n=9 2.532 (falls: False, stays > 1.3: True); yrast carries the max at n = 5..9: True: NOT reproduced
+  P2 down-spread over Te at n = 9: 5.181 to 5.918; n = 10: 4.994 to 5.680 (predicted within 1.3 to 3): NOT reproduced
+  P3 feed from below at 1 eV, max|b-1|: n_f=3 0.064, n_f=9 0.720, n_f=10 0.706; b(yrast) n_f=9 1.659, n_f=10 1.669: NOT reproduced
+  P4 n = 9 two-neighbour estimate at [0,7]: max|b-1| 0.000 (< 0.5), mean 0.000 (< 0.2): reproduced
+  P5 n = 8 without mixing at [0,7]: max|b-1| 0.000 (< 0.5); three-body feed spread at 1 eV 1.2833 (1.2833): reproduced
+  P6 consequence at the 34 points: largest change 1.8740 % (s = 0), 20.8539 % (s = s_max) (< 0.5 %): NOT reproduced
+
+PREDICTIONS: not reproduced as written: P1, P2, P3, P6
+REFUTER (a factor-two departure, max|b-1| > 1, at n = 9 in R3 or n = 8 in R4 no-mixing, over the 34 points): did not appear  [R3 max 0.000, R4 max 0.000]
+REFUTER of 'close to l-blind' (adjacent transfer spread > 3 at n = 9 or 10 at any Te): APPEARED  [up n=9 2.752, down n=9 5.918, down n=10 5.680]
+
+READING. The chapter's mechanism is refuted and its conclusion survives for a different reason.
+  (1) The rates are not l-blind. Adjacent upward transfer out of (n, l) varies across l by a factor that GROWS with n (1.22 at
+      n = 2, 2.5-2.8 at n = 9) and downward transfer by 5-6 at n = 7-10, largest at the yrast sublevel in every case (R1); in
+      population-weighted terms the scatter at n = 9 and 1 eV is a coefficient of variation 0.27 upward and 0.46 downward
+      (weighted mean |K/K_mean - 1| 0.23 and 0.39), so the edge-to-edge factors overstate the typical departure by about
+      two, and 27-46 % scatter is still not 'close to l-blind'. The transfer into a shell from a statistically populated neighbour
+      is not statistical either: from below, b runs from 0.28 (l' = 0) to 1.66 (yrast) at n_f = 9 and 10; from above, 0.54 to
+      1.37 (R2). P1-P3 predicted the opposite trend and are not reproduced.
+  (2) The statistical distribution is nevertheless the fixed point wherever the neighbour shells are in mutual Boltzmann ratio,
+      because every l-resolved rate obeys detailed balance (G1): b_l - 1 = (theta - 1)[f_dn(l) - mean f_dn] with |f_dn - mean| <= 0.16,
+      an identity (checked to 6e-04), so R3's b_l = 1 is not a test of the rates; its content is theta. At the 34 grid points the
+      121 combinations occupy, theta_9 - 1 lies within 6e-05 (R3) and every bundled pair within 6e-05 (R3b), and theta_9 stays
+      within 3e-4 of 1 when the bundled shells' radiative rates are set to zero or raised to A(np_total) (R5), so it is not an
+      artefact of the bundled block's own assumptions. The stronger statement is the one the pipeline's own ionisation/three-body
+      pair supports: the high shells are in Saha-Boltzmann equilibrium there, b_Saha(n) - 1 within 9e-05 for n = 8..15 at all 34
+      points, which covers n = 11..15 (LTE sublevels are statistical whatever rates exist) and covers the ionisation channel that
+      R3's 'inconsistent extreme' column (up to 0.10) left out; a consistent estimate is (b_Saha - 1) x 0.16 x f_blind, of order 1e-6.
+      The model's own n = 8 with its mixing block removed is statistical to 1e-4 at every one of the 34 points (R4). P4 and P5
+      are reproduced, but not for the reason the predictions assumed (near-statistical feeds and near-blind losses); the
+      operative reason is thermalisation of the high shells. Complementarity: |theta_9 - 1| exceeds 0.01 only at low density
+      (ne <= 2.7e12, 55 points, 42 of them inside the Te >= 2 eV scope), and at every such point the local-cutoff mixing beats the
+      total loss in every bundled shell by at least 341 (bundling_total_loss); no grid point fails both criteria. Where neither
+      criterion is met in principle, at the low shells, the collisional distribution is far from statistical: at [0,7] without
+      mixing n = 2 departs by 2.3 and n = 3 by 0.22 (R4), though there radiative decay, not collisions, sets the distribution.
+  (3) The stake (R5). Had the bundled block been non-statistical at these points, the consequence would not have been small:
+      removing the bundled shells' radiative decay moves u_CRE by up to 1.9 % and f_3 - f_4 by 1.2 % at the 34 points, and raising
+      every bundled shell's radiative rate to A(np_total) (branching kept) moves them by 21 % and 13 %; tau_slow is unmoved
+      (< 0.01 %). P6 predicted < 0.5 % and is not reproduced, for a wrong premise: the 0.19 % radiative share of the bundled loss is
+      the grid maximum at 1e12 cm^-3; at the 34 points the share is 5e-08 to 5e-06, so the amplification is not 10 but 1e4-1e6. The
+      budget explains it: at CRE the net flow into the ground state is a tiny fraction of the recombination source (2e-5 at (9,6)),
+      because nearly every recombination is re-ionised from an excited state, and the bundled radiative flux is 0.27-0.73 of that
+      net flow (0.43 at (9,6)), landing 23 % in 1s, 13 % in n = 2 and the rest in n >= 3; removing the decays into 1s and n = 2 alone
+      accounts for -1.76 of the -1.87 % (the rest re-routes through resolved-shell decays). The effect is on u itself,
+      not on a_3, a_4, c_3, c_4 (at (9,6) they move by 0.21 % at most); f_3 - f_4 follows through f = au/(au + c).
+  Caveats. R3 omits ionisation, Delta-n >= 2 transfer, feeds from n >= 11 and recombination (l-summed in the model); radiative loss
+  out of 9p is l-dependent and uncompensated, shifting b(9p) by 5e-05 at most over the 34 points (R3c; -0.017 at [0,0], where
+  mixing covers). In R4, 61-63 % of the n = 8 gain at the 34 points arrives from n = 9 by detailed balance of l-summed CCC rates,
+  statistical by construction; R3 and the Saha departures close that loop. Nothing here resolves l inside n = 11..15, where only
+  l-summed Vriens-Smeets rates exist; for them the statement rests on R3b and b_Saha. Electron impact only; proton-impact
+  n-changing collisions are absent from the model.

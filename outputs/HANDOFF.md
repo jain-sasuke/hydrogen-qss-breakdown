@@ -271,6 +271,136 @@ stale** — it points at `qss_analysis.py`, which was fixed on 23 Aug.
 results from working-note ones. Four checks graded *severe* rest on notes.
 **New section 6.10** gathers the five open questions.
 
+## 5d. The 22 September session
+
+Read `CLAUDE.md`, this file and backlog K10 to K19 first; the state described in
+§1 held. `origin` now points at `github.com/jain-sasuke/hydrogen-qss-breakdown.git`
+(`git remote set-url` run; both branches answer). Nothing committed or pushed
+this session; the author decides.
+
+**State at the end of the session.** 209 pages (converged, two latexmk runs; up from 207 by the four requotes), 0 LaTeX errors, 0 BibTeX warnings, 0 undefined references, 0 em dashes outside comments. Nothing committed; the author decides. Files touched: chapters 1, 2, 4, 5, 6, 7, appendix C; new `src/validation/{build_L_at_Te,verify_l_blindness,verify_interior_operator,verify_maxwell_grid_convergence}.py`; new `validation/{l_blindness,interior_operator,maxwell_grid_convergence}/`; `outputs/{HANDOFF,claim_evidence_table,thesis_grade_results_backlog}.md`, new `outputs/claim_evidence_table_lineref_refresh_2026-09-22.md`, `outputs/round6_adjudication_2026-09-22.md`.
+
+**Number guard.** Before any edit, every numeric token per `.tex` file was
+extracted from HEAD (`3b613c1`); after editing, no token was lost from the
+thesis, and every gained token traces to a stamped artifact named in the
+backlog entry (K20, K21).
+
+**`outputs/claim_evidence_table.md` line references refreshed** by an
+evidence-auditor subagent against `3b613c1`: 348 occurrences over 291
+(chapter, range) keys; 318 replaced (204 HIGH, 63 MEDIUM confidence keys), 25
+left with a `[ref stale 22 Sep: ...]` tag; mapping in
+`outputs/claim_evidence_table_lineref_refresh_2026-09-22.md`. Verdicts and
+body text untouched. Residual inconsistencies the refresh found still live in
+the chapters (report only): ch3 "three decades" for a 3.54-decade range;
+86.8 (full matrix) versus 86.5 (excited block) presented as one quantity across
+ch3, ch4, ch5; 54 versus 104 no-plateau exclusions in ch5; 2300 and 2332 for the
+same ratio in ch6; ch2's "21 July" write date against CLAUDE.md's 14 July.
+
+**K20, the ℓ-blindness argument (backlog).** `verify_l_blindness.py` →
+`validation/l_blindness/`. The CCC tables resolve ℓ on both sides up to
+n = 10, so the argument §6.8.3 called untested could be tested. The rates are
+NOT ℓ-blind (adjacent upward spread grows with n to 2.5 to 2.8 at n = 9,
+downward 5 to 6 at n = 7 to 10, largest at the yrast sublevel); the statistical
+distribution at the 121 combinations is licensed instead by detailed balance
+among shells that are Boltzmann with each other to 6e-5 and Saha with the
+continuum to 1e-4 at all 34 grid points; the two criteria (mixing, LTE) cover
+every grid point. The stake was up to 21 % in u_CRE had the assumption failed.
+Hostile audit demanded six changes; all applied before the requote. ch6
+sec:bundling_check closing paragraph and ch4's ladder summary requoted.
+
+**`build_L_at_Te.py`, the operator at an arbitrary Te.** Every ingredient of L
+and S is a closed-form function of Te or a Maxwell average of a stored
+cross section, so the operator can be built at any Te from the pipeline's raw
+inputs without editing a rate module: `compute_K_CCC.py` cannot be imported
+(it writes at module scope) and its Maxwell average and the `assemble_K_exc.py`
+merge rules are re-implemented; everything else is imported read-only. The
+gate reproduces every stored table, `L_grid` and `S_grid` at all 50 x 8 nodes
+with difference 0.0. Use `OperatorBuilder.load().operator(Te, ne)`; the
+ℓ-mixing cutoff is frozen at 1e14 as in `L_grid` unless `lmix_ne` is passed.
+
+**K21, K22 (backlog).** `verify_interior_operator.py` → `validation/interior_operator/`:
+the quarter rule measured (0.25 to 0.27), the true ramp at [15,3] reaches
+0.9956 / 0.9567 / 0.6548 of the plateau (Tₑ linear in t; 0.6571 for ln Tₑ
+linear in t), inside the interpolant bracket; the stamped 0.0107 gap splits
+0.0079 linear interpolation, 0.0005 log-linear, 0.0024 ramp shape. Its audit
+found the pipeline's 5000-point Maxwell-average grid carries about 1 % in
+τ_slow at the ramp point; `verify_maxwell_grid_convergence.py` →
+`validation/maxwell_grid_convergence/` stamped it (100000 points: τ_slow up to
+1.5 %, u_CRE 1.3 %, S 0.8 %, ε_plateau 1.0 % at Tₑ ≥ 2 eV; 3.3 % at the cold
+corner; nothing repaired, `N_GRID` stays 5000). ch5 sec 5.8.2 and ch2
+sec:maxwellian requoted. Reported to the author: `compute_K_CCC.py`'s
+"validated: <2% error" comment does not hold for the weak transitions.
+
+**K23, Round 6 adjudicated and applied** (`outputs/round6_adjudication_2026-09-22.md`):
+35 claims, 33 correct in some degree (8 already applied, 3 understated), 1
+wrong (stale: the ADAS reservoir check exists since K13), 0 fabricated. Chapter
+1 (11 edits) and chapter 7 (21 edits, plus one appendix C sentence) requoted
+by science-editor subagents from stamped artifacts. The one item left to the
+author: re-weighting §7.3 toward error separation, the crest mechanism and
+Σ = P + SG, which is a restructuring under the page budget.
+
+**Master register (Rounds 0 to 10) adjudicated and applied, K24, K25**
+(`outputs/master_register_adjudication_2026-09-22.md`): 27 of 36 MUST items
+were already applied, 6 had residual sentences (applied), M19 stamped
+(`verify_saha_balance.py`), M22 superseded by K21; M28 and M31 are yours.
+Prose cleanup across all chapters after reading thesis-writing guidance (Lund,
+Coventry, Thomson, the examiner study): draft-history narration, internal
+file names, reader address, rhetorical words and 24 detective-style headings
+gone from live prose; every number, caveat and provenance pointer kept (guard:
+12 lost tokens, all superseded values with their stamped replacement in
+place; the 100000-point grid sentence and the K23/K25 requotes are the gains).
+Caption edits were made in both the `.tex` files and the generator
+templates; a `--force` regeneration was not rerun this session. Final state:
+**208 pages**, 0 errors, 0 BibTeX warnings, 0 undefined references, 0 em
+dashes outside comments, `pdftitle`/`pdfauthor` set. Nothing committed.
+
+**Round 7 adjudicated and applied, K26** (`outputs/round7_adjudication_2026-09-22.md`).
+Six claims: Park 1972 correct and understated, the chapter 3 chord cancellation
+correct, Fujimoto wording and the provenance defect partially correct, the
+abstract claim wrong as stated, the console criterion already applied. Park was
+read in full from `refs/` and is now cited: he assumes excited-state QSS, uses
+the same two-coefficient decomposition and the same ground-state parameter, but
+computes only in the two terminal limits where the sensitivity vanishes by his
+own definition, and zero of the 400 grid points lie there. A chord-integration
+limitation was added to chapter 6, which had none. Auditing a claim the reviewer
+CLEARED found a real overstatement: chapter 6's step idealisation is safe by one
+to two orders of magnitude at the median but only by a factor of two at the
+least favourable pair, where the ramp reaches 0.78 of the step plateau.
+
+**Open and formal: the abstract is about 734 words against the IIT Kanpur
+M.Tech limit of 300.** No review in the series raised it. The cut is yours.
+
+**Round P0 adjudicated and applied, K27** (`outputs/roundP0_adjudication_2026-09-22.md`).
+The dual-writer contamination claim is refuted on all six results it named; the
+arrays feed nothing printed and the two writers are byte-identical.
+`verify_headline_provenance.py` now re-derives all 45 numbers that carried a
+working-note citation from stamped artifacts, and `verify_ladder_counts.py`
+makes Table 4.4's caption counts self-checking. Two real defects were found in
+the process: tab:position_effect's u-ratio mixes temperature indices (stated in
+the caption now), and **24 of 97 validation CSV files carry no provenance header
+at all**, including artifacts behind abstract-level numbers. That last one is
+the largest open provenance item and is yours, since writing headers means
+re-running the producers.
+
+**Round P0 re-check adjudicated and applied, K28** (`outputs/roundP0b_adjudication_2026-09-22.md`).
+The review was right: active numbers still cited a working note. `verify_residual_claims.py`
+now computes all of them from the canonical operator and **all 43 reproduce**, including the
+five ell-weighting values of Delta to five decimals, the four eigenvalue condition numbers
+exactly, and the ion-closure census (202 to 200, 38.68 to 38.56 per cent, 45 of 448). The
+phrase is down from 23 live occurrences to 7: five labelled historical, one the Table 4.4
+definition, one a structural claim with no measured number. One real error surfaced: the
+sub-grid crest endpoints were wrong and the drift is not monotone (it reverses at 5.96 eV);
+requoted. Two constructions could not be recovered (the matched heat/cool ratio 1.036 and the
+linearisation median 1.031) and the text now says so rather than citing a note.
+
+**The abstract is cut to the institute limit, K29.** 270 words as rendered
+against the 300-word M.Tech limit, down from about 800. Every scope statement
+the review rounds installed survives (known density, the "not a demonstration
+that divertor spectroscopy fails" disclaimer, the ceiling attributed to the
+linear system, the 166 + 44 + 238 split, the closed-parcel conditionality). The
+number guard is unchanged at 15 lost and 157 gained, so nothing dropped from the
+abstract left the thesis. 210 pages.
+
 ## 6. What is left
 
 Read `outputs/REMAINING.md` for the full register. The substantive items:

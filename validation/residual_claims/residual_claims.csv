@@ -1,0 +1,58 @@
+# generated 2026-09-22 18:51 by verify_residual_claims.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  pandas 3.0.0
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# every value computed from the canonical operator or from a stamped artifact named in the log
+claim,quantity,thesis_location,printed,computed,unit,rel_diff,tolerance,ok
+C1,"lambda_0 at [1,4]",chapter5 sec:two_clocks,-4.29,-4.287448439368132,s^-1,0.0005947693780579133,0.0011655011655011655,True
+C1,"lambda_1 at [1,4]",chapter5 sec:two_clocks,-160000000.0,-160293616.0138643,s^-1,0.0018351000866518863,0.03125,True
+C1,"lambda_2 at [1,4]",chapter5 sec:two_clocks,-344000000.0,-344286756.21601343,s^-1,0.000833593651201836,0.0014534883720930232,True
+C1,"gap at [1,4]",chapter5 sec:two_clocks,37000000.0,37386715.73097397,,0.010451776512809818,0.013513513513513514,True
+C2,total bound population per n_ion,chapter5 sec:freezing,0.0008925,0.0008924573134846559,per n_ion,4.7828028396645905e-05,5.6022408963585436e-05,True
+C2,cost of freezing n_ion,chapter5 sec:freezing,0.09,0.08924573134846558,percent,0.008380762794826802,0.05555555555555556,True
+C3,"Delta, population sum",chapter5 sec:bound,1.94561,1.9456141468814125,,2.131404244654078e-06,2.569888107071818e-06,True
+C3,"Delta, p-states",chapter5 sec:bound,1.94474,1.94474071487168,,3.6759241850425894e-07,2.5710377736869714e-06,True
+C3,"Delta, d-states",chapter5 sec:bound,1.94447,1.9444703912529826,,2.012131752326951e-07,2.5713947759543735e-06,True
+C3,"Delta, s-states",chapter5 sec:bound,1.94471,1.9447081696810677,,9.411783413737496e-07,2.571077435710209e-06,True
+C3,"Delta, statistical",chapter5 sec:bound,1.94574,1.9457393810990973,,3.1807996070387645e-07,2.5697164060974233e-06,True
+C3,spread of Delta over weightings,chapter5 sec:bound,0.07,0.06524186373572131,percent,0.06797337520398128,0.07142857142857142,True
+C4,"|Sbar| at [23,5]",chapter5 sec:bound,0.2288,0.228793396056489,,2.8863389471167622e-05,0.00021853146853146853,True
+C4,"cap at [24,5]",chapter5 sec:bound,0.4503,0.4502989763011684,,2.2733707119027002e-06,0.00011103708638685322,True
+C4,"utilisation at [23,5]",chapter5 sec:bound,51.0,50.80921967352368,percent,0.003740790715222042,0.00980392156862745,True
+C4,"|Sbar| at [23,3]",chapter5 sec:bound,0.4261,0.4260614638243,,9.043927646090744e-05,0.00011734334663224597,True
+C4,"cap at [24,3]",chapter5 sec:bound,0.4394,0.4393522633190012,,0.00010864060309245804,0.0001137915339098771,True
+C4,"utilisation at [23,3]",chapter5 sec:bound,97.0,96.97491042966332,percent,0.0002586553642955902,0.005154639175257732,True
+C5,relaxation time within the 0.85 % bound,chapter2 sec:lmix,0.85,0.15066544504147572,"percent, bound",,,True
+C5,slow eigenvalue within the 1 % bound,chapter2 sec:lmix,1.0,0.13944492867299374,"percent, bound",,,True
+C6,"cond(lambda_0) at [23,5]",chapter4 sec:numerics,,1.7065058726854079,,,,True
+C6,"float32 displacement of lambda_0 at [23,5]",chapter4 sec:numerics,,1.3562540912559484e-05,,,,True
+C6,"cond(lambda_0) at [0,0]",chapter4 sec:numerics,,3.255483010559071,,,,True
+C6,"float32 displacement of lambda_0 at [0,0]",chapter4 sec:numerics,,0.00024202977045495455,,,,True
+C6,"cond(lambda_0) at [49,7]",chapter4 sec:numerics,,1.1623645204252042,,,,True
+C6,"float32 displacement of lambda_0 at [49,7]",chapter4 sec:numerics,,1.4771246108491454e-06,,,,True
+C7,crest vertex at Te = 1.0 eV (3-point),chapter5 sec:crest,37000000000000.0,37046699558372.67,cm^-3,0.0012621502262883944,0.013513513513513514,True
+C7,crest vertex at Te = 9.54 eV (3-point),chapter5 sec:crest,15200000000000.0,15233447926227.287,cm^-3,0.0022005214623215252,0.003289473684210526,True
+C7,"range of the crest vertex, max over min",chapter5 sec:crest,2.56,2.559843364295272,,6.118582215941526e-05,0.001953125,True
+C7,temperature of the minimum vertex,chapter5 sec:crest,,5.963623316594643,eV,,,True
+C9,rows whose maximum sits in column 4,chapter5 sec:crest,3.0,3.0,rows,0.0,0.16666666666666666,True
+C10,"density of the (3,5) sensitivity peak",chapter5 sec:crest,7200000000000.0,7196856730011.528,cm^-3,0.000436565276176637,0.006944444444444444,True
+C10,"factor between the (3,4) and (3,5) peak densities",chapter5 sec:crest,2.68,2.6826957952797166,,0.0010058937610881724,0.0018656716417910447,True
+C11,"linearisation ratio, minimum",chapter5 sec:linearisation,0.8417,0.8417461746404364,,5.48587863091754e-05,5.94035879767138e-05,True
+C11,"linearisation ratio, maximum",chapter5 sec:linearisation,1.3891,1.3891098961696327,,7.124159263405261e-06,3.59945288316176e-05,True
+C11,steps the linearisation understates,chapter5 sec:linearisation,219.0,219.0,steps,0.0,0.00228310502283105,True
+C11,linearisation ratio at the benchmark,chapter5 sec:linearisation,0.9459,0.945882106795317,,1.8916592327888893e-05,5.2859710328787404e-05,True
+C12,"f_3 at [23,7]",chapter5 sec:limits,0.071,0.07128771921934024,,0.004052383370989343,0.007042253521126762,True
+C12,"f_4 at [23,7]",chapter5 sec:limits,0.011,0.010926286164899468,,0.0067012577364119474,0.045454545454545456,True
+C13,"census count, boundary open",chapter5 sec:open_boundary,202.0,202.0,pairs,0.0,0.0024752475247524753,True
+C13,"census count, boundary closed",chapter5 sec:open_boundary,200.0,200.0,pairs,0.0,0.25,True
+C13,"worst case, boundary open",chapter5 sec:open_boundary,38.68,38.681970426661586,percent,5.0941744094812336e-05,0.00012926577042399174,True
+C13,"worst case, boundary closed",chapter5 sec:open_boundary,38.56,38.56304483399908,percent,7.896353732039785e-05,0.00012966804979253112,True
+C13,"defended count above 2 eV, open",chapter5 sec:open_boundary,45.0,45.0,pairs,0.0,0.011111111111111112,True
+C13,"defended count above 2 eV, closed",chapter5 sec:open_boundary,45.0,45.0,pairs,0.0,0.011111111111111112,True
+C14,cap lower end above 7e12,chapter5 sec:density_mechanism,0.394,0.3940117941364301,,2.9934356421623676e-05,0.0012690355329949238,True
+C14,cap upper end above 7e12,chapter5 sec:density_mechanism,0.45,0.4502989763011684,,0.0006643917803741406,0.011111111111111112,True
+C14,cap range above 7e12,chapter5 sec:density_mechanism,14.0,14.285659211827628,percent,0.02040422941625919,0.03571428571428571,True
+C15,heating pairs with no plateau window,chapter5 sec:population_set,54.0,54.0,pairs,0.0,0.009259259259259259,True
+C15,all of them lie at j >= 4,chapter5 sec:population_set,1.0,1.0,boolean,0.0,0.0,True
+C8,"matched heat/cool ratio, median [definition not recovered]",chapter5 sec:asymmetry,1.036,1.1109045430905162,,0.07230168251980329,,False
+C11,"linearisation ratio, median [definition not recovered]",chapter5 sec:linearisation,1.031,1.0182068417427341,,0.012408494914903812,,False

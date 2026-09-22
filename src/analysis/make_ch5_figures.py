@@ -1222,9 +1222,10 @@ def main():
   above $2$~eV it is @CNTW0@ against @CNTWMAX@, unchanged to within one
   pair. (At $D = @DMAX@$~cm the analysed set is @NPAIRD@ pairs rather than
   @NWIN@: two lose their plateau window.)
-  The $T_e \geq 2$~eV restriction is therefore not a hedge; it is the measured
-  boundary beyond which the one neglected process most likely to invalidate
-  the result stops mattering.}
+  The $T_e \geq 2$~eV restriction is therefore not a hedge; it is the working
+  boundary adopted above the band where the one neglected process most likely
+  to invalidate the result has been shown not to, with two of the 24 crossings
+  at $D = 20$~cm lying above it.}
 """
     for k, v in tok.items():
         caption_src = caption_src.replace(k, v)

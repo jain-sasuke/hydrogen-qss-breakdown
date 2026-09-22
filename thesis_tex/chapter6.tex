@@ -26,14 +26,13 @@
 \chapter{What This Model Cannot Say}
 \label{ch:limits}
 
-Chapter~\ref{ch:results} handed the reader two things: a map of how wrong a
+Chapter~\ref{ch:results} established two things: a map of how wrong a
 tabulated $H_\alpha/H_\beta$ inversion can be while the ground state is still
 catching up, and a mechanism that explains the map's shape. The map has a ridge
 in it, the ridge has a closed-form explanation, and the explanation was tested
-three separate ways. At this point in the argument the reader believes a
-result.
+three separate ways. At this point in the argument a result stands.
 
-This chapter's job is to bound that belief without destroying it. Every number
+This chapter's job is to bound that result without withdrawing it. Every number
 in Chapter~\ref{ch:results} came out of one $43$-state matrix describing one
 kind of atom under one set of assumptions, and some of those assumptions are
 badly violated in exactly the corner of the map where the numbers are largest.
@@ -45,7 +44,7 @@ arithmetic.
 has been \emph{computed} is worth more than a limitation that has been hedged.
 Where an objection could be turned into a calculation, it was, and the
 calculation is reported here with the number that would have refuted the
-result. Two objections were expected to be fatal and were not; they are given
+result. Two objections were expected to be decisive and were not; they are given
 the same space as the ones that bite. Where an objection cannot be computed
 inside a model with no spatial dimension, it is stated as a \emph{conditional},
 ``\emph{if} this holds, the error is as computed'', and not softened into a
@@ -73,7 +72,7 @@ ITER-pedestal extrapolation is \SI{506}{\micro\second}
 % that false, what does it do to the error map, and how much of the map
 % survives it?
 
-\subsection{The question, and the picture behind it}
+\subsection{The optically thin assumption and how it reaches the slow clock}
 
 Chapter~\ref{ch:atoms} gave every downward transition an Einstein $A$
 coefficient: the probability per second that an excited atom drops to a lower
@@ -82,7 +81,7 @@ bare. Entering bare means one specific physical assumption: that every photon
 emitted anywhere in the plasma leaves it and never comes back. A plasma for
 which this is true is called \emph{optically thin}.
 
-A chemical engineer has met the failure of this assumption in another costume.
+The failure of this assumption has a direct analogue in reaction engineering.
 Consider a reaction whose product is removed by desorption from a catalyst
 surface. If the product leaves the reactor, the desorption step runs at its
 intrinsic rate. If the product cannot leave, if it re-adsorbs somewhere else
@@ -188,10 +187,10 @@ the $680$ window-resolvable points of the full grid, $157$ lie below
 $\tau_{\rm Ly\alpha}(\SI{5}{\centi\metre}) > 1$, and $15$ have it above $100$,
 on the half-slab depth used above.
 
-An earlier draft gave $105$ and $26$, a convention error rather than a
-recomputation: those counts are reproduced only by combining the full-path
-depth $\kappa_0 D$ with a Doppler width $\sqrt{kT_n/m}$, short of the correct
-$\sqrt{2kT_n/m}$ by $\sqrt{2}$. With the correct width the census is $85$ and
+The counts $105$ and $26$ can also be obtained, and are a convention error
+rather than a recomputation: they are reproduced only by combining the
+full-path depth $\kappa_0 D$ with a Doppler width $\sqrt{kT_n/m}$, short of the
+correct $\sqrt{2kT_n/m}$ by $\sqrt{2}$. With the correct width the census is $85$ and
 $15$ on the half-slab depth quoted here and $100$ and $23$ on the full-path
 depth. A deuterium cross-section with the full-path depth also returns $105$
 and $26$, since the isotope mass enters the width as the same $\sqrt{2}$, so
@@ -202,7 +201,7 @@ the absorbing atoms at $\Te$, every crossing lies below \SI{2}{\electronvolt}
 except two, both at $D = \SI{20}{\centi\metre}$; colder atoms move the
 crossings upward, and Section~\ref{sec:scope} gives by how much.
 
-\subsection{What we expected trapping to do, and what it did}
+\subsection{Self-consistent Lyman escape factors applied to the matrix}
 
 The expectation, stated before the calculation was run, was that trapping would
 demolish the map: an effective $A$ coefficient wrong by about three orders of
@@ -342,7 +341,7 @@ does not, and it must never appear without its trapped range and without the
 optical depth that produced it.
 
 The route by which the number falls is itself a result, and it is not the
-obvious route. The obvious guess is that trapping desensitises the diagnostic,
+simpler route. The simpler guess is that trapping desensitises the diagnostic,
 that a trapped plasma simply responds less. It does not. The sensitivity
 $|\ffrac{3}-\ffrac{4}|$, which is the factor in the exact decomposition of
 Section~\ref{sec:mechanism} measuring how strongly the line ratio answers to its
@@ -429,13 +428,13 @@ $0.214$ (Section~\ref{sec:balmer_equivalence},
 % QUESTION: the slow clock is the ionisation time of a stationary atom -- what
 % happens to the result when the atom leaves before it ionises?
 
-\subsection{The question}
+\subsection{An objection the model cannot answer from inside}
 
 This is the objection that cannot be answered inside this model, and it is a
 more serious threat to the cold-edge number than anything in
 Section~\ref{sec:opacity}. It is also the simplest to state.
 
-\subsection{The picture: a reactor with no walls}
+\subsection{Batch-reactor parcel against a recycling divertor}
 
 The model of Chapter~\ref{ch:theory} is a batch reactor. A fixed parcel of gas
 is given a temperature, and its composition evolves until it stops changing. The
@@ -602,7 +601,7 @@ both scale lengths (Table~\ref{tab:transport_selection}).
 
 \subsection{The claim, restated as the conditional it is}
 
-The honest form is therefore not a caveat but a conditional, and it should be
+The correct form is therefore not a caveat but a conditional, and it should be
 written this way wherever the number appears:
 
 \begin{quote}
@@ -626,13 +625,35 @@ code such as SOLPS (Scrape-Off Layer Plasma Simulation) supplying $\ngs$ from a
 recycling influx; that is outside the scope of this thesis and is named in
 Chapter~\ref{ch:conclusions} among the further work.
 
+\subsection{One chord, one point: the line-of-sight integration}
+\label{sec:los_limitation}
+
+The same absence of a spatial dimension reaches the observable itself. Every
+ratio in this thesis is formed from populations at a single $(\Te,\nel)$,
+whereas a spectrometer forms its ratio from two brightnesses, each integrated
+along a chord that crosses whatever gradients the divertor has. As
+Section~\ref{sec:spectrometer} sets out, the measured ratio is the
+$n_4$-weighted average of the local ratio along that chord, and it equals the
+local ratio only where the local ratio is constant over the emitting region.
+The weighting is by $H_\beta$ emissivity and not by path length, so the
+brightest stretch of the chord sets the answer and the cold, dim stretch
+contributes almost nothing.
+
+What the calculation here establishes is therefore the error a table carries at
+a point. Converting it into the error a real chord carries would require the
+emissivity profile along the sightline, which is a transport result and not an
+atomic one; the two-region or edge-code coupling named in
+Section~\ref{sec:transport_partition} is what would supply it. The local
+statement is the one this thesis defends. The chord statement is conditional on
+$n_3/n_4$ being uniform over the emitting volume, and nothing here tests that.
+
 %-----------------------------------------------------------------------------
 \section{No molecular channels, in a gas that is mostly molecules}
 \label{sec:molecules}
 % QUESTION: the model contains only atomic hydrogen -- at the conditions where
 % the error is largest, is that a defensible description of the gas?
 
-\subsection{The question, and why a referee asks it first}
+\subsection{An atomic-only state space}
 
 Every state in Chapter~\ref{ch:atoms}'s state space is a level of a single
 hydrogen \emph{atom}, plus a reservoir of bare protons. There is no
@@ -640,7 +661,7 @@ $\mathrm{H}_2$ (or $\mathrm{D}_2$), no molecular ion $\mathrm{D}_2^+$, no
 negative ion $\mathrm{D}^-$, and no reactions between them. A search of the rate
 assembly for any of these returns nothing at all.
 
-\subsection{The picture: a third feed stream}
+\subsection{Molecular activated recombination as a third feed stream}
 
 Chapter~\ref{ch:theory} fed every excited level from two directions, up from
 the ground state by electron collisions and down from the ion continuum by
@@ -758,7 +779,7 @@ above is an estimate of how wrong they are rather than a correction to them.
 % QUESTION: is the density at which the error peaks a property of hydrogen, or
 % a property of this model's own ionisation balance?
 
-\subsection{The question}
+\subsection{Mechanism and location as separate claims}
 
 Section~\ref{sec:mechanism} found an interior maximum, a ridge, in the
 error map at $\nel \approx 2\times10^{13}\,\si{\per\cubic\centi\metre}$, and
@@ -767,7 +788,7 @@ thermodynamic equilibrium (LTE) predicts. The mechanism is robust; three
 independent tests agreed. But a mechanism and a location are different claims,
 and only the first of them has been established.
 
-\subsection{The picture: the ridge is where the two feeds are balanced}
+\subsection{The neutral density as the controlling variable}
 
 The ridge exists because the $n=3$ and $n=4$ shells switch from
 recombination-fed to ground-fed at different reservoir strengths, so their
@@ -780,7 +801,7 @@ ionisation balance.
 That is the conditionality. Change what the model assumes about neutrals and the
 ridge moves, whatever the electron density does.
 
-\subsection{The measurement}
+\subsection{Ridge location under a rescaled neutral density}
 
 Within the two-channel split the ground-fed fraction is exactly
 $\ffrac{p} = a_1 n_g/(a_0 + a_1 n_g)$, where $n_g$ is the ground-state density
@@ -807,10 +828,8 @@ $\Te = \SI{2.02}{\electronvolt}$ (\texttt{verify\_ng\_scaling.py},
 \noindent \textbf{One decade in the assumed neutral density moves the ridge by
 roughly one decade in electron density.} The response is close to
 proportional, and the whole three-decade span of the density grid is traversed
-by a two-decade change in $\ngs$. An earlier draft quoted $2.28\times10^{12}$,
-$1.68\times10^{13}$ and $2.48\times10^{14}$ from a record with no producing
-script; the stamped scan, the operator at $[15,j]$ with its own CRE $\ngs$
-scaled, gives the values in the table, about \SI{1}{\percent} higher.
+by a two-decade change in $\ngs$. The values in the table are those of the
+stamped scan, the operator at $[15,j]$ with its own CRE $\ngs$ scaled.
 
 The agreement with Griem's criterion at unit scaling, $1.93\times10^{13}$
 measured against $2.05\times10^{13}\,\si{\per\cubic\centi\metre}$ predicted, is
@@ -834,7 +853,7 @@ form of words this imposes is stated in Section~\ref{sec:error_maps}.
 % QUESTION: can the density at which the ridge sits be identified with a named
 % operating regime of a tokamak divertor?
 
-\subsection{The question, and the temptation}
+\subsection{The verbal match between the ridge and detachment}
 
 The identification is tempting. The ridge sits where ionising and recombining
 supplies compete; detachment, the regime ITER must operate in to survive its
@@ -842,7 +861,7 @@ exhaust power and the transition this diagnostic is chiefly used to identify
 (Section~\ref{sec:molecules}), is where ionising and recombining plasma compete.
 The words match.
 
-\subsection{The arithmetic}
+\subsection{The ridge density against the detached-divertor band}
 
 The numbers do not. Section~\ref{sec:withdrawn} withdrew the identification:
 the ridge, at $1.93\times10^{19}\,\si{\per\cubic\metre}$, sits a factor $5.2$
@@ -859,7 +878,7 @@ midplane}, which that paper states explicitly where it plots the dependence
 \cite[Sec.~3.2.2]{Pitts2019}. So the quantity is settled: outer midplane, not
 X-point. What is not settled by a single factor is where in the band to
 measure from. The ridge sits $1.6$ times below the \emph{bottom} of it and
-$3.1$ times below the top, and the honest statement is the range rather than
+$3.1$ times below the top, and the precise statement is the range rather than
 either end. On the same flux tube the outboard-midplane and X-point densities
 differ by roughly \SI{50}{\percent}, which is comparable to the width of the
 band itself. The conclusion does not turn on any of this, since the ridge is
@@ -871,9 +890,9 @@ It is Nuclear Fusion \textbf{63}(1) 016017 (2023), companion part A at 63(1)
 016016 \cite{Stangeby2023a}; \cite{Lore2022} in the same block of that file
 genuinely is volume 62.
 
-\subsection{What that leaves}
+\subsection{A structure without a named tokamak region}
 
-The honest statement is uncomfortable and should be made anyway. \textbf{The
+The resulting statement is uncomfortable and should be made anyway. \textbf{The
 structure this work found is real and reproducible, and it sits at a density
 this thesis cannot identify with any named region of a tokamak.} The model does
 not identify it with detachment or with the upstream separatrix, and calling it
@@ -890,12 +909,12 @@ at the densities where the diagnostic is most used, no tested case reaches the
 threshold.
 
 %-----------------------------------------------------------------------------
-\section{The open boundary: an attack that was expected to be fatal}
+\section{The open ion boundary: a closed-parcel test}
 \label{sec:open_system}
 % QUESTION: does holding the ion density fixed manufacture the slow clock that
 % the whole result rests on?
 
-\subsection{The question}
+\subsection{The fixed ion density in the rate equation}
 
 Section~\ref{sec:rate_equation} was explicit that the ion density $\nion$ is
 held fixed: the recombination feed $\Svec\nion$ enters as a constant source term
@@ -906,7 +925,7 @@ eigenvalue $\lambda_0$ is therefore the CR ionisation rate of ground-state
 hydrogen against a prescribed reservoir, not the equilibration rate of a closed
 system.
 
-\subsection{The falsifier, and what happened}
+\subsection{Closing the manifold with a 44th ion state}
 
 If the long $\tauslow$ values were an artifact of the open boundary, so would be
 the claim that the error outlasts an ELM. The falsifier named in
@@ -922,7 +941,7 @@ $\taudrive$, so where the boundary condition matters the outcome does not
 depend on it. The measured factor at $[0,4]$ is $15$ against the $2300$
 required, a cold-corner margin; inside the defended range, at the ridge, it is
 $1.01$ against $20$, and at the benchmark $\tauslow$ moves by one part in
-$10^{3}$. The attack was survived everywhere it was pressed.
+$10^{3}$. The objection was survived everywhere it was pressed.
 
 \subsection{The caveat that must not be softened}
 
@@ -947,7 +966,7 @@ belongs to $\Lmat[1,4]$.
 % QUESTION: where does the comparison against published atomic data break down,
 % and does the failure touch the mechanism?
 
-\subsection{The question}
+\subsection{One population coefficient agrees and one does not}
 
 Chapter~\ref{ch:validation} presented the comparison against Fujimoto's
 published population coefficients as the strongest external check this model
@@ -957,7 +976,7 @@ measures. The short answer is that it is unexplained, that it is not the
 $\ell$~closure, and that it is direct evidence about the coefficients
 Chapter~\ref{ch:results} uses.
 
-\subsection{The picture: two coefficients, one for each feed}
+\subsection{The recombination-fed and ground-fed coefficients $r_0$ and $r_1$}
 
 Chapter~\ref{ch:theory} split every excited population into two pieces
 corresponding to the two supply channels. The population coefficient $r_0(p)$
@@ -994,12 +1013,11 @@ quantum numbers, and the table carries no $\ell$ label anywhere. The published
 coefficients are shell quantities computed with the $\ell$~substructure
 bundled.
 
-This model resolves $\ell$ below $n=9$, so the closures differ. An earlier
-draft of this section treated that difference as the explanation, on the
-evidence that recomputing the model with proton $\ell$-mixing removed moves
-$r_1(2)$ by a factor $118$ and $r_1(3)$ by a factor $3.35$ at
-$\nel = 10^{12}\,\si{\per\cubic\centi\metre}$. That argument does not survive
-its own test. Removing $\ell$-mixing is the limit in which the process is
+This model resolves $\ell$ below $n=9$, so the closures differ. That
+difference is tempting as the explanation, since recomputing the model with
+proton $\ell$-mixing removed moves $r_1(2)$ by a factor $118$ and $r_1(3)$ by a
+factor $3.35$ at $\nel = 10^{12}\,\si{\per\cubic\centi\metre}$. That argument
+does not survive its own test. Removing $\ell$-mixing is the limit in which the process is
 absent; the tabulation assumes the limit in which it is infinitely fast, and
 those are opposite ends rather than a bracket. Imposing the source's own closure
 directly, by bundling this model's operator under statistical $\ell$~weights,
@@ -1008,9 +1026,9 @@ moves $r_1(3)$ by \SI{0.42}{\percent} and makes the $p=2$ agreement worse
 \texttt{validation/fujimoto\_bundle/}).
 
 The disagreement therefore does \emph{not} measure the $\ell$~closure, and this
-thesis does not explain it. An earlier draft of this chapter said the deficit
-did not reach $\ffrac{3}-\ffrac{4}$ because that difference never passes
-through a bundled quantity; that was wrong, and bundling is not the protection.
+thesis does not explain it. Nor does the deficit stop short of
+$\ffrac{3}-\ffrac{4}$ on the ground that the difference never passes through a
+bundled quantity; bundling is not the protection.
 Section~\ref{sec:fujimoto} makes $a_p = r_1(p)\,\Zsb{p}/\Zsb{1}$, so a deficit
 in $r_1(3)$ and $r_1(4)$ is a deficit in $a_3$ and $a_4$ themselves, and the
 only protection is that $\Delta$ and the cap depend on the ratio $a_3/a_4$, in
@@ -1061,7 +1079,7 @@ anything the benchmark shows.
 % QUESTION: the model stops at n=15 and bundles the levels above n=8 -- what
 % rests on the part that is approximated?
 
-\subsection{The question}
+\subsection{Truncation at $n_{\max} = 15$ and bundling above $n = 8$}
 
 A hydrogen atom has infinitely many bound levels, crowding together towards the
 ionisation limit. A computation cannot have infinitely many states, so a
@@ -1074,9 +1092,9 @@ statistically. Both are choices, and this section states what they cost.
 
 \paragraph{The terminal shell is over-populated.} Truncation removes from the
 terminal shell's balance the collisional excitation out of it to $n > n_{\max}$,
-a way out, and the de-excitation and cascade into it from those levels; an
-earlier draft said the shell had ``nothing above it to cascade out to'', which
-names the wrong process, since cascade is downward. Against published values
+a way out, and the de-excitation and cascade into it from those levels; the
+missing loss is upward excitation, not cascade, which runs downward. Against
+published values
 this model's ground-fed coefficient at $n = 15$ is high by a factor of $4.9$ to
 $6.2$, while at $n = 10$ it agrees to \SIrange{4}{20}{\percent}; the budget is
 in Section~\ref{sec:convergence}. \emph{No result in this thesis rests on the
@@ -1099,7 +1117,7 @@ high $n$ that assumption is far more defensible than it would be at low $n$,
 because the sublevels are nearly degenerate and every collisional process mixes
 them, but it is assumed, not measured, and this thesis has not measured it.
 
-\subsection{The check, run}
+\subsection{Collisional $\ell$-mixing against escape in the bundled shells}
 \label{sec:bundling_check}
 
 The script that quantifies this was written and, until now, never executed.
@@ -1185,18 +1203,50 @@ $1.96$ at \SI{e12}{\per\cubic\centi\metre} to $0.53$ at
 \SI{e15}{\per\cubic\centi\metre} at \SI{1}{\electronvolt}
 (\texttt{validation/bundling\_total\_loss/}, RESULT~4), and fails outright
 above $n=9$, where $U_m > 1$ and $F$ falls as $\nel^{-3/2}$; it is reported
-here and left in place. What survives is narrower than an
-earlier draft claimed. Where mixing wins, the $\ell$-distribution is
-statistical whatever the feeds do. Where collisional transfer wins, at high
-density, the distribution is set by the feeds, and $n$-changing collisions
-between adjacent shells, which carry \SIrange{71}{95}{\percent} of the
-collisional loss, are close to $\ell$-blind at high $n$, so the statistical
-assumption is plausible there for a different reason, one this thesis has not
-tested. It does not close the terminal-shell over-population above, which is a
-different defect with a different cause, and it does not make the bundled
-block's $\ell$-distribution a computed quantity. It remains assumed, now with
-two numbers attached and a stated region where the first of them does not
-license it.
+here and left in place. What survives is narrower than the radiative
+criterion suggests, and it rests on a different mechanism. Where mixing wins,
+the $\ell$-distribution is statistical whatever the feeds do. Where collisional
+transfer wins, at the two highest densities below \SI{3}{\electronvolt}, the
+distribution is set by the feeds. Adjacent-shell $n$-changing collisions, which
+carry \SIrange{71}{95}{\percent} of the collisional loss, might be supposed
+close to $\ell$-blind at high $n$. They are not. In the CCC rates the model is built from, which
+resolve $\ell$ on both sides up to $n = 10$, the adjacent upward transfer out
+of $(n,\ell)$ varies across $\ell$ by a factor that grows with $n$, from $1.22$
+at $n = 2$ to between $2.5$ and $2.8$ at $n = 9$, and the downward transfer by
+a factor of $5$ to $6$ at $n = 7$ to $10$, largest at the highest $\ell$ in
+every case; weighted by $2\ell+1$ the scatter at $n = 9$ is
+\SIrange{27}{46}{\percent}. The transfer into a shell from a statistically
+populated neighbour is not statistical either: its departure coefficient runs
+from $0.28$ at $\ell' = 0$ to $1.66$ at $\ell' = n-1$ for $n = 9$ and $10$.
+What licenses the statistical distribution at those $121$ combinations is
+detailed balance, not blindness. Every $\ell$-resolved rate obeys
+$K_{\mathrm{deexc}} = K_{\mathrm{exc}}\,(\omega_i/\omega_f)\,
+\mathrm{e}^{\Delta E/k\Te}$, so when the two neighbouring shells stand in their
+mutual Boltzmann ratio the statistical distribution is the fixed point of the
+collisional exchange whatever the $\ell$-dependence of the rates: the
+departure of sublevel $\ell$ is $\theta - 1$ times a factor bounded by
+$0.16$, with $\theta$ the Boltzmann departure of the neighbour pair. At the
+$34$ grid points the $121$ combinations occupy, the model's own populations
+give $|\theta - 1| \le 6\times10^{-5}$ for every bundled pair, and every
+shell from $n = 8$ to $15$ sits within $10^{-4}$ of Saha--Boltzmann
+equilibrium with the continuum: the high shells are thermalised there. The
+model's own $n = 8$, its highest $\ell$-resolved shell, computed with the
+$\ell$-mixing block removed, is statistical to $10^{-4}$ at every one of those
+points. The two criteria are complementary: $|\theta - 1|$ exceeds $0.01$ only
+below \SI{3e12}{\per\cubic\centi\metre}, where the locally evaluated mixing
+exceeds the total loss in every bundled shell by at least a factor of $341$,
+and no grid point fails both (\texttt{verify\_l\_blindness.py},
+\texttt{validation/l\_blindness/}). The stake was not small. Had the bundled
+shells been non-statistical at those points, setting their radiative decay to
+zero would move $u_{\mathrm{CRE}}$ by up to \SI{1.9}{\percent} and $f_3 - f_4$
+by \SI{1.2}{\percent}, and raising each shell's radiative rate to that of its
+$np$ sublevel would move them by \SI{21}{\percent} and \SI{13}{\percent},
+because the bundled radiative flux is $0.27$ to $0.73$ of the small net flow
+into the ground state there. None of this closes the terminal-shell
+over-population above, which is a different defect with a different cause,
+and none of it makes the $\ell$-distribution inside $n = 11$ to $15$ a
+computed quantity, since only $\ell$-summed rates exist there; for those
+shells the statement rests on the Boltzmann and Saha departures alone.
 
 %-----------------------------------------------------------------------------
 \section{Remaining assumptions, and the sensitivities that are known}
@@ -1234,14 +1284,22 @@ ratio is $2332$, but that point sits at \SI{1}{\electronvolt} and the figure is
 not the margin this result runs on. Over the $448$ defended pairs the ratio has
 median $0.815$, and over the $45$ that break down it runs from $1.95$ to $288$,
 median $11.2$ (\texttt{validation/divertor\_map/}). The step idealisation is
-therefore safe by one to two orders of magnitude where a plateau is reported,
-not by three. The governing quantity is in any case
+therefore safe by one to two orders of magnitude at the median of that set, not
+by three. The governing quantity is in any case
 $D_{\rm e} = \tauslow/t_{\rm ramp}$ rather than $\tauslow/\taudrive$: a linear
 ramp reaches $D_{\rm e}(1-\mathrm{e}^{-1/D_{\rm e}})$ of the step's plateau
 (\texttt{validation/ramp\_plateau/}), so any ramp with
 $\taurel \ll t_{\rm ramp} \ll \tauslow$ reaches the same plateau and the
 idealisation \emph{is} safe. It is safe because of the slow ratio, and the fast
-ratio must never be quoted for or against this result.
+ratio must never be quoted for or against this result. The margin is not
+uniform across the breakdown set, and the bottom of the range is worth stating
+plainly: evaluating the same lag law at $D_{\rm e} = 1.95$ gives $0.78$ of the
+step plateau, a suppression of \SI{22}{\percent}, which is the size of the
+errors this chapter is discussing. At the median $D_{\rm e} = 11.2$ it is
+\SI{4}{\percent} and at $D_{\rm e} = 288$ it is \SI{0.2}{\percent}. Those three
+figures are arithmetic on the stamped ratios and the law above, not a separate
+run. Where the step idealisation matters most it is therefore good to a few per
+cent, and at the single least favourable pair it is not.
 
 \paragraph{The step is in temperature only: tested, and the correction goes the
 wrong way.} A real ELM raises $\nel$ as well as $\Te$. The joint map over $4968$
@@ -1279,8 +1337,8 @@ to the threshold, the worst case is, and ``$N$ points break down'' must carry bo
 
 The objections computed in this chapter were all answerable from inside a
 $0$-D collisional--radiative matrix. Five are not, and they are gathered here
-rather than left scattered so that a reader can see at once what this thesis
-does not determine. Each is stated with the reason it is out of reach and with
+rather than left scattered, so that what this thesis does not determine is
+visible at once. Each is stated with the reason it is out of reach and with
 the calculation that would settle it. None is a defect of the implementation;
 each is a boundary of the model class.
 
@@ -1392,9 +1450,9 @@ defended census within the tested escape-factor model ($D = 1$ to
 \SI{20}{\centi\metre}, $\Tn = \Te$), so the agreement with Griem's boundary
 criterion is not an artifact of neglected opacity. At citable divertor densities above \SI{2}{\electronvolt} the
 \SI{100}{\micro\second} time-averaged error never reaches \SI{10}{\percent} over
-$108$ points, worst case \SI{7.2}{\percent} (Section~\ref{sec:not_detachment}).
+$108$ pairs, worst case \SI{7.2}{\percent} (Section~\ref{sec:not_detachment}).
 
-\subsection{The bridge}
+\subsection{The boundary of the claim}
 
 The pattern is consistent, and it is why this chapter is not an apology. Every
 objection that could be computed inside a $0$-D atomic model was computed. The

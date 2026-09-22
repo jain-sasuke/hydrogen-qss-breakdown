@@ -1990,8 +1990,9 @@ def main():
 \newcommand{\CapFigScope}{%
   \textbf{Two independent constraints put the same floor under the
   quantitative scope.}
-  Neither boundary was chosen; both were measured, and they come from
-  unrelated physics.
+  Both boundaries are measured contours at thresholds that were chosen, 10\%
+  for the density change and $\tau_0 = 1$ for the optical depth, and they
+  come from unrelated physics.
   \emph{Quasi-neutrality.} Imposing nuclei conservation across one grid step
   in $T_e$, the electron density must change by
   $|\Delta n_e / n_e| = |\Delta n_g| / n_{\rm ion}$, taken from the two
@@ -1999,8 +2000,9 @@ def main():
   holds $n_e$ fixed, so wherever that requirement is large the model is
   contradicting itself. Of the @QNTOT@ one-step operators on the grid,
   @QN10@ require more than $10\%$ and @QN100@ require more than $100\%$. At
-  $T_e = 1$~eV the requirement is between @QN_TE1_LO@ and @QN_TE1_HI@, that
-  is, ten to twenty times the electron density itself. At $T_e \geq 2$~eV it
+  $T_e = 1$~eV the fixed-density inference gives @QN_TE1_LO@ to @QN_TE1_HI@; solved
+  self-consistently for a closed parcel the density rises by a factor 1.98
+  to 2.05, and the counts become 67 and 7 (\texttt{validation/closed\_nuclei/}). At $T_e \geq 2$~eV it
   never exceeds $@QN_WARM@$. The $10\%$ contour sits at
   $T_e = @QN_X_LO@$ to @QN_X_HI@~eV and is almost independent of density.
   \emph{Optical depth.} The Lyman-$\alpha$ line-centre optical depth over the

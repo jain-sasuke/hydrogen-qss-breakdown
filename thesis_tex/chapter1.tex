@@ -21,8 +21,8 @@ the bottom of a fusion reactor has collected light along a narrow line of sight,
 and a spectrometer has spread it out by wavelength. Two lines stand out: a red
 one at \SI{656}{\nano\metre} and a blue-green one at \SI{486}{\nano\metre}, both
 emitted by hydrogen atoms. She divides the brightness of the first by the
-brightness of the second, looks the resulting number up in a table, and reads
-off an electron temperature and an electron density. That is how one of the
+brightness of the second, looks the resulting number up in a table at the
+density another instrument has supplied, and reads off an electron temperature. That is how one of the
 least accessible regions of the machine gets measured. It is not the hottest
 part; the core is far hotter. It is the part where the plasma meets a solid
 surface, and the one whose conditions decide whether that surface survives.
@@ -39,7 +39,7 @@ The plasma in question never finishes changing. It is the most violently
 unsteady region of the machine. So the question is whether the table still
 holds, and if not, by how much it is wrong and where.
 
-That is all this chapter does: put the reader in front of the spectrum, show
+That is all this chapter does: start from the spectrum, show
 where the table comes from, and expose the assumption buried inside it.
 Sections~\ref{sec:divertor}, \ref{sec:hydrogen_atom}, \ref{sec:spectrometer}
 and~\ref{sec:inversion} follow the chain from the divertor, through the hydrogen
@@ -49,7 +49,7 @@ table has eliminated and separates two approximations that are routinely
 confused with one another. Section~\ref{sec:transients} asks whether the plasma
 is ever in the state the table assumes, Section~\ref{sec:prior_work} says what
 is already known and by whom, and Section~\ref{sec:question} states the question
-this thesis answers and names the suspect it went looking for.
+this thesis answers and the hypothesis it set out to test.
 
 %-----------------------------------------------------------------------------
 \section{Why the divertor is hard}
@@ -57,7 +57,7 @@ this thesis answers and names the suspect it went looking for.
 % QUESTION: what is a divertor for, and why must the plasma inside it be
 % measured with light rather than with an instrument?
 
-\emph{The question: what is the thing being measured, and why is measuring it
+\emph{Scope of the measurement problem: what is the thing being measured, and why is measuring it
 hard enough to be worth a thesis?}
 
 Start with the machine. A tokamak is a doughnut-shaped vessel in which a gas of
@@ -78,7 +78,7 @@ dedicated set of water-cooled plates at the bottom of the vessel. Those plates,
 together with the volume of plasma and gas in front of them, are the
 \emph{divertor}.
 
-A chemical engineer already owns the right picture for this. The divertor is the
+In chemical-engineering terms, the divertor is the
 quench-and-separation section bolted onto the outlet of a very hot reactor. It
 receives the reactor's waste heat and its ash, the helium that fusion produces.
 It cools the stream and pumps the ash away, and it must do so without being
@@ -180,7 +180,7 @@ the local electron temperature and density. ITER carries a designed divertor
 Langmuir probe system whose stated purpose is to measure plasma parameters at the
 target plates, and whose thermomechanical analysis concludes that the sensors
 survive the environment \cite{Zhao2020}. The claim that probes cannot survive in
-a reactor divertor is often made and is not correct.
+a reactor divertor is often made and is not supported by the design analysis.
 
 The limitation is not survival but what a probe can see. It is mounted flush in
 the target surface, so it reports conditions in the thin charged layer at the
@@ -191,7 +191,8 @@ exactly the cold, strongly recycling conditions of interest. And the coverage is
 necessarily sparse: a set of sensors embedded in a handful of divertor cassettes
 samples points on a surface, not a volume.
 
-Light has neither limitation, and one decisive advantage: it leaves the plasma by
+Light has neither the perturbation nor the surface-only limitation, though it
+localises nothing along its chord, and it has one decisive advantage: it leaves the plasma by
 itself. A window, a fibre, a spectrometer and a detector make a measurement that
 touches nothing, perturbs nothing, and samples the emitting volume rather than
 the surface. Spectroscopy is therefore complementary to probe measurement rather
@@ -204,7 +205,7 @@ $\Te$ and $\nel$ carries so much weight.
 \label{sec:hydrogen_atom}
 % QUESTION: what is a spectral line, and which two lines is this thesis about?
 
-\emph{The question: where do the two lines in the opening paragraph come from,
+\emph{Origin of the two spectral lines: where do the two lines in the opening paragraph come from,
 and what would make their brightnesses differ?}
 
 A hydrogen atom is one electron bound to one proton. The electron cannot take
@@ -253,7 +254,7 @@ Because the energy released is fixed by Eq.~\eqref{eq:bohr_levels}, every
 transition emits at one wavelength, and the emission appears in a spectrograph as
 a narrow \emph{spectral line}. Its brightness is proportional to the population
 of the upper level. That single sentence is why spectroscopy is a diagnostic at
-all: the light tells you how the atoms are distributed over their levels, and the
+all: the light records how the atoms are distributed over their levels, and the
 distribution is set by the plasma conditions.
 
 The transitions that end on $n = 2$ fall in the visible, which is convenient for
@@ -287,7 +288,7 @@ line by itself, is what a divertor spectroscopist can actually use.
 \label{sec:spectrometer}
 % QUESTION: what does the instrument actually give you, and what does it not?
 
-\emph{The question: given that a spectrometer measures brightness, what can and
+\emph{Content of a brightness measurement: given that a spectrometer measures brightness, what can and
 cannot be extracted from that measurement?}
 
 Picture the geometry first. The instrument looks along a straight line through
@@ -341,14 +342,18 @@ throughout this thesis:
 levels in \si{\per\cubic\centi\metre} and $\Robs$ is dimensionless. The
 prefactor is a ratio of atomic constants, known to high accuracy. What
 Eq.~\eqref{eq:ratio_def} does is remove the geometry: provided the two lines are
-emitted by the same volume, the path length divides out, the absolute neutral
-density divides out, and the absolute calibration of the instrument divides out
-with them. That proviso is the substantive assumption here, and a good one for
+emitted by the same volume, the absolute neutral density and the absolute
+calibration of the instrument divide out, and so does the path length as a
+scale. What does not divide out is any variation of $n_3/n_4$ along the chord:
+the measured ratio is the $n_4$-weighted average of the local ratio, and it
+equals the local ratio only where the emitting region is uniform, which is the
+zero-dimensional case this thesis treats. That proviso is the substantive assumption here, and a good one for
 two lines of the same series from the same species. Only the \emph{relative}
 sensitivity of the detector at two nearby visible wavelengths is needed, which is
 a far easier measurement to make and to maintain.
 
-What survives is a pure ratio of two excited-state populations, which is why
+What survives is a pure ratio of two excited-state populations in a uniform
+emitting volume, which is why
 $\Robs$, rather than any single brightness, is the quantity a divertor
 spectroscopist works with. A line ratio contains no geometry and no absolute
 density, so every piece of physics in it is compressed into one question:
@@ -360,7 +365,7 @@ density, so every piece of physics in it is compressed into one question:
 % QUESTION: how is a measured ratio turned into a temperature and a density, and
 % where does the model enter that chain?
 
-\emph{The question: what stands between the number the spectrometer produces and
+\emph{The model between measurement and inference: what stands between the number the spectrometer produces and
 the $(\Te,\nel)$ the physicist writes down?}
 
 An atom in a plasma is pulled in several directions at once. Free electrons
@@ -390,7 +395,7 @@ local thermodynamic equilibrium (LTE), where collisions are so frequent that the
 level populations take their thermal equilibrium values. Real plasmas sit between
 the two, and the populations there have to be computed.
 
-A chemical engineer will recognise this object on sight. It is a reaction network
+In chemical-engineering terms this object is a reaction network
 in a well-mixed vessel: one species per energy level, one reaction per atomic
 process, a feed stream, and a set of coupled first-order rate equations with a
 rate-constant matrix. Chapter~\ref{ch:theory} builds it explicitly and pushes
@@ -440,7 +445,7 @@ next section is about what happens when they are combined.
 % QUESTION: what must a table indexed on (Te, ne) alone assume, and are there
 % really two separate assumptions rather than one?
 
-\emph{The question: a table has two axes; how many quantities does the answer
+\emph{Number of independent arguments of the ratio: a table has two axes; how many quantities does the answer
 actually depend on?}
 
 Take the physical picture before any algebra. An atom sitting in the $n=3$ level
@@ -497,12 +502,12 @@ ion, and it is fixed by the plasma's recent history and by transport, not by the
 local temperature and density.
 
 A table with two axes must therefore either dispose of the third quantity or
-carry it, and there are three honest ways to proceed. \textbf{Route one} is to work where a single
+carry it, and there are three ways to proceed. \textbf{Route one} is to work where a single
 supply dominates \emph{both} levels, so that the third argument cancels between
 numerator and denominator of Eq.~\eqref{eq:ratio_three_args} and the answer is
 right whatever the neutral fraction does. \textbf{Route two} is to adopt a
-closure, a rule that fixes $\ngs/\nion$ in terms of $\Te$ and $\nel$. The
-obvious such rule is \emph{equilibrium ionisation balance}: solve the CR system
+closure, a rule that fixes $\ngs/\nion$ in terms of $\Te$ and $\nel$. One
+such rule is \emph{equilibrium ionisation balance}: solve the CR system
 all the way to steady state and take the neutral-to-ion ratio it predicts for
 the local conditions. That state is collisional--radiative equilibrium (CRE),
 and it is a much weaker condition than full thermodynamic equilibrium: it means
@@ -550,7 +555,7 @@ thesis eliminates $\ngs/\nion$ by imposing ionisation balance on a Balmer ratio
 and reading off a temperature. The careful practice is route one. \textbf{This
 thesis is therefore not a demonstration that standard divertor Balmer
 diagnostics fail. It is a measurement of what the equilibrium-reservoir closure
-costs where route one is unavailable}, and the reader should hold it to that
+costs where route one is unavailable}, and the thesis is to be held to that
 narrower claim throughout.
 
 \emph{Second, route one is unavailable for exactly the lines studied here.} The
@@ -558,8 +563,8 @@ cancellation works because $a_p\ngs \ll c_p\nion$ for both levels, which is the
 statement that the ground-fed fraction of each shell is near zero. That holds
 for $n \geq 5$ in a detached plasma and fails for $n=3$ and $n=4$, where neither
 supply dominates. The two lines this thesis studies are the two where the third
-quantity cannot be cancelled away, which is why, wherever it is not carried as
-an unknown, the closure is what remains, and why its cost is worth measuring.
+quantity cannot be cancelled away, which is why, wherever it is neither carried as
+an unknown nor supplied from outside, the closure is what remains, and why its cost is worth measuring.
 
 \emph{Third, the non-uniqueness is not this thesis's invention.} That one
 measured ratio can correspond to more than one temperature is stated in
@@ -607,8 +612,8 @@ most important thing this thesis does.
   $a_p$ and $c_p$ in Eq.~\eqref{eq:two_supplies_intro} functions of $(\Te,\nel)$
   alone. \textbf{The approximation being tested in this thesis is the Bodenstein
   steady-state approximation, applied to atomic level populations instead of
-  radical concentrations.} It is the same approximation the reader has already
-  met for reactive intermediates, with the same justification, that the
+  radical concentrations.} It is the same approximation used in reaction kinetics
+  for reactive intermediates, with the same justification, that the
   intermediates turn over far faster than anything else in the system. In
   principle it has the same failure mode too.
 
@@ -632,7 +637,7 @@ subject of the next section.
 % QUESTION: is a divertor plasma ever in the equilibrium state the table
 % assumes?
 
-\emph{The question: how long does the plasma get between disturbances, and is
+\emph{Time available between disturbances: how long does the plasma get between disturbances, and is
 that long enough?}
 
 The ionisation-balance assumption would be harmless if divertor plasmas sat
@@ -685,8 +690,10 @@ which is the refereed extrapolation of ELM properties to ITER used above,
 extrapolates the ELM energy loss and the pulse duration and does not state a
 frequency at all; the word hertz does not appear in it. \textbf{Nothing in this
 thesis depends on the frequency.} An ELM is not a gentle modulation that the
-plasma tracks quasi-statically; it is a step change delivered in a few hundred
-microseconds, after which the plasma is left to recover. The relevant question is
+plasma tracks quasi-statically; it is idealised in this thesis as a step, because its rise of a few hundred
+microseconds is short against the reservoir clock over part of the operating
+range and long against it over the rest; Chapter~\ref{ch:results} states at
+which points each holds and tests the step against a finite ramp. The relevant question is
 therefore not how often the steps come but how long the recovery takes relative
 to a single step, and that is a question about the plasma's own internal clocks.
 
@@ -715,34 +722,35 @@ out of the ground state an electron must bring \SI{13.6}{\electronvolt}. In a
 plasma at $\Te = \SI{3}{\electronvolt}$, the fraction of electrons in the
 Maxwellian tail with at least that energy is of order
 $\exp(-13.6/3) \approx 1.1\times10^{-2}$: about one electron in a hundred. To
-excite the same atom to $n=2$ costs only \SI{10.2}{\electronvolt}, and to move an
+excite the same atom to $n=2$ costs \SI{10.2}{\electronvolt}, still several times
+$k_B\Te$, and to move an
 atom that is \emph{already} in $n=3$ takes a fraction of an electronvolt, which
 essentially every electron can supply. The ground state is therefore separated
-from everything else by a barrier that only the tail of the distribution can
-cross, while the excited levels exchange population freely among themselves. That
+from everything else by a barrier, the first excitation and the ionisation
+energy at \num{10.2} and \SI{13.6}{\electronvolt}, both several times $k_B\Te$,
+which only the tail of the distribution can cross, while the excited levels exchange population freely among themselves. That
 is the physical origin of the two very different clocks, and
 Chapter~\ref{ch:theory} turns the argument into a calculation.
 
-A chemical engineer will recognise this as a Damk\"ohler-number question, and
-that is exactly what it is. If the characteristic time of the disturbance is
+In chemical-engineering terms this is a Damk\"ohler-number question. If the characteristic time of the disturbance is
 short compared with the slowest chemical relaxation in the system, then the
 composition during the disturbance is not the equilibrium composition, and a
 chart that assumes equilibrium describes a state the system has not reached. Here
-the disturbance lasts milliseconds; the fast levels relax in nanoseconds; and the
+the disturbance rises in a few hundred microseconds; the fast levels relax in nanoseconds; and the
 slow reservoir relaxes on a timescale Chapter~\ref{ch:theory} computes and
 Chapter~\ref{ch:results} compares against the event.
 
 So the complication, stated in full: a table built on two assumptions is being
 applied to a plasma that plainly violates the second one, and possibly the first.
-Which of the two actually fails, and what it costs, is not obvious from anything
-said so far, and it turns out not to be obvious at all.
+Which of the two actually fails, and what it costs, cannot be decided from anything
+said so far.
 
 %-----------------------------------------------------------------------------
 \section{What is already known}
 \label{sec:prior_work}
 % QUESTION: who has asked this before, and what did they establish?
 
-\emph{The question: how much of this is new, and how much has been known for
+\emph{Prior work and the scope of the contribution: how much of this is new, and how much has been known for
 decades?}
 
 This question has been asked before, in several forms, and the contribution of
@@ -789,8 +797,8 @@ measures that ratio as $\Msep$ and Chapter~\ref{ch:results} shows that it does
 not predict the diagnostic error, which is the point at which this thesis
 departs from the tradition it is quoting.
 
-\paragraph{The general validity question was settled, as a matter of principle,
-twenty-five years ago.} Greenland analysed the reduction of CR systems in general
+\paragraph{The general validity criterion was stated twenty-five years ago, and
+it is a criterion to be checked, not a verdict.} Greenland analysed the reduction of CR systems in general
 form, in two papers of the same year, and reached two conclusions that bear
 directly on this work. The first is that the conditions for a valid reduced CR
 model are conditions on the \emph{eigenvectors} of the full matrix of rates, and
@@ -830,6 +838,32 @@ has settled, which is the question here. Chapter~\ref{ch:results} nonetheless
 finds Griem's boundary level turning up where the present model says it should,
 which is a useful consistency check rather than a new result.
 
+\paragraph{The nonequilibrium Balmer thermometer is fifty years old.} Park
+proposed the $H_\alpha/H_\beta$ intensity ratio as an indicator of electron
+temperature in a plasma out of Saha equilibrium, and tabulated the conversion
+between the excitation temperature such a ratio appears to show and the true
+electron temperature \cite{Park1972}. The apparatus is the one used here. He
+assumed a quasi-steady-state distribution within the excited levels, wrote the
+normalised population of level $p$ in the same two-coefficient form,
+$\rho(p) = r_0(p) + r_1(p)\,\rho(1)$, and carried the normalised ground-state
+population $\rho(1)$, which is $\bdep$ in the notation of
+Chapter~\ref{ch:theory}, as the third argument. That a population away from
+equilibrium makes this ratio imply a temperature other than the equilibrium one
+is therefore established, and nothing in this thesis claims it.
+
+What Park evaluated is the pair of limits he called \emph{terminal}
+nonequilibrium: decaying, where $r_0(p)$ dominates, and rising, where
+$r_1(p)\rho(1)$ dominates. He named them terminal because they are the
+conditions in which any further departure from equilibrium does not affect the
+emission ratio of the hydrogen lines. In the language of
+Section~\ref{sec:ground_fed_fraction} that definition is the vanishing of the very
+sensitivity this thesis measures: both are limits in which the two shells are
+fed in the same proportion, the ratio goes blind to the reservoir, and a table
+on two axes is well defined again. Between them the ratio is not blind, and it
+is there that a divertor sits. What Park leaves open is the size of the error a
+table incurs in that interval, and whether a plasma passing through it is
+described by the equilibrium closure at all.
+
 \paragraph{Real divertor Balmer light is not purely atomic.} One line of work
 must be flagged now because it bounds what any conclusion of this thesis can
 claim. In detached conditions a substantial part of the observed Balmer emission
@@ -853,13 +887,13 @@ density is in error when the reservoir has not settled, and a map of where that 
 the gap this thesis fills.
 
 %-----------------------------------------------------------------------------
-\section{The question, and the suspect}
+\section{The research question and the hypothesis}
 \label{sec:question}
 % QUESTION: what exactly is being asked, and what does everybody expect the
 % answer to be?
 
-\emph{The question: what is the thesis actually going to compute, and what does
-the obvious physical argument predict it will find?}
+\emph{The computation and its expected outcome: what is the thesis actually going to compute, and what does
+the simplest physical argument predict it will find?}
 
 The question, stated plainly:
 
@@ -874,13 +908,13 @@ sets that error, and where in the operating range is it largest?
 Answering it needs a model that does not assume the answer. This work therefore
 builds a time-dependent CR model of atomic hydrogen, every level tracked as a
 dynamical variable with orbital angular momentum resolved wherever that
-resolution changes the physics, subjects it to an abrupt change in electron
-temperature of the kind an ELM delivers, and follows the line ratio in time.
+resolution changes the physics, subjects it to an idealised step in electron
+temperature, the limiting form of the change an ELM delivers, and follows the line ratio in time.
 Chapter~\ref{ch:atoms} assembles the atomic data it runs on and
 Chapter~\ref{ch:theory} assembles the equations.
 
-\paragraph{What we expected to find.} Section~\ref{sec:the_assumption} identified
-two assumptions, and the obvious suspect is the first one. The QSS approximation
+\paragraph{Expected outcome.} Section~\ref{sec:the_assumption} identified
+two assumptions, and the hypothesis at the outset was that the first one fails. The QSS approximation
 is the step that eliminates several dozen dynamical variables by fiat; it is the
 step that every review of CR modelling flags; and it is the step whose
 chemical-engineering analogue, the Bodenstein approximation, every
@@ -921,7 +955,7 @@ scope is the characteristic failure of this subject, and it is not repeated here
 \label{sec:outline}
 % QUESTION: what does each remaining chapter contribute to the argument?
 
-\emph{The question: where does the argument go from here?}
+\emph{Route through the remaining chapters: where does the argument go from here?}
 
 \textbf{Chapter~\ref{ch:atoms}, \emph{The Atoms}}, establishes the inputs: the
 processes and their rates, the levels tracked and why orbital angular momentum is
@@ -957,7 +991,7 @@ where quantification is possible and stated as open where it is not.
 
 \textbf{Chapter~\ref{ch:conclusions}} states the criterion in a form another
 modeller can apply to their own rate matrix, says where in the divertor operating
-range a $(\Te,\nel)$ inversion should be distrusted, and sets out what a
+range a temperature inversion at known density should be distrusted, and sets out what a
 time-dependent inversion would require.
 
 The argument begins with the atoms, and with how well their rates are known, in

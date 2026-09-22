@@ -1,0 +1,129 @@
+# generated 2026-09-22 08:24 by verify_maxwell_grid_convergence.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# data/processed/collisions/ccc/ccc_crosssections.csv sha256 3c0cdd88a5b7fc2d81cd728327befc65e60f9b723b27fbc992f1468c9a5d439f
+# data/processed/collisions/ccc/K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# data/processed/collisions/ccc/K_CCC_exc_table.npy sha256 02838edcb63108ca6787cd4307574d5fe84fd8da5b2f89152c893c11c58b12c0
+# data/processed/collisions/ccc/K_CCC_deexc_table.npy sha256 1bc97f274e9ef5a5a2869e722f7ee302d84a8950fce9359f3d271843999fb83c
+# data/processed/collisions/tics/tics_crosssections.csv sha256 6b25d4881eee81d36eaba547ddb59bcb1f310d965286a3625382279051fd4016
+# data/processed/collisions/vs/K_VS_metadata.csv sha256 6e0f0b452fc22740935842e76843c151747064da942f622eefdce2f700512f1f
+# data/processed/Radiative/H_A_E1_LS_n1_15_physical.csv sha256 81c91a3ceba937e585f17abc0c9a67daeb32f19cfb9d6d156d09d5bb0c281633
+# data/processed/collisions/K_exc_full/state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# data/processed/collisions/K_exc_full/K_exc_full.npy sha256 a3df4c549db8cddb0daca1f0b96b475e39231d6d516bc972edaf0085bdd06a43
+# data/processed/collisions/K_exc_full/K_deexc_full.npy sha256 243dcc84d220232521929eca9d731e98368f0915d436d20d504ebbba615ccc67
+# data/processed/collisions/K_exc_full/K_exc_meta.csv sha256 7de5845a432b0fb405b48fc876e2626eb1b1386c6fa16b1275961b312e7a507e
+# data/processed/collisions/tics/K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# data/processed/recombination/alpha_RR_resolved.npy sha256 ab68017ba651937c359725f0548a5e0c435097009bd4881d2eebebf49bbfabe9
+# data/processed/recombination/alpha_RR_bundled.npy sha256 76f4a6ca2017b9ae5d8dfe7b5bff45146bd8a23e80d8eb33a4bb1e624b2c8d14
+# data/processed/recombination/alpha_3BR_resolved.npy sha256 f5f74dc8352639dd776a3a9dd4aea3fa6bf2db24e353c93b730baece242cd1e0
+# data/processed/recombination/alpha_3BR_bundled.npy sha256 9bbec1c2ba7d279f5881da31d244f08a094a243d4a921339ccb2a09660085b03
+# data/processed/Radiative/A_resolved.npy sha256 9b21d945e103495cccd8d3476a28cb8070b430c77f9a28880da1576f41f56ee8
+# data/processed/Radiative/A_bund_res.npy sha256 d4ed10fe1819ef6e22976677374ec3245d86fb1a964a80c4926582e5e5be4274
+# data/processed/Radiative/A_bund_bund.npy sha256 6961907b9787b04b3b387ccd8e46c66d553024015b061efe4d7a71f2a9fc9018
+# data/processed/Radiative/gamma_resolved.npy sha256 fbb35684e0fe0c995df5873c967a7098f81acdb0efce56e5353d91bb9201767e
+# data/processed/Radiative/gamma_bundled.npy sha256 090bd7d67aaf257c7ea7d6acc869d26ffb62397ab0ca5d663316b4c60f9676fc
+# data/processed/lmix/K_lmix.npy sha256 d92a969dcd6017beef676f831316cac37b79c8d510450826cf80a9a7abcab399
+# data/processed/cr_matrix/L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# data/processed/cr_matrix/S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# data/processed/cr_matrix/Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# data/processed/cr_matrix/ne_grid_L.npy sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# src/rates/compute_K_VS.py sha256 b7d90b5ae474ad9e94ad09de545f5483ec484e756fba3d8f1ea734fd4888b41f
+# src/rates/compute_K_TICS.py sha256 86a194f7320518424c5bcbfda39810cba12cce775b01c2d969fdac17bd2c55d8
+# src/rates/ionization_rates.py sha256 a0ae3b924a526c9cc0e52b039a8d1f55a36a15e2a14b3423eec6200610252778
+# src/rates/recombination_rates.py sha256 6b4ce6bcba030f99db65d38b47222d2f90d0ea0eacd8177c41538ca9c8e47b03
+# src/rates/compute_lmix.py sha256 da9831c201cdd7b170b7b48d1a0f7eb8c83046856292030d5275bd51da7f4f5e
+# src/rates/assemble_cr_matrix.py sha256 ee8cbd13943de27d8c086131698a463ade71b9c6f314fdf26403d5750472e033
+# src/rates/compute_K_CCC.py sha256 be289edc08a7daccb20ff5bbe36bfdc93393f5af6abb6690ab2dec265ea7f34f
+# src/rates/assemble_K_exc.py sha256 c46804baf06da4b1b731d678ce3db59f8955fd6707789dce527d039f2969039b
+# src/validation/build_L_at_Te.py sha256 66c0c48cd93cae7313895cb50a21b6f5aeec384a83cbef48f9bbb25ed026aaf1
+# src/validation/verify_nmax_downward_scan.py sha256 ab802699677e13ceb9f9f0d6f5d870f103f6dd3f0ab7421bec70b312653da852
+# src/validation/verify_physical_ramp_bound.py sha256 d8fa7586627a5ffc83ca3a6a6ad6bc08620b66cc67aa4ad198b61ad34da54289
+# d_<q> = q(N)/q(5000) - 1 at the same node; eps_plateau_step is the one-interval heating step i -> i+1 at fixed j (verify_physical_ramp_bound.derived)
+# L_*_med/max: relative change of nonzero L entries (all; 1s column off the diagonal)
+====================================================================================================
+CONVERGENCE OF THE CCC MAXWELL-AVERAGE ENERGY GRID FOR THE THESIS QUANTITIES
+generated 2026-09-22 08:24  by verify_maxwell_grid_convergence.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+====================================================================================================
+
+  G0  build_L_at_Te gate: worst relative difference 0.0e+00
+  raw data begin 0.0000 to 0.0622 eV above the quantum-number threshold; grid spacing at N = 5000 is 0.191 eV (median over transitions)
+  G1  N = 5000 rebuild (chunked, same linspace / interp / trapezoid) equals K_CCC_exc_table.npy exactly
+  N = 5000 assembled L vs L_grid at all nodes: 0.0e+00
+
+====================================================================================================
+RESULT 1: relative change of L entries and of the thesis quantities against N = 5000, named nodes
+====================================================================================================
+               point       N | L all med L all max 1s col med 1s col max | d tau_slow   d u_CRE       d S  d eps_pl
+   ramp point [15,3]   25000 |     0.384     50.78      1.611      50.78 |     -0.875    -0.794    -0.387    -0.511   (%)
+   ramp point [15,3]  100000 |     0.413     53.61      1.936      53.61 |     -0.964    -0.875    -0.353    -0.482   (%)
+    benchmark [23,5]   25000 |     0.233     43.79      1.094      43.79 |     -0.496    -0.453    -0.454    -0.549   (%)
+    benchmark [23,5]  100000 |     0.242     46.14      1.182      46.14 |     -0.561    -0.512    -0.466    -0.576   (%)
+   cold corner [0,0]   25000 |     0.922     68.16      2.532      68.16 |     -2.946    -2.806    +1.092    +0.826   (%)
+   cold corner [0,0]  100000 |     1.057     72.43      4.253      72.43 |     -3.341    -3.229    +1.846    +1.566   (%)
+    hot dense [49,7]   25000 |     0.039     28.63      0.282      28.63 |     -0.088    -0.086    -0.050      +nan   (%)
+    hot dense [49,7]  100000 |     0.044     30.08      0.346      30.08 |     -0.101    -0.099    -0.049      +nan   (%)
+
+====================================================================================================
+RESULT 2: over the grid (all 400 nodes; heating spans with Te_i >= 2 eV for eps_plateau), N = 25000 and 100000 against 5000
+====================================================================================================
+  N = 25000:
+    tau_slow          all nodes: median -0.452 %, |max| 3.703 % at [0,7] (Te 1.00);  Te >= 2 eV: median -0.239 %, |max| 1.321 %
+    u_CRE             all nodes: median -0.419 %, |max| 2.904 % at [0,1] (Te 1.00);  Te >= 2 eV: median -0.228 %, |max| 1.141 %
+    S                 all nodes: median -0.213 %, |max| 1.777 % at [0,6] (Te 1.00);  Te >= 2 eV: median -0.198 %, |max| 0.777 %
+    eps_plateau_step  all nodes: median -0.327 %, |max| 1.857 % at [0,7] (Te 1.00);  Te >= 2 eV: median -0.301 %, |max| 0.911 %
+    1s column median over nodes: 1.035 % (max over nodes 2.532 %); all-entry median 0.1843 %
+  N = 100000:
+    tau_slow          all nodes: median -0.509 %, |max| 4.332 % at [0,7] (Te 1.00);  Te >= 2 eV: median -0.274 %, |max| 1.533 %
+    u_CRE             all nodes: median -0.472 %, |max| 3.316 % at [0,7] (Te 1.00);  Te >= 2 eV: median -0.261 %, |max| 1.320 %
+    S                 all nodes: median -0.156 %, |max| 1.853 % at [0,6] (Te 1.00);  Te >= 2 eV: median -0.140 %, |max| 0.806 %
+    eps_plateau_step  all nodes: median -0.263 %, |max| 1.960 % at [0,6] (Te 1.00);  Te >= 2 eV: median -0.250 %, |max| 0.967 %
+    1s column median over nodes: 1.078 % (max over nodes 4.253 %); all-entry median 0.2052 %
+
+====================================================================================================
+RESULT 3: per-transition rate change |K_N/K_5000 - 1| over the 1320 CCC excitation blocks at the 50 Te nodes
+====================================================================================================
+  N =  25000, Te =  1.00 eV: > 2 %:  806 of 1320;  > 10 %:  84;  those > 10 % are at most 3.4e-02 of the strongest rate from their initial state;  median change 2.842 %, max 68.2 %
+  N =  25000, Te =  2.02 eV: > 2 %:  383 of 1320;  > 10 %:  34;  those > 10 % are at most 1.3e-03 of the strongest rate from their initial state;  median change 1.068 %, max 50.8 %
+  N =  25000, Te =  2.95 eV: > 2 %:  203 of 1320;  > 10 %:  29;  those > 10 % are at most 5.1e-04 of the strongest rate from their initial state;  median change 0.637 %, max 43.8 %
+  N =  25000, Te = 10.00 eV: > 2 %:   73 of 1320;  > 10 %:  19;  those > 10 % are at most 1.4e-04 of the strongest rate from their initial state;  median change 0.134 %, max 36.7 %
+    transitions moving > 10 % (any of the four Te): gap E_raw.min - dE from 0.000 to 0.062 eV (all: 0.000 to 0.062);  the largest 5000-point rate among them 2.41e-07 cm^3/s
+  N = 100000, Te =  1.00 eV: > 2 %:  790 of 1320;  > 10 %:  78;  those > 10 % are at most 3.4e-02 of the strongest rate from their initial state;  median change 2.621 %, max 72.4 %
+  N = 100000, Te =  2.02 eV: > 2 %:  364 of 1320;  > 10 %:  37;  those > 10 % are at most 2.2e-03 of the strongest rate from their initial state;  median change 0.977 %, max 53.6 %
+  N = 100000, Te =  2.95 eV: > 2 %:  212 of 1320;  > 10 %:  31;  those > 10 % are at most 1.1e-03 of the strongest rate from their initial state;  median change 0.600 %, max 46.1 %
+  N = 100000, Te = 10.00 eV: > 2 %:   65 of 1320;  > 10 %:  16;  those > 10 % are at most 1.4e-04 of the strongest rate from their initial state;  median change 0.126 %, max 34.1 %
+    transitions moving > 10 % (any of the four Te): gap E_raw.min - dE from 0.000 to 0.062 eV (all: 0.000 to 0.062);  the largest 5000-point rate among them 1.51e-07 cm^3/s
+
+====================================================================================================
+RESULT 4: convergence, 25000 -> 100000 against 5000 -> 25000
+====================================================================================================
+   ramp point [15,3]: tau_slow -0.875 % -> -0.964 % (further step -0.0890 %, ratio 0.102);  u_CRE -0.794 % -> -0.875 %;  1s col median 1.611 % -> 1.936 %
+    benchmark [23,5]: tau_slow -0.496 % -> -0.561 % (further step -0.0650 %, ratio 0.131);  u_CRE -0.453 % -> -0.512 %;  1s col median 1.094 % -> 1.182 %
+   cold corner [0,0]: tau_slow -2.946 % -> -3.341 % (further step -0.3944 %, ratio 0.134);  u_CRE -2.806 % -> -3.229 %;  1s col median 2.532 % -> 4.253 %
+    hot dense [49,7]: tau_slow -0.088 % -> -0.101 % (further step -0.0130 %, ratio 0.148);  u_CRE -0.086 % -> -0.099 %;  1s col median 0.282 % -> 0.346 %
+
+====================================================================================================
+PREDICTIONS (written before the run) against what came out
+====================================================================================================
+  P1 [15,3] 25000 vs 5000: tau_slow -0.875 % (-0.5 to -1.2), u_CRE -0.794 % (-0.5 to -1.1), 1s col median 1.611 % (1.0 to 2.5): reproduced
+  P2 at Te = 2.02 eV: 383 transitions > 2 % (250 to 500), 34 > 10 % (15 to 60), the > 10 % ones at most 1.3e-03 of the strongest rate from their initial state (< 1e-3): NOT reproduced
+  P3 |d tau_slow| grows toward 1 eV: [0,0] 2.946 % > [15,3] 0.875 % > [49,7] 0.088 %: reproduced
+  P4 [15,3] further step 25000 -> 100000 in tau_slow -0.0890 % against -0.875 % (ratio 0.102 < 0.25): reproduced
+
+PREDICTIONS: not reproduced as written: P2
+REFUTER (a thesis quantity moving > 2 % between N = 5000 and 100000 at Te >= 2 eV): did not appear  [tau_slow 1.533 %, u_CRE 1.320 %, S 0.806 %, eps_plateau_step 0.967 %]
+
+READING. Chapter 2 tested the coarse direction (500 points, ~17 % at 1 eV) and called the 5000-point grid measured. The fine direction
+  is tested here; the numbers above say how much of each thesis quantity is grid, at the nodes and therefore everywhere. The
+  mechanism is the mis-placed threshold step (raw data begin above the quantum-number threshold, np.interp returns zero below
+  them, the trapezoid resolves the step to one spacing), so it is the weak, high-threshold-gap transitions and the low-Te end
+  that move. Nothing here is repaired: N_GRID stays 5000 in compute_K_CCC.py and every stored table is unchanged (CLAUDE.md).
+
+  wall time 55 s

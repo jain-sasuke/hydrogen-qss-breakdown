@@ -1,0 +1,101 @@
+# generated 2026-09-22 18:51 by verify_residual_claims.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  pandas 3.0.0
+# L_grid sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# S_grid sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# every value computed from the canonical operator or from a stamped artifact named in the log
+========================================================================================================
+RESIDUAL CLAIMS: the numbers still attributed to a working note, computed from the canonical operator
+generated 2026-09-22 18:51  by verify_residual_claims.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+========================================================================================================
+
+  G1  benchmark from L_grid: tau_slow 22.728 us (CLAUDE.md 22.73), tau_relax 2.2769 ns (2.277), M 9981.9 (9982)
+
+  C1  three slowest eigenvalues of L[1,4] and the gap  (ch5 sec:two_clocks)
+      computed -4.287, -1.603e+08, -3.443e+08 s^-1; gap |lam1|/|lam0| = 3.739e+07
+
+  C2  total bound population per unit n_ion at the benchmark  (ch5 sec:freezing)
+      sum of the CRE populations per unit n_ion = 8.924573e-04; as a percentage 0.0892 %
+
+  C3  Delta at the benchmark under five sublevel weightings  (ch5 sec:bound)
+      population sum   Delta = 1.94561
+      p-states         Delta = 1.94474
+      d-states         Delta = 1.94447
+      s-states         Delta = 1.94471
+      statistical      Delta = 1.94574
+      spread over the five weightings: 0.0652 %
+
+  C4  utilisation of the cap  (ch5 sec:bound)
+      [23,5]: |Sbar| 0.228793 against the cap at the post-step index 0.450299 -> 50.8 %
+      [23,3]: |Sbar| 0.426061 against the cap at the post-step index 0.439352 -> 97.0 %
+
+  C5  sensitivity of the two clocks to the l-mixing block  (ch2 sec:lmix)
+      scale l-mixing by 0.1429: max |d tau_relax| 1.030 %, max |d tau_slow| 0.4938 % over the 400 points
+      scale l-mixing by 0.3333: max |d tau_relax| 0.346 %, max |d tau_slow| 0.1845 % over the 400 points
+      scale l-mixing by 3: max |d tau_relax| 0.117 %, max |d tau_slow| 0.1071 % over the 400 points
+      scale l-mixing by 7: max |d tau_relax| 0.151 %, max |d tau_slow| 0.1394 % over the 400 points
+      over the stated factor 3 to 7: tau_relax at most 0.151 % (thesis bound 0.85 %), tau_slow at most 0.1394 % (thesis bound 1 %)
+      OK   relaxation time within the 0.85 % bound: computed 0.1507 % against the stated 0.85 %
+      OK   slow eigenvalue within the 1 % bound: computed 0.1394 % against the stated 1.0 %
+
+  C6  eigenvalue conditioning and single precision  (ch4 sec:numerics)
+           point   cond(lambda_0)   cond(lambda_1)   |d lambda_0| float32
+         (23, 5)            1.707            1.981              1.356e-05
+          (0, 0)            3.255            2.589              2.420e-04
+         (49, 7)            1.162            1.265              1.477e-06
+      the thesis quotes condition numbers 1.71, 1.98, 3.26, 2.59 and a single-precision displacement 1.3e-5
+      at three of 400 points; the definition it used is not recorded, so these are reported as computed here
+      under the standard definition 1/|y^H x| with unit-norm left and right vectors, not asserted to match.
+
+  C7  sub-grid vertex of eps_plateau in ln(ne)  (ch5 sec:crest)
+      Te = 1 eV: stamped 3-point vertex 3.7047e+13, 5-point 4.0179e+13, thesis prints 3.7e+13
+      Te = 9.541 eV: stamped 3-point vertex 1.5233e+13, 5-point 1.5262e+13, thesis prints 1.52e+13
+      over all 49 temperatures the 3-point vertex runs 3.7047e+13 at 1 eV down to 1.4472e+13 at 5.96 eV and back up to 1.5233e+13 at 9.54 eV
+      max over min = 2.560; increments change sign 1 time(s), so the drift is NOT monotone in Te
+
+  C8  heat against cool, matched per grid point and normalised by the step  (ch5 sec:asymmetry)
+      median over 384 matched points of (eps_heat/|dlnTe|_heat)/(eps_cool/|dlnTe|_cool) = 1.1109
+
+  C9  which density column carries each row maximum  (ch5 sec:crest)
+      per-row argmax over rows 0 to 15: [np.int64(4), np.int64(4), np.int64(4), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3), np.int64(3)]
+      column 4 carries the row maximum in 3 of the 49 heating rows
+
+  C10  the (3,5) pair: where its sensitivity peaks in density  (ch5 sec:crest)
+      at Te index 23: (3,4) peaks at column 3, ne = 1.93e+13; (3,5) peaks at column 2, ne = 7.2e+12
+      ratio of the two peak densities = 2.683
+
+  C11  the endpoint linearisation against the measured error  (ch5 sec:linearisation)
+      measured/predicted over 392 heating steps: 0.8417 to 1.3891, median 1.0182; the linearisation understates at 219 of them; at the benchmark 0.9459
+
+  C12  the two ground-fed fractions at the hot dense corner  (ch5 sec:limits)
+      at [23,7]: f_3 = 0.0713, f_4 = 0.0109
+
+  C13  the persistence census with the ion boundary closed  (ch5 sec:open_boundary)
+      over 784 pairs above the 10 per cent criterion: 202 open, 200 closed
+      worst case: 38.68 % open, 38.56 % closed
+      above 2 eV with a window: 45 of 448 open, 45 closed
+
+  C14  span of the cap above 7e12, over the columns tab:position_effect samples  (ch5 sec:density_mechanism)
+      at index 24, columns [2, 3, 5, 7]: cap from 0.3940 to 0.4503, a 14.3 per cent range
+
+  C15  heating pairs with no plateau window  (ch5 sec:population_set)
+      54 of 392 heating pairs have no window; the density columns they occupy are [np.int64(4), np.int64(5), np.int64(6), np.int64(7)]
+      all at j >= 4: True
+
+========================================================================================================
+DEFINITION NOT RECOVERED. For these the thesis states a quantity whose exact construction is not recorded,
+and the reconstruction attempted here does not reproduce it. They are reported, not forced to agree:
+  C8 matched heat/cool ratio, median (chapter5 sec:asymmetry): printed 1.036, this reconstruction 1.1109
+      the thesis matches and normalises per grid point; dividing each error by its own |dln Te| gives 1.111, so the normalisation it used is not the one reconstructed here
+  C11 linearisation ratio, median (chapter5 sec:linearisation): printed 1.031, this reconstruction 1.01821
+      minimum, maximum, the 219 count and the benchmark all reproduce; only the median differs, so the ratio is right and the set it is taken over is not the one reconstructed here
+
+All 43 compared values reproduce at the precision printed.

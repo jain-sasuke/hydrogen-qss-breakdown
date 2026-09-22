@@ -1,0 +1,189 @@
+# generated 2026-09-22 08:25 by verify_interior_operator.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  scipy 1.16.3
+# data/processed/collisions/ccc/ccc_crosssections.csv sha256 3c0cdd88a5b7fc2d81cd728327befc65e60f9b723b27fbc992f1468c9a5d439f
+# data/processed/collisions/ccc/K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# data/processed/collisions/ccc/K_CCC_exc_table.npy sha256 02838edcb63108ca6787cd4307574d5fe84fd8da5b2f89152c893c11c58b12c0
+# data/processed/collisions/ccc/K_CCC_deexc_table.npy sha256 1bc97f274e9ef5a5a2869e722f7ee302d84a8950fce9359f3d271843999fb83c
+# data/processed/collisions/tics/tics_crosssections.csv sha256 6b25d4881eee81d36eaba547ddb59bcb1f310d965286a3625382279051fd4016
+# data/processed/collisions/vs/K_VS_metadata.csv sha256 6e0f0b452fc22740935842e76843c151747064da942f622eefdce2f700512f1f
+# data/processed/Radiative/H_A_E1_LS_n1_15_physical.csv sha256 81c91a3ceba937e585f17abc0c9a67daeb32f19cfb9d6d156d09d5bb0c281633
+# data/processed/collisions/K_exc_full/state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# data/processed/collisions/K_exc_full/K_exc_full.npy sha256 a3df4c549db8cddb0daca1f0b96b475e39231d6d516bc972edaf0085bdd06a43
+# data/processed/collisions/K_exc_full/K_deexc_full.npy sha256 243dcc84d220232521929eca9d731e98368f0915d436d20d504ebbba615ccc67
+# data/processed/collisions/K_exc_full/K_exc_meta.csv sha256 7de5845a432b0fb405b48fc876e2626eb1b1386c6fa16b1275961b312e7a507e
+# data/processed/collisions/tics/K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# data/processed/recombination/alpha_RR_resolved.npy sha256 ab68017ba651937c359725f0548a5e0c435097009bd4881d2eebebf49bbfabe9
+# data/processed/recombination/alpha_RR_bundled.npy sha256 76f4a6ca2017b9ae5d8dfe7b5bff45146bd8a23e80d8eb33a4bb1e624b2c8d14
+# data/processed/recombination/alpha_3BR_resolved.npy sha256 f5f74dc8352639dd776a3a9dd4aea3fa6bf2db24e353c93b730baece242cd1e0
+# data/processed/recombination/alpha_3BR_bundled.npy sha256 9bbec1c2ba7d279f5881da31d244f08a094a243d4a921339ccb2a09660085b03
+# data/processed/Radiative/A_resolved.npy sha256 9b21d945e103495cccd8d3476a28cb8070b430c77f9a28880da1576f41f56ee8
+# data/processed/Radiative/A_bund_res.npy sha256 d4ed10fe1819ef6e22976677374ec3245d86fb1a964a80c4926582e5e5be4274
+# data/processed/Radiative/A_bund_bund.npy sha256 6961907b9787b04b3b387ccd8e46c66d553024015b061efe4d7a71f2a9fc9018
+# data/processed/Radiative/gamma_resolved.npy sha256 fbb35684e0fe0c995df5873c967a7098f81acdb0efce56e5353d91bb9201767e
+# data/processed/Radiative/gamma_bundled.npy sha256 090bd7d67aaf257c7ea7d6acc869d26ffb62397ab0ca5d663316b4c60f9676fc
+# data/processed/lmix/K_lmix.npy sha256 d92a969dcd6017beef676f831316cac37b79c8d510450826cf80a9a7abcab399
+# data/processed/cr_matrix/L_grid.npy sha256 2d92b58e1693107d9ef8097a778ddec003db6cd1c0aa700762aa0680d059224e
+# data/processed/cr_matrix/S_grid.npy sha256 7822f536590c76bae8355bddef023fc53e0f3595d2f4687313792e8f277fb80a
+# data/processed/cr_matrix/Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# data/processed/cr_matrix/ne_grid_L.npy sha256 8013130a39201774945070f413d4623ff6a4e7adcf5be1e7255bbde11694780f
+# src/rates/compute_K_VS.py sha256 b7d90b5ae474ad9e94ad09de545f5483ec484e756fba3d8f1ea734fd4888b41f
+# src/rates/compute_K_TICS.py sha256 86a194f7320518424c5bcbfda39810cba12cce775b01c2d969fdac17bd2c55d8
+# src/rates/ionization_rates.py sha256 a0ae3b924a526c9cc0e52b039a8d1f55a36a15e2a14b3423eec6200610252778
+# src/rates/recombination_rates.py sha256 6b4ce6bcba030f99db65d38b47222d2f90d0ea0eacd8177c41538ca9c8e47b03
+# src/rates/compute_lmix.py sha256 da9831c201cdd7b170b7b48d1a0f7eb8c83046856292030d5275bd51da7f4f5e
+# src/rates/assemble_cr_matrix.py sha256 ee8cbd13943de27d8c086131698a463ade71b9c6f314fdf26403d5750472e033
+# src/rates/compute_K_CCC.py sha256 be289edc08a7daccb20ff5bbe36bfdc93393f5af6abb6690ab2dec265ea7f34f
+# src/rates/assemble_K_exc.py sha256 c46804baf06da4b1b731d678ce3db59f8955fd6707789dce527d039f2969039b
+# src/validation/build_L_at_Te.py sha256 66c0c48cd93cae7313895cb50a21b6f5aeec384a83cbef48f9bbb25ed026aaf1
+# src/validation/verify_ramp_plateau.py sha256 06b029d4677d83b5caa5143fa8d20a5087b250805b1acd48f66fb709d1ba2537
+# src/validation/verify_physical_ramp_bound.py sha256 d8fa7586627a5ffc83ca3a6a6ad6bc08620b66cc67aa4ad198b61ad34da54289
+# validation/ramp_plateau/ramp_plateau.csv sha256 a51e64b5bc01178fde9bb0f6308d8dd988564c98d70ae0010e1a5aa6457baabf
+# Part A: true operator at Te_mid = sqrt(Te_i Te_{i+1}); linear interpolant weight f_lin = (Te_mid - Te_i)/(Te_{i+1} - Te_i); log-linear weight 1/2; errors = interpolant/true - 1
+# Part B: [15,3] -> [16,3]; T = true L[Te(t)] via M = 33 log-spaced true operators joined log-linearly, Te linear in t; Texp = ln Te linear in t; b = log-linear interpolant driven by Te(t); c = linear f = t/t_ramp; bexp = log-linear f = t/t_ramp
+# integrator: verify_physical_ramp_bound.integrate_path (Radau, rtol 1e-10, atol 1e-12 max|n_old|, max_step t_ramp/50); window t_ramp + 30 tau_relax .. tau_slow/30; shell observable n3/n4; plateau fraction = eps(ws)/eps(ws, step)
+====================================================================================================
+THE TRUE OPERATOR BETWEEN GRID NODES, AND THE PHYSICAL RAMP L[Te(t)]
+generated 2026-09-22 08:25  by verify_interior_operator.py
+interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5  scipy 1.16.3
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+====================================================================================================
+
+  G0  build_L_at_Te gate (every stored table, L_grid, S_grid at all 50 x 8 nodes):
+      worst relative differences: K_exc_full 0.0e+00, K_deexc_full 0.0e+00, K_ion_final 0.0e+00, alpha_RR_res 0.0e+00, alpha_RR_bund 0.0e+00, alpha_3BR_res 0.0e+00, alpha_3BR_bund 0.0e+00, K_lmix 0.0e+00, K_CCC_exc 0.0e+00, K_CCC_deexc 0.0e+00, L 0.0e+00, S 0.0e+00
+
+  G1  [15,3] -> [16,3]: tau_slow 1.493772e-03 s, tau_relax 7.413482e-09 s, step eps(ws) 1.807031792e-01 (csv 1.807031792e-01)
+      linear    0.001 tau_slow: plateau 0.999543 (csv 0.999543, rel 1.3e-15; docstring value 0.999543)
+      linear    0.01 tau_slow: plateau 0.995445 (csv 0.995445, rel 1.3e-15; docstring value 0.995445)
+      linear    0.1 tau_slow: plateau 0.955529 (csv 0.955529, rel 1.3e-15; docstring value 0.955529)
+      linear    1 tau_slow: plateau 0.646860 (csv 0.646860, rel 6.7e-16; docstring value 0.64686)
+      loglinear 1 tau_slow: plateau 0.657630 (csv 0.657630, rel 1.1e-15; docstring value 0.65763)
+  G1b integrate_path (f = t/t_ramp, no breaks) vs verify_ramp_plateau.integrate at 1 tau_slow: max rel diff in n(t_ws) 0.0e+00 (linear, loglinear)
+
+====================================================================================================
+PART A: true operator at the log midpoint of every one-interval span versus the two interpolants
+====================================================================================================
+  392 spans; every true interior operator is a CR generator; worst column-sum residual vs -K_ion ne: 2.2e-16 of max|L|
+  G2  builder at the nodes [15,3], [16,3] vs L_grid: 0.0e+00
+
+  named spans (one interval, i -> i+1), midpoint errors in % (median |e| over the class; signed median in brackets):
+                  span           Te lo->mid->hi |    interp  all med  diag med  1s col med 1s col max  ion med    S med | e tau_slow  e u_CRE e eps_pl | bracketed 1s col / all
+     ramp point [15,3]  2.0236-> 2.0717-> 2.1210 | loglinear    0.006     0.011  0.177 (-0.177)      0.183    0.209    0.003 |    +0.0757  +0.0366  -0.2133 |  100.0 % /  19.2 %
+     ramp point [15,3]  2.0236-> 2.0717-> 2.1210 |    linear    0.009     0.014  0.626 (+0.626)      0.748    0.007    0.112 |    -0.7649  -0.6833  +3.8742 |  100.0 % /  19.2 %
+      benchmark [23,5]  2.9471-> 3.0171-> 3.0888 | loglinear    0.005     0.007  0.121 (-0.121)      0.126    0.125    0.003 |    +0.0738  +0.0456  -0.3709 |  100.0 % /  22.3 %
+      benchmark [23,5]  2.9471-> 3.0171-> 3.0888 |    linear    0.007     0.010  0.196 (+0.196)      0.284    0.005    0.118 |    -0.2618  -0.1741  +1.2745 |  100.0 % /  22.3 %
+     cold corner [0,0]  1.0000-> 1.0238-> 1.0481 | loglinear    0.006     0.022  0.360 (-0.360)      0.366    0.889    0.003 |    -0.3908  -0.4632  +1.7546 |  100.0 % /  21.3 %
+     cold corner [0,0]  1.0000-> 1.0238-> 1.0481 |    linear    0.012     0.022  3.610 (+3.610)      3.885    0.016    0.096 |    -3.9311  -3.8382 +10.5021 |  100.0 % /  21.3 %
+
+  grid-wide (392 spans): median over spans of the class median, and the worst span:
+    loglinear    all: median of medians 0.005 %, worst span median 0.007 % at [0,7] Te 1.000
+    loglinear  col1s: median of medians 0.116 %, worst span median 0.360 % at [0,3] Te 1.000
+    loglinear    ion: median of medians 0.117 %, worst span median 0.889 % at [0,0] Te 1.000
+    loglinear    rec: median of medians 0.003 %, worst span median 0.005 % at [0,7] Te 1.000
+    loglinear e_tau_slow: median +0.0510 %, range -0.3908 to +0.1681 %
+    loglinear e_u       : median +0.0312 %, range -0.4632 to +0.0473 %
+    loglinear e_eps     : median -0.3409 %, range -0.4100 to +1.7546 %
+       linear    all: median of medians 0.007 %, worst span median 0.012 % at [0,6] Te 1.000
+       linear  col1s: median of medians 0.164 %, worst span median 3.610 % at [0,1] Te 1.000
+       linear    ion: median of medians 0.005 %, worst span median 0.016 % at [0,4] Te 1.000
+       linear    rec: median of medians 0.115 %, worst span median 0.132 % at [48,7] Te 9.541
+       linear e_tau_slow: median -0.2585 %, range -3.9311 to +0.0164 %
+       linear e_u       : median -0.1807 %, range -3.8382 to +0.0933 %
+       linear e_eps     : median +1.4511 %, range -1.5661 to +10.5218 %
+  bracketed (true between the two interpolants): 1s column 0.0 to 100.0 % of entries per span (median 100.0 %); all entries median 23.6 %; S median 100.0 %
+
+  the quarter rule, measured: one-interval midpoint error / K17's two-interval mid-node error (second order would give 0.25)
+    [15,3] 1s column median: log-linear 0.00177 / 0.0069 = 0.257;  linear 0.00626 / 0.0235 = 0.266
+    [0,0] 1s column median: log-linear 0.00360 / 0.0140 = 0.257;  linear 0.03610 / 0.1380 = 0.262
+    [15,3] derived: tau_slow +0.0757 % / K17 +0.302 % = 0.251;  u_CRE +0.0366 % / +0.152 % = 0.240   (loglinear)
+    [15,3] derived: tau_slow -0.7649 % / K17 -2.842 % = 0.269;  u_CRE -0.6833 % / -2.525 % = 0.271   (linear)
+
+====================================================================================================
+PART B: one-interval ramp [15,3] -> [16,3], Te(t) prescribed, operator along the TRUE L[Te(t)] versus the interpolants
+====================================================================================================
+  true operators built at M = 33 (and 17) temperatures equally spaced in ln Te over [2.0236, 2.1210] eV, joined piecewise log-linearly
+
+  t_ramp/tau_slow = 0.01  (t_ramp 1.4938e-05 s):
+       path plateau fraction      eps(ws)      eps(we) eps(ramp end)   nfev
+          T         0.995565 1.799017e-01 1.761205e-01  1.798449e-01   2194   (rtol 1e-8 rerun 0.995565)
+     T_conv         0.995565 1.799017e-01 1.761205e-01  1.798448e-01   2135
+       Texp         0.995600 1.799081e-01 1.761268e-01  1.798494e-01   2194
+          b         0.995572 1.799030e-01 1.761218e-01  1.798452e-01   1990
+          c         0.995445 1.798800e-01 1.760992e-01  1.798270e-01   1990
+       bexp         0.995608 1.799095e-01 1.761281e-01  1.798497e-01   1990
+    T - b = -0.000007, T - c = +0.000120, b - c = +0.000127, |T-b|/|b-c| = 0.058;  Texp - T = +0.000036;  bexp - b = +0.000036;  |T(33) - T(17)| = 2.17e-08
+    stamped one-interval values: linear (= path c) 0.995445
+
+  t_ramp/tau_slow = 0.1  (t_ramp 1.4938e-04 s):
+       path plateau fraction      eps(ws)      eps(we) eps(ramp end)   nfev
+          T         0.956684 1.728759e-01          nan  1.728915e-01   1943   (rtol 1e-8 rerun 0.956684)
+     T_conv         0.956684 1.728759e-01          nan  1.728915e-01   1901
+       Texp         0.957028 1.729380e-01          nan  1.729534e-01   1940
+          b         0.956755 1.728887e-01          nan  1.729042e-01   1780
+          c         0.955529 1.726671e-01          nan  1.726830e-01   1780
+       bexp         0.957099 1.729508e-01          nan  1.729661e-01   1777
+    T - b = -0.000071, T - c = +0.001155, b - c = +0.001227, |T-b|/|b-c| = 0.058;  Texp - T = +0.000344;  bexp - b = +0.000344;  |T(33) - T(17)| = 2.09e-07
+    stamped one-interval values: linear (= path c) 0.955529
+
+  t_ramp/tau_slow = 1  (t_ramp 1.4938e-03 s):
+       path plateau fraction      eps(ws)      eps(we) eps(ramp end)   nfev
+          T         0.654760 1.183172e-01          nan  1.183331e-01   1865   (rtol 1e-8 rerun 0.654760)
+     T_conv         0.654761 1.183174e-01          nan  1.183333e-01   1788
+       Texp         0.657146 1.187483e-01          nan  1.187643e-01   1872
+          b         0.655244 1.184046e-01          nan  1.184205e-01   1622
+          c         0.646860 1.168896e-01          nan  1.169054e-01   1622
+       bexp         0.657630 1.188358e-01          nan  1.188518e-01   1629
+    T - b = -0.000484, T - c = +0.007900, b - c = +0.008384, |T-b|/|b-c| = 0.058;  Texp - T = +0.002386;  bexp - b = +0.002386;  |T(33) - T(17)| = 1.45e-06
+    stamped one-interval values: linear (= path c) 0.646860, loglinear (= path bexp) 0.657630
+
+====================================================================================================
+PREDICTIONS (written before the run) against what came out
+====================================================================================================
+  P1 [15,3] 1s column median: log-linear 0.177 % (0.10-0.26, signed -0.177), linear 0.626 % (0.35-0.90, signed +0.626), bracketed 100.0 % (>= 95); [0,0] linear 3.610 % (2.0-5.0), log-linear 0.360 % (0.20-0.55): reproduced
+  P2 [15,3] derived, quarter of K17 within x1.6: tau_slow log-linear +0.0757 % (pred +0.075), linear -0.7649 % (-0.71); u_CRE +0.0366 % (+0.038), -0.6833 % (-0.63): reproduced
+  P3 path T plateau fraction: 0.01: 0.995565 (pred 0.9956 +- 0.0001), 0.1: 0.956684 (pred 0.9569 +- 0.0003), 1: 0.654760 (pred 0.657 +- 0.001); inside [c, b] at every ratio: True: NOT reproduced
+  P4 ramp shape at 1 tau_slow: |Texp - T| = 0.002386 < |b - c| = 0.008384: reproduced
+  P5 fine-table convergence |T(33) - T(17)|: 2.2e-08, 2.1e-07, 1.5e-06 (< 1e-5): reproduced
+
+PREDICTIONS: not reproduced as written: P3
+REFUTER of K17's bracket (T outside [c, b] by > 0.001): did not appear (largest excursion 0.00e+00)
+REFUTER of second order (one-interval 1s-column median at [15,3] > half the two-interval): log-linear 0.177 % vs 0.35 %, linear 0.626 % vs 1.2 %: did not appear
+
+READING.
+  (1) The interpolants are second order in the interval: the one-interval midpoint error is 0.25-0.27 of K17's two-interval error in the
+      classes compared with K17 (1s column at [15,3] and [0,0]; tau_slow and u_CRE at [15,3]); the quarter rule is measured, not estimated,
+      for those. At the ramp point the log-linear interpolant misses the true interior operator by 0.18 % in the 1s column (0.08 % in
+      tau_slow, 0.04 % in u_CRE) and the linear one by 0.63 % (0.76 %, 0.68 %). The true entry lies between the two interpolants at every
+      1s-column entry at the three named points, but NOT in every span: 184 of 392 spans have some 1s-column entries outside the
+      bracket, and above Te = 3.39 eV the fraction falls, to 0 % for Te >= 7.9 eV, where both interpolants under-estimate the column
+      (both signed medians negative, e.g. -0.04 % and -0.03 % at [44,3]); K17's bracket picture is a property of the low-Te spans. Over
+      all nonzero entries the bracket holds at about a quarter (the rest are entries both interpolants reproduce to better than 0.01 %).
+  (2) The physical ramp. Along the true operator L[Te(t)] with Te linear in time, the one-interval ramp at [15,3] reaches 0.9956,
+      0.9567 and 0.6548 of the step plateau at t_ramp/tau_slow = 0.01, 0.1, 1, against the stamped linear operator ramp's
+      0.9954, 0.9555, 0.6469. The true value sits between the linear and the log-linear interpolant driven by the same Te(t)
+      at every ratio, 0.058 of their gap from the log-linear one (K17 estimated 0.052 from the two-interval span).
+  (3) P3 is not reproduced at t_ramp = tau_slow. The explanation below is post hoc, not pre-registered: the two stamped ramps are ramps of
+      different SHAPE as well as different interpolants. The stamped 'log-linear' ramp (f = t/t_ramp in log space) is, in operator space,
+      identical (to 7e-15) to the log-linear interpolant driven by ln Te linear in time, an exponential ramp, so its true counterpart is
+      Texp = 0.6571 (interpolant 0.6576); the stamped 'linear' ramp has Te linear in time, true counterpart T = 0.6548 (log-linear interpolant
+      driven by that Te(t): 0.6552). K17's bracket [0.6469, 0.6576] therefore spans two ramp shapes; each shape's true value lies inside its
+      own interpolant bracket. The stamped gap 0.0107 splits three ways at t_ramp = tau_slow: the LINEAR interpolant is off its true ramp by
+      +0.0079 (the one chapter 5 quotes), the LOG-LINEAR interpolant by -0.0005, and the ramp shape moves the true value by +0.0024. So the
+      interpolated operator ramp stands in for the physical one to 5e-4 if log-linear and to 8e-3 if linear, in the plateau fraction, and the
+      shape of Te(t), which no 0-D model supplies, matters more than the log-linear interpolation and less than the linear one.
+  Caveats. One grid interval (Delta ln Te = 0.047) at one grid point (one Te, one ne); shell observable n3/n4; the l-mixing cutoff frozen at
+  1e14 cm^-3 in the true operator as in L_grid; M = 33 true operators joined log-linearly (joining error 1.5e-06 in the plateau fraction
+  from the M = 17 rerun, itself an upper estimate of the M = 33 error by about 3x). The true operator's own accuracy is that of the pipeline's
+  rates and is NOT better than the interpolation error measured here: the hostile audit of this script found that the pipeline's 5000-point
+  Maxwell-average grid carries a discretisation error of the same order, and verify_maxwell_grid_convergence.py stamped it (validation/
+  maxwell_grid_convergence/): on 100000 points tau_slow moves by -0.96 % and the 1s-column median by 1.9 % at [15,3], up to 1.5 % in
+  tau_slow at Te >= 2 eV and 3.3 % at the cold corner. That error is identical at nodes and interior, so the interpolation comparison here
+  is self-consistent, but it is a pipeline finding, reported and not repaired (CLAUDE.md), and it bounds how literally 'true' should be read.
+
+  wall time 9 s

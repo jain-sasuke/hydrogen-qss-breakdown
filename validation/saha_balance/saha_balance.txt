@@ -1,0 +1,53 @@
+# generated 2026-09-22 12:41 by verify_saha_balance.py
+# interpreter /opt/anaconda3/envs/cr/bin/python  numpy 2.3.5
+# data/processed/collisions/K_exc_full/state_index.csv sha256 23eb18538c19165b6872dcae783944cd28f7e12dd3c741c7325645a623979a65
+# data/processed/collisions/tics/K_ion_final.npy sha256 aa7f80462a1e5438893bd29eb71aa58e234e7edf2af5c0fb8eb9258959d7ccf6
+# data/processed/recombination/alpha_3BR_resolved.npy sha256 f5f74dc8352639dd776a3a9dd4aea3fa6bf2db24e353c93b730baece242cd1e0
+# data/processed/recombination/alpha_3BR_bundled.npy sha256 9bbec1c2ba7d279f5881da31d244f08a094a243d4a921339ccb2a09660085b03
+# data/processed/collisions/ccc/K_CCC_metadata.csv sha256 8763ab9442f98f8fb386e2bc6aeb64d3ffae348cba5efc57de76c860be7da01e
+# data/processed/cr_matrix/Te_grid_L.npy sha256 9247a0ba293755ff58bea9198aaf9b803e3d3e15d9e468f1a5f2a32e9cb9ef2f
+# src/rates/recombination_rates.py sha256 6b4ce6bcba030f99db65d38b47222d2f90d0ea0eacd8177c41538ca9c8e47b03
+# CODATA 2018: h 6.62607015e-34, m_e 9.1093837015e-31, eV 1.602176634e-19; module constants h 6.62607e-34, m_e 9.10938e-31, eV 1.60218e-19
+==========================================================================================
+SAHA BALANCE: alpha_3BR against K_ion at every level and temperature, CODATA constants
+generated 2026-09-22 12:41  by verify_saha_balance.py
+interpreter /opt/anaconda3/envs/cr/bin/python
+  repo root      : /Users/phi/Desktop/non_markovian_cr
+  L_grid         : (50, 8, 43, 43)
+  Te grid        : 50 points, 1 to 10 eV
+  ne grid        : 8 points, 1e+12 to 1e+15 cm^-3
+  state ordering : data/processed/collisions/K_exc_full/state_index.csv
+  states         : 43  (first: 1S, 2S, 2P, 3S ... last: n13, n14, n15)
+  n range        : 1 to 15
+  ground index   : 0 (1S)
+==========================================================================================
+
+  G0  shapes (43 x 50) agree; g from 2 to 450, I_eV from 0.06047 to 13.6058 eV
+  G1  alpha_3BR / (K_ion x module-constant Saha factor) = 1 to 6.7e-16 at all 2150 entries (recombination_rates.alpha_3BR_from_Kion reproduced; the 8-decimal rounding of I_eV in state_index.csv would contribute 5.0e-09 through exp(I/kT))
+  G2  CCC thresholds dE_eV vs I_eV[n_i] - I_eV[n_f] from state_index over 1320 rows: max |diff| 5.0e-09 eV (one energy ladder)
+
+  ALL GATES PASSED.
+
+==========================================================================================
+RESULT
+==========================================================================================
+  ratio alpha_3BR / (K_ion x Saha factor, CODATA 2018): median 0.999997390, min 0.999997390, max 0.999997390, spread 1.44e-15, max |entry - median| 7.77e-16
+  by state (n = 1..15, all Te): 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974 0.9999974
+  by temperature (Te index 0, 23, 49, all states): 0.999997390, 0.999997390, 0.999997390
+  constant-set explanation (h_mod/h)^3 (m_e/m_e,mod)^1.5 (eV/eV_mod)^1.5 = 0.999997390; ratio/explanation - 1 = 0.0e+00
+  the module's constants: h 6.626070e-34 (CODATA 6.62607015e-34), m_e 9.109380e-31 (9.1093837015e-31), eV 1.602180e-19 (1.602176634e-19)
+
+==========================================================================================
+PREDICTIONS (written before the run) against what came out
+==========================================================================================
+  P1 every entry within 0.999997 +- 0.000002: reproduced (range 0.9999974 to 0.9999974)
+  P2 spread over 2150 entries below 1e-8: reproduced (1.44e-15)
+  P3 residual explained by the constant set to 1e-9: reproduced (0.0e+00)
+
+PREDICTIONS: P1-P3 all reproduced
+REFUTER (an entry off the median by > 1e-6, or a ratio outside 0.999997 +- 2e-6): did not appear
+
+READING. The closeness to unity is detailed balance by construction (G1). What the sentence in chapter 4 rests on is the
+  identity of the residual across the 43 states and 50 temperatures: a second energy table, or one indexed differently, would
+  leave a state- or temperature-dependent residual of order exp(dI/kT); the measured spread bounds any such mismatch. The residual
+  itself is the module's rounded constants against CODATA 2018 (P3), 3e-6, and is immaterial; it is reported, not repaired.

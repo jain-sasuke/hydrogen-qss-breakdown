@@ -65,9 +65,9 @@ minus the sum of everything leaving. That is all a rate equation is.
   \label{fig:network}
 \end{figure}
 
-A chemical engineer has written this equation many times. It is a species
-balance on a well-mixed vessel, with one species per energy level and one
-reaction per atomic process. Figure~\ref{fig:network} shows the network and the
+A rate equation of this kind is a species balance on a well-mixed vessel, the
+form written for any reaction network, with one species per energy level and
+one reaction per atomic process. Figure~\ref{fig:network} shows the network and the
 partition that Section~\ref{sec:qss} will exploit. The only unusual feature is
 the number of species, 43, and the fact that some of the ``reactions'' are
 radiative and therefore proceed without a collision partner.
@@ -101,7 +101,7 @@ considered here quasi-neutrality gives $\nion = \nel$, so both scale together an
 the distinction is one of physics rather than of parametric dependence. This is the first hint of the
 two clocks: radiative rates are fixed by atomic structure, collisional rates
 scale with density, and the competition between them is what makes the answer
-depend on where in the plasma you look.
+depend on position in the plasma.
 
 \subsection{Matrix form}
 
@@ -193,10 +193,9 @@ $\nel = \SI{e15}{\per\cubic\centi\metre}$ it supplies more than 99\% into the
 high-$n$ shells. The same equation therefore describes two physically different
 regimes at the two ends of the density grid. It would be convenient if that
 allowed the radiative and three-body datasets to be tested separately, one at
-each end, and an earlier draft of this thesis proposed exactly that.
-Section~\ref{sec:promise_broken} shows the measurement does not support it, the
-three-body channel is already dominant at the bottom of the density grid, so
-there is no radiative-only end to test against.
+each end. Section~\ref{sec:promise_broken} shows the measurement does not
+support this: the three-body channel is already dominant at the bottom of the
+density grid, so there is no radiative-only end to test against.
 
 Dimensional check on Eq.~\eqref{eq:master}: $[\Lmat\nvec] =
 \si{\per\second}\cdot\si{\per\cubic\centi\metre} =
@@ -226,8 +225,8 @@ removes an atom from the bound states. Therefore
 \noindent Each column of $\Lmat$ must sum to the ionisation leak from the level
 that column represents, no more, no less.
 
-The check is worth having and it is worth being precise about what it can
-detect, because the answer is narrower than it looks: each block of the
+The check is worth having, and what it can detect is narrower than it looks:
+each block of the
 assembly writes its diagonal as minus the column sum of the off-diagonal
 entries it has just written, so the identity holds by construction whatever
 those entries contain, and of the four faults
@@ -287,9 +286,8 @@ column-sum residual is
 \noindent which is round-off for a matrix whose non-zero entries span about
 twelve decades. The assembly is arithmetically sound.
 
-It is worth being precise about what this does and does not establish. It
-establishes that every transition entered as a loss also entered as a gain
-somewhere. It says nothing whatever about whether the \emph{magnitude} of any
+This establishes that every transition entered as a loss also entered as a
+gain somewhere. It says nothing whatever about whether the \emph{magnitude} of any
 rate is correct: $\ell$-mixing, for instance, cancels exactly in the column sum
 and so is invisible to this test. Checking magnitudes requires comparison
 against independent sources, which is the subject of
@@ -319,8 +317,8 @@ stable, as a system of decaying populations must be. Each eigenvalue contributes
 a mode decaying with time constant $\tau_k = 1/|\lambda_k|$. The set of $\tau_k$
 is the set of clocks the system runs on.
 
-It is worth pausing on what Eq.~\eqref{eq:eigen_solution} has achieved, because
-the whole chapter turns on it. In the populations $n_p$ the 43 balance equations
+The whole chapter turns on what Eq.~\eqref{eq:eigen_solution} has achieved.
+In the populations $n_p$ the 43 balance equations
 are hopelessly coupled: nothing happens to $3d$ without also happening to $2p$,
 $4f$, and everything else. Diagonalising $\Lmat$ is a change of coordinates.
 Instead of asking how many atoms are in each \emph{level}, ask how much of each
@@ -452,11 +450,10 @@ there proceeds stepwise. We write
   \label{eq:tau_slow_def}
 \end{equation}
 
-\paragraph{A note on the name.} Earlier drafts called
-Eq.~\eqref{eq:tau_slow_def} $\tau_{\mathrm{QSS}}$, a name that attached the
-label of the \emph{fast}-manifold elimination of Section~\ref{sec:qss} to the
-\emph{slow} reservoir at the opposite end of the spectrum; the symbol is
-therefore $\tauslow$ throughout. The alternative $\tau_{\mathrm{res}}$ was
+\paragraph{A note on the name.} Calling Eq.~\eqref{eq:tau_slow_def}
+$\tau_{\mathrm{QSS}}$ would attach the label of the \emph{fast}-manifold
+elimination of Section~\ref{sec:qss} to the \emph{slow} reservoir at the
+opposite end of the spectrum; the symbol is therefore $\tauslow$ throughout. The alternative $\tau_{\mathrm{res}}$ was
 rejected because Sawada and Fujimoto use it for the \emph{response} time of the
 excited levels \cite{SawadaFujimoto1994}, this thesis's $\taurel$, and
 Chapter~\ref{ch:conclusions} compares the two works directly.
@@ -560,12 +557,11 @@ and the point carrying it is excluded from the transient analysis of
 Chapter~\ref{ch:results} by the plateau-window criterion, which requires
 $\Msep > 900$ for a window to exist at all. The floor over the \emph{analysed}
 set is therefore $\Msep \ge 902$, and that floor is imposed by the criterion
-rather than measured. The same distinction applies to $\tauslow$: an earlier
-draft of Eq.~\eqref{eq:M_range} quoted the floor
-$\tauslow \ge \SI{1.18}{\micro\second}$, the minimum over the 346 points that
-satisfy $\Msep > 900$, and the equation now reports the minimum over all 400,
-\SI{75.4}{\nano\second} at the same $[49,7]$ corner, so that its three ranges
-share one scope. Neither number licenses a statement of the form
+rather than measured. The same distinction applies to $\tauslow$: Eq.~\eqref{eq:M_range} reports
+the minimum over all 400 points, \SI{75.4}{\nano\second} at the same $[49,7]$
+corner, so that its three ranges share one scope, whereas the floor over the
+346 points that satisfy $\Msep > 900$ is
+$\tauslow \ge \SI{1.18}{\micro\second}$. Neither number licenses a statement of the form
 \emph{\enquote{the separation is at least $X$ wherever the model is used}}: the
 first is a minimum over a set that includes points the analysis discards, and
 the second is a restatement of the cut. Both are reported here as descriptions
@@ -601,7 +597,7 @@ budget as the density falls.
 
 \subsection{Is the definition robust?}
 
-Two definitions of $\taurel$ are available and it is worth checking they agree.
+Two definitions of $\taurel$ are available and can be compared.
 The first, used above, takes the second eigenvalue of the full $43\times43$
 matrix. The second computes the slowest eigenvalue of the excited block
 $\Lmat_{FF}$ alone: the relaxation of the excited manifold with the
@@ -709,7 +705,7 @@ Section~\ref{sec:qss} derives. Two warnings, both of which matter later.
 
 First, $\Msep$ compares two \emph{rates}. Chapter~\ref{ch:results} measures a
 \emph{distance}, how far a diagnostic reading sits from the truth. Knowing how
-quickly a system recovers from a displacement tells you nothing about how far it
+quickly a system recovers from a displacement says nothing about how far it
 was displaced, and these are independent quantities.
 
 Second, eigenvalues describe the long-time behaviour of each mode in isolation.
@@ -734,7 +730,7 @@ that out is the business of the rest of this chapter.
 
 \subsection{The shortcut}
 
-A separation of $10^{4}$ invites an obvious move. If the excited states settle
+A separation of $10^{4}$ invites a shortcut. If the excited states settle
 in nanoseconds while the ionisation balance takes microseconds, then on any
 timescale relevant to the second, the first has already finished. So do not
 solve for the excited states at all: assume they have reached whatever
@@ -903,9 +899,9 @@ separation $\Msep^{\rm eff} = \tauslow/\|\Lmat_{FF}^{-1}\|_2$,
 \end{equation}
 
 \noindent so Eq.~\eqref{eq:qss_condition} survives non-normality with a margin
-reduced by \SI{13}{\percent} and not by orders of magnitude. It is worth asking
-why the penalty is so small when $\kappa(\Lmat_{FF})$ reaches $1.74\times10^5$:
-the answer is that the ill-conditioning lives in the fast subspace, among modes
+reduced by \SI{13}{\percent} and not by orders of magnitude. The penalty is
+this small even though $\kappa(\Lmat_{FF})$ reaches $1.74\times10^5$ because
+the ill-conditioning lives in the fast subspace, among modes
 separated by many decades in rate, and barely touches the slowest mode of
 $\Lmat_{FF}$, which is the one that sets QSS validity. The operator is strongly
 non-normal in a way that is almost irrelevant to this particular question.
@@ -943,7 +939,13 @@ of the next section.
 A spectrometer viewing a divertor records a line-integrated brightness. Turning
 that into an absolute population requires the neutral density along the
 sightline and the path length, neither of which is known to better than a factor
-of a few. Practitioners therefore work with \emph{ratios}, in which both cancel.
+of a few. Practitioners therefore work with \emph{ratios}, in which the
+instrument calibration and the common geometric scale divide out. What a ratio
+does not remove is the chord integration itself: as
+Section~\ref{sec:spectrometer} sets out, the measured ratio is the $n_4$-weighted
+average of the local ratio, equal to the local ratio only where that ratio is
+constant over the emitting region. Everything below is written for the local
+ratio.
 
 The ratio used throughout this thesis is
 \begin{equation}
@@ -1033,9 +1035,8 @@ thermodynamic equilibrium, so $\bdep$ is dimensionless and equals unity there.
 Departures above or below unity measure over- and under-population relative to
 that thermodynamic reference; no more should be read into the sign than that.
 
-It is worth attaching a number to $\bdep$ immediately, because the name
-``departure coefficient'' suggests a small correction and it is nothing of the
-kind. Evaluated on the collisional--radiative steady state, $\bdep$ runs from
+The name ``departure coefficient'' suggests a small correction, and the
+numbers show it is nothing of the kind. Evaluated on the collisional--radiative steady state, $\bdep$ runs from
 $76.6$ at $[0,7]$, the coldest and densest corner of the grid, to
 $2.683\times10^{5}$ at $[49,0]$, the hottest and thinnest, and equals $956$ at
 the benchmark point. The ground state is over-populated relative to
@@ -1047,8 +1048,8 @@ are not replaced. A quantity that varies over three decades across the
 operating range is not a small correction, and treating it as fixed is the
 assumption this thesis examines.
 
-The location of those extremes is worth pausing on, because the obvious guess is
-wrong and the correction matters later. One expects the largest departure where
+The location of those extremes is not where a first guess puts it, and the
+correction matters later. One expects the largest departure where
 the gas is coldest and most neutral. It is the opposite: $\bdep$ is largest in
 the \emph{hottest, thinnest} corner and smallest in the coldest, densest one.
 The reason is that $\bdep$ measures distance from Saha--Boltzmann, and
@@ -1117,8 +1118,8 @@ appears in $\Lmat$. Chapter~\ref{ch:limits} takes both limitations up
 quantitatively.
 
 The structural results of this chapter are statements about whatever $\Lmat$ is
-supplied, and it is worth being exact about the condition they need, because it
-is easy to claim too much here. The quasi-steady-state closure, the
+supplied, and the condition they need must be stated exactly, because it is
+easy to claim too much here. The quasi-steady-state closure, the
 three-argument form of $\Rqss$ and the identity
 $\mathrm{d}\ln\Robs/\mathrm{d}\ln\bdep = \ffrac{3}-\ffrac{4}$ require that
 $\Lmat_{FF}$, $\Lmat_{FS}$ and $\Svec_F$ contain no $\ngs$. That is what makes
@@ -1141,8 +1142,8 @@ one-variable logistic, and the ceiling does not follow at all. The framework of
 this chapter is two-channel by construction, and that is a statement about its
 form rather than about the accuracy of its coefficients.
 
-\textbf{$\bdep$ is a dynamical variable}, and it is worth being precise about
-how it evolves. Differentiating Eq.~\eqref{eq:departure} at fixed $\nion$,
+\textbf{$\bdep$ is a dynamical variable} with its own equation of motion.
+Differentiating Eq.~\eqref{eq:departure} at fixed $\nion$,
 \begin{equation}
   \dot{\bdep}
   = \frac{\dot{\ngs}}{\Zsb{1}\nel\nion}
@@ -1210,7 +1211,10 @@ $m$, and using $\ngs = \bdep\Zsb{1}\nel\nion$ from Eq.~\eqref{eq:departure},
 \end{equation}
 
 \noindent The prefactor $\nion$ is common to both shells and cancels in the
-ratio, as does the emitting path length. The neutral density does \emph{not}
+ratio, as does the instrument calibration. Equation~\eqref{eq:shell_population}
+is a relation at a point, and reading it as a statement about a measured chord
+requires in addition that $n_3/n_4$ be constant over the emitting region
+(Section~\ref{sec:spectrometer}). The neutral density does \emph{not}
 cancel, and it is important not to read the previous sentence that way: what an
 intensity ratio removes is the need to \emph{know} the absolute neutral density
 and the path length in order to form it, not the dependence of the ratio on how
@@ -1291,8 +1295,8 @@ vectors. The claim therefore needs $-\Lmat_{FF}^{-1}$ to be non-negative
 strictly positive column sums, making it a non-singular M-matrix, and the
 inverse of a non-singular M-matrix is elementwise non-negative. Physically,
 adding atoms to one level cannot reduce the steady population of another, so the
-statement is unsurprising, but it is worth recording, because the two limits
-below depend on it. Direct evaluation confirms it: at none of the 400 grid points does
+statement is unsurprising; it is recorded because the two limits below depend
+on it. Direct evaluation confirms it: at none of the 400 grid points does
 $-\Lmat_{FF}^{-1}$ contain a negative entry.
 
 Differentiating
@@ -1340,7 +1344,7 @@ Work in the logarithmic reservoir variable $x = \ln(\bdep\Zsb{1}\nel)$. That
 combination is the neutral-to-ion ratio itself: $\bdep\Zsb{1}\nel = \ngs/\nion$,
 so $x = \ln u$ in the notation Chapter~\ref{ch:results} uses throughout, and the
 Saha coefficient cancels out of it entirely. The two chapters work in the same
-variable under two names, and it is worth seeing that before the algebra starts.
+variable under two names.
 In that variable Eq.~\eqref{eq:ground_fed_fraction} is exactly a logistic,
 \begin{equation}
   \ffrac{m}(x) = \frac{1}{1 + e^{-(x - x_m)}},
@@ -1507,8 +1511,7 @@ no longer needs it to be one. \textbf{Section~\ref{sec:balmer_equivalence}'s
 measurement of the substitution cost becomes a consistency check on two routes
 to the same answer rather than a caveat carried by the analytic results.}
 
-It is worth being precise about what this does and does not bound. It bounds the
-error in the \emph{observable}. A diagnostician does not suffer an error in
+What this bounds is the error in the \emph{observable}. A diagnostician does not suffer an error in
 $\Robs$ directly: they measure $\Robs$ and invert it for $(\Te,\nel)$. Take the
 simplest case first, in which $\nel$ has been fixed by an independent
 measurement so that only $\Te$ is being inferred. Then the error in the inferred
@@ -1531,7 +1534,7 @@ range on six of the eight density columns, and there the quotient diverges and
 the inversion has no temperature resolution at all.
 
 \textbf{If $\nel$ is not known independently, one ratio is not enough.} Two
-unknowns need two observables, and the honest local statement is a Jacobian
+unknowns need two observables, and the local statement is then a Jacobian
 rather than a quotient: with two measured ratios $\Robs^{(1)}$ and
 $\Robs^{(2)}$,
 \begin{equation}
@@ -1570,8 +1573,8 @@ These closed forms also locate the benchmark point on the curve rather than
 leaving it as an anchor of unstated significance. Its sensitivity is
 $\ffrac{3}-\ffrac{4} = 0.212$, some $47\,\%$ of the maximum $0.4514$, which is
 attained nearly one decade higher at $\bdep = 7.2\times10^{3}$. The benchmark is
-therefore on the rising flank and not at the worst case, which is the honest
-reading of every error reported against it in
+therefore on the rising flank and not at the worst case, which is the reading
+to attach to every error reported against it in
 Chapter~\ref{ch:results}. Two identities follow from
 Eq.~\eqref{eq:ground_fed_fraction} and fix the marker in
 Figure~\ref{fig:R_of_b1} in terms of the fractions of
@@ -1622,8 +1625,8 @@ section does not supply, and is not made here.
 Chapter~\ref{ch:results} maps $\ffrac{3} - \ffrac{4}$ over the operating range
 and shows the diagnostic error tracking it.
 
-It is worth recording what Eq.~\eqref{eq:R_of_b} is not. It is not a fit, an
-expansion, or an approximation: it is an exact rewriting of
+Equation~\eqref{eq:R_of_b} is not a fit, an expansion, or an approximation:
+it is an exact rewriting of
 Eq.~\eqref{eq:qss_solution}, valid wherever $\Lmat_{FF}$ is invertible.
 Nor is it new. It is the standard population-coefficient decomposition of
 collisional--radiative theory, introduced by Bates, Kingston and

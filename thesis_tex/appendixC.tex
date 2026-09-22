@@ -22,14 +22,14 @@ $\Lmat$, computed with \texttt{numpy.linalg.eigvals}, sorted descending on the
 real part. $\tauslow$ and $\taurel$ are the reciprocals of the two least
 negative eigenvalues, and $\Msep = \tauslow/\taurel$.
 
-The selection of ``negative'' eigenvalues is a place where this thesis has
-already been bitten once. An earlier version of the filter discarded every
+The selection of ``negative'' eigenvalues is the one step in this procedure
+where a magnitude threshold does damage. A filter that discards every
 eigenvalue with $\lambda > -1\,\mathrm{s^{-1}}$, on the reasoning that such
-values were numerical noise near zero. They are not: at the cold corner of the
+values are numerical noise near zero, is wrong: at the cold corner of the
 grid the true slowest mode has $|\lambda| \approx \SI{0.0149}{\per\second}$,
-corresponding to $\tauslow = \SI{67.2}{\second}$, and the filter discarded it and
-returned the second mode in its place, wrong by nine orders of magnitude. The
-filter is now $\lambda < 0$, which admits every decaying mode. Chapter~\ref{ch:atoms}
+corresponding to $\tauslow = \SI{67.2}{\second}$, and that filter discards it and
+returns the second mode in its place, wrong by nine orders of magnitude. The
+filter used is $\lambda < 0$, which admits every decaying mode. Chapter~\ref{ch:atoms}
 reports the error and its effect; the point here is the method, which is that no
 magnitude threshold is applied to an eigenvalue whose magnitude is the quantity
 being measured.
@@ -128,7 +128,11 @@ First, it is a convergence test of $\ffrac{3}-\ffrac{4}$ and, under the same
 truncation, of $u^{\mathrm{CRE}}$, $\Delta$ and $\tauslow$, not of the state
 space in general. Quantities that depend on the Rydberg population
 directly, among them the effective ionisation coefficient, are not covered by
-it.
+it. Neither the reservoir gain $G$, the secant sensitivity $\overline{S}$ nor
+$\epsplat$ was scanned directly; each is built from quantities the scan
+converges, $\ffrac{3}-\ffrac{4}$ at $u^{\mathrm{CRE}}$ and $\Delta\ln u$, which
+moves by at most $2.3\times10^{-5}$ between $n_{\max}=14$ and $15$
+(\texttt{validation/nmax\_downward\_scan/}).
 
 Second, the numbers reported in Section~\ref{sec:convergence} come from
 \texttt{verify\_nmax\_downward\_scan.py}
@@ -136,10 +140,10 @@ Second, the numbers reported in Section~\ref{sec:convergence} come from
 stamped $a_p$, $c_p$, $u^{\mathrm{CRE}}$ and $\Delta$ of
 \texttt{validation/molecular\_channel/} at all $400$ points before any state
 is removed, and on the column sums of every truncated matrix equalling those
-of the full one. An earlier draft of this appendix said that no script
-regenerated them and deferred to a working note; the note's values had the
-opposite sign at the benchmark and the cold corner, and the text now records
-that. The trap the scan avoids is recorded in Section~\ref{sec:convergence}:
+of the full one. A historical project value with no producing script, not used
+as evidence here and superseded by \texttt{verify\_nmax\_downward\_scan.py},
+gives these quantities with the opposite sign at the benchmark and the cold
+corner; the script's values are the ones reported. The trap the scan avoids is recorded in Section~\ref{sec:convergence}:
 dropping states without returning their loss channels to the diagonal moves
 $\ffrac{3}-\ffrac{4}$ by \SIrange{5}{26}{\percent} at the three named points.
 

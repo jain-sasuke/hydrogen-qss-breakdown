@@ -28,15 +28,15 @@ reasoning behind it belongs to this work and how much to a literature that is
 sixty years old.
 
 %=============================================================================
-\section{The suspect was innocent}
+\section{The excited-state closure holds; the reservoir closure does not}
 \label{sec:what_found}
 % QUESTION: what did the thesis set out to test, and what did it find instead?
 %=============================================================================
 
-Chapter~\ref{ch:intro} asked how large the error in a $(\Te,\nel)$ inversion of
-the $H_\alpha/H_\beta$ ratio becomes when the plasma is disturbed faster than
+Chapter~\ref{ch:intro} asked how large the error in the temperature inferred
+from the $H_\alpha/H_\beta$ ratio at known density becomes when the plasma is disturbed faster than
 its ionisation balance can relax, what physical quantity sets that error, and
-where in the operating range it is largest. It also named a suspect. The
+where in the operating range it is largest. It also named a hypothesis. The
 quasi-steady-state (QSS) approximation eliminates several dozen dynamical
 variables by asserting that the excited levels equilibrate faster than
 conditions change, and the expectation was that some of them would fail to keep
@@ -47,31 +47,33 @@ and evaluating both error measures along the same trajectory gives
 $\epsQSS = 8.66\times10^{-6}$ at the benchmark point and
 $\epsQSS = 6.73\times10^{-9}$ at $[0,4]$, the grid point carrying the largest
 diagnostic error anywhere (Section~\ref{sec:qss_is_exact}). The closure is at
-its most accurate exactly where the tabulated answer is at its worst. There is
-no intermediate eigenvalue for an excited population to lag on: the gap between
-the slow mode and the fast band is $3.7\times10^{7}$ at that point, so a level
-that responds in nanoseconds cannot lag a reservoir that moves in microseconds.
+its most accurate exactly where the tabulated answer is at its worst. The
+spectrum explains why: given the quasi-steady manifold and $S \neq 0$, which
+holds at all $400$ points, there is no intermediate mode for an excited
+population to lag on (Section~\ref{sec:attacks}, two hot dense points
+excepted), and the propagated trajectories confirm it directly.
 
 What fails is the other assumption, the one Section~\ref{sec:the_assumption}
 separated out and then left standing. A table with two axes has to dispose of a
 third argument, the neutral-to-ion ratio $u = \ngs/\nion$, and the rule it uses
 to dispose of it is equilibrium ionisation balance. That rule asserts that the
-plasma has finished changing. For the whole of $\tauslow$ after a disturbance it
-is false, and the excited manifold, having re-equilibrated in nanoseconds onto a
+plasma has finished changing. After a disturbance it fails by an amount that
+decays only on $\tauslow$, and the excited manifold, having re-equilibrated in nanoseconds onto a
 reservoir that has not moved, reports the partial-equilibrium state faithfully.
 The ratio is measured correctly and the table then assigns it to the wrong
 plasma.
 
 If the fast states were the problem, the repair would be a time-dependent solve
 of the excited manifold, and Section~\ref{sec:qss_is_exact} shows that such a
-solve returns an answer already correct to eight decimal places. The repair
+solve returns an answer already correct to a part in $10^{5}$ at the benchmark
+and to $4.4\times10^{-5}$ everywhere analysed. The repair
 belongs instead at the closure applied to $u$, which is a statement about the
 plasma's recent history and not about its atoms. Calling the failure a
 breakdown of the quasi-steady-state approximation would point the effort at the
 one part of the calculation that is working.
 
 %=============================================================================
-\section{What to do at the console}
+\section{A forward criterion for the equilibrium lookup}
 \label{sec:criterion}
 % QUESTION: given a measured ratio and a plasma that has recently been
 % disturbed, what should a diagnostician compute before trusting the table?
@@ -99,7 +101,7 @@ the size of the transient, leaving
 \end{equation}
 
 \noindent This repeats Eq.~\eqref{eq:eps_of_step}, here as a procedure in which
-the reader supplies the third factor. It inherits from Chapter~\ref{ch:results}
+the third factor is supplied for the transient of interest. It inherits from Chapter~\ref{ch:results}
 the assumption that the ion population is a fixed reservoir
 and that the ground-state history $u(t)$ follows the local zero-dimensional
 collisional--radiative dynamics with no external influx, so that during the
@@ -109,17 +111,16 @@ Section~\ref{sec:transport} cannot test.
 
 Both structural factors are dimensionless. The mean sensitivity $\overline{S}$
 is the average of $\ffrac{3}-\ffrac{4}$ over the interval the reservoir
-traverses, and it says how strongly the observed ratio answers to the
+traverses, taken with the orientation of Eq.~\eqref{eq:Sbar_def}, which makes
+it negative, and it says how strongly the observed ratio answers to the
 ground-state reservoir. The reservoir gain $G = \Delta\ln u/\Delta\ln\Te$,
 the secant along the CRE curve over the step taken, says how far equilibrium
 ionisation balance would move that reservoir for a
 given fractional change in temperature. Both $\overline{S}$ and $G$ are
-negative everywhere on the grid, in both step directions: heating depletes the
-ground state and cooling refills it, so $\Delta\ln u$ and $\Delta\ln\Te$ always
-carry opposite signs, and the ground-fed fraction of $n=3$ exceeds that of
-$n=4$ at every point. Their product is positive for heating and negative for
-cooling, and $\epsplat$ is positive in both because
-Eq.~\eqref{eq:recipe} takes a modulus.
+negative everywhere on the grid, in both step directions, so
+$\overline{S}G > 0$ always; it is $\overline{S}\,G\,\Delta\ln\Te$ that is
+positive for heating and negative for cooling, and $\epsplat$ is positive in
+both because Eq.~\eqref{eq:recipe} takes a modulus.
 
 \paragraph{The procedure.} For a CR matrix of one's own, at one's own operating
 point:
@@ -132,12 +133,15 @@ These are the same two solves any steady-state CR table already performs. Form
 the switching points $x_m = \ln(c_m/a_m)$ and their separation
 $\Delta = x_4 - x_3$; the two ground-fed fractions are then the single logistic
 of Eq.~\eqref{eq:f_logistic}, displaced by $\Delta$.
-\item Differentiate the equilibrium reservoir with respect to temperature at
-fixed density to get $G$.
+\item Take the secant of $\ln u^{\mathrm{CRE}}$ against $\ln\Te$ at fixed
+density over the step of interest to get $G$.
 \item Insert the transient one actually cares about as $\Delta\ln\Te$. The
 reservoir excursion is $\Delta\ln u = G\,\Delta\ln\Te$, and that fixes the
 interval over which $\overline{S}$ is the mean of $\ffrac{3}-\ffrac{4}$.
 \end{enumerate}
+
+\noindent This is a forward criterion: it requires an estimate of the transient
+from outside the spectrum, since the ratio itself carries none.
 
 Steps 1 and 2 belong to the operating point and are done once; step 3 belongs to
 the event. The sensitivity straddles the two, because the curves are the
@@ -155,8 +159,8 @@ Both figures are direct reductions of
 \texttt{validation/reservoir\_gain/reservoir\_gain.csv} ($2288$ rows, stamped
 10 September 2026) by \texttt{verify\_reservoir\_gain.py}, written to
 \texttt{validation/reservoir\_gain/reservoir\_gain\_summary.csv} one row per
-filter, because an earlier draft confused two filters and the same quantity over
-a different filter is a different number. The spread of $|G|$ is $1.039$ to
+filter, because the same quantity over a different filter is a different
+number. The spread of $|G|$ is $1.039$ to
 $1.065$ over $368$ heating triples and $1.039$ to $1.067$ over $368$ cooling
 triples; the spread of $\epsplat$ over the same points is $2.27$ to $8.44$
 heating and $2.33$ to $4.70$ cooling.
@@ -165,11 +169,15 @@ heating and $2.33$ to $4.70$ cooling.
 steps of that file that have a resolvable plateau window, $|\overline{S}|$ runs
 from $0.0649$ to $0.4822$; over all $2288$ rows $|G|$ runs from $2.640$ to
 $14.519$. Restricted to the range this thesis defends, $\Te\ge\SI{2}{\electronvolt}$,
-those become $0.0649$ to $0.4552$ and $2.640$ to $7.822$, and the product
+those become $0.0649$ to $0.4552$ and, over the heating pairs, $2.640$ to
+$7.822$, and the product
 $|\overline{S}G|$ runs from $0.362$ to $3.535$. The upper end is the useful
 number to remember. In the worst conditions defended here, a \SI{1}{\percent}
-temperature excursion costs the Balmer inversion about \SI{3.5}{\percent} in the
-line ratio; at the benchmark point it costs about \SI{1.3}{\percent}.
+temperature excursion moves the line ratio by about \SI{3.5}{\percent} over
+the heating pairs; the error in the inferred temperature is that displacement
+divided by the table's slope, median amplification $8.3$
+(Section~\ref{sec:inversion_measured}). At the benchmark point the ratio moves
+by about \SI{1.3}{\percent}.
 
 \subsection{Five things that follow, and one that does not}
 
@@ -202,8 +210,10 @@ perform move the two quantities separately.
 
 \paragraph{The clock is $\tauslow$, and it is far too slow to average away.} The
 temptation is to assume that an error introduced by a fast disturbance decays
-with the fast timescale. It does not. The error decays as a single exponential
-on $\tauslow$, with a half-life of \SI{12.95}{\micro\second} at the benchmark and
+with the fast timescale. It does not. The error decays on $\tauslow$ as very
+nearly a single exponential, the estimate built on that law matching the
+propagated average to within \SI{2.2}{\percent} at \SI{100}{\micro\second} and
+\SI{3.8}{\percent} at \SI{506}{\micro\second}, with a half-life of \SI{12.95}{\micro\second} at the benchmark and
 \SI{1.10}{\milli\second} at $[15,3]$ (Section~\ref{sec:persistence}), against
 the \SI{2.28}{\nano\second} on which the excited manifold responds. A
 \SI{100}{\micro\second} exposure does not integrate the error away.
@@ -220,10 +230,11 @@ At the \SI{506}{\micro\second} extrapolated to the ITER pedestal
 fixed-density counts, and Section~\ref{sec:joint_step} steps the density too:
 the count barely moves, at $10$ to \SI{11}{\percent} of the pairs available
 whichever way the density goes, while the worst case rises to
-\SI{22.1}{\percent} when the density steps up with the temperature. The
-fixed-density map understates the worst case rather than overstating it.
-At densities where the Balmer inversion is ordinarily applied,
-$\nel\ge\SI{e14}{\per\cubic\centi\metre}$, none of $108$ pairs exceed
+\SI{22.1}{\percent} when the density steps up with the temperature.
+Under the tested one-index density step, a factor $2.68$, the fixed-density
+map understates the worst case rather than overstating it. At the densities of
+this model's defended range where a two-parameter inversion of this pair would
+be attempted, $\nel\ge\SI{e14}{\per\cubic\centi\metre}$, none of $108$ pairs exceed
 \SI{10}{\percent} and the worst is \SI{7.2}{\percent}. The conditions to
 distrust are the tenuous and cool ones, and the error grows toward low density
 and low temperature together.
@@ -280,7 +291,8 @@ records what would close that.
 \paragraph{The table misreads the transient by an order of magnitude.} Pushed
 through the table at known density, the plateau ratio has no solution within
 the table's $1$ to \SI{10}{\electronvolt} domain for $166$ of the $448$
-defended pairs, every one a cooling step, and over
+defended pairs, every one a cooling step; a further $44$, all heating, reach an
+answer only by crossing the fold; and over
 the $238$ pairs with a unique fold-free answer a \SI{4.81}{\percent}
 temperature step is read back with a median error of \SI{48}{\percent} and a
 worst of \SI{144}{\percent}, on the side the plasma came from at every pair
@@ -326,8 +338,8 @@ Eq.~\eqref{eq:f_logistic}, so the two shells' fractions are the same curve
 displaced. This is one line of algebra applied to a published formula, and the
 same function appears in chemical kinetics as the Michaelis--Menten saturation
 fraction, where a substrate concentration plays the part of the reservoir. The
-defensible statement is that it has not previously been stated in this form in
-the collisional--radiative literature. It is not a new function and it is not a
+defensible statement is that I did not find it stated in this form in the
+collisional--radiative literature surveyed for this thesis. It is not a new function and it is not a
 new result about hydrogen.
 
 \paragraph{The bound is old, it is old in several fields at once, and only the
@@ -431,17 +443,19 @@ captioned as quoted from that paper, and the appendix sets it up the same way:
 neutral atoms are immersed in a plasma at $t=0$ and, in its words, ``if $n(1)$
 is kept constant, after the initial transient this system should reduce to the
 high-temperature ionizing plasma'' treated earlier in the chapter
-\cite[App.~4B]{Fujimoto2004}. \textbf{The frozen reservoir is how the standard
-textbook treatment is posed}, which makes the gap this thesis fills a gap in the
+\cite[App.~4B]{Fujimoto2004}. \textbf{The frozen reservoir is the setting in which
+the textbook validity condition is derived}, which makes the gap this thesis fills a gap in the
 tradition rather than an oversight in one paper.
 
 The two-channel decomposition this thesis is built on is their Eq.~(3),
 $n(p) = R_0(p)\,n_z n_e + R_1(p)\,n(1)\,n_e$, and the ground-state equation
 whose eigenvalue is the slow clock of Chapter~\ref{ch:theory} is their Eq.~(4),
 $\mathrm{d}n(1)/\mathrm{d}t = -S_{\mathrm{CR}} n(1) n_e
-+ \alpha_{\mathrm{CR}} n_z n_e$. They write Eq.~(4) and, having fixed $n(1)$,
-do not solve it. This thesis solves it and reads the diagnostic consequence off
-the solution. That is the whole of the gap, and it is now a matter of record
++ \alpha_{\mathrm{CR}} n_z n_e$. They write Eq.~(4) and hold $n(1)$ fixed
+while the excited levels settle; Fujimoto's Appendix~4B then treats a
+time-varying $n(1)$ only as a validity condition on those levels and defers its
+dynamics to Appendix~5B. Neither asks what a diagnostic inversion costs while
+$n(1)$ is still moving. That is the gap, and it is now a matter of record
 rather than an inference from their emphasis.
 
 Their validity criterion for a temporal change in $\Te$, their Eq.~(23),
@@ -464,10 +478,33 @@ Their worked case, $\nel = \SI{e12}{\per\cubic\centi\metre}$ and
 $\Te = \SI{10}{\electronvolt}$, sits on this thesis's own grid, which is what
 makes the comparison a comparison rather than an analogy.
 
+\paragraph{Park proposed the nonequilibrium Balmer thermometer, and that idea
+is his.} In 1972 Park put the $H_\alpha/H_\beta$ ratio forward as an electron
+temperature indicator for a plasma out of Saha equilibrium, assumed
+quasi-steady state within the excited levels, wrote the normalised population
+in the same two-coefficient form with the normalised ground-state population as
+the third argument, and tabulated the conversion from the apparent excitation
+temperature to the true one \cite{Park1972}. Nothing here disputes that and
+nothing here claims it. His tables are computed in the two limits he called
+terminal nonequilibrium, defined as the conditions in which a further departure
+from equilibrium does not change the emission ratio; that definition is the
+statement that the sensitivity of Section~\ref{sec:ground_fed_fraction}
+vanishes, which it does when both shells are fed in the same proportion. The
+interval between his two limits is where that sensitivity is largest, and it is
+where the present grid lies: the difference in ground-fed fraction does not
+fall below $0.046$ at any of the $400$ points. What is added here is the size
+of the error an equilibrium table incurs in that interval, its factorisation
+into a susceptibility and a reservoir displacement, the clock on which it
+decays, and the finding that timescale separation does not rank it.
+
 \paragraph{What is claimable.} The cost of the ionisation-balance
-closure hidden inside a two-parameter Balmer table is now a computable number at
-an arbitrary operating point, expressed through two structural coefficients that
-are properties of the plasma rather than of the disturbance, together with a
+closure hidden inside a two-parameter Balmer table, measured here for the
+temperature inferred at known density, is now a computable number at any
+operating point of a zero-dimensional model with a closed reservoir, expressed
+through a gain $G$ that is very nearly a property of the operating point and a
+sensitivity $\overline{S}$ that depends on the step, by $22$ to
+\SI{30}{\percent} across a fourfold change of step at the benchmark, together
+with a
 ceiling on it whose form no atomic dataset changes and a map of where in
 $(\Te,\nel)$ the coefficients are large. That is the contribution, and it is
 smaller than the question Chapter~\ref{ch:intro} asked.
@@ -502,20 +539,33 @@ a ratio that depends on $u$ with $u$ away from its equilibrium value, operates
 whatever sets $u$; what transport removes is this model's prediction of $u(t)$.
 The magnitudes of Chapter~\ref{ch:results} are therefore reference values
 conditional on the closed-parcel reservoir history, neither bounds on the
-divertor error nor estimates of it. The structural results of
-Section~\ref{sec:criterion}, being properties of $\Lmat(\Te,\nel)$ at fixed
-conditions, are untouched by it.
+divertor error nor estimates of it. The two-channel split, the
+unit-width logistic form of $\ffrac{p}(u)$ and the ceiling $\tanh(|\Delta|/4)$,
+being properties of $\Lmat(\Te,\nel)$ at fixed conditions, are untouched by
+it; where on that curve the plasma sits, and so the sampled $\overline{S}$, $G$
+and the ridge location, moves with whatever sets $u$
+(Sections~\ref{sec:transport} and~\ref{sec:ridge_conditional}).
+The reservoir itself has one external check already, against ADAS:
+$u^{\mathrm{CRE}}$ sits within a median factor $1.18$ of ACD/SCD and
+$\Delta\ln u$ per step within \SI{5.8}{\percent} (Section~\ref{sec:gate_d}).
 
 \paragraph{It is not a divertor result below two electron-volts, and the
 restriction is not a hedge.} Holding $\nel$ fixed while the ground-state
 population changes is self-consistent only where the plasma is largely ionised.
-Above \SI{2}{\electronvolt} conservation of nuclei across one temperature step
-demands $|\delta\nel/\nel| < 5.4\times10^{-3}$. Below it, $68$ of $392$ one-step
-operators require $|\delta\nel/\nel| > \SI{10}{\percent}$ and $36$ require more
-than \SI{100}{\percent} (Section~\ref{sec:quasineutrality}).
-$\Te\ge\SI{2}{\electronvolt}$ is the only self-consistent region of the grid,
-not a cautious subset of it, and the cold-edge numbers are asymptotic values of
-a model outside its own domain.
+Above \SI{2}{\electronvolt} the change in $\nel$ that conservation of nuclei
+implies across one temperature step, inferred from the two fixed-$\nel$
+solutions in the heating direction, never exceeds $5.4\times10^{-3}$; solved
+self-consistently over both step directions the correction reaches
+$7.98\times10^{-3}$, at a cooling step at $\Te = \SI{2.024}{\electronvolt}$ and
+$\nel = \SI{e12}{\per\cubic\centi\metre}$. Over the $392$ heating one-step
+operators the fixed-density inference puts $|\delta\nel/\nel| > \SI{10}{\percent}$
+at $68$ and above \SI{100}{\percent} at $36$; solved self-consistently the
+counts are $67$ and $7$ (Section~\ref{sec:quasineutrality}).
+$\Te\ge\SI{2}{\electronvolt}$ is the working domain the two measured
+boundaries support, the quasineutrality contour at $1.41$ to
+\SI{1.50}{\electronvolt} and the Lyman optical-depth contour at $1.01$ to
+\SI{2.36}{\electronvolt} across slab thicknesses (Section~\ref{sec:scope}),
+and the cold-edge numbers are values of a model outside its own domain.
 
 \paragraph{The crest is not a detachment criterion.} The density crest sits a factor $5.2$ below
 the detached band, and at citable detached densities the \SI{100}{\micro\second} time-averaged estimate
@@ -538,9 +588,11 @@ sensitivity reversed.
 The estimate is built in Section~\ref{sec:molecules} from the emissivity
 fractions cited there, driven through this thesis's atomic operator rather than
 computed from a matrix containing molecules, and it
-inherits every uncertainty in those fractions. An earlier draft of this chapter
-recorded the two chapters as contradicting each other on whether a bound could
-be constructed at all; Section~\ref{sec:molecules} constructs one.
+inherits every uncertainty in those fractions. It is a sensitivity scenario and
+not a bound: the imposed source holds $u(t)$ and $\nion(t)$ fixed, which a
+molecular reservoir would not, and Section~\ref{sec:further_work} states why an
+independent $\mathrm{H_2}$ reservoir changes the form of the result rather than
+its coefficients.
 
 \paragraph{The atomic-data figures are substitution sensitivities, not an
 uncertainty budget.} Two of the three input
@@ -563,6 +615,9 @@ defended pairs (Section~\ref{sec:atomic_propagation}), so that gap is one of
 provenance rather than of leverage. And radiative recombination has one source
 only, tested at its own quoted accuracy rather than against a rival, which is a
 weaker statement even though the \SI{1.1}{\percent} it produces is small.
+The absolute normalisation of the ground-fed coefficient remains an open
+disagreement, a factor $8.3$ below Fujimoto's tabulation at $p=3$
+(Section~\ref{sec:r1_deficit}).
 
 \paragraph{The density maximum is a range, not a density.} It lies between
 $7\times10^{12}$ and \SI{5e13}{\per\cubic\centi\metre}, resolved to about a
@@ -588,7 +643,7 @@ Four calculations would change the standing of a result in this thesis. The
 first two are bounded work on the model as it stands; the other two are
 different projects.
 
-\paragraph{A density grid fine enough to name an ELM.} The joint map of
+\paragraph{A density grid as fine as the temperature grid.} The joint map of
 Section~\ref{sec:joint_step} crosses temperature steps with density steps of one
 grid index, and one density index is a factor $2.683$, that is
 $+\SI{168}{\percent}$, against $+\SI{4.81}{\percent}$ for one temperature index.
@@ -599,8 +654,9 @@ to the tabulation and not to ELMs, which is why
 Table~\ref{tab:joint_census} is quoted per density step rather than as one
 number. Regenerating $\Lmat$ on a density grid spaced like the temperature grid
 would let the joint census be quoted at a realistic ELM density excursion, and
-it is the one remaining calculation that would move a number this thesis
-reports. It costs the same as the map that already exists.
+it is the cheapest calculation that would move a number this thesis reports,
+though it refines the closed-parcel census rather than turning it into a
+statement about an ELM. It costs the same as the map that already exists.
 
 \paragraph{An ionisation dataset that reaches the top of the ladder.} The
 substitutions of Sections~\ref{sec:atomic_propagation} and~\ref{sec:bound}
@@ -636,9 +692,9 @@ $n_p = a_p\ngs + c_p\nion + m_p n_{\mathrm{H_2}}$, with $n_{\mathrm{H_2}}$ the
 molecular density in \si{\per\cubic\centi\metre} and $m_p$ the dimensionless
 number of atoms in level $p$ supported per molecule. The observable then
 depends on two independent reservoir ratios rather than one, and the ground-fed fraction is no longer a single logistic in a single
-variable. The bound of Eq.~\eqref{eq:Sbar_bound} is a statement about a
-one-dimensional family of curves and there is no reason to expect it to survive
-in that form. Which of the two descriptions a real detaching divertor requires
+variable. The bound of Eq.~\eqref{eq:Sbar_bound} survives only at a fixed
+molecular ratio, with $\Delta$ replaced by a $v$-dependent separation, and the
+error then depends on two reservoir histories rather than one. Which of the two descriptions a real detaching divertor requires
 is a physics question this work does not answer.
 
 \medskip
